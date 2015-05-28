@@ -1,5 +1,5 @@
 #Deployment Plugin Project File
-#Thu May 28 13:59:10 CEST 2015
+#Thu May 28 21:01:43 CEST 2015
 build.ant.name=<.>/com.swissbit.dp.commons_build.xml
 build.dp.file=<.>/com.swissbit.dp.commons.dp
 build.location=
@@ -7,17 +7,24 @@ bundles.0.bundle_path=/Users/AMIT/swissbit/com.swissbit.activity.log/target/com.
 bundles.0.customizer=false
 bundles.0.headers.count=0
 bundles.0.missing=false
-bundles.0.name=bundles/com.swissbit.activity.log-1.0-SNAPSHOT.jar
+bundles.0.name=com.swissbit.activity.log-1.0-SNAPSHOT.jar
 bundles.0.symbolic_name=com.swissbit.com.swissbit.activity.log
 bundles.0.version=1.0.0.SNAPSHOT
 bundles.1.bundle_path=/Users/AMIT/swissbit/com.swissbit.device.zwave/target/com.swissbit.device.zwave-1.0-SNAPSHOT.jar
 bundles.1.customizer=false
 bundles.1.headers.count=0
 bundles.1.missing=false
-bundles.1.name=bundles/com.swissbit.device.zwave-1.0-SNAPSHOT.jar
+bundles.1.name=com.swissbit.device.zwave-1.0-SNAPSHOT.jar
 bundles.1.symbolic_name=com.swissbit.com.swissbit.device.zwave
 bundles.1.version=1.0.0.SNAPSHOT
-bundles.count=2
+bundles.2.bundle_path=/Users/AMIT/swissbit/com.swissbit.authentication/target/com.swissbit.authentication-1.0-SNAPSHOT.jar
+bundles.2.customizer=false
+bundles.2.headers.count=0
+bundles.2.missing=false
+bundles.2.name=com.swissbit.authentication-1.0-SNAPSHOT.jar
+bundles.2.symbolic_name=com.swissbit.com.swissbit.authentication
+bundles.2.version=1.0.0.SNAPSHOT
+bundles.count=3
 certificates.count=0
 general.signbundles=true
 headers.contact.address=admin@amitinside.com
