@@ -15,6 +15,10 @@
  *******************************************************************************/
 package com.swissbit.device.zwave;
 
+import java.util.List;
+
+import com.whizzosoftware.wzwave.node.ZWaveEndpoint;
+
 /**
  * Used to provide simple device on off operation
  * 
@@ -37,5 +41,10 @@ public interface IZwaveDeviceAction {
 	 * Returns the device status
 	 */
 	public boolean getStatus(byte nodeId);
+
+	/**
+	 * Returns the list of devices connected to the RPi
+	 */
+	public List<? extends ZWaveEndpoint> getConnectedDevices();
 
 }

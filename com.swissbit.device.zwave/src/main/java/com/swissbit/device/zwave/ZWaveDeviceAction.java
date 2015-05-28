@@ -191,6 +191,11 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 		if ("status".equals(reqTopic.getResources()[0])) {
 			respPayload.addMetric("status", getStatus(nodeId));
 		}
+		if ("list".equals(reqTopic.getResources()[0])) {
+			for (final ZWaveEndpoint node : list) {
+				respPayload.addMetric("node.id", node.getNodeId());
+			}
+		}
 		respPayload.setResponseCode(KuraResponsePayload.RESPONSE_CODE_OK);
 	}
 
@@ -229,6 +234,12 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 			return false;
 		else
 			return true;
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public List<? extends ZWaveEndpoint> getConnectedDevices() {
+		return list;
 	}
 
 	/**
