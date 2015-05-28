@@ -15,10 +15,6 @@
  *******************************************************************************/
 package com.swissbit.authentication;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Deactivate;
@@ -34,12 +30,10 @@ import org.osgi.service.component.ComponentContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Throwables;
-
 /**
- * The implementation of ActivityLogService
+ * The implementation of {@link IAuthentication}
  * 
- * @see ActivityLogService
+ * @see IAuthentication
  * @author AMIT KUMAR MONDAL
  */
 @Component
@@ -53,24 +47,9 @@ public class Authentication extends Cloudlet implements IAuthentication {
 			.getLogger(Authentication.class);
 
 	/**
-	 * Defines Application ID for Activity Logs
+	 * Defines Application ID for Authentication Module
 	 */
-	private static final String APP_ID = "LOGS-V1";
-
-	/**
-	 * HyperSQL Database name which comprises all the activity logs
-	 */
-	private static final String TABLE_NAME = "logs";
-
-	/**
-	 * The HyperSQL Connection Reference
-	 */
-	private Connection m_connection;
-
-	/**
-	 * The HyperSQL Statement Reference
-	 */
-	private Statement m_statement;
+	private static final String APP_ID = "AUTH-V1";
 
 	/**
 	 * Kura DB Service Reference
@@ -94,15 +73,9 @@ public class Authentication extends Cloudlet implements IAuthentication {
 	@Override
 	@Activate
 	protected synchronized void activate(ComponentContext context) {
-		LOGGER.info("Activating Activity Log Service....");
+		LOGGER.info("Activating Authentication Component....");
 		super.activate(context);
-		try {
-			m_connection = m_dbService.getConnection();
-			m_statement = m_connection.createStatement();
-		} catch (final SQLException e) {
-			LOGGER.error(Throwables.getStackTraceAsString(e));
-		}
-		LOGGER.info("Activating Activity Log Service... Done.");
+		LOGGER.info("Activating Authentication Component... Done.");
 	}
 
 	/**
@@ -116,12 +89,6 @@ public class Authentication extends Cloudlet implements IAuthentication {
 	protected synchronized void deactivate(ComponentContext context) {
 		LOGGER.info("Deactivating Activity Log Service....");
 		super.deactivate(context);
-
-		if (m_statement != null)
-			m_dbService.close(m_statement);
-
-		if (m_connection != null)
-			m_dbService.close(m_connection);
 
 		LOGGER.info("Deactivating Activity Log Service... Done.");
 	}

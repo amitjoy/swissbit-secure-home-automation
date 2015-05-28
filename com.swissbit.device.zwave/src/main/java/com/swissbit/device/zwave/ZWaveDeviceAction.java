@@ -15,31 +15,23 @@
  *******************************************************************************/
 package com.swissbit.device.zwave;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Deactivate;
-import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
 import org.eclipse.kura.KuraException;
 import org.eclipse.kura.cloud.Cloudlet;
 import org.eclipse.kura.cloud.CloudletTopic;
-import org.eclipse.kura.db.DbService;
 import org.eclipse.kura.message.KuraRequestPayload;
 import org.eclipse.kura.message.KuraResponsePayload;
 import org.osgi.service.component.ComponentContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Throwables;
-
 /**
- * The implementation of ActivityLogService
+ * The implementation of {@link IZwaveDeviceAction}
  * 
- * @see ActivityLogService
+ * @see IZwaveDeviceAction
  * @author AMIT KUMAR MONDAL
  */
 @Component
@@ -53,30 +45,9 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 			.getLogger(ZWaveDeviceAction.class);
 
 	/**
-	 * Defines Application ID for Activity Logs
+	 * Defines Application ID for ZWave Component
 	 */
-	private static final String APP_ID = "LOGS-V1";
-
-	/**
-	 * HyperSQL Database name which comprises all the activity logs
-	 */
-	private static final String TABLE_NAME = "logs";
-
-	/**
-	 * The HyperSQL Connection Reference
-	 */
-	private Connection m_connection;
-
-	/**
-	 * The HyperSQL Statement Reference
-	 */
-	private Statement m_statement;
-
-	/**
-	 * Kura DB Service Reference
-	 */
-	@Reference(bind = "bindDBService", unbind = "bindDBService")
-	private volatile DbService m_dbService;
+	private static final String APP_ID = "DEVICE-V1";
 
 	/**
 	 * Constructor
@@ -94,15 +65,9 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	@Override
 	@Activate
 	protected synchronized void activate(ComponentContext context) {
-		LOGGER.info("Activating Activity Log Service....");
+		LOGGER.info("Activating ZWave Component....");
 		super.activate(context);
-		try {
-			m_connection = m_dbService.getConnection();
-			m_statement = m_connection.createStatement();
-		} catch (final SQLException e) {
-			LOGGER.error(Throwables.getStackTraceAsString(e));
-		}
-		LOGGER.info("Activating Activity Log Service... Done.");
+		LOGGER.info("Activating ZWave Component... Done.");
 	}
 
 	/**
@@ -114,32 +79,10 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	@Override
 	@Deactivate
 	protected synchronized void deactivate(ComponentContext context) {
-		LOGGER.info("Deactivating Activity Log Service....");
+		LOGGER.info("Deactivating ZWave Component....");
 		super.deactivate(context);
 
-		if (m_statement != null)
-			m_dbService.close(m_statement);
-
-		if (m_connection != null)
-			m_dbService.close(m_connection);
-
-		LOGGER.info("Deactivating Activity Log Service... Done.");
-	}
-
-	/**
-	 * Kura DB Service Binding Callback
-	 */
-	protected synchronized void bindDBService(DbService dbService) {
-		if (m_dbService == null)
-			m_dbService = dbService;
-	}
-
-	/**
-	 * Kura DB Service Binding Callback
-	 */
-	protected synchronized void unbindDBService(DbService dbService) {
-		if (m_dbService == dbService)
-			m_dbService = null;
+		LOGGER.info("Deactivating ZWave Component... Done.");
 	}
 
 	/** {@inheritDoc} */

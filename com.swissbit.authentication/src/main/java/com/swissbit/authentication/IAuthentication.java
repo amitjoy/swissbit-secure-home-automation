@@ -16,7 +16,8 @@
 package com.swissbit.authentication;
 
 /**
- * Used to provide simple device on off operation
+ * Facilitates encryption and decryption of text in conjunction with Swissbit
+ * Secure Element
  * 
  * @author AMIT KUMAR MONDAL
  *
