@@ -13,29 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package com.swissbit.device.zwave;
+package com.swissbit.controller.zwave;
 
 /**
- * Used to provide simple device on off operation
+ * This is used to trigger Controller specific operations
  * 
  * @author AMIT KUMAR MONDAL
  *
  */
-public interface IZwaveDeviceAction {
+public interface IZwaveControllerOperation {
 
 	/**
-	 * Used to switch the device on
+	 * Start the devices search
 	 */
-	public boolean switchOn(byte nodeId);
+	public void start();
 
 	/**
-	 * Used to switch the device off
+	 * Stop the devices search
 	 */
-	public boolean switchOff(byte nodeId);
-
-	/**
-	 * Returns the device status
-	 */
-	public boolean getStatus(byte nodeId);
+	public void stop();
 
 }

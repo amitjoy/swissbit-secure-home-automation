@@ -18,8 +18,10 @@ package com.swissbit.device.zwave;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Deactivate;
+import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
 import org.eclipse.kura.KuraException;
+import org.eclipse.kura.cloud.CloudService;
 import org.eclipse.kura.cloud.Cloudlet;
 import org.eclipse.kura.cloud.CloudletTopic;
 import org.eclipse.kura.message.KuraRequestPayload;
@@ -27,6 +29,8 @@ import org.eclipse.kura.message.KuraResponsePayload;
 import org.osgi.service.component.ComponentContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.whizzosoftware.wzwave.controller.ZWaveController;
 
 /**
  * The implementation of {@link IZwaveDeviceAction}
@@ -48,6 +52,18 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	 * Defines Application ID for ZWave Component
 	 */
 	private static final String APP_ID = "DEVICE-V1";
+
+	/**
+	 * ZWave Controller Service
+	 */
+	@Reference(bind = "bindZwaveController", unbind = "unbindZwaveController")
+	private volatile ZWaveController m_controller;
+
+	/**
+	 * Kura Cloud Service Injection
+	 */
+	@Reference(bind = "bindCloudService", unbind = "unbindCloudService")
+	private volatile CloudService m_cloudService;
 
 	/**
 	 * Constructor
@@ -85,36 +101,76 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 		LOGGER.info("Deactivating ZWave Component... Done.");
 	}
 
+	/**
+	 * ZWaveController service Service Binding Callback
+	 */
+	public synchronized void bindZwaveController(ZWaveController zWaveController) {
+		if (m_controller == null) {
+			m_controller = zWaveController;
+		}
+	}
+
+	/**
+	 * ZWaveController Service Callback while deregistering
+	 */
+	public synchronized void unbindZwaveController(
+			ZWaveController zWaveController) {
+		if (m_controller == zWaveController)
+			m_controller = null;
+	}
+
+	/**
+	 * Zwave Controller Service Binding Callback
+	 */
+	public synchronized void bindCloudService(CloudService cloudService) {
+		if (m_cloudService == null) {
+			super.setCloudService(m_cloudService = cloudService);
+		}
+	}
+
+	/**
+	 * Kura Cloud Service Callback while deregistering
+	 */
+	public synchronized void unbindCloudService(CloudService cloudService) {
+		if (m_cloudService == cloudService)
+			super.setCloudService(m_cloudService = null);
+	}
+
 	/** {@inheritDoc} */
 	@Override
 	protected void doGet(CloudletTopic reqTopic, KuraRequestPayload reqPayload,
 			KuraResponsePayload respPayload) throws KuraException {
+		final byte nodeId = Byte.valueOf((String) reqPayload
+				.getMetric("nodeId"));
 		if ("on".equals(reqTopic.getResources()[0])) {
-			switchOn();
+			switchOn(nodeId);
 		}
 		if ("off".equals(reqTopic.getResources()[0])) {
-			switchOff();
+			switchOff(nodeId);
+		}
+		if ("status".equals(reqTopic.getResources()[0])) {
+			respPayload.addMetric("status", getStatus(nodeId));
 		}
 		respPayload.setResponseCode(KuraResponsePayload.RESPONSE_CODE_OK);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean switchOn() {
+	public boolean switchOn(byte nodeId) {
 		// TO-DO Auto-generated method stub
 		return false;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean switchOff() {
+	public boolean switchOff(byte nodeId) {
 		// TO-DO Auto-generated method stub
 		return false;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean getStatus() {
+	public boolean getStatus(byte nodeId) {
 		// TO-DO Auto-generated method stub
 		return false;
 	}
