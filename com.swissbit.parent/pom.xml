@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+
+	<groupId>com.swissbit</groupId>
+	<artifactId>com.swissbit.parent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Secure Home Automation Parent POM</name>
+	<packaging>pom</packaging>
+
+	<properties>
+		<!-- Dependencies version -->
+		<bluecove.version>2.1.0</bluecove.version>
+		<osgi-core.version>5.0.0</osgi-core.version>
+		<osgi.version>4.3.1</osgi.version>
+		<slf4j.version>1.6.6</slf4j.version>
+
+		<!-- Plugins versions -->
+		<bundle.plugin.version>2.4.0</bundle.plugin.version>
+		<compiler.plugin.version>3.1</compiler.plugin.version>
+		<maven-scm-plugin.version>1.8.1</maven-scm-plugin.version>
+		<maven-invoker-plugin.version>1.8</maven-invoker-plugin.version>
+
+		<!-- Test dependencies version -->
+		<junit.version>4.11</junit.version>
+		<easymock.version>3.2</easymock.version>
+		<hamcrest.version>1.3</hamcrest.version>
+
+		<!-- Encoding -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<dependencyManagement>
+		<dependencies>
+			<!-- Bluecove -->
+			<dependency>
+				<groupId>net.sf.bluecove</groupId>
+				<artifactId>bluecove</artifactId>
+				<version>${bluecove.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.sf.bluecove</groupId>
+				<artifactId>bluecove-gpl</artifactId>
+				<version>${bluecove.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ow2.chameleon.bluetooth</groupId>
+				<artifactId>bluecove-for-osgi</artifactId>
+				<version>${bluecove.version}</version>
+			</dependency>
+
+			<!-- OSGi -->
+			<dependency>
+				<groupId>org.osgi</groupId>
+				<artifactId>org.osgi.core</artifactId>
+				<version>${osgi-core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.osgi</groupId>
+				<artifactId>org.osgi.compendium</artifactId>
+				<version>${osgi.version}</version>
+			</dependency>
+
+			<!--SLF4J -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<!-- ===== -->
+	<!-- BUILD -->
+	<!-- ===== -->
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.felix</groupId>
+					<artifactId>maven-bundle-plugin</artifactId>
+					<version>${bundle.plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${compiler.plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-scm-plugin</artifactId>
+					<version>${maven-scm-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-invoker-plugin</artifactId>
+					<version>${maven-invoker-plugin.version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+
+	<organization>
+		<url>http://www.swissbit.com</url>
+		<name>Swissbit AG</name>
+	</organization>
+	<modules>
+		<module>../com.swissbit.activity.log</module>
+		<module>../com.swissbit.dp.parent</module>
+		<module>../com.swissbit.device.zwave</module>
+	</modules>
+</project>
+

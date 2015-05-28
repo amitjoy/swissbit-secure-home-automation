@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+DeploymentPackage-SymbolicName: com.swissbit.dp.commons
+DeploymentPackage-Version: 1.0.0
+DeploymentPackage-Copyright: Amit Kumar Mondal
+DeploymentPackage-ContactAddress: admin@amitinside.com
+DeploymentPackage-Description: Common Bundles required for the application
+
+Name: bundles/com.swissbit.activity.log-1.0-SNAPSHOT.jar
+Bundle-SymbolicName: com.swissbit.com.swissbit.activity.log
+Bundle-Version: 1.0.0.SNAPSHOT
+
+Name: bundles/com.swissbit.device.zwave-1.0-SNAPSHOT.jar
+Bundle-SymbolicName: com.swissbit.com.swissbit.device.zwave
+Bundle-Version: 1.0.0.SNAPSHOT
