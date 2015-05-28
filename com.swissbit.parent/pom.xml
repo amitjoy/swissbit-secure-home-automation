@@ -111,6 +111,7 @@
 		<module>../com.swissbit.activity.log</module>
 		<module>../com.swissbit.dp.parent</module>
 		<module>../com.swissbit.device.zwave</module>
+		<module>../com.swissbit.authentication</module>
 	</modules>
 </project>
 
