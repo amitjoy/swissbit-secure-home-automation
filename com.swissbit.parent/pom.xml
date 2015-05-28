@@ -112,6 +112,7 @@
 		<module>../com.swissbit.dp.parent</module>
 		<module>../com.swissbit.device.zwave</module>
 		<module>../com.swissbit.authentication</module>
+		<module>../com.swissbit.controller.zwave</module>
 	</modules>
 </project>
 
