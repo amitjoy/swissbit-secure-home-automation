@@ -52,6 +52,12 @@
 			<scope>provided</scope>
 			<version>4.0.0</version>
 		</dependency>
+		<dependency>
+			<groupId>com.whizzosoftware</groupId>
+			<artifactId>wzwave</artifactId>
+			<version>0.0.3</version>
+			<type>bundle</type>
+		</dependency>
 	</dependencies>
 
 	<build>
