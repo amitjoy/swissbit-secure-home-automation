@@ -15,6 +15,7 @@
  *******************************************************************************/
 package com.swissbit.controller.zwave;
 
+import java.util.Collection;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Map;
@@ -33,6 +34,8 @@ import org.eclipse.kura.message.KuraPayload;
 import org.eclipse.kura.message.KuraRequestPayload;
 import org.eclipse.kura.message.KuraResponsePayload;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.ComponentContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -208,9 +211,22 @@ public class ZWaveControllerOperation extends Cloudlet implements
 			payload.addMetric("node.id", node.getNodeId());
 			getCloudApplicationClient().publish("zwave/node/added", payload,
 					DFLT_PUB_QOS, DFLT_RETAIN);
+			registerZwaveEndpointAsService(node);
 		} catch (final KuraException e) {
 			LOGGER.error(Throwables.getStackTraceAsString(e));
 		}
+	}
+
+	/**
+	 * Used to register the currently added ZWave Node as OSGi Service
+	 */
+	private void registerZwaveEndpointAsService(ZWaveEndpoint node) {
+		LOGGER.info("Registering New Node in Registry... " + node.getNodeId());
+		final Dictionary<String, Object> properties = new Hashtable<String, Object>();
+		properties.put("node.address", node.getNodeId());
+		m_context.registerService(ZWaveEndpoint.class, node, properties);
+		LOGGER.info("Registering New Node in Registry... Done"
+				+ node.getNodeId());
 	}
 
 	/** {@inheritDoc} */
@@ -223,9 +239,43 @@ public class ZWaveControllerOperation extends Cloudlet implements
 			payload.addMetric("node.id", node.getNodeId());
 			getCloudApplicationClient().publish("zwave/node/updated", payload,
 					DFLT_PUB_QOS, DFLT_RETAIN);
+			reregisterZwaveEndpointAsService(node);
 		} catch (final KuraException e) {
 			LOGGER.error(Throwables.getStackTraceAsString(e));
 		}
 	}
 
+	/**
+	 * Used to re-register the currently updated ZWave Node as OSGi Service
+	 */
+	private void reregisterZwaveEndpointAsService(ZWaveEndpoint node) {
+		LOGGER.info("Re-registering Updated Node in Registry... "
+				+ node.getNodeId());
+		try {
+			searchNodeServiceAndUnregister(node);
+		} catch (final InvalidSyntaxException e) {
+			LOGGER.error(Throwables.getStackTraceAsString(e));
+		}
+		registerZwaveEndpointAsService(node);
+		LOGGER.info("Re-rgistering Updated Node in Registry... Done"
+				+ node.getNodeId());
+	}
+
+	/**
+	 * Used to consume the ZwaveEndPoint Service for unregistering the previous
+	 * invalid service reference
+	 */
+	private void searchNodeServiceAndUnregister(ZWaveEndpoint node)
+			throws InvalidSyntaxException {
+		final String filterText = "&(objectClass="
+				+ ZWaveEndpoint.class.getName() + ")(node.address="
+				+ node.getNodeId() + ")";
+		final Collection<ServiceReference<ZWaveEndpoint>> references = m_context
+				.getServiceReferences(ZWaveEndpoint.class, filterText);
+
+		for (final ServiceReference<ZWaveEndpoint> ref : references) {
+			m_context.ungetService(ref);
+		}
+
+	}
 }

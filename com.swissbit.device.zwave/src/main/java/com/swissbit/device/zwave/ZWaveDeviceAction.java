@@ -15,6 +15,9 @@
  *******************************************************************************/
 package com.swissbit.device.zwave;
 
+import java.util.List;
+import java.util.Objects;
+
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Deactivate;
@@ -30,7 +33,10 @@ import org.osgi.service.component.ComponentContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.Lists;
+import com.whizzosoftware.wzwave.commandclass.BasicCommandClass;
 import com.whizzosoftware.wzwave.controller.ZWaveController;
+import com.whizzosoftware.wzwave.node.ZWaveEndpoint;
 
 /**
  * The implementation of {@link IZwaveDeviceAction}
@@ -58,6 +64,17 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	 */
 	@Reference(bind = "bindZwaveController", unbind = "unbindZwaveController")
 	private volatile ZWaveController m_controller;
+
+	/**
+	 * ZWave Endpoint Service
+	 */
+	@Reference(bind = "bindZwaveNode", unbind = "unbindZwaveNode")
+	private volatile ZWaveEndpoint m_waveEndpoint;
+
+	/**
+	 * Stores list of all {@link ZWaveEndpoint} service objects
+	 */
+	private final List<ZWaveEndpoint> list = Lists.newCopyOnWriteArrayList();
 
 	/**
 	 * Kura Cloud Service Injection
@@ -102,7 +119,7 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	}
 
 	/**
-	 * ZWaveController service Service Binding Callback
+	 * ZWaveController Service Binding Callback
 	 */
 	public synchronized void bindZwaveController(ZWaveController zWaveController) {
 		if (m_controller == null) {
@@ -120,7 +137,28 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	}
 
 	/**
-	 * Zwave Controller Service Binding Callback
+	 * ZWaveNode Service Binding Callback
+	 */
+	public synchronized void bindZwaveNode(ZWaveEndpoint zWaveEndpoint) {
+		if (m_waveEndpoint == null) {
+			list.add(zWaveEndpoint);
+			m_waveEndpoint = zWaveEndpoint;
+		}
+	}
+
+	/**
+	 * ZWaveNode Service Callback while deregistering
+	 */
+	public synchronized void unbindZwaveNode(ZWaveEndpoint zWaveEndpoint) {
+		if (m_waveEndpoint == zWaveEndpoint) {
+			m_waveEndpoint = null;
+			if (list.contains(zWaveEndpoint))
+				list.remove(zWaveEndpoint);
+		}
+	}
+
+	/**
+	 * Kura Cloud Service Binding Callback
 	 */
 	public synchronized void bindCloudService(CloudService cloudService) {
 		if (m_cloudService == null) {
@@ -140,8 +178,10 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	@Override
 	protected void doGet(CloudletTopic reqTopic, KuraRequestPayload reqPayload,
 			KuraResponsePayload respPayload) throws KuraException {
-		final byte nodeId = Byte.valueOf((String) reqPayload
-				.getMetric("nodeId"));
+		// Parse the nodeId
+		final byte nodeId = (byte) ((int) (Integer.valueOf((String) reqPayload
+				.getMetric("nodeId"))));
+
 		if ("on".equals(reqTopic.getResources()[0])) {
 			switchOn(nodeId);
 		}
@@ -157,22 +197,49 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	/** {@inheritDoc} */
 	@Override
 	public boolean switchOn(byte nodeId) {
-		// TO-DO Auto-generated method stub
+		final ZWaveEndpoint node = findNode(nodeId);
+		if (Objects.nonNull(node)) {
+			m_controller.sendDataFrame(BasicCommandClass.createSetv1(nodeId,
+					(byte) 0xFF));
+			return true;
+		}
 		return false;
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public boolean switchOff(byte nodeId) {
-		// TO-DO Auto-generated method stub
+		final ZWaveEndpoint node = findNode(nodeId);
+		if (Objects.nonNull(node)) {
+			m_controller.sendDataFrame(BasicCommandClass.createSetv1(nodeId,
+					(byte) 0x00));
+			return true;
+		}
 		return false;
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public boolean getStatus(byte nodeId) {
-		// TO-DO Auto-generated method stub
-		return false;
+		final ZWaveEndpoint node = findNode(nodeId);
+		final BasicCommandClass basicCommandClass = (BasicCommandClass) node
+				.getCommandClass(BasicCommandClass.ID);
+		final byte value = basicCommandClass.getValue();
+		if (value == (byte) 0xFF)
+			return false;
+		else
+			return true;
+	}
+
+	/**
+	 * Returns {@link ZWaveEndpoint} reference for the given node id
+	 */
+	private ZWaveEndpoint findNode(byte nodeId) {
+		for (final ZWaveEndpoint node : list) {
+			if (node.getNodeId() == nodeId)
+				return node;
+		}
+		return null;
 	}
 
 }
