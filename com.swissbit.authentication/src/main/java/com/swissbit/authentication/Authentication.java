@@ -113,7 +113,10 @@ public class Authentication extends Cloudlet implements IAuthentication {
 	@Override
 	protected void doGet(CloudletTopic reqTopic, KuraRequestPayload reqPayload,
 			KuraResponsePayload respPayload) throws KuraException {
-		if ("on".equals(reqTopic.getResources()[0])) {
+		if ("encode".equals(reqTopic.getResources()[0])) {
+			// TO-DO
+		}
+		if ("decode".equals(reqTopic.getResources()[0])) {
 			// TO-DO
 		}
 		respPayload.setResponseCode(KuraResponsePayload.RESPONSE_CODE_OK);

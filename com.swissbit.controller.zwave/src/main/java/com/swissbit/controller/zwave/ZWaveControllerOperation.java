@@ -41,6 +41,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Throwables;
+import com.swissbit.activity.log.ActivityLogService;
 import com.whizzosoftware.wzwave.controller.ZWaveController;
 import com.whizzosoftware.wzwave.controller.ZWaveControllerListener;
 import com.whizzosoftware.wzwave.controller.netty.NettyZWaveController;
@@ -79,6 +80,12 @@ public class ZWaveControllerOperation extends Cloudlet implements
 	 */
 	@Reference(bind = "bindCloudService", unbind = "unbindCloudService")
 	private volatile CloudService m_cloudService;
+
+	/**
+	 * Activity Log Service Dependency
+	 */
+	@Reference(bind = "bindActivityLogService", unbind = "unbindActivityLogService")
+	private volatile ActivityLogService m_activityLogService;
 
 	/**
 	 * Configurable Properties set using Metatype Configuration Management
@@ -134,6 +141,25 @@ public class ZWaveControllerOperation extends Cloudlet implements
 	}
 
 	/**
+	 * Callback to be used while {@link ActivityLogService} is registering
+	 */
+	public synchronized void bindActivityLogService(
+			ActivityLogService activityLogService) {
+		if (m_activityLogService == null) {
+			m_activityLogService = activityLogService;
+		}
+	}
+
+	/**
+	 * Callback to be used while {@link ActivityLogService} is deregistering
+	 */
+	public synchronized void unbindActivityLogService(
+			ActivityLogService activityLogService) {
+		if (m_activityLogService == activityLogService)
+			m_activityLogService = null;
+	}
+
+	/**
 	 * Kura Cloud Service Binding Callback
 	 */
 	public synchronized void bindCloudService(CloudService cloudService) {
@@ -155,10 +181,12 @@ public class ZWaveControllerOperation extends Cloudlet implements
 	protected void doGet(CloudletTopic reqTopic, KuraRequestPayload reqPayload,
 			KuraResponsePayload respPayload) throws KuraException {
 		if ("on".equals(reqTopic.getResources()[0])) {
+			m_activityLogService.saveLog("ZWave Controller is started");
 			start();
 		}
 
 		if ("off".equals(reqTopic.getResources()[0])) {
+			m_activityLogService.saveLog("ZWave Controller is stopped");
 			stop();
 		}
 		respPayload.setResponseCode(KuraResponsePayload.RESPONSE_CODE_OK);

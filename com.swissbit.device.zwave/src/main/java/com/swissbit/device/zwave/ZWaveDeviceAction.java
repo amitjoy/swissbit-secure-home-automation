@@ -34,6 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
+import com.swissbit.activity.log.ActivityLogService;
 import com.whizzosoftware.wzwave.commandclass.BasicCommandClass;
 import com.whizzosoftware.wzwave.controller.ZWaveController;
 import com.whizzosoftware.wzwave.node.ZWaveEndpoint;
@@ -70,6 +71,12 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	 */
 	@Reference(bind = "bindZwaveNode", unbind = "unbindZwaveNode")
 	private volatile ZWaveEndpoint m_waveEndpoint;
+
+	/**
+	 * Activity Log Service Dependency
+	 */
+	@Reference(bind = "bindActivityLogService", unbind = "unbindActivityLogService")
+	private volatile ActivityLogService m_activityLogService;
 
 	/**
 	 * Stores list of all {@link ZWaveEndpoint} service objects
@@ -116,6 +123,25 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 		super.deactivate(context);
 
 		LOGGER.info("Deactivating ZWave Component... Done.");
+	}
+
+	/**
+	 * Callback to be used while {@link ActivityLogService} is registering
+	 */
+	public synchronized void bindActivityLogService(
+			ActivityLogService activityLogService) {
+		if (m_activityLogService == null) {
+			m_activityLogService = activityLogService;
+		}
+	}
+
+	/**
+	 * Callback to be used while {@link ActivityLogService} is deregistering
+	 */
+	public synchronized void unbindActivityLogService(
+			ActivityLogService activityLogService) {
+		if (m_activityLogService == activityLogService)
+			m_activityLogService = null;
 	}
 
 	/**
@@ -183,15 +209,19 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 				.getMetric("nodeId"))));
 
 		if ("on".equals(reqTopic.getResources()[0])) {
+			m_activityLogService.saveLog("Device is turned on");
 			switchOn(nodeId);
 		}
 		if ("off".equals(reqTopic.getResources()[0])) {
+			m_activityLogService.saveLog("Device is turned off");
 			switchOff(nodeId);
 		}
 		if ("status".equals(reqTopic.getResources()[0])) {
+			m_activityLogService.saveLog("Device status is retrieved");
 			respPayload.addMetric("status", getStatus(nodeId));
 		}
 		if ("list".equals(reqTopic.getResources()[0])) {
+			m_activityLogService.saveLog("Connected Devices List is retrieved");
 			for (final ZWaveEndpoint node : list) {
 				respPayload.addMetric("node.id", node.getNodeId());
 			}
