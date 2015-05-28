@@ -1,5 +1,5 @@
 #Deployment Plugin Project File
-#Thu May 28 13:36:34 CEST 2015
+#Thu May 28 21:21:07 CEST 2015
 build.ant.name=<.>/com.swissbit.dp.dependencies_build.xml
 build.dp.file=<.>/com.swissbit.dp.dependencies.dp
 build.location=
@@ -59,7 +59,14 @@ bundles.7.missing=false
 bundles.7.name=netty-codec-4.0.28.Final.jar
 bundles.7.symbolic_name=io.netty.codec
 bundles.7.version=4.0.28.Final
-bundles.count=8
+bundles.8.bundle_path=<.>/lib/wzwave-0.0.4-SNAPSHOT.jar
+bundles.8.customizer=false
+bundles.8.headers.count=0
+bundles.8.missing=false
+bundles.8.name=wzwave-0.0.4-SNAPSHOT.jar
+bundles.8.symbolic_name=com.whizzosoftware.wzwave
+bundles.8.version=0.0.4.SNAPSHOT
+bundles.count=9
 certificates.count=0
 general.signbundles=true
 headers.contact.address=admin@amitinside.com
