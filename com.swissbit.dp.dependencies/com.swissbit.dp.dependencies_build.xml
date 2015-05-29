@@ -74,7 +74,7 @@
     <zipfileset file="lib/wzwave-0.0.4-SNAPSHOT.jar" fullpath="wzwave-0.0.4-SNAPSHOT.jar" />
     <zipfileset file="lib/slf4j-api-1.7.12.jar" fullpath="slf4j-api-1.7.12.jar" />
     <zipfileset file="lib/netty-transport-rxtx-4.0.28.Final.jar" fullpath="netty-transport-rxtx-4.0.28.Final.jar" />
-    <zipfileset file="lib/RXTXComm_1.0.0.jar" fullpath="bundles/RXTXComm_1.0.0.jar" />
+    <zipfileset file="lib/RXTXComm_1.0.0.jar" fullpath="RXTXComm_1.0.0.jar" />
   </jar>
 </target>
 

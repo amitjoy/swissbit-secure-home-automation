@@ -1,5 +1,5 @@
 #Deployment Plugin Project File
-#Fri May 29 21:21:42 CEST 2015
+#Fri May 29 21:37:31 CEST 2015
 build.ant.name=<.>/com.swissbit.dp.dependencies_build.xml
 build.dp.file=<.>/com.swissbit.dp.dependencies.dp
 build.location=
@@ -28,7 +28,7 @@ bundles.11.bundle_path=<.>/lib/RXTXComm_1.0.0.jar
 bundles.11.customizer=false
 bundles.11.headers.count=0
 bundles.11.missing=false
-bundles.11.name=bundles/RXTXComm_1.0.0.jar
+bundles.11.name=RXTXComm_1.0.0.jar
 bundles.11.symbolic_name=RXTXComm
 bundles.11.version=1.0.0
 bundles.2.bundle_path=<.>/lib/netty-buffer-4.0.28.Final.jar
