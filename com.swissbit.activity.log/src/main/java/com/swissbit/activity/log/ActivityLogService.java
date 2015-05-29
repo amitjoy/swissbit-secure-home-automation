@@ -79,7 +79,7 @@ public class ActivityLogService extends Cloudlet implements IActivityLogService 
 	/**
 	 * Kura DB Service Reference
 	 */
-	@Reference(bind = "bindDBService", unbind = "bindDBService")
+	@Reference(bind = "bindDBService", unbind = "unbindDBService")
 	private volatile DbService m_dbService;
 
 	/**
