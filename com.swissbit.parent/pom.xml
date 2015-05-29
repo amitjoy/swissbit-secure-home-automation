@@ -13,7 +13,6 @@
 
 	<properties>
 		<!-- Dependencies version -->
-		<bluecove.version>2.1.0</bluecove.version>
 		<osgi-core.version>5.0.0</osgi-core.version>
 		<osgi.version>4.3.1</osgi.version>
 		<slf4j.version>1.6.6</slf4j.version>
@@ -109,11 +108,12 @@
 	</organization>
 	<modules>
 		<module>../com.swissbit.activity.log</module>
-		<module>../com.swissbit.dp.parent</module>
+		
 		<module>../com.swissbit.device.zwave</module>
 		<module>../com.swissbit.authentication</module>
 		<module>../com.swissbit.controller.zwave</module>
 		<module>../com.swissbit.hsql.conf</module>
+		<module>../com.swissbit.dp.parent</module>
 	</modules>
 </project>
 

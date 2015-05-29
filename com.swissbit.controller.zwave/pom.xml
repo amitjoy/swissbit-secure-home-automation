@@ -88,6 +88,19 @@
 					</instructions>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-scr-plugin</artifactId>
+				<version>1.21.0</version>
+				<executions>
+					<execution>
+						<id>generate-scr-scrdescriptor</id>
+						<goals>
+							<goal>scr</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -97,7 +110,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../com.swissbit.parent/pom.xml</relativePath>
 	</parent>
-	
+
 	<name>Zwave Controller Settings</name>
 	<description>This bundle is responsible for specifying on ZWave Controller Specific Settings</description>
 	<organization>

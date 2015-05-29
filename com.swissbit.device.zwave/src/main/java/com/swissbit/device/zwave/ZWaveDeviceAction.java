@@ -22,6 +22,7 @@ import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Deactivate;
 import org.apache.felix.scr.annotations.Reference;
+import org.apache.felix.scr.annotations.ReferenceCardinality;
 import org.apache.felix.scr.annotations.Service;
 import org.eclipse.kura.KuraException;
 import org.eclipse.kura.cloud.CloudService;
@@ -45,8 +46,8 @@ import com.whizzosoftware.wzwave.node.ZWaveEndpoint;
  * @see IZwaveDeviceAction
  * @author AMIT KUMAR MONDAL
  */
-@Component
-@Service
+@Component(name = "com.swissbit.device.zwave")
+@Service(value = { IZwaveDeviceAction.class })
 public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 
 	/**
@@ -63,13 +64,13 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	/**
 	 * ZWave Controller Service
 	 */
-	@Reference(bind = "bindZwaveController", unbind = "unbindZwaveController")
+	@Reference(bind = "bindZwaveController", unbind = "unbindZwaveController", cardinality = ReferenceCardinality.OPTIONAL_UNARY)
 	private volatile ZWaveController m_controller;
 
 	/**
 	 * ZWave Endpoint Service
 	 */
-	@Reference(bind = "bindZwaveNode", unbind = "unbindZwaveNode")
+	@Reference(bind = "bindZwaveNode", unbind = "unbindZwaveNode", cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE)
 	private volatile ZWaveEndpoint m_waveEndpoint;
 
 	/**

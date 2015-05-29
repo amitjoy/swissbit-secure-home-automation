@@ -54,7 +54,7 @@ import com.whizzosoftware.wzwave.node.ZWaveEndpoint;
  * @see IAuthentication
  * @author AMIT KUMAR MONDAL
  */
-@Component(name = "com.swissbit.controller.zwave")
+@Component(immediate = true, name = "com.swissbit.controller.zwave")
 @Service(value = { ZWaveControllerOperation.class })
 public class ZWaveControllerOperation extends Cloudlet implements
 		ConfigurableComponent, IZwaveControllerOperation,

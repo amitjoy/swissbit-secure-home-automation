@@ -46,8 +46,8 @@ import com.google.common.collect.Lists;
  * @see IActivityLogService
  * @author AMIT KUMAR MONDAL
  */
-@Component
-@Service
+@Component(immediate = true, name = "com.swissbit.activity.log.service")
+@Service(value = { IActivityLogService.class })
 public class ActivityLogService extends Cloudlet implements IActivityLogService {
 
 	/**

@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
  * @author AMIT KUMAR MONDAL
  *
  */
-@Component(immediate = false, name = "com.swissbit.hsql.conf")
+@Component(immediate = true, name = "com.swissbit.hsql.conf")
 @Service(value = { HSqlConfiguration.class })
 public class HSqlConfiguration implements ConfigurableComponent {
 
@@ -43,11 +43,6 @@ public class HSqlConfiguration implements ConfigurableComponent {
 	 */
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(HSqlConfiguration.class);
-
-	/**
-	 * Defines Application Configuration Metatype Id
-	 */
-	private static final String APP_CONF_ID = "com.swissbit.hsql.conf";
 
 	/**
 	 * Configurable Property to set HyperSQL Connection URL
