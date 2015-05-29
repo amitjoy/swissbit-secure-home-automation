@@ -28,6 +28,7 @@ import org.apache.felix.scr.annotations.Deactivate;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
 import org.eclipse.kura.KuraException;
+import org.eclipse.kura.cloud.CloudService;
 import org.eclipse.kura.cloud.Cloudlet;
 import org.eclipse.kura.cloud.CloudletTopic;
 import org.eclipse.kura.db.DbService;
@@ -83,6 +84,12 @@ public class ActivityLogService extends Cloudlet implements IActivityLogService 
 	private volatile DbService m_dbService;
 
 	/**
+	 * Kura Cloud Service Injection
+	 */
+	@Reference(bind = "bindCloudService", unbind = "unbindCloudService")
+	private volatile CloudService m_cloudService;
+
+	/**
 	 * Constructor
 	 */
 	public ActivityLogService() {
@@ -99,6 +106,7 @@ public class ActivityLogService extends Cloudlet implements IActivityLogService 
 	@Activate
 	protected synchronized void activate(ComponentContext context) {
 		LOGGER.info("Activating Activity Log Service....");
+		super.setCloudService(m_cloudService);
 		super.activate(context);
 		try {
 			m_connection = m_dbService.getConnection();
@@ -128,6 +136,23 @@ public class ActivityLogService extends Cloudlet implements IActivityLogService 
 			m_dbService.close(m_connection);
 
 		LOGGER.info("Deactivating Activity Log Service... Done.");
+	}
+
+	/**
+	 * Kura Cloud Service Binding Callback
+	 */
+	public synchronized void bindCloudService(CloudService cloudService) {
+		if (m_cloudService == null) {
+			super.setCloudService(m_cloudService = cloudService);
+		}
+	}
+
+	/**
+	 * Kura Cloud Service Callback while deregistering
+	 */
+	public synchronized void unbindCloudService(CloudService cloudService) {
+		if (m_cloudService == cloudService)
+			super.setCloudService(m_cloudService = null);
 	}
 
 	/**
