@@ -42,7 +42,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Throwables;
-import com.swissbit.activity.log.ActivityLogService;
+import com.swissbit.activity.log.IActivityLogService;
 import com.whizzosoftware.wzwave.controller.ZWaveController;
 import com.whizzosoftware.wzwave.controller.ZWaveControllerListener;
 import com.whizzosoftware.wzwave.controller.netty.NettyZWaveController;
@@ -86,7 +86,7 @@ public class ZWaveControllerOperation extends Cloudlet implements
 	 * Activity Log Service Dependency
 	 */
 	@Reference(bind = "bindActivityLogService", unbind = "unbindActivityLogService")
-	private volatile ActivityLogService m_activityLogService;
+	private volatile IActivityLogService m_activityLogService;
 
 	/**
 	 * Configurable Properties set using Metatype Configuration Management
@@ -142,20 +142,20 @@ public class ZWaveControllerOperation extends Cloudlet implements
 	}
 
 	/**
-	 * Callback to be used while {@link ActivityLogService} is registering
+	 * Callback to be used while {@link IActivityLogService} is registering
 	 */
 	public synchronized void bindActivityLogService(
-			ActivityLogService activityLogService) {
+			IActivityLogService activityLogService) {
 		if (m_activityLogService == null) {
 			m_activityLogService = activityLogService;
 		}
 	}
 
 	/**
-	 * Callback to be used while {@link ActivityLogService} is deregistering
+	 * Callback to be used while {@link IActivityLogService} is deregistering
 	 */
 	public synchronized void unbindActivityLogService(
-			ActivityLogService activityLogService) {
+			IActivityLogService activityLogService) {
 		if (m_activityLogService == activityLogService)
 			m_activityLogService = null;
 	}

@@ -34,7 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
-import com.swissbit.activity.log.ActivityLogService;
+import com.swissbit.activity.log.IActivityLogService;
 import com.whizzosoftware.wzwave.commandclass.BasicCommandClass;
 import com.whizzosoftware.wzwave.controller.ZWaveController;
 import com.whizzosoftware.wzwave.node.ZWaveEndpoint;
@@ -76,7 +76,7 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	 * Activity Log Service Dependency
 	 */
 	@Reference(bind = "bindActivityLogService", unbind = "unbindActivityLogService")
-	private volatile ActivityLogService m_activityLogService;
+	private volatile IActivityLogService m_activityLogService;
 
 	/**
 	 * Stores list of all {@link ZWaveEndpoint} service objects
@@ -126,20 +126,20 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	}
 
 	/**
-	 * Callback to be used while {@link ActivityLogService} is registering
+	 * Callback to be used while {@link IActivityLogService} is registering
 	 */
 	public synchronized void bindActivityLogService(
-			ActivityLogService activityLogService) {
+			IActivityLogService activityLogService) {
 		if (m_activityLogService == null) {
 			m_activityLogService = activityLogService;
 		}
 	}
 
 	/**
-	 * Callback to be used while {@link ActivityLogService} is deregistering
+	 * Callback to be used while {@link IActivityLogService} is deregistering
 	 */
 	public synchronized void unbindActivityLogService(
-			ActivityLogService activityLogService) {
+			IActivityLogService activityLogService) {
 		if (m_activityLogService == activityLogService)
 			m_activityLogService = null;
 	}
