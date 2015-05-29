@@ -62,7 +62,7 @@
     <zipfileset file="lib/netty-transport-4.0.28.Final.jar" fullpath="netty-transport-4.0.28.Final.jar" />
     <zipfileset file="lib/netty-codec-4.0.28.Final.jar" fullpath="netty-codec-4.0.28.Final.jar" />
     <zipfileset file="lib/wzwave-0.0.4-SNAPSHOT.jar" fullpath="wzwave-0.0.4-SNAPSHOT.jar" />
-    <zipfileset file="lib/slf4j-api-1.7.12.jar" fullpath="bundles/slf4j-api-1.7.12.jar" />
+    <zipfileset file="lib/slf4j-api-1.7.12.jar" fullpath="slf4j-api-1.7.12.jar" />
   </jar>
 </target>
 

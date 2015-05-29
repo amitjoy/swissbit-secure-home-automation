@@ -1,5 +1,5 @@
 #Deployment Plugin Project File
-#Fri May 29 20:42:34 CEST 2015
+#Fri May 29 20:47:32 CEST 2015
 build.ant.name=<.>/com.swissbit.dp.dependencies_build.xml
 build.dp.file=<.>/com.swissbit.dp.dependencies.dp
 build.location=
@@ -70,7 +70,7 @@ bundles.9.bundle_path=<.>/lib/slf4j-api-1.7.12.jar
 bundles.9.customizer=false
 bundles.9.headers.count=0
 bundles.9.missing=false
-bundles.9.name=bundles/slf4j-api-1.7.12.jar
+bundles.9.name=slf4j-api-1.7.12.jar
 bundles.9.symbolic_name=slf4j.api
 bundles.9.version=1.7.12
 bundles.count=10
