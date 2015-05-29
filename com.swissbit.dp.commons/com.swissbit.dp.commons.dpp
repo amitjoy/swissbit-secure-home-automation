@@ -1,5 +1,5 @@
 #Deployment Plugin Project File
-#Fri May 29 01:29:24 CEST 2015
+#Fri May 29 20:07:32 CEST 2015
 build.ant.name=<.>/com.swissbit.dp.commons_build.xml
 build.dp.file=<.>/com.swissbit.dp.commons.dp
 build.location=
@@ -31,7 +31,14 @@ bundles.3.missing=false
 bundles.3.name=com.swissbit.controller.zwave-1.0-SNAPSHOT.jar
 bundles.3.symbolic_name=com.swissbit.com.swissbit.controller.zwave
 bundles.3.version=1.0.0.SNAPSHOT
-bundles.count=4
+bundles.4.bundle_path=/Users/AMIT/Praktikum/swissbit/com.swissbit.hsql.conf/target/com.swissbit.hsql.conf-1.0-SNAPSHOT.jar
+bundles.4.customizer=false
+bundles.4.headers.count=0
+bundles.4.missing=false
+bundles.4.name=com.swissbit.hsql.conf-1.0-SNAPSHOT.jar
+bundles.4.symbolic_name=com.swissbit.com.swissbit.hsql.conf
+bundles.4.version=1.0.0.SNAPSHOT
+bundles.count=5
 certificates.count=0
 general.signbundles=true
 headers.contact.address=admin@amitinside.com
