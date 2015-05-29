@@ -44,3 +44,7 @@ Bundle-Version: 0.0.4.SNAPSHOT
 Name: slf4j-api-1.7.12.jar
 Bundle-SymbolicName: slf4j.api
 Bundle-Version: 1.7.12
+
+Name: netty-transport-rxtx-4.0.28.Final.jar
+Bundle-SymbolicName: io.netty.transport-rxtx
+Bundle-Version: 4.0.28.Final

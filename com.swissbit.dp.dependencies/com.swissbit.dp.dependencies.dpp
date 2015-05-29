@@ -1,5 +1,5 @@
 #Deployment Plugin Project File
-#Fri May 29 20:47:32 CEST 2015
+#Fri May 29 20:54:23 CEST 2015
 build.ant.name=<.>/com.swissbit.dp.dependencies_build.xml
 build.dp.file=<.>/com.swissbit.dp.dependencies.dp
 build.location=
@@ -17,6 +17,13 @@ bundles.1.missing=false
 bundles.1.name=commons-collections-3.2.1.jar
 bundles.1.symbolic_name=org.apache.commons.collections
 bundles.1.version=3.2.1
+bundles.10.bundle_path=<.>/lib/netty-transport-rxtx-4.0.28.Final.jar
+bundles.10.customizer=false
+bundles.10.headers.count=0
+bundles.10.missing=false
+bundles.10.name=netty-transport-rxtx-4.0.28.Final.jar
+bundles.10.symbolic_name=io.netty.transport-rxtx
+bundles.10.version=4.0.28.Final
 bundles.2.bundle_path=<.>/lib/netty-buffer-4.0.28.Final.jar
 bundles.2.customizer=false
 bundles.2.headers.count=0
@@ -73,7 +80,7 @@ bundles.9.missing=false
 bundles.9.name=slf4j-api-1.7.12.jar
 bundles.9.symbolic_name=slf4j.api
 bundles.9.version=1.7.12
-bundles.count=10
+bundles.count=11
 certificates.count=0
 general.signbundles=true
 headers.contact.address=admin@amitinside.com
