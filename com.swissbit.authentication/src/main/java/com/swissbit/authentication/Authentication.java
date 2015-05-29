@@ -21,9 +21,9 @@ import org.apache.felix.scr.annotations.Deactivate;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
 import org.eclipse.kura.KuraException;
+import org.eclipse.kura.cloud.CloudService;
 import org.eclipse.kura.cloud.Cloudlet;
 import org.eclipse.kura.cloud.CloudletTopic;
-import org.eclipse.kura.db.DbService;
 import org.eclipse.kura.message.KuraRequestPayload;
 import org.eclipse.kura.message.KuraResponsePayload;
 import org.osgi.service.component.ComponentContext;
@@ -36,8 +36,8 @@ import org.slf4j.LoggerFactory;
  * @see IAuthentication
  * @author AMIT KUMAR MONDAL
  */
-@Component
-@Service
+@Component(immediate = true, name = "com.swissbit.authentication")
+@Service(value = { IAuthentication.class })
 public class Authentication extends Cloudlet implements IAuthentication {
 
 	/**
@@ -52,10 +52,10 @@ public class Authentication extends Cloudlet implements IAuthentication {
 	private static final String APP_ID = "AUTH-V1";
 
 	/**
-	 * Kura DB Service Reference
+	 * Kura Cloud Service Injection
 	 */
-	@Reference(bind = "bindDBService", unbind = "bindDBService")
-	private volatile DbService m_dbService;
+	@Reference(bind = "bindCloudService", unbind = "unbindCloudService")
+	private volatile CloudService m_cloudService;
 
 	/**
 	 * Constructor
@@ -75,6 +75,7 @@ public class Authentication extends Cloudlet implements IAuthentication {
 	protected synchronized void activate(ComponentContext context) {
 		LOGGER.info("Activating Authentication Component....");
 		super.activate(context);
+		super.setCloudService(m_cloudService);
 		LOGGER.info("Activating Authentication Component... Done.");
 	}
 
@@ -89,24 +90,24 @@ public class Authentication extends Cloudlet implements IAuthentication {
 	protected synchronized void deactivate(ComponentContext context) {
 		LOGGER.info("Deactivating Activity Log Service....");
 		super.deactivate(context);
-
 		LOGGER.info("Deactivating Activity Log Service... Done.");
 	}
 
 	/**
-	 * Kura DB Service Binding Callback
+	 * Kura Cloud Service Binding Callback
 	 */
-	protected synchronized void bindDBService(DbService dbService) {
-		if (m_dbService == null)
-			m_dbService = dbService;
+	public synchronized void bindCloudService(CloudService cloudService) {
+		if (m_cloudService == null) {
+			super.setCloudService(m_cloudService = cloudService);
+		}
 	}
 
 	/**
-	 * Kura DB Service Binding Callback
+	 * Kura Cloud Service Callback while deregistering
 	 */
-	protected synchronized void unbindDBService(DbService dbService) {
-		if (m_dbService == dbService)
-			m_dbService = null;
+	public synchronized void unbindCloudService(CloudService cloudService) {
+		if (m_cloudService == cloudService)
+			super.setCloudService(m_cloudService = null);
 	}
 
 	/** {@inheritDoc} */
