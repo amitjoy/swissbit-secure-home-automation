@@ -36,6 +36,10 @@
 <target name="check.file.exists lib/wzwave-0.0.4-SNAPSHOT.jar" unless="file.exists.lib/wzwave-0.0.4-SNAPSHOT.jar">
   <fail message="Can not find file lib/wzwave-0.0.4-SNAPSHOT.jar"/>
 </target>
+<available property="file.exists.lib/slf4j-api-1.7.12.jar" file="lib/slf4j-api-1.7.12.jar"/>
+<target name="check.file.exists lib/slf4j-api-1.7.12.jar" unless="file.exists.lib/slf4j-api-1.7.12.jar">
+  <fail message="Can not find file lib/slf4j-api-1.7.12.jar"/>
+</target>
 <target name="all">
   <mkdir dir="/Users/AMIT/Praktikum/swissbit/com.swissbit.dp.dependencies"/>
   <antcall target="check.file.exists lib/guava-18.0.jar"/>
@@ -47,6 +51,7 @@
   <antcall target="check.file.exists lib/netty-transport-4.0.28.Final.jar"/>
   <antcall target="check.file.exists lib/netty-codec-4.0.28.Final.jar"/>
   <antcall target="check.file.exists lib/wzwave-0.0.4-SNAPSHOT.jar"/>
+  <antcall target="check.file.exists lib/slf4j-api-1.7.12.jar"/>
   <jar destfile="com.swissbit.dp.dependencies.dp" manifest="com.swissbit.dp.dependencies_manifest.mf">
     <zipfileset file="lib/guava-18.0.jar" fullpath="guava-18.0.jar" />
     <zipfileset file="lib/commons-collections-3.2.1.jar" fullpath="commons-collections-3.2.1.jar" />
@@ -57,6 +62,7 @@
     <zipfileset file="lib/netty-transport-4.0.28.Final.jar" fullpath="netty-transport-4.0.28.Final.jar" />
     <zipfileset file="lib/netty-codec-4.0.28.Final.jar" fullpath="netty-codec-4.0.28.Final.jar" />
     <zipfileset file="lib/wzwave-0.0.4-SNAPSHOT.jar" fullpath="wzwave-0.0.4-SNAPSHOT.jar" />
+    <zipfileset file="lib/slf4j-api-1.7.12.jar" fullpath="bundles/slf4j-api-1.7.12.jar" />
   </jar>
 </target>
 

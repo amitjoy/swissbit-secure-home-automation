@@ -40,3 +40,7 @@ Bundle-Version: 4.0.28.Final
 Name: wzwave-0.0.4-SNAPSHOT.jar
 Bundle-SymbolicName: com.whizzosoftware.wzwave
 Bundle-Version: 0.0.4.SNAPSHOT
+
+Name: bundles/slf4j-api-1.7.12.jar
+Bundle-SymbolicName: slf4j.api
+Bundle-Version: 1.7.12
