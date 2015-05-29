@@ -15,7 +15,6 @@
  *******************************************************************************/
 package com.swissbit.controller.zwave;
 
-import java.util.Collection;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Map;
@@ -34,9 +33,11 @@ import org.eclipse.kura.message.KuraPayload;
 import org.eclipse.kura.message.KuraRequestPayload;
 import org.eclipse.kura.message.KuraResponsePayload;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Filter;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.ComponentContext;
+import org.osgi.util.tracker.ServiceTracker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -293,16 +294,28 @@ public class ZWaveControllerOperation extends Cloudlet implements
 	 * Used to consume the ZwaveEndPoint Service for unregistering the previous
 	 * invalid service reference
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void searchNodeServiceAndUnregister(ZWaveEndpoint node)
 			throws InvalidSyntaxException {
+
 		final String filterText = "&(objectClass="
 				+ ZWaveEndpoint.class.getName() + ")(node.address="
 				+ node.getNodeId() + ")";
-		final Collection<ServiceReference<ZWaveEndpoint>> references = m_context
-				.getServiceReferences(ZWaveEndpoint.class, filterText);
 
-		for (final ServiceReference<ZWaveEndpoint> ref : references) {
-			m_context.ungetService(ref);
+		final Filter filter = m_context.createFilter(filterText);
+		final ServiceTracker zWaveTracker = new ServiceTracker(m_context,
+				filter, null);
+
+		zWaveTracker.open();
+
+		final Object[] services = zWaveTracker.getServices();
+
+		if (services != null) {
+			for (int i = 0; i < services.length; i++) {
+				final ServiceReference reference = zWaveTracker
+						.getServiceReference();
+				m_context.ungetService(reference);
+			}
 		}
 
 	}
