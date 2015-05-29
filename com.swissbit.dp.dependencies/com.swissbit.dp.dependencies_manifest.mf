@@ -36,3 +36,7 @@ Bundle-Version: 4.0.28.Final
 Name: netty-codec-4.0.28.Final.jar
 Bundle-SymbolicName: io.netty.codec
 Bundle-Version: 4.0.28.Final
+
+Name: wzwave-0.0.4-SNAPSHOT.jar
+Bundle-SymbolicName: com.whizzosoftware.wzwave
+Bundle-Version: 0.0.4.SNAPSHOT
