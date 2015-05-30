@@ -214,6 +214,7 @@ public class ZWaveControllerOperation extends Cloudlet implements
 		final String controllerDeviceAddr = (String) m_properties
 				.get(CONTROLLER_DEVICE_ADDR);
 		m_zwaveController = new NettyZWaveController(controllerDeviceAddr);
+		m_zwaveController.setListener(this);
 
 		final Dictionary<String, Object> properties = new Hashtable<String, Object>();
 		properties.put("controller.device.address", controllerDeviceAddr);
@@ -264,18 +265,6 @@ public class ZWaveControllerOperation extends Cloudlet implements
 		}
 	}
 
-	/**
-	 * Used to register the currently added ZWave Node as OSGi Service
-	 */
-	private void registerZwaveEndpointAsService(ZWaveEndpoint node) {
-		LOGGER.info("Registering New Node in Registry... " + node.getNodeId());
-		final Dictionary<String, Object> properties = new Hashtable<String, Object>();
-		properties.put("node.address", node.getNodeId());
-		m_context.registerService(ZWaveEndpoint.class, node, properties);
-		LOGGER.info("Registering New Node in Registry... Done"
-				+ node.getNodeId());
-	}
-
 	/** {@inheritDoc} */
 	@Override
 	public void onZWaveNodeUpdated(ZWaveEndpoint node) {
@@ -293,9 +282,21 @@ public class ZWaveControllerOperation extends Cloudlet implements
 	}
 
 	/**
+	 * Used to register the currently added ZWave Node as OSGi Service
+	 */
+	private void registerZwaveEndpointAsService(ZWaveEndpoint node) {
+		LOGGER.info("Registering New Node in Registry... " + node.getNodeId());
+		final Dictionary<String, Object> properties = new Hashtable<String, Object>();
+		properties.put("node.address", node.getNodeId());
+		m_context.registerService(ZWaveEndpoint.class, node, properties);
+		LOGGER.info("Registering New Node in Registry... Done"
+				+ node.getNodeId());
+	}
+
+	/**
 	 * Used to re-register the currently updated ZWave Node as OSGi Service
 	 */
-	private void reregisterZwaveEndpointAsService(ZWaveEndpoint node) {
+	private void reregisterZwaveEndpointAsService(final ZWaveEndpoint node) {
 		LOGGER.info("Re-registering Updated Node in Registry... "
 				+ node.getNodeId());
 		try {
@@ -313,7 +314,7 @@ public class ZWaveControllerOperation extends Cloudlet implements
 	 * invalid service reference
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private void searchNodeServiceAndUnregister(ZWaveEndpoint node)
+	private void searchNodeServiceAndUnregister(final ZWaveEndpoint node)
 			throws InvalidSyntaxException {
 
 		final String filterText = "&(objectClass="
