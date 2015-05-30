@@ -16,18 +16,6 @@ This is the repository for the development of a complete end-to-end secure home 
 * Build the parent POM
 * Deploy the Deployment Packages to your **Eclipse Kura** Installation
 
-### How do I get set up for Android? ###
-
-* Will be updated soon
-
-### How do I get set up for Application Server? ###
-
-* Will be updated soon
-
-### How do I get set up for Secure Element? ###
-
-* The secure element related sources are already inside the Android and RPi-Gateway
-
 ### Contribution guidelines ###
 
 * Before you commit your code to this project, please talk to the repo owner first
@@ -37,7 +25,4 @@ This is the repository for the development of a complete end-to-end secure home 
 ### Who do I talk to? ###
 
 * Amit Kumar Mondal (admin@amitinside.com) for RPi-Gateway
-* Manit Kumar (vikky_manit@yahoo.co.in) for Android Application
-* Gaurav Srivastava (ga79daw@mytum.de) for Secure Element
-* Subburam (ga59ciq@mytum.de) for Application Server
 * Swissbit AG
