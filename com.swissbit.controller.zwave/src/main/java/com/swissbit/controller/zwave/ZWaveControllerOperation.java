@@ -142,6 +142,20 @@ public class ZWaveControllerOperation extends Cloudlet implements
 	}
 
 	/**
+	 * Used to be called when configurations will get updated
+	 */
+	public void updated(Map<String, Object> properties) {
+		LOGGER.info("Updating Zwave Controller Component...");
+
+		m_properties = properties;
+		for (final String s : properties.keySet()) {
+			LOGGER.info("Update - " + s + ": " + properties.get(s));
+		}
+
+		LOGGER.info("Updated Zwave Controller Component... Done.");
+	}
+
+	/**
 	 * Callback to be used while {@link IActivityLogService} is registering
 	 */
 	public synchronized void bindActivityLogService(
