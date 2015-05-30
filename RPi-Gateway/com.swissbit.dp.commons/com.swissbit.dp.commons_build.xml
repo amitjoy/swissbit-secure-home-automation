@@ -21,7 +21,7 @@
   <fail message="Can not find file ../com.swissbit.hsql.conf/target/com.swissbit.hsql.conf-1.0-SNAPSHOT.jar"/>
 </target>
 <target name="all">
-  <mkdir dir="/Users/AMIT/Praktikum/swissbit/com.swissbit.dp.commons"/>
+  <mkdir dir="/Users/AMIT/swissbit/RPi-Gateway/com.swissbit.dp.commons"/>
   <antcall target="check.file.exists ../com.swissbit.activity.log/target/com.swissbit.activity.log-1.0-SNAPSHOT.jar"/>
   <antcall target="check.file.exists ../com.swissbit.device.zwave/target/com.swissbit.device.zwave-1.0-SNAPSHOT.jar"/>
   <antcall target="check.file.exists ../com.swissbit.authentication/target/com.swissbit.authentication-1.0-SNAPSHOT.jar"/>

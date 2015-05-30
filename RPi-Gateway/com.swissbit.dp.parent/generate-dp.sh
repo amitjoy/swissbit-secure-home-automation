@@ -27,7 +27,7 @@ b="_build.xml"
 c="/"
 
 # The root directory of all the aforementioned projects.
-home_dir="/Users/AMIT/Praktikum/swissbit/"
+home_dir="/Users/AMIT/swissbit/RPi-Gateway/"
 
 # The DP file extension
 ext=".dp"
