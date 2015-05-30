@@ -214,8 +214,12 @@ public class ZWaveControllerOperation extends Cloudlet implements
 		final String controllerDeviceAddr = (String) m_properties
 				.get(CONTROLLER_DEVICE_ADDR);
 		m_zwaveController = new NettyZWaveController(controllerDeviceAddr);
-		final Dictionary<String, String> properties = new Hashtable<String, String>();
+
+		final Dictionary<String, Object> properties = new Hashtable<String, Object>();
 		properties.put("controller.device.address", controllerDeviceAddr);
+		properties.put("controller.node.id", m_zwaveController.getNodeId());
+		properties.put("controller.home.id", m_zwaveController.getHomeId());
+
 		m_context.registerService(ZWaveController.class, m_zwaveController,
 				properties);
 		LOGGER.info("ZWave Controller is starting....Done");
