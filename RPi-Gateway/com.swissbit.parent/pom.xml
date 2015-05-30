@@ -114,6 +114,7 @@
 		<module>../com.swissbit.controller.zwave</module>
 		<module>../com.swissbit.hsql.conf</module>
 		<module>../com.swissbit.dp.parent</module>
+		<module>../com.swissbit.mqtt.client</module>
 	</modules>
 </project>
 
