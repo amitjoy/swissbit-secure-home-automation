@@ -30,6 +30,8 @@ import org.osgi.service.component.ComponentContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.swissbit.activity.log.IActivityLogService;
+
 /**
  * The implementation of {@link IAuthentication}
  * 
@@ -56,6 +58,12 @@ public class Authentication extends Cloudlet implements IAuthentication {
 	 */
 	@Reference(bind = "bindCloudService", unbind = "unbindCloudService")
 	private volatile CloudService m_cloudService;
+
+	/**
+	 * Activity Log Service Dependency
+	 */
+	@Reference(bind = "bindActivityLogService", unbind = "unbindActivityLogService")
+	private volatile IActivityLogService m_activityLogService;
 
 	/**
 	 * Constructor
@@ -94,6 +102,25 @@ public class Authentication extends Cloudlet implements IAuthentication {
 	}
 
 	/**
+	 * Callback to be used while {@link IActivityLogService} is registering
+	 */
+	public synchronized void bindActivityLogService(
+			IActivityLogService activityLogService) {
+		if (m_activityLogService == null) {
+			m_activityLogService = activityLogService;
+		}
+	}
+
+	/**
+	 * Callback to be used while {@link IActivityLogService} is deregistering
+	 */
+	public synchronized void unbindActivityLogService(
+			IActivityLogService activityLogService) {
+		if (m_activityLogService == activityLogService)
+			m_activityLogService = null;
+	}
+
+	/**
 	 * Kura Cloud Service Binding Callback
 	 */
 	public synchronized void bindCloudService(CloudService cloudService) {
@@ -115,9 +142,11 @@ public class Authentication extends Cloudlet implements IAuthentication {
 	protected void doGet(CloudletTopic reqTopic, KuraRequestPayload reqPayload,
 			KuraResponsePayload respPayload) throws KuraException {
 		if ("encode".equals(reqTopic.getResources()[0])) {
+			m_activityLogService.saveLog("Encoding Requested");
 			// TO-DO
 		}
 		if ("decode".equals(reqTopic.getResources()[0])) {
+			m_activityLogService.saveLog("Decoding Requested");
 			// TO-DO
 		}
 		respPayload.setResponseCode(KuraResponsePayload.RESPONSE_CODE_OK);
