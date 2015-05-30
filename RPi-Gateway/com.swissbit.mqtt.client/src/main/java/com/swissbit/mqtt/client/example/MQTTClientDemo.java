@@ -15,11 +15,9 @@
  *******************************************************************************/
 package com.swissbit.mqtt.client.example;
 
-import java.io.UnsupportedEncodingException;
-
-import com.google.common.base.Throwables;
+import com.google.common.base.Charsets;
+import com.swissbit.mqtt.client.IKuraMQTTClient;
 import com.swissbit.mqtt.client.KuraMQTTClient;
-import com.swissbit.mqtt.client.KuraMQTTClientImpl;
 import com.swissbit.mqtt.client.adapter.MessageListener;
 import com.swissbit.mqtt.client.message.KuraPayload;
 
@@ -27,12 +25,14 @@ public final class MQTTClientDemo {
 
 	public static void main(String... args) {
 
-		final KuraMQTTClient client = new KuraMQTTClientImpl();
+		// Create the connection object
+		final IKuraMQTTClient client = new KuraMQTTClient.Builder()
+				.setHost("m20.cloudmqtt.com").setPort("13273")
+				.setClientId("SAMPLE_CLIENT").setUsername("uefsbjsc")
+				.setPassword("HoVaapD7gKE-").build();
 
 		// Connect to the Message Broker
-		final boolean status = client.connect("m20.cloudmqtt.com", "13273",
-				"SAMPLE_CLIENT", "uefsbjsc", "HoVaapD7gKE-");
-		System.out.println(status);
+		final boolean status = client.connect();
 
 		// Declare the topics
 		final String CONF_REQUEST_TOPIC = "$EDC/swissbit/AMIT/CONF-V1/GET/configurations";
@@ -44,12 +44,8 @@ public final class MQTTClientDemo {
 
 				@Override
 				public void processMessage(KuraPayload payload) {
-					try {
-						System.out.println(new String(payload.getBody(),
-								"UTF-8"));
-					} catch (final UnsupportedEncodingException e) {
-						System.out.println(Throwables.getStackTraceAsString(e));
-					}
+					System.out.println(new String(payload.getBody(),
+							Charsets.UTF_8));
 				}
 			});
 
@@ -72,5 +68,4 @@ public final class MQTTClientDemo {
 		// Finally disconnect
 		client.disconnect();
 	}
-
 }

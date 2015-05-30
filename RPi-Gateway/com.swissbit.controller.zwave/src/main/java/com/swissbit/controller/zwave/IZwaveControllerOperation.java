@@ -21,7 +21,7 @@ package com.swissbit.controller.zwave;
  * @author AMIT KUMAR MONDAL
  *
  */
-public interface IZwaveControllerOperation {
+public interface IZWaveControllerOperation {
 
 	/**
 	 * Start the devices search

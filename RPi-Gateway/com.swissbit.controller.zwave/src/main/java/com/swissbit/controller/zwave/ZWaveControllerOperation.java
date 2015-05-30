@@ -55,9 +55,9 @@ import com.whizzosoftware.wzwave.node.ZWaveEndpoint;
  * @author AMIT KUMAR MONDAL
  */
 @Component(immediate = true, name = "com.swissbit.controller.zwave")
-@Service(value = { ZWaveControllerOperation.class })
+@Service(value = { IZWaveControllerOperation.class })
 public class ZWaveControllerOperation extends Cloudlet implements
-		ConfigurableComponent, IZwaveControllerOperation,
+		ConfigurableComponent, IZWaveControllerOperation,
 		ZWaveControllerListener {
 
 	/**
@@ -327,14 +327,13 @@ public class ZWaveControllerOperation extends Cloudlet implements
 
 		zWaveTracker.open();
 
+		// It will always return an array of length 1
 		final Object[] services = zWaveTracker.getServices();
 
 		if (services != null) {
-			for (int i = 0; i < services.length; i++) {
-				final ServiceReference reference = zWaveTracker
-						.getServiceReference();
-				m_context.ungetService(reference);
-			}
+			final ServiceReference reference = zWaveTracker
+					.getServiceReference();
+			m_context.ungetService(reference);
 		}
 
 	}

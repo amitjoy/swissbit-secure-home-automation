@@ -166,4 +166,10 @@ public class Authentication extends Cloudlet implements IAuthentication {
 		return null;
 	}
 
+	@Override
+	public boolean validate() {
+		// TO-DO Auto-generated method stub
+		return false;
+	}
+
 }

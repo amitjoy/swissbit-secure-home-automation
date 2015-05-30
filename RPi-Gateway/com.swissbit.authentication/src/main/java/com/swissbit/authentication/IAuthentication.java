@@ -34,4 +34,9 @@ public interface IAuthentication {
 	 */
 	public String decode(String text);
 
+	/**
+	 * Validates the decoded string with the actual secure element key
+	 */
+	public boolean validate();
+
 }
