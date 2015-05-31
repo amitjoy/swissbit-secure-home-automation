@@ -26,16 +26,15 @@ public final class MQTTClientDemo {
 
 		// Create the connection object
 		final IKuraMQTTClient client = new KuraMQTTClient.Builder()
-				.setHost("m20.cloudmqtt.com").setPort("13273")
-				.setClientId("SAMPLE_CLIENT").setUsername("uefsbjsc")
-				.setPassword("HoVaapD7gKE-").build();
+				.setHost("iot.eclipse.org").setPort("1883")
+				.setClientId("SAMPLE_CLIENT").build();
 
 		// Connect to the Message Broker
 		final boolean status = client.connect();
 
 		// Declare the topics
-		final String CONF_REQUEST_TOPIC = "$EDC/swissbit/AMIT/CONF-V1/GET/configurations";
-		final String CONF_RESPONSE_TOPIC = "$EDC/swissbit/AMIT_083027868/CONF-V1/REPLY/55361535117";
+		final String CONF_REQUEST_TOPIC = "$EDC/swissbit/B8:27:EB:BE:3F:BF/CONF-V1/GET/configurations";
+		final String CONF_RESPONSE_TOPIC = "$EDC/swissbit/user@gmail.com/CONF-V1/REPLY/55361535117";
 
 		// Subscribe to the topic first
 		if (status)
@@ -45,7 +44,7 @@ public final class MQTTClientDemo {
 		// Then publish the message
 		final KuraPayload payload = new KuraPayload();
 		payload.addMetric("request.id", "55361535117");
-		payload.addMetric("requester.client.id", "AMIT_083027868");
+		payload.addMetric("requester.client.id", "user@gmail.com");
 
 		if (status)
 			client.publish(CONF_REQUEST_TOPIC, payload);
