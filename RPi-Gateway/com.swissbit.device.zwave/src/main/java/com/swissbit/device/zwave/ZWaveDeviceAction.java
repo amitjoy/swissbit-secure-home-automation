@@ -223,9 +223,8 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 		}
 		if ("list".equals(reqTopic.getResources()[0])) {
 			m_activityLogService.saveLog("Connected Devices List is retrieved");
-			for (final ZWaveEndpoint node : list) {
-				respPayload.addMetric("node.id", node.getNodeId());
-			}
+			list.forEach(node -> respPayload.addMetric("node.id",
+					node.getNodeId()));
 		}
 		respPayload.setResponseCode(KuraResponsePayload.RESPONSE_CODE_OK);
 	}

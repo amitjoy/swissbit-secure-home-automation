@@ -148,9 +148,9 @@ public class ZWaveControllerOperation extends Cloudlet implements
 		LOGGER.info("Updating Zwave Controller Component...");
 
 		m_properties = properties;
-		for (final String s : properties.keySet()) {
-			LOGGER.info("Update - " + s + ": " + properties.get(s));
-		}
+
+		properties.keySet().forEach(
+				s -> LOGGER.info("Update - " + s + ": " + properties.get(s)));
 
 		LOGGER.info("Updated Zwave Controller Component... Done.");
 	}

@@ -223,12 +223,10 @@ public class ActivityLogService extends Cloudlet implements IActivityLogService 
 		if ("logs".equals(reqTopic.getResources()[0])) {
 			final List<ActivityLog> logs = retrieveLogs();
 
-			for (final ActivityLog activityLog : logs) {
-				respPayload.addMetric(activityLog.getTimestamp(),
-						activityLog.getDescription());
-			}
+			logs.forEach(activityLog -> respPayload.addMetric(
+					activityLog.getTimestamp(), activityLog.getDescription()));
+
 		}
 		respPayload.setResponseCode(KuraResponsePayload.RESPONSE_CODE_OK);
 	}
-
 }
