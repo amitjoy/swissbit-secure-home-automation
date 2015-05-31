@@ -68,6 +68,12 @@ public class ActivityLogService extends Cloudlet implements IActivityLogService 
 	private static final String TABLE_NAME = "logs";
 
 	/**
+	 * Activity logs data retrieval query
+	 */
+	private static final String RETRIEVAL_QUERY = "SELECT * FROM " + TABLE_NAME
+			+ " WHERE 1 ";
+
+	/**
 	 * The HyperSQL Connection Reference
 	 */
 	private Connection m_connection;
@@ -199,7 +205,7 @@ public class ActivityLogService extends Cloudlet implements IActivityLogService 
 				+ " WHERE 1 ";
 		try {
 			final ResultSet resultSet = m_statement
-					.executeQuery(retrieveStatement);
+					.executeQuery(RETRIEVAL_QUERY);
 			while (resultSet.next()) {
 				final String timestamp = resultSet.getString("timestamp");
 				final String description = resultSet.getString("description");
