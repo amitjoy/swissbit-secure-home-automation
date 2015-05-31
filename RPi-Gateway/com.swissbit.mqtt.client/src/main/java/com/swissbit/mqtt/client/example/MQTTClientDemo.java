@@ -18,7 +18,6 @@ package com.swissbit.mqtt.client.example;
 import com.google.common.base.Charsets;
 import com.swissbit.mqtt.client.IKuraMQTTClient;
 import com.swissbit.mqtt.client.KuraMQTTClient;
-import com.swissbit.mqtt.client.adapter.MessageListener;
 import com.swissbit.mqtt.client.message.KuraPayload;
 
 public final class MQTTClientDemo {
@@ -40,14 +39,8 @@ public final class MQTTClientDemo {
 
 		// Subscribe to the topic first
 		if (status)
-			client.subscribe(CONF_RESPONSE_TOPIC, new MessageListener() {
-
-				@Override
-				public void processMessage(KuraPayload payload) {
-					System.out.println(new String(payload.getBody(),
-							Charsets.UTF_8));
-				}
-			});
+			client.subscribe(CONF_RESPONSE_TOPIC, payload -> System.out
+					.println(new String(payload.getBody(), Charsets.UTF_8)));
 
 		// Then publish the message
 		final KuraPayload payload = new KuraPayload();
