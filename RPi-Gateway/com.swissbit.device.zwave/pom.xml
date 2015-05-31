@@ -52,14 +52,14 @@
 			<scope>provided</scope>
 			<version>4.0.0</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.whizzosoftware</groupId>
 			<artifactId>wzwave</artifactId>
 			<version>0.0.3</version>
 			<type>bundle</type>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.swissbit</groupId>
 			<artifactId>com.swissbit.activity.log</artifactId>
@@ -89,6 +89,39 @@
 						<Bundle-Developer>Amit Kumar Mondal</Bundle-Developer>
 					</instructions>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<additionalparam>-Xdoclint:none</additionalparam>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5.1</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.felix</groupId>
