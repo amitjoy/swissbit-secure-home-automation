@@ -25,16 +25,32 @@ public final class MQTTClientDemo {
 	public static void main(String... args) {
 
 		// Create the connection object
+		// In the mobile application, the client should not know the username
+		// and password until it gets verified with the identity server and the
+		// server will provide the mobile client with the username and password
+		// to connect to the broker
+		// The client id would always be one randomly generated id for one
+		// mobile client
+		// but there will be a specific user for identity server and IoT Gateway
+		// to connect to the message broker
+		// First the client will ask (using REST call) Identity Server for
+		// credential to connect
+		// to message broker and the server checks its database if the user is
+		// validated, then it will return the credential for that user to
+		// connect to the message broker and the client will use it for further
+		// usages. Once it is done, the client will scan QR code to add newly
+		// purchased IoT Home Automation Gateway Solution
 		final IKuraMQTTClient client = new KuraMQTTClient.Builder()
-				.setHost("iot.eclipse.org").setPort("1883")
-				.setClientId("SAMPLE_CLIENT").build();
+				.setHost("m20.cloudmqtt.com").setPort("13273")
+				.setClientId("CLIENT_1294378").setUsername("user@email.com")
+				.setPassword("tEev-Aiv-H").build();
 
 		// Connect to the Message Broker
 		final boolean status = client.connect();
 
 		// Declare the topics
 		final String CONF_REQUEST_TOPIC = "$EDC/swissbit/B8:27:EB:BE:3F:BF/CONF-V1/GET/configurations";
-		final String CONF_RESPONSE_TOPIC = "$EDC/swissbit/user@gmail.com/CONF-V1/REPLY/55361535117";
+		final String CONF_RESPONSE_TOPIC = "$EDC/swissbit/CLIENT_1294378/CONF-V1/REPLY/55361535117";
 
 		// Subscribe to the topic first
 		if (status)
@@ -43,8 +59,10 @@ public final class MQTTClientDemo {
 
 		// Then publish the message
 		final KuraPayload payload = new KuraPayload();
+		// Request Id will always be randomly generated for each and every MQTT
+		// request
 		payload.addMetric("request.id", "55361535117");
-		payload.addMetric("requester.client.id", "user@gmail.com");
+		payload.addMetric("requester.client.id", "CLIENT_1294378");
 
 		if (status)
 			client.publish(CONF_REQUEST_TOPIC, payload);
@@ -54,6 +72,8 @@ public final class MQTTClientDemo {
 
 		System.out.println("Waiting for new messages");
 
+		// The threadding is done for the sake of this example but in real-life
+		// scenario, you don't need this
 		while (!Thread.currentThread().isInterrupted()) {
 		}
 
