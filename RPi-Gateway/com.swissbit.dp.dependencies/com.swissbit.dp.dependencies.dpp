@@ -1,5 +1,5 @@
 #Deployment Plugin Project File
-#Fri May 29 23:50:54 CEST 2015
+#Tue Jun 02 08:56:49 CEST 2015
 build.ant.name=<.>/com.swissbit.dp.dependencies_build.xml
 build.dp.file=<.>/com.swissbit.dp.dependencies.dp
 build.location=

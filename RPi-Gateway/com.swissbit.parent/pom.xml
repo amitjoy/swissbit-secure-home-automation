@@ -164,6 +164,7 @@
 		<module>../com.swissbit.hsql.conf</module>
 		<module>../com.swissbit.dp.parent</module>
 		<module>../com.swissbit.mqtt.client</module>
+		<module>../com.swissbit.scheduler.api</module>
 	</modules>
 	<scm>
 		<url>https://bitbucket.org/i-am-it/swissbit-secure-home-automation</url>
