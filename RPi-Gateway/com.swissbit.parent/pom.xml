@@ -173,6 +173,8 @@
 		<module>../com.swissbit.mqtt.client</module>
 		
 		
+		
+		<module>../com.swissbit.mqtt.heartbeat</module>
 		<module>../com.swissbit.dp.parent</module>
 	</modules>
 	<scm>
