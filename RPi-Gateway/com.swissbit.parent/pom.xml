@@ -171,8 +171,8 @@
 		<module>../com.swissbit.hsql.conf</module>
 		
 		<module>../com.swissbit.mqtt.client</module>
-		<module>../com.swissbit.scheduler.api</module>
-		<module>../com.swissbit.scheduler</module>
+		
+		
 		<module>../com.swissbit.dp.parent</module>
 	</modules>
 	<scm>
