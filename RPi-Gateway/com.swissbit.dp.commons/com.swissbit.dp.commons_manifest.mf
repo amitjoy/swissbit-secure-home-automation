@@ -28,3 +28,7 @@ Bundle-Version: 1.0.0.SNAPSHOT
 Name: com.swissbit.scheduler.api-1.0-SNAPSHOT.jar
 Bundle-SymbolicName: com.swissbit.scheduler.api
 Bundle-Version: 1.0.0.SNAPSHOT
+
+Name: com.swissbit.scheduler-1.0-SNAPSHOT.jar
+Bundle-SymbolicName: com.swissbit.scheduler
+Bundle-Version: 1.0.0.SNAPSHOT
