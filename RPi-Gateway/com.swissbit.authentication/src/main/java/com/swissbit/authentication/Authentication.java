@@ -34,7 +34,7 @@ import com.swissbit.activity.log.IActivityLogService;
 
 /**
  * The implementation of {@link IAuthentication}
- * 
+ *
  * @see IAuthentication
  * @author AMIT KUMAR MONDAL
  */
@@ -45,8 +45,7 @@ public class Authentication extends Cloudlet implements IAuthentication {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(Authentication.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(Authentication.class);
 
 	/**
 	 * Defines Application ID for Authentication Module
@@ -74,13 +73,13 @@ public class Authentication extends Cloudlet implements IAuthentication {
 
 	/**
 	 * Callback while this component is getting registered
-	 * 
+	 *
 	 * @param properties
 	 *            the service configuration properties
 	 */
 	@Override
 	@Activate
-	protected synchronized void activate(ComponentContext context) {
+	protected synchronized void activate(final ComponentContext context) {
 		LOGGER.info("Activating Authentication Component....");
 		super.activate(context);
 		super.setCloudService(m_cloudService);
@@ -88,87 +87,87 @@ public class Authentication extends Cloudlet implements IAuthentication {
 	}
 
 	/**
-	 * Callback while this component is getting deregistered
-	 * 
-	 * @param properties
-	 *            the service configuration properties
-	 */
-	@Override
-	@Deactivate
-	protected synchronized void deactivate(ComponentContext context) {
-		LOGGER.info("Deactivating Activity Log Service....");
-		super.deactivate(context);
-		LOGGER.info("Deactivating Activity Log Service... Done.");
-	}
-
-	/**
 	 * Callback to be used while {@link IActivityLogService} is registering
 	 */
-	public synchronized void bindActivityLogService(
-			IActivityLogService activityLogService) {
+	public synchronized void bindActivityLogService(final IActivityLogService activityLogService) {
 		if (m_activityLogService == null) {
 			m_activityLogService = activityLogService;
 		}
 	}
 
 	/**
-	 * Callback to be used while {@link IActivityLogService} is deregistering
-	 */
-	public synchronized void unbindActivityLogService(
-			IActivityLogService activityLogService) {
-		if (m_activityLogService == activityLogService)
-			m_activityLogService = null;
-	}
-
-	/**
 	 * Kura Cloud Service Binding Callback
 	 */
-	public synchronized void bindCloudService(CloudService cloudService) {
+	public synchronized void bindCloudService(final CloudService cloudService) {
 		if (m_cloudService == null) {
 			super.setCloudService(m_cloudService = cloudService);
 		}
 	}
 
 	/**
-	 * Kura Cloud Service Callback while deregistering
+	 * Callback while this component is getting deregistered
+	 *
+	 * @param properties
+	 *            the service configuration properties
 	 */
-	public synchronized void unbindCloudService(CloudService cloudService) {
-		if (m_cloudService == cloudService)
-			super.setCloudService(m_cloudService = null);
+	@Override
+	@Deactivate
+	protected synchronized void deactivate(final ComponentContext context) {
+		LOGGER.info("Deactivating Activity Log Service....");
+		super.deactivate(context);
+		LOGGER.info("Deactivating Activity Log Service... Done.");
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected void doGet(CloudletTopic reqTopic, KuraRequestPayload reqPayload,
-			KuraResponsePayload respPayload) throws KuraException {
+	public String decode(final String text) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	protected void doGet(final CloudletTopic reqTopic, final KuraRequestPayload reqPayload,
+			final KuraResponsePayload respPayload) throws KuraException {
 		if ("encode".equals(reqTopic.getResources()[0])) {
 			m_activityLogService.saveLog("Encoding Requested");
-			// TO-DO
+			// TODO
 		}
 		if ("decode".equals(reqTopic.getResources()[0])) {
 			m_activityLogService.saveLog("Decoding Requested");
-			// TO-DO
+			// TODO
 		}
 		respPayload.setResponseCode(KuraResponsePayload.RESPONSE_CODE_OK);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public String encode(String text) {
-		// TO-DO Auto-generated method stub
+	public String encode(final String text) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	/** {@inheritDoc} */
-	@Override
-	public String decode(String text) {
-		// TO-DO Auto-generated method stub
-		return null;
+	/**
+	 * Callback to be used while {@link IActivityLogService} is deregistering
+	 */
+	public synchronized void unbindActivityLogService(final IActivityLogService activityLogService) {
+		if (m_activityLogService == activityLogService) {
+			m_activityLogService = null;
+		}
+	}
+
+	/**
+	 * Kura Cloud Service Callback while deregistering
+	 */
+	public synchronized void unbindCloudService(final CloudService cloudService) {
+		if (m_cloudService == cloudService) {
+			super.setCloudService(m_cloudService = null);
+		}
 	}
 
 	@Override
 	public boolean validate() {
-		// TO-DO Auto-generated method stub
+		// TODO Auto-generated method stub
 		return false;
 	}
 
