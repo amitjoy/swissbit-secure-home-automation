@@ -9,7 +9,7 @@
 			size="32" />
 
 		<AD id="com.swissbit.mqtt.heartbeat.topic" name="com.swissbit.mqtt.heartbeat.topic" type="String"
-			cardinality="0" required="true" default="mqtt/hearbeat"
+			cardinality="0" required="true" default="mqtt/heartbeat"
 			description="Configurable property to set MQTT Hearbeat Topic Namespace" />
 			
 		<AD id="com.swissbit.mqtt.heartbeat.period" name="com.swissbit.mqtt.heartbeat.period"
