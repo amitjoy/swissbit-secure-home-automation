@@ -158,7 +158,7 @@ public class ZWaveControllerOperation extends Cloudlet
 
 	/** {@inheritDoc} */
 	@Override
-	protected void doGet(final CloudletTopic reqTopic, final KuraRequestPayload reqPayload,
+	protected void doExec(final CloudletTopic reqTopic, final KuraRequestPayload reqPayload,
 			final KuraResponsePayload respPayload) throws KuraException {
 		if ("on".equals(reqTopic.getResources()[0])) {
 			this.m_activityLogService.saveLog("ZWave Controller is started");
