@@ -158,13 +158,12 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	protected synchronized void deactivate(final ComponentContext context) {
 		LOGGER.info("Deactivating ZWave Component....");
 		super.deactivate(context);
-
 		LOGGER.info("Deactivating ZWave Component... Done.");
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected void doGet(final CloudletTopic reqTopic, final KuraRequestPayload reqPayload,
+	protected void doExec(final CloudletTopic reqTopic, final KuraRequestPayload reqPayload,
 			final KuraResponsePayload respPayload) throws KuraException {
 		// Parse the nodeId
 		final byte nodeId = (byte) ((int) (Integer.valueOf((String) reqPayload.getMetric("nodeId"))));
@@ -177,6 +176,16 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 			this.m_activityLogService.saveLog("Device is turned off");
 			this.switchOff(nodeId);
 		}
+		respPayload.setResponseCode(KuraResponsePayload.RESPONSE_CODE_OK);
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	protected void doGet(final CloudletTopic reqTopic, final KuraRequestPayload reqPayload,
+			final KuraResponsePayload respPayload) throws KuraException {
+		// Parse the nodeId
+		final byte nodeId = (byte) ((int) (Integer.valueOf((String) reqPayload.getMetric("nodeId"))));
+
 		if ("status".equals(reqTopic.getResources()[0])) {
 			this.m_activityLogService.saveLog("Device status is retrieved");
 			respPayload.addMetric("status", this.getStatus(nodeId));

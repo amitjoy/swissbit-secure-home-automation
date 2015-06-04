@@ -43,26 +43,26 @@ import com.swissbit.activity.log.IActivityLogService;
 public class Authentication extends Cloudlet implements IAuthentication {
 
 	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(Authentication.class);
-
-	/**
 	 * Defines Application ID for Authentication Module
 	 */
 	private static final String APP_ID = "AUTH-V1";
 
 	/**
-	 * Kura Cloud Service Injection
+	 * Logger.
 	 */
-	@Reference(bind = "bindCloudService", unbind = "unbindCloudService")
-	private volatile CloudService m_cloudService;
+	private static final Logger LOGGER = LoggerFactory.getLogger(Authentication.class);
 
 	/**
 	 * Activity Log Service Dependency
 	 */
 	@Reference(bind = "bindActivityLogService", unbind = "unbindActivityLogService")
 	private volatile IActivityLogService m_activityLogService;
+
+	/**
+	 * Kura Cloud Service Injection
+	 */
+	@Reference(bind = "bindCloudService", unbind = "unbindCloudService")
+	private volatile CloudService m_cloudService;
 
 	/**
 	 * Constructor
@@ -82,7 +82,7 @@ public class Authentication extends Cloudlet implements IAuthentication {
 	protected synchronized void activate(final ComponentContext context) {
 		LOGGER.info("Activating Authentication Component....");
 		super.activate(context);
-		super.setCloudService(m_cloudService);
+		super.setCloudService(this.m_cloudService);
 		LOGGER.info("Activating Authentication Component... Done.");
 	}
 
@@ -90,8 +90,8 @@ public class Authentication extends Cloudlet implements IAuthentication {
 	 * Callback to be used while {@link IActivityLogService} is registering
 	 */
 	public synchronized void bindActivityLogService(final IActivityLogService activityLogService) {
-		if (m_activityLogService == null) {
-			m_activityLogService = activityLogService;
+		if (this.m_activityLogService == null) {
+			this.m_activityLogService = activityLogService;
 		}
 	}
 
@@ -99,8 +99,8 @@ public class Authentication extends Cloudlet implements IAuthentication {
 	 * Kura Cloud Service Binding Callback
 	 */
 	public synchronized void bindCloudService(final CloudService cloudService) {
-		if (m_cloudService == null) {
-			super.setCloudService(m_cloudService = cloudService);
+		if (this.m_cloudService == null) {
+			super.setCloudService(this.m_cloudService = cloudService);
 		}
 	}
 
@@ -127,14 +127,14 @@ public class Authentication extends Cloudlet implements IAuthentication {
 
 	/** {@inheritDoc} */
 	@Override
-	protected void doGet(final CloudletTopic reqTopic, final KuraRequestPayload reqPayload,
+	protected void doExec(final CloudletTopic reqTopic, final KuraRequestPayload reqPayload,
 			final KuraResponsePayload respPayload) throws KuraException {
 		if ("encode".equals(reqTopic.getResources()[0])) {
-			m_activityLogService.saveLog("Encoding Requested");
+			this.m_activityLogService.saveLog("Encoding Requested");
 			// TODO
 		}
 		if ("decode".equals(reqTopic.getResources()[0])) {
-			m_activityLogService.saveLog("Decoding Requested");
+			this.m_activityLogService.saveLog("Decoding Requested");
 			// TODO
 		}
 		respPayload.setResponseCode(KuraResponsePayload.RESPONSE_CODE_OK);
@@ -151,8 +151,8 @@ public class Authentication extends Cloudlet implements IAuthentication {
 	 * Callback to be used while {@link IActivityLogService} is deregistering
 	 */
 	public synchronized void unbindActivityLogService(final IActivityLogService activityLogService) {
-		if (m_activityLogService == activityLogService) {
-			m_activityLogService = null;
+		if (this.m_activityLogService == activityLogService) {
+			this.m_activityLogService = null;
 		}
 	}
 
@@ -160,8 +160,8 @@ public class Authentication extends Cloudlet implements IAuthentication {
 	 * Kura Cloud Service Callback while deregistering
 	 */
 	public synchronized void unbindCloudService(final CloudService cloudService) {
-		if (m_cloudService == cloudService) {
-			super.setCloudService(m_cloudService = null);
+		if (this.m_cloudService == cloudService) {
+			super.setCloudService(this.m_cloudService = null);
 		}
 	}
 
