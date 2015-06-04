@@ -50,26 +50,14 @@ import com.whizzosoftware.wzwave.node.ZWaveEndpoint;
 
 /**
  * The implementation of {@link IAuthentication}
- * 
+ *
  * @see IAuthentication
  * @author AMIT KUMAR MONDAL
  */
 @Component(immediate = true, name = "com.swissbit.controller.zwave")
 @Service(value = { IZWaveControllerOperation.class })
-public class ZWaveControllerOperation extends Cloudlet implements
-		ConfigurableComponent, IZWaveControllerOperation,
-		ZWaveControllerListener {
-
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(ZWaveControllerOperation.class);
-
-	/**
-	 * Configurable property to specify ZWave Controller Device Address
-	 */
-	private static final String CONTROLLER_DEVICE_ADDR = "controller.device.address";
+public class ZWaveControllerOperation extends Cloudlet
+		implements ConfigurableComponent, IZWaveControllerOperation, ZWaveControllerListener {
 
 	/**
 	 * Defines Application ID for Zwave Controller Module
@@ -77,10 +65,14 @@ public class ZWaveControllerOperation extends Cloudlet implements
 	private static final String APP_ID = "CONTROLLER-V1";
 
 	/**
-	 * Kura Cloud Service Injection
+	 * Configurable property to specify ZWave Controller Device Address
 	 */
-	@Reference(bind = "bindCloudService", unbind = "unbindCloudService")
-	private volatile CloudService m_cloudService;
+	private static final String CONTROLLER_DEVICE_ADDR = "controller.device.address";
+
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(ZWaveControllerOperation.class);
 
 	/**
 	 * Activity Log Service Dependency
@@ -89,14 +81,20 @@ public class ZWaveControllerOperation extends Cloudlet implements
 	private volatile IActivityLogService m_activityLogService;
 
 	/**
-	 * Configurable Properties set using Metatype Configuration Management
+	 * Kura Cloud Service Injection
 	 */
-	private Map<String, Object> m_properties;
+	@Reference(bind = "bindCloudService", unbind = "unbindCloudService")
+	private volatile CloudService m_cloudService;
 
 	/**
 	 * Bundle Context.
 	 */
 	private BundleContext m_context;
+
+	/**
+	 * Configurable Properties set using Metatype Configuration Management
+	 */
+	private Map<String, Object> m_properties;
 
 	/**
 	 * ZWave Controller
@@ -112,137 +110,74 @@ public class ZWaveControllerOperation extends Cloudlet implements
 
 	/**
 	 * Callback while this component is getting registered
-	 * 
+	 *
 	 * @param properties
 	 *            the service configuration properties
 	 */
 	@Activate
-	protected synchronized void activate(ComponentContext context,
-			Map<String, Object> properties) {
+	protected synchronized void activate(final ComponentContext context, final Map<String, Object> properties) {
 		LOGGER.info("Activating Zwave Controller Component....");
 		super.activate(context);
-		super.setCloudService(m_cloudService);
-		m_properties = properties;
-		m_context = context.getBundleContext();
+		super.setCloudService(this.m_cloudService);
+		this.m_properties = properties;
+		this.m_context = context.getBundleContext();
 		LOGGER.info("Activating Zwave Controller Component... Done.");
-	}
-
-	/**
-	 * Callback while this component is getting deregistered
-	 * 
-	 * @param properties
-	 *            the service configuration properties
-	 */
-	@Override
-	@Deactivate
-	protected synchronized void deactivate(ComponentContext context) {
-		LOGGER.info("Deactivating Zwave Controller Component....");
-		super.deactivate(context);
-		LOGGER.info("Deactivating Zwave Controller Component... Done.");
-	}
-
-	/**
-	 * Used to be called when configurations will get updated
-	 */
-	public void updated(Map<String, Object> properties) {
-		LOGGER.info("Updating Zwave Controller Component...");
-
-		m_properties = properties;
-
-		properties.keySet().forEach(
-				s -> LOGGER.info("Update - " + s + ": " + properties.get(s)));
-
-		LOGGER.info("Updated Zwave Controller Component... Done.");
 	}
 
 	/**
 	 * Callback to be used while {@link IActivityLogService} is registering
 	 */
-	public synchronized void bindActivityLogService(
-			IActivityLogService activityLogService) {
-		if (m_activityLogService == null) {
-			m_activityLogService = activityLogService;
+	public synchronized void bindActivityLogService(final IActivityLogService activityLogService) {
+		if (this.m_activityLogService == null) {
+			this.m_activityLogService = activityLogService;
 		}
-	}
-
-	/**
-	 * Callback to be used while {@link IActivityLogService} is deregistering
-	 */
-	public synchronized void unbindActivityLogService(
-			IActivityLogService activityLogService) {
-		if (m_activityLogService == activityLogService)
-			m_activityLogService = null;
 	}
 
 	/**
 	 * Kura Cloud Service Binding Callback
 	 */
-	public synchronized void bindCloudService(CloudService cloudService) {
-		if (m_cloudService == null) {
-			super.setCloudService(m_cloudService = cloudService);
+	public synchronized void bindCloudService(final CloudService cloudService) {
+		if (this.m_cloudService == null) {
+			super.setCloudService(this.m_cloudService = cloudService);
 		}
 	}
 
 	/**
-	 * Kura Cloud Service Callback while deregistering
+	 * Callback while this component is getting deregistered
+	 *
+	 * @param properties
+	 *            the service configuration properties
 	 */
-	public synchronized void unbindCloudService(CloudService cloudService) {
-		if (m_cloudService == cloudService)
-			super.setCloudService(m_cloudService = null);
+	@Override
+	@Deactivate
+	protected synchronized void deactivate(final ComponentContext context) {
+		LOGGER.info("Deactivating Zwave Controller Component....");
+		super.deactivate(context);
+		LOGGER.info("Deactivating Zwave Controller Component... Done.");
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected void doGet(CloudletTopic reqTopic, KuraRequestPayload reqPayload,
-			KuraResponsePayload respPayload) throws KuraException {
+	protected void doGet(final CloudletTopic reqTopic, final KuraRequestPayload reqPayload,
+			final KuraResponsePayload respPayload) throws KuraException {
 		if ("on".equals(reqTopic.getResources()[0])) {
-			m_activityLogService.saveLog("ZWave Controller is started");
-			start();
+			this.m_activityLogService.saveLog("ZWave Controller is started");
+			this.start();
 		}
 
 		if ("off".equals(reqTopic.getResources()[0])) {
-			m_activityLogService.saveLog("ZWave Controller is stopped");
-			stop();
+			this.m_activityLogService.saveLog("ZWave Controller is stopped");
+			this.stop();
 		}
 		respPayload.setResponseCode(KuraResponsePayload.RESPONSE_CODE_OK);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void start() {
-		LOGGER.info("ZWave Controller is starting....");
-		final String controllerDeviceAddr = (String) m_properties
-				.get(CONTROLLER_DEVICE_ADDR);
-		m_zwaveController = new NettyZWaveController(controllerDeviceAddr);
-		m_zwaveController.setListener(this);
-
-		final Dictionary<String, Object> properties = new Hashtable<String, Object>();
-		properties.put("controller.device.address", controllerDeviceAddr);
-		properties.put("controller.node.id", m_zwaveController.getNodeId());
-		properties.put("controller.home.id", m_zwaveController.getHomeId());
-
-		m_context.registerService(ZWaveController.class, m_zwaveController,
-				properties);
-		LOGGER.info("ZWave Controller is starting....Done");
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void stop() {
-		LOGGER.info("ZWave Controller is stopping....");
-		m_zwaveController.stop();
-		getCloudApplicationClient().release();
-		LOGGER.info("ZWave Controller is stopping....Done");
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void onZWaveConnectionFailure(Throwable throwable) {
-		LOGGER.debug("Zwave Connection Failure"
-				+ Throwables.getStackTraceAsString(throwable));
+	public void onZWaveConnectionFailure(final Throwable throwable) {
+		LOGGER.debug("Zwave Connection Failure" + Throwables.getStackTraceAsString(throwable));
 		try {
-			getCloudApplicationClient().publish("zwave/failure", null,
-					DFLT_PUB_QOS, DFLT_RETAIN);
+			this.getCloudApplicationClient().publish("zwave/failure", null, DFLT_PUB_QOS, DFLT_RETAIN);
 		} catch (final KuraException e) {
 			LOGGER.error(Throwables.getStackTraceAsString(e));
 		}
@@ -251,15 +186,14 @@ public class ZWaveControllerOperation extends Cloudlet implements
 
 	/** {@inheritDoc} */
 	@Override
-	public void onZWaveNodeAdded(ZWaveEndpoint node) {
+	public void onZWaveNodeAdded(final ZWaveEndpoint node) {
 		LOGGER.info("New ZWave Device Found " + node.getGenericDeviceClass());
 		try {
 			final KuraPayload payload = new KuraPayload();
 			payload.addMetric("node.address", node.getGenericDeviceClass());
 			payload.addMetric("node.id", node.getNodeId());
-			getCloudApplicationClient().publish("zwave/node/added", payload,
-					DFLT_PUB_QOS, DFLT_RETAIN);
-			registerZwaveEndpointAsService(node);
+			this.getCloudApplicationClient().publish("zwave/node/added", payload, DFLT_PUB_QOS, DFLT_RETAIN);
+			this.registerZwaveEndpointAsService(node);
 		} catch (final KuraException e) {
 			LOGGER.error(Throwables.getStackTraceAsString(e));
 		}
@@ -267,15 +201,14 @@ public class ZWaveControllerOperation extends Cloudlet implements
 
 	/** {@inheritDoc} */
 	@Override
-	public void onZWaveNodeUpdated(ZWaveEndpoint node) {
+	public void onZWaveNodeUpdated(final ZWaveEndpoint node) {
 		LOGGER.info("ZWave Device Updated " + node.getGenericDeviceClass());
 		try {
 			final KuraPayload payload = new KuraPayload();
 			payload.addMetric("node.address", node.getGenericDeviceClass());
 			payload.addMetric("node.id", node.getNodeId());
-			getCloudApplicationClient().publish("zwave/node/updated", payload,
-					DFLT_PUB_QOS, DFLT_RETAIN);
-			reregisterZwaveEndpointAsService(node);
+			this.getCloudApplicationClient().publish("zwave/node/updated", payload, DFLT_PUB_QOS, DFLT_RETAIN);
+			this.reregisterZwaveEndpointAsService(node);
 		} catch (final KuraException e) {
 			LOGGER.error(Throwables.getStackTraceAsString(e));
 		}
@@ -284,29 +217,26 @@ public class ZWaveControllerOperation extends Cloudlet implements
 	/**
 	 * Used to register the currently added ZWave Node as OSGi Service
 	 */
-	private void registerZwaveEndpointAsService(ZWaveEndpoint node) {
+	private void registerZwaveEndpointAsService(final ZWaveEndpoint node) {
 		LOGGER.info("Registering New Node in Registry... " + node.getNodeId());
 		final Dictionary<String, Object> properties = new Hashtable<String, Object>();
 		properties.put("node.address", node.getNodeId());
-		m_context.registerService(ZWaveEndpoint.class, node, properties);
-		LOGGER.info("Registering New Node in Registry... Done"
-				+ node.getNodeId());
+		this.m_context.registerService(ZWaveEndpoint.class, node, properties);
+		LOGGER.info("Registering New Node in Registry... Done" + node.getNodeId());
 	}
 
 	/**
 	 * Used to re-register the currently updated ZWave Node as OSGi Service
 	 */
 	private void reregisterZwaveEndpointAsService(final ZWaveEndpoint node) {
-		LOGGER.info("Re-registering Updated Node in Registry... "
-				+ node.getNodeId());
+		LOGGER.info("Re-registering Updated Node in Registry... " + node.getNodeId());
 		try {
-			searchNodeServiceAndUnregister(node);
+			this.searchNodeServiceAndUnregister(node);
 		} catch (final InvalidSyntaxException e) {
 			LOGGER.error(Throwables.getStackTraceAsString(e));
 		}
-		registerZwaveEndpointAsService(node);
-		LOGGER.info("Re-rgistering Updated Node in Registry... Done"
-				+ node.getNodeId());
+		this.registerZwaveEndpointAsService(node);
+		LOGGER.info("Re-rgistering Updated Node in Registry... Done" + node.getNodeId());
 	}
 
 	/**
@@ -314,16 +244,13 @@ public class ZWaveControllerOperation extends Cloudlet implements
 	 * invalid service reference
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private void searchNodeServiceAndUnregister(final ZWaveEndpoint node)
-			throws InvalidSyntaxException {
+	private void searchNodeServiceAndUnregister(final ZWaveEndpoint node) throws InvalidSyntaxException {
 
-		final String filterText = "&(objectClass="
-				+ ZWaveEndpoint.class.getName() + ")(node.address="
+		final String filterText = "&(objectClass=" + ZWaveEndpoint.class.getName() + ")(node.address="
 				+ node.getNodeId() + ")";
 
-		final Filter filter = m_context.createFilter(filterText);
-		final ServiceTracker zWaveTracker = new ServiceTracker(m_context,
-				filter, null);
+		final Filter filter = this.m_context.createFilter(filterText);
+		final ServiceTracker zWaveTracker = new ServiceTracker(this.m_context, filter, null);
 
 		zWaveTracker.open();
 
@@ -331,10 +258,66 @@ public class ZWaveControllerOperation extends Cloudlet implements
 		final Object[] services = zWaveTracker.getServices();
 
 		if (services != null) {
-			final ServiceReference reference = zWaveTracker
-					.getServiceReference();
-			m_context.ungetService(reference);
+			final ServiceReference reference = zWaveTracker.getServiceReference();
+			this.m_context.ungetService(reference);
 		}
 
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public void start() {
+		LOGGER.info("ZWave Controller is starting....");
+		final String controllerDeviceAddr = (String) this.m_properties.get(CONTROLLER_DEVICE_ADDR);
+		this.m_zwaveController = new NettyZWaveController(controllerDeviceAddr);
+		this.m_zwaveController.setListener(this);
+
+		final Dictionary<String, Object> properties = new Hashtable<String, Object>();
+		properties.put("controller.device.address", controllerDeviceAddr);
+		properties.put("controller.node.id", this.m_zwaveController.getNodeId());
+		properties.put("controller.home.id", this.m_zwaveController.getHomeId());
+
+		this.m_context.registerService(ZWaveController.class, this.m_zwaveController, properties);
+		LOGGER.info("ZWave Controller is starting....Done");
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public void stop() {
+		LOGGER.info("ZWave Controller is stopping....");
+		this.m_zwaveController.stop();
+		this.getCloudApplicationClient().release();
+		LOGGER.info("ZWave Controller is stopping....Done");
+	}
+
+	/**
+	 * Callback to be used while {@link IActivityLogService} is deregistering
+	 */
+	public synchronized void unbindActivityLogService(final IActivityLogService activityLogService) {
+		if (this.m_activityLogService == activityLogService) {
+			this.m_activityLogService = null;
+		}
+	}
+
+	/**
+	 * Kura Cloud Service Callback while deregistering
+	 */
+	public synchronized void unbindCloudService(final CloudService cloudService) {
+		if (this.m_cloudService == cloudService) {
+			super.setCloudService(this.m_cloudService = null);
+		}
+	}
+
+	/**
+	 * Used to be called when configurations will get updated
+	 */
+	public void updated(final Map<String, Object> properties) {
+		LOGGER.info("Updating Zwave Controller Component...");
+
+		this.m_properties = properties;
+
+		properties.keySet().forEach(s -> LOGGER.info("Update - " + s + ": " + properties.get(s)));
+
+		LOGGER.info("Updated Zwave Controller Component... Done.");
 	}
 }

@@ -45,35 +45,73 @@ import com.swissbit.mqtt.client.operator.KuraPayloadEncoder;
 
 /**
  * Implementation of {@link IKuraMQTTClient}
- * 
+ *
  * @author AMIT KUMAR MONDAL
  * @see IKuraMQTTClient
  *
  */
 public class KuraMQTTClient implements IKuraMQTTClient {
 
-	/**
-	 * Connection Params
-	 */
-	private final String host;
-	private final String port;
-	private final String clientId;
-	private final String username;
-	private final String password;
+	public static class Builder {
 
-	private String errorMsg;
-	private boolean isConnected;
-	private final Lock connectionLock;
+		private String clientId;
+		private String host;
+		private String password;
+		private String port;
+		private String username;
 
-	protected CallbackConnection connection = null;
+		public KuraMQTTClient build() {
+			return new KuraMQTTClient(this.host, this.port, this.clientId, this.username, this.password);
+		}
 
-	protected Map<String, MessageListener> channels = null;
+		public Builder setClientId(final String clientId) {
+			this.clientId = clientId;
+			return this;
+		}
+
+		public Builder setHost(final String host) {
+			this.host = host;
+			return this;
+		}
+
+		public Builder setPassword(final String password) {
+			this.password = password;
+			return this;
+		}
+
+		public Builder setPort(final String port) {
+			this.port = port;
+			return this;
+		}
+
+		public Builder setUsername(final String username) {
+			this.username = username;
+			return this;
+		}
+	}
 
 	/**
 	 * Logger
 	 */
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(KuraMQTTClient.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(KuraMQTTClient.class);
+	protected Map<String, MessageListener> channels = null;
+	private final String clientId;
+	protected CallbackConnection connection = null;
+
+	private final Lock connectionLock;
+	private String errorMsg;
+	/**
+	 * Connection Params
+	 */
+	private final String host;
+
+	private boolean isConnected;
+
+	private final String password;
+
+	private final String port;
+
+	private final String username;
 
 	/**
 	 * Creates a simple MQTT client and connects it to the specified MQTT broker
@@ -83,62 +121,135 @@ public class KuraMQTTClient implements IKuraMQTTClient {
 	 * @param clientId
 	 *            the UNIQUE id of this client
 	 */
-	private KuraMQTTClient(String host, String port, String clientId,
-			String username, String password) {
+	private KuraMQTTClient(final String host, final String port, final String clientId, final String username,
+			final String password) {
 		this.host = host;
 		this.port = port;
 		this.clientId = clientId;
 		this.username = username;
 		this.password = password;
-		connectionLock = new ReentrantLock();
+		this.connectionLock = new ReentrantLock();
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public boolean connect() {
 
-		Preconditions.checkNotNull(host);
-		Preconditions.checkNotNull(port);
-		Preconditions.checkNotNull(clientId);
+		Preconditions.checkNotNull(this.host);
+		Preconditions.checkNotNull(this.port);
+		Preconditions.checkNotNull(this.clientId);
 
 		final MQTT mqtt = new MQTT();
 
 		try {
 
-			mqtt.setHost(hostToURI(host, port));
-			mqtt.setClientId(clientId);
-			mqtt.setPassword(password);
-			mqtt.setUserName(username);
+			mqtt.setHost(this.hostToURI(this.host, this.port));
+			mqtt.setClientId(this.clientId);
+			mqtt.setPassword(this.password);
+			mqtt.setUserName(this.username);
 
 		} catch (final URISyntaxException e) {
 			LOGGER.error(Throwables.getStackTraceAsString(e));
 		}
 		try {
-			if (connectionLock.tryLock(5, TimeUnit.SECONDS)) {
-				safelyConnect(mqtt);
+			if (this.connectionLock.tryLock(5, TimeUnit.SECONDS)) {
+				this.safelyConnect(mqtt);
 			}
-			isConnected = true;
+			this.isConnected = true;
 		} catch (final InterruptedException e) {
-			isConnected = false;
+			this.isConnected = false;
 		} catch (final ConnectionException e) {
-			isConnected = false;
+			this.isConnected = false;
 		} finally {
-			connectionLock.unlock();
+			this.connectionLock.unlock();
 		}
-		return isConnected;
+		return this.isConnected;
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public void disconnect() {
+		try {
+			this.connectionLock.tryLock(5, TimeUnit.SECONDS);
+			this.safelyDisconnect();
+		} catch (final Exception e) {
+			LOGGER.debug("Exception while disconnecting");
+		}
+	}
+
+	/**
+	 * Connection Exception triggerer
+	 */
+	private void exceptionOccurred(final String message) throws ConnectionException {
+		throw new ConnectionException(message);
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public String getClientId() {
+		return this.clientId;
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public String getHost() {
+		return this.host;
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public Set<String> getSubscribedChannels() {
+		return this.channels.keySet();
+	}
+
+	/**
+	 * Returns the MQTT URI Scheme
+	 */
+	private String hostToURI(final String host, final String port) {
+		return PROTOCOL + "://" + host + ":" + port;
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public boolean isConnected() {
+		return this.isConnected;
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public void publish(final String channel, final KuraPayload payload) {
+		if (this.connection != null) {
+			final KuraPayloadEncoder encoder = new KuraPayloadEncoder(payload);
+			try {
+				this.connection.publish(channel, encoder.getBytes(), QoS.AT_MOST_ONCE, false, new Callback<Void>() {
+					@Override
+					public void onFailure(final Throwable throwable) {
+						LOGGER.debug("Impossible to publish message to channel " + channel);
+					}
+
+					@Override
+					public void onSuccess(final Void aVoid) {
+						LOGGER.debug("Successfully published");
+					}
+				});
+			} catch (final IOException e) {
+				LOGGER.debug("I/O Exception Occurred: " + e.getMessage());
+			}
+		}
 	}
 
 	/**
 	 * Connect in a thread safe manner
 	 */
 	private void safelyConnect(final MQTT mqtt) throws ConnectionException {
-		if (isConnected)
-			disconnect();
+		if (this.isConnected) {
+			this.disconnect();
+		}
 		// Initialize channels
-		channels = new HashMap<>();
+		this.channels = new HashMap<>();
 		// Register callbacks
-		connection = mqtt.callbackConnection();
-		connection.listener(new Listener() {
+		this.connection = mqtt.callbackConnection();
+		this.connection.listener(new Listener() {
 			@Override
 			public void onConnected() {
 				LOGGER.debug("Host connected");
@@ -150,169 +261,52 @@ public class KuraMQTTClient implements IKuraMQTTClient {
 			}
 
 			@Override
-			public void onPublish(UTF8Buffer mqttChannel, Buffer mqttMessage,
-					Runnable ack) {
-				if (channels.containsKey(mqttChannel.toString())) {
-					final KuraPayloadDecoder decoder = new KuraPayloadDecoder(
-							mqttMessage.toByteArray());
+			public void onFailure(final Throwable throwable) {
+				LOGGER.debug("Exception Occurred: " + throwable.getMessage());
+			}
+
+			@Override
+			public void onPublish(final UTF8Buffer mqttChannel, final Buffer mqttMessage, final Runnable ack) {
+				if (KuraMQTTClient.this.channels.containsKey(mqttChannel.toString())) {
+					final KuraPayloadDecoder decoder = new KuraPayloadDecoder(mqttMessage.toByteArray());
 
 					try {
-						channels.get(mqttChannel.toString()).processMessage(
-								decoder.buildFromByteArray());
+						KuraMQTTClient.this.channels.get(mqttChannel.toString())
+								.processMessage(decoder.buildFromByteArray());
 					} catch (final IOException e) {
-						LOGGER.debug("I/O Exception Occurred: "
-								+ e.getMessage());
+						LOGGER.debug("I/O Exception Occurred: " + e.getMessage());
 					}
 				}
 				ack.run();
 			}
-
-			@Override
-			public void onFailure(Throwable throwable) {
-				LOGGER.debug("Exception Occurred: " + throwable.getMessage());
-			}
 		});
 		// Connect to broker in a blocking fashion
 		final CountDownLatch l = new CountDownLatch(1);
-		connection.connect(new Callback<Void>() {
+		this.connection.connect(new Callback<Void>() {
 			@Override
-			public void onSuccess(Void aVoid) {
-				l.countDown();
-				LOGGER.debug("Successfully Connected to Host");
+			public void onFailure(final Throwable throwable) {
+				KuraMQTTClient.this.errorMsg = "Impossible to CONNECT to the MQTT server, terminating";
+				LOGGER.debug(KuraMQTTClient.this.errorMsg);
 			}
 
 			@Override
-			public void onFailure(Throwable throwable) {
-				errorMsg = "Impossible to CONNECT to the MQTT server, terminating";
-				LOGGER.debug(errorMsg);
+			public void onSuccess(final Void aVoid) {
+				l.countDown();
+				LOGGER.debug("Successfully Connected to Host");
 			}
 
 		});
 		try {
 			if (!l.await(5, TimeUnit.SECONDS)) {
-				errorMsg = "Impossible to CONNECT to the MQTT server: TIMEOUT. Terminating";
-				LOGGER.debug(errorMsg);
-				exceptionOccurred(errorMsg);
+				this.errorMsg = "Impossible to CONNECT to the MQTT server: TIMEOUT. Terminating";
+				LOGGER.debug(this.errorMsg);
+				this.exceptionOccurred(this.errorMsg);
 			}
 		} catch (final InterruptedException e) {
-			errorMsg = "\"Impossible to CONNECT to the MQTT server, terminating\"";
-			LOGGER.debug(errorMsg);
-			exceptionOccurred(errorMsg);
+			this.errorMsg = "\"Impossible to CONNECT to the MQTT server, terminating\"";
+			LOGGER.debug(this.errorMsg);
+			this.exceptionOccurred(this.errorMsg);
 
-		}
-	}
-
-	/**
-	 * Connection Exception triggerer
-	 */
-	private void exceptionOccurred(String message) throws ConnectionException {
-		throw new ConnectionException(message);
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public String getHost() {
-		return host;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public String getClientId() {
-		return clientId;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void subscribe(final String channel, final MessageListener callback) {
-		if (connection != null) {
-			if (channels.containsKey(channel))
-				return;
-			final CountDownLatch l = new CountDownLatch(1);
-			final Topic[] topic = { new Topic(channel, QoS.AT_MOST_ONCE) };
-			connection.subscribe(topic, new Callback<byte[]>() {
-				@Override
-				public void onSuccess(byte[] bytes) {
-					channels.put(channel, callback);
-					l.countDown();
-					LOGGER.debug("Successfully subscribed to " + channel);
-				}
-
-				@Override
-				public void onFailure(Throwable throwable) {
-					LOGGER.debug("Impossible to SUBSCRIBE to channel \""
-							+ channel + "\"");
-					l.countDown();
-				}
-			});
-			try {
-				l.await();
-			} catch (final InterruptedException e) {
-				LOGGER.debug("Impossible to SUBSCRIBE to channel \"" + channel
-						+ "\"");
-			}
-		}
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void unsubscribe(String channel) {
-		if (connection != null) {
-			channels.remove(channel);
-			final UTF8Buffer[] topic = { UTF8Buffer.utf8(channel) };
-			connection.unsubscribe(topic, new Callback<Void>() {
-				@Override
-				public void onSuccess(Void aVoid) {
-					LOGGER.debug("Successfully unsubscribed");
-				}
-
-				@Override
-				public void onFailure(Throwable throwable) {
-					LOGGER.debug("Exception occurred while unsubscribing: "
-							+ throwable.getMessage());
-				}
-			});
-		}
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public Set<String> getSubscribedChannels() {
-		return channels.keySet();
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void publish(final String channel, KuraPayload payload) {
-		if (connection != null) {
-			final KuraPayloadEncoder encoder = new KuraPayloadEncoder(payload);
-			try {
-				connection.publish(channel, encoder.getBytes(),
-						QoS.AT_MOST_ONCE, false, new Callback<Void>() {
-							@Override
-							public void onSuccess(Void aVoid) {
-								LOGGER.debug("Successfully published");
-							}
-
-							@Override
-							public void onFailure(Throwable throwable) {
-								LOGGER.debug("Impossible to publish message to channel "
-										+ channel);
-							}
-						});
-			} catch (final IOException e) {
-				LOGGER.debug("I/O Exception Occurred: " + e.getMessage());
-			}
-		}
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void disconnect() {
-		try {
-			connectionLock.tryLock(5, TimeUnit.SECONDS);
-			safelyDisconnect();
-		} catch (final Exception e) {
-			LOGGER.debug("Exception while disconnecting");
 		}
 	}
 
@@ -320,70 +314,70 @@ public class KuraMQTTClient implements IKuraMQTTClient {
 	 * Disconnects the client in a thread safe way
 	 */
 	private void safelyDisconnect() {
-		if (connection != null) {
-			connection.disconnect(new Callback<Void>() {
+		if (this.connection != null) {
+			this.connection.disconnect(new Callback<Void>() {
 				@Override
-				public void onSuccess(Void aVoid) {
-					LOGGER.debug("Successfully disconnected");
+				public void onFailure(final Throwable throwable) {
+					LOGGER.debug("Error while disconnecting");
 				}
 
 				@Override
-				public void onFailure(Throwable throwable) {
-					LOGGER.debug("Error while disconnecting");
+				public void onSuccess(final Void aVoid) {
+					LOGGER.debug("Successfully disconnected");
 				}
 			});
 		}
 	}
 
-	public static class Builder {
+	/** {@inheritDoc} */
+	@Override
+	public void subscribe(final String channel, final MessageListener callback) {
+		if (this.connection != null) {
+			if (this.channels.containsKey(channel)) {
+				return;
+			}
+			final CountDownLatch l = new CountDownLatch(1);
+			final Topic[] topic = { new Topic(channel, QoS.AT_MOST_ONCE) };
+			this.connection.subscribe(topic, new Callback<byte[]>() {
+				@Override
+				public void onFailure(final Throwable throwable) {
+					LOGGER.debug("Impossible to SUBSCRIBE to channel \"" + channel + "\"");
+					l.countDown();
+				}
 
-		private String host;
-		private String port;
-		private String clientId;
-		private String username;
-		private String password;
-
-		public Builder setHost(String host) {
-			this.host = host;
-			return this;
+				@Override
+				public void onSuccess(final byte[] bytes) {
+					KuraMQTTClient.this.channels.put(channel, callback);
+					l.countDown();
+					LOGGER.debug("Successfully subscribed to " + channel);
+				}
+			});
+			try {
+				l.await();
+			} catch (final InterruptedException e) {
+				LOGGER.debug("Impossible to SUBSCRIBE to channel \"" + channel + "\"");
+			}
 		}
-
-		public Builder setPort(String port) {
-			this.port = port;
-			return this;
-		}
-
-		public Builder setClientId(String clientId) {
-			this.clientId = clientId;
-			return this;
-		}
-
-		public Builder setUsername(String username) {
-			this.username = username;
-			return this;
-		}
-
-		public Builder setPassword(String password) {
-			this.password = password;
-			return this;
-		}
-
-		public KuraMQTTClient build() {
-			return new KuraMQTTClient(host, port, clientId, username, password);
-		}
-	}
-
-	/**
-	 * Returns the MQTT URI Scheme
-	 */
-	private String hostToURI(String host, String port) {
-		return PROTOCOL + "://" + host + ":" + port;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean isConnected() {
-		return isConnected;
+	public void unsubscribe(final String channel) {
+		if (this.connection != null) {
+			this.channels.remove(channel);
+			final UTF8Buffer[] topic = { UTF8Buffer.utf8(channel) };
+			this.connection.unsubscribe(topic, new Callback<Void>() {
+				@Override
+				public void onFailure(final Throwable throwable) {
+					LOGGER.debug("Exception occurred while unsubscribing: " + throwable.getMessage());
+				}
+
+				@Override
+				public void onSuccess(final Void aVoid) {
+					LOGGER.debug("Successfully unsubscribed");
+				}
+			});
+		}
 	}
 
 }
