@@ -15,7 +15,6 @@
  *******************************************************************************/
 package com.swissbit.mqtt.client.example;
 
-import com.google.common.base.Charsets;
 import com.swissbit.mqtt.client.IKuraMQTTClient;
 import com.swissbit.mqtt.client.KuraMQTTClient;
 import com.swissbit.mqtt.client.adapter.MessageListener;
@@ -99,7 +98,7 @@ public final class MQTTClient {
 
 				@Override
 				public void processMessage(final KuraPayload payload) {
-					System.out.println(new String(payload.getBody(), Charsets.UTF_8));
+					System.out.println(payload.metrics());
 				}
 			});
 
