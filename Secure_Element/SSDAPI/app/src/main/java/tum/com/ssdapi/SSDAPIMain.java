@@ -14,6 +14,9 @@ public class SSDAPIMain extends Activity {
 
     SfcTerminal sfcTerminal;
     Intent iData;
+    byte[] atr = null;
+    byte[] response = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +122,16 @@ public class SSDAPIMain extends Activity {
         try {
             boolean avail = sfcTerminal.isCardPresent();
             if (avail) {
-                iData.putExtra("Response", "Message to be encrypted:" + msg);
+                atr = sfcTerminal.getAtr();
+
+                // library cares about keep alive, if app has android.permission.WAKE_LOCK permission!
+                sfcTerminal.connect();
+                byte[] cmd = new byte[] { (byte) 0x80, (byte) 0xCA, (byte) 0x9F, (byte)0x7F, (byte)0x00 };
+                response = sfcTerminal.transmit(cmd);
+
+                String responseMsg = bytesToString(response);
+                iData.putExtra("Response", responseMsg);
+
             } else {
                 iData.putExtra("Response", "Card Not Present");
             }
@@ -142,7 +154,15 @@ public class SSDAPIMain extends Activity {
         try {
             boolean avail = sfcTerminal.isCardPresent();
             if (avail) {
-                iData.putExtra("Response", "Message to be encrypted:" + msg);
+                atr = sfcTerminal.getAtr();
+
+                // library cares about keep alive, if app has android.permission.WAKE_LOCK permission!
+                sfcTerminal.connect();
+                byte[] cmd = new byte[] { (byte) 0xFF, (byte) 0x70, (byte) 0x00, (byte)0x00, (byte)0x00 };
+                response = sfcTerminal.transmit(cmd);
+
+                String responseMsg = bytesToString(response);
+                iData.putExtra("Response", responseMsg);
             } else {
                 iData.putExtra("Response", "Card Not Present");
             }
@@ -175,6 +195,17 @@ public class SSDAPIMain extends Activity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static String bytesToString(byte[] bytes) {
+        StringBuffer sb = new StringBuffer();
+        for (byte b : bytes) {
+            if(b==0)	// we need leading zeroes ...
+                sb.append("00 ");
+            else
+                sb.append(String.format("%02X ", b & 0xFF));
+        }
+        return sb.toString();
     }
 
 

@@ -25,7 +25,7 @@ public class MainActivity extends ActionBarActivity {
          */
         Intent intent = new Intent("tum.com.ssdapi.MAIN_ACTIVITY");
         Bundle bundle = new Bundle();
-        bundle.putInt("Function", 1009);
+        bundle.putInt("Function", 1006);
         bundle.putString("MSG", "ABC");
         intent.putExtras(bundle);
 
