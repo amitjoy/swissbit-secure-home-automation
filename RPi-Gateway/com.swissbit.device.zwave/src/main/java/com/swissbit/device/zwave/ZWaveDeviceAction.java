@@ -141,7 +141,7 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	 * ZWaveNode Service Binding Callback
 	 */
 	public synchronized void bindZwaveNode(final ZWaveEndpoint zWaveEndpoint) {
-		if (this.m_waveEndpoint == null) {
+		if (!this.list.contains(zWaveEndpoint)) {
 			this.list.add(zWaveEndpoint);
 			this.m_waveEndpoint = zWaveEndpoint;
 		}
@@ -281,11 +281,8 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	 * ZWaveNode Service Callback while deregistering
 	 */
 	public synchronized void unbindZwaveNode(final ZWaveEndpoint zWaveEndpoint) {
-		if (this.m_waveEndpoint == zWaveEndpoint) {
-			this.m_waveEndpoint = null;
-			if (this.list.contains(zWaveEndpoint)) {
-				this.list.remove(zWaveEndpoint);
-			}
+		if ((this.list.size() > 0) && this.list.contains(zWaveEndpoint)) {
+			this.list.remove(zWaveEndpoint);
 		}
 	}
 
