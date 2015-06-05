@@ -23,8 +23,8 @@ import com.swissbit.mqtt.client.message.KuraPayload;
 public final class MQTTClient {
 
 	private static IKuraMQTTClient client;
-	private static boolean status;
 	private static String clientId;
+	private static boolean status;
 
 	public static void main(final String... args) {
 
