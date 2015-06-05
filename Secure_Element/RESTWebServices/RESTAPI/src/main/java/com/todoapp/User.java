@@ -1,19 +1,24 @@
 package com.todoapp;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 import java.util.UUID;
 
+@DatabaseTable(tableName = "users")
 public class User {
-
+	@DatabaseField
 	private String id;
+	
+	@DatabaseField
 	private String name;
+	
+	@DatabaseField
 	private String email;
 
-	public User(String name, String email) {
-		this.id = UUID.randomUUID().toString();
-		this.name = name;
-		this.email = email;
+	public User(){
+		
 	}
-
+	
 	public String getId() {
 		return id;
 	}
