@@ -1,0 +1,30 @@
+Manifest-Version: 1.0
+DeploymentPackage-SymbolicName: com.swissbit.dp.commons
+DeploymentPackage-Version: 1.0.0
+DeploymentPackage-Copyright: Amit Kumar Mondal
+DeploymentPackage-ContactAddress: admin@amitinside.com
+DeploymentPackage-Description: Common Bundles required for the application
+
+Name: com.swissbit.activity.log-1.0-SNAPSHOT.jar
+Bundle-SymbolicName: com.swissbit.activity.log
+Bundle-Version: 1.0.0.SNAPSHOT
+
+Name: com.swissbit.device.zwave-1.0-SNAPSHOT.jar
+Bundle-SymbolicName: com.swissbit.device.zwave
+Bundle-Version: 1.0.0.SNAPSHOT
+
+Name: com.swissbit.authentication-1.0-SNAPSHOT.jar
+Bundle-SymbolicName: com.swissbit.authentication
+Bundle-Version: 1.0.0.SNAPSHOT
+
+Name: com.swissbit.controller.zwave-1.0-SNAPSHOT.jar
+Bundle-SymbolicName: com.swissbit.controller.zwave
+Bundle-Version: 1.0.0.SNAPSHOT
+
+Name: com.swissbit.hsql.conf-1.0-SNAPSHOT.jar
+Bundle-SymbolicName: com.swissbit.hsql.conf
+Bundle-Version: 1.0.0.SNAPSHOT
+
+Name: com.swissbit.mqtt.heartbeat-1.0-SNAPSHOT.jar
+Bundle-SymbolicName: com.swissbit.mqtt.heartbeat
+Bundle-Version: 1.0.0.SNAPSHOT

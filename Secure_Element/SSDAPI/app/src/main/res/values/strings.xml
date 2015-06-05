@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">SSDAPI</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_ssdapimain1">SSDAPIMain1</string>
+</resources>
