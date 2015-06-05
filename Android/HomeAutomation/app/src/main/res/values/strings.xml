@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SwissbitHomeAutomation</string>
+    <string name="action_settings">Settings</string>
+    <string name="register_server">Register Server</string>
+</resources>
