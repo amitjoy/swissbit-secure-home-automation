@@ -4,8 +4,8 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import java.util.UUID;
 
-@DatabaseTable(tableName = "users")
-public class User {
+@DatabaseTable(tableName = "rasppi")
+public class RaspPi {
 	@DatabaseField
 	private String id;
 	
@@ -15,7 +15,7 @@ public class User {
 	@DatabaseField
 	private String email;
 
-	public User(){
+	public RaspPi(){
 		
 	}
 	

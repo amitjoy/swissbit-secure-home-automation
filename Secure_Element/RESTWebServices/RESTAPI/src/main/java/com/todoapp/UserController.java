@@ -12,7 +12,7 @@ public class UserController {
 
 		get("/users/:id", (req, res) -> {
 			String id = req.params(":id");
-			User user = userService.getUser(id);
+			RaspPi user = userService.getUser(id);
 			if (user != null) {
 				return user;
 			}

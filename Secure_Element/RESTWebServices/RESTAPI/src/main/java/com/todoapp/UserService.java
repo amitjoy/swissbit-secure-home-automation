@@ -12,10 +12,10 @@ import com.j256.ormlite.table.TableUtils;
 
 public class UserService {
 
-	private Map<String, User> users = new HashMap<>();
+	private Map<String, RaspPi> users = new HashMap<>();
 	private String databaseUrl = "jdbc:mysql://localhost/spark";
 	private ConnectionSource connectionSource = null;
-	Dao<User,String> userDao = null;
+	Dao<RaspPi,String> userDao = null;
 
 	
 	public UserService(){
@@ -28,18 +28,18 @@ public class UserService {
 		((JdbcConnectionSource)connectionSource).setUsername("root");
 		((JdbcConnectionSource)connectionSource).setPassword("root");
 		try {
-			TableUtils.createTableIfNotExists(connectionSource, User.class);
-			userDao = DaoManager.createDao(connectionSource, User.class);
+			TableUtils.createTableIfNotExists(connectionSource, RaspPi.class);
+			userDao = DaoManager.createDao(connectionSource, RaspPi.class);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	public List<User> getAllUsers() {
+	public List<RaspPi> getAllUsers() {
 		
-		  QueryBuilder<User, String> queryBuilder = userDao.queryBuilder();
-	        ArrayList<User> userList = null;
+		  QueryBuilder<RaspPi, String> queryBuilder = userDao.queryBuilder();
+	        ArrayList<RaspPi> userList = null;
 			try {
 				userList = (ArrayList)userDao.queryForAll();
 			} catch (SQLException e1) {
@@ -59,13 +59,13 @@ public class UserService {
 		return userList;
 	}
 
-	public User getUser(String id) {
+	public RaspPi getUser(String id) {
 		return users.get(id);
 	}
 
-	public User createUser(String name, String email) {
+	public RaspPi createUser(String name, String email) {
 		failIfInvalid(name, email);
-		User user = new User();
+		RaspPi user = new RaspPi();
 		user.setId(UUID.randomUUID().toString());
 		user.setEmail(email);
 		user.setName(name);
@@ -85,8 +85,8 @@ public class UserService {
 		return user;
 	}
 
-	public User updateUser(String id, String name, String email) {
-		User user = users.get(id);
+	public RaspPi updateUser(String id, String name, String email) {
+		RaspPi user = users.get(id);
 		if (user == null) {
 			throw new IllegalArgumentException("No user with id '" + id + "' found");
 		}
