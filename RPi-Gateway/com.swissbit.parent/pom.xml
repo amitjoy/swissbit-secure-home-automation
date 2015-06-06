@@ -68,6 +68,12 @@
 				<artifactId>org.eclipse.kura.api</artifactId>
 				<version>${kura.version}</version>
 			</dependency>
+			
+			<dependency>
+				<groupId>org.eclipse.kura</groupId>
+				<artifactId>org.eclipse.kura.core</artifactId>
+				<version>${kura.version}</version>
+			</dependency>
 
 			<!-- Guava -->
 			<dependency>
@@ -175,6 +181,8 @@
 		
 		
 		<module>../com.swissbit.mqtt.heartbeat</module>
+		
+		<module>../com.swissbit.assd.comm</module>
 		<module>../com.swissbit.dp.parent</module>
 	</modules>
 	<scm>

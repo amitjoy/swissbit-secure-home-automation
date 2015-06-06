@@ -13,21 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package com.swissbit.authentication;
+package com.swissbit.assd.comm;
 
 /**
  * Facilitates encryption and decryption of text in conjunction with Swissbit
- * Secure Element
- * 
+ * Secure Element ASSD
+ *
  * @author AMIT KUMAR MONDAL
  *
  */
-public interface IAuthentication {
-
-	/**
-	 * Encodes the provided text
-	 */
-	public String encode(String text);
+public interface IASSDCommunication {
 
 	/**
 	 * Decodes the provided text
@@ -35,8 +30,13 @@ public interface IAuthentication {
 	public String decode(String text);
 
 	/**
-	 * Validates the decoded string with the actual secure element key
+	 * Encodes the provided text
 	 */
-	public boolean validate();
+	public String encode(String text);
+
+	/**
+	 * Checks if card is present in the system
+	 */
+	public boolean isCardPresent();
 
 }

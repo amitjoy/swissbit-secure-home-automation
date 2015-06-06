@@ -39,8 +39,8 @@ import com.swissbit.activity.log.IActivityLogService;
  * @author AMIT KUMAR MONDAL
  */
 @Component(immediate = true, name = "com.swissbit.authentication")
-@Service(value = { IAuthentication.class })
-public class Authentication extends Cloudlet implements IAuthentication {
+@Service(value = { Authentication.class })
+public class Authentication extends Cloudlet {
 
 	/**
 	 * Defines Application ID for Authentication Module
@@ -120,13 +120,6 @@ public class Authentication extends Cloudlet implements IAuthentication {
 
 	/** {@inheritDoc} */
 	@Override
-	public String decode(final String text) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/** {@inheritDoc} */
-	@Override
 	protected void doExec(final CloudletTopic reqTopic, final KuraRequestPayload reqPayload,
 			final KuraResponsePayload respPayload) throws KuraException {
 		if ("encode".equals(reqTopic.getResources()[0])) {
@@ -138,13 +131,6 @@ public class Authentication extends Cloudlet implements IAuthentication {
 			// TODO
 		}
 		respPayload.setResponseCode(KuraResponsePayload.RESPONSE_CODE_OK);
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public String encode(final String text) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	/**
@@ -163,12 +149,6 @@ public class Authentication extends Cloudlet implements IAuthentication {
 		if (this.m_cloudService == cloudService) {
 			super.setCloudService(this.m_cloudService = null);
 		}
-	}
-
-	@Override
-	public boolean validate() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 }
