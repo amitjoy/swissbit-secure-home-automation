@@ -30,7 +30,9 @@ import org.osgi.service.component.ComponentContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Charsets;
 import com.swissbit.activity.log.IActivityLogService;
+import com.swissbit.assd.comm.IASSDCommunication;
 
 /**
  * The implementation of {@link IAuthentication}
@@ -57,6 +59,12 @@ public class Authentication extends Cloudlet {
 	 */
 	@Reference(bind = "bindActivityLogService", unbind = "unbindActivityLogService")
 	private volatile IActivityLogService m_activityLogService;
+
+	/**
+	 * ASSD Communication Service Dependency
+	 */
+	@Reference(bind = "bindASSDCommunicationService", unbind = "unbindASSDCommunicationService")
+	private volatile IASSDCommunication m_assdCommunication;
 
 	/**
 	 * Kura Cloud Service Injection
@@ -96,7 +104,16 @@ public class Authentication extends Cloudlet {
 	}
 
 	/**
-	 * Kura Cloud Service Binding Callback
+	 * ASSD Communication Service Binding Callback
+	 */
+	public synchronized void bindASSDCommunicationService(final IASSDCommunication iassdCommunication) {
+		if (this.m_assdCommunication == null) {
+			this.m_assdCommunication = iassdCommunication;
+		}
+	}
+
+	/**
+	 * ASSD Communication Service Binding Callback
 	 */
 	public synchronized void bindCloudService(final CloudService cloudService) {
 		if (this.m_cloudService == null) {
@@ -124,11 +141,13 @@ public class Authentication extends Cloudlet {
 			final KuraResponsePayload respPayload) throws KuraException {
 		if ("encode".equals(reqTopic.getResources()[0])) {
 			this.m_activityLogService.saveLog("Encoding Requested");
-			// TODO
+			respPayload.addMetric("data",
+					this.m_assdCommunication.encode(new String(reqPayload.getBody(), Charsets.UTF_8)));
 		}
 		if ("decode".equals(reqTopic.getResources()[0])) {
 			this.m_activityLogService.saveLog("Decoding Requested");
-			// TODO
+			respPayload.addMetric("data",
+					this.m_assdCommunication.decode(new String(reqPayload.getBody(), Charsets.UTF_8)));
 		}
 		respPayload.setResponseCode(KuraResponsePayload.RESPONSE_CODE_OK);
 	}
@@ -139,6 +158,15 @@ public class Authentication extends Cloudlet {
 	public synchronized void unbindActivityLogService(final IActivityLogService activityLogService) {
 		if (this.m_activityLogService == activityLogService) {
 			this.m_activityLogService = null;
+		}
+	}
+
+	/**
+	 * ASSD Communication Service Unbinding Callback
+	 */
+	public synchronized void unbindASSDCommunicationService(final IASSDCommunication iassdCommunication) {
+		if (this.m_assdCommunication == iassdCommunication) {
+			this.m_assdCommunication = null;
 		}
 	}
 
