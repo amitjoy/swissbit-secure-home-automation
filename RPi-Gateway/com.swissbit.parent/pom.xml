@@ -12,7 +12,7 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<!-- Dependencies version -->
+		<!-- Dependencies versions -->
 		<osgi-core.version>5.0.0</osgi-core.version>
 		<osgi.version>4.3.1</osgi.version>
 		<slf4j.version>1.6.4</slf4j.version>
@@ -33,7 +33,7 @@
 		<maven-release-plugin.version>2.5.1</maven-release-plugin.version>
 		<maven-scr-plugin.version>1.21.0</maven-scr-plugin.version>
 
-		<!-- Test dependencies version -->
+		<!-- Test dependencies versions -->
 		<junit.version>4.11</junit.version>
 		<easymock.version>3.2</easymock.version>
 		<hamcrest.version>1.3</hamcrest.version>
@@ -68,7 +68,7 @@
 				<artifactId>org.eclipse.kura.api</artifactId>
 				<version>${kura.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.eclipse.kura</groupId>
 				<artifactId>org.eclipse.kura.core</artifactId>
@@ -95,7 +95,7 @@
 				<artifactId>org.apache.felix.scr.annotations</artifactId>
 				<version>${felix.scr.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>org.apache.felix.dependencymanager</artifactId>
@@ -114,7 +114,7 @@
 				<artifactId>commons-io</artifactId>
 				<version>${apache.commons.io.version}</version>
 			</dependency>
-			
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -170,18 +170,12 @@
 	</organization>
 	<modules>
 		<module>../com.swissbit.activity.log</module>
-
 		<module>../com.swissbit.device.zwave</module>
 		<module>../com.swissbit.authentication</module>
 		<module>../com.swissbit.controller.zwave</module>
 		<module>../com.swissbit.hsql.conf</module>
-		
 		<module>../com.swissbit.mqtt.client</module>
-		
-		
-		
 		<module>../com.swissbit.mqtt.heartbeat</module>
-		
 		<module>../com.swissbit.assd.comm</module>
 		<module>../com.swissbit.dp.parent</module>
 	</modules>
