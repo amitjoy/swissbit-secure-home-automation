@@ -67,13 +67,13 @@ public class ASSDUtil {
 	}
 
 	/**
-	 * Encodes the provided text
+	 * Encodes or decodes the provided text
 	 */
 	public static String cryptoTool(final String text, final String fileName) {
 		SafeProcess proc = null;
 		BufferedReader br = null;
 		StringBuilder sb = null;
-		final String[] command = { INSMOD_CMD, fileName, text };
+		final String[] command = { PYTHON_CMD, fileName, text };
 
 		final boolean assdAvail = checkASSD();
 
