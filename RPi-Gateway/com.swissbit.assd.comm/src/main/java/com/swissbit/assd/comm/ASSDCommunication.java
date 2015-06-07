@@ -25,12 +25,19 @@ import com.swissbit.assd.comm.util.ASSDUtil;
 /**
  * The implementation of {@link IASSDCommunication}
  *
+ * @see IASSDCommunication
+ *
  * @author AMIT KUMAR MONDAL
  *
  */
 @Component(immediate = true, name = "com.swissbit.assd.comm")
 @Service(value = IASSDCommunication.class)
 public class ASSDCommunication implements IASSDCommunication {
+
+	/**
+	 * The location of the python programs
+	 */
+	private static final String LOCATION = "/home/pi/assd";
 
 	/**
 	 * Logger.
@@ -41,14 +48,14 @@ public class ASSDCommunication implements IASSDCommunication {
 	@Override
 	public String decrypt(final String text) {
 		LOGGER.debug("Decrypting data...");
-		return ASSDUtil.cryptoTool(text, "decrypt.py");
+		return ASSDUtil.cryptoTool(text, LOCATION + "decrypt.py");
 	}
 
 	/** {@inheritDoc}} */
 	@Override
 	public String encrypt(final String text) {
 		LOGGER.debug("Encrypting data...");
-		return ASSDUtil.cryptoTool(text, "encrypt.py");
+		return ASSDUtil.cryptoTool(text, LOCATION + "encrypt.py");
 	}
 
 	/** {@inheritDoc}} */
