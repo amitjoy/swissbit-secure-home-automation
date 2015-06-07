@@ -139,15 +139,19 @@ public class Authentication extends Cloudlet {
 	@Override
 	protected void doExec(final CloudletTopic reqTopic, final KuraRequestPayload reqPayload,
 			final KuraResponsePayload respPayload) throws KuraException {
-		if ("encode".equals(reqTopic.getResources()[0])) {
-			this.m_activityLogService.saveLog("Encoding Requested");
-			respPayload.addMetric("data",
-					this.m_assdCommunication.encode(new String(reqPayload.getBody(), Charsets.UTF_8)));
+		if ("encrypt".equals(reqTopic.getResources()[0])) {
+			this.m_activityLogService.saveLog("Encryption Requested");
+			if (this.m_assdCommunication != null) {
+				respPayload.addMetric("data",
+						this.m_assdCommunication.encrypt(new String(reqPayload.getBody(), Charsets.UTF_8)));
+			}
 		}
-		if ("decode".equals(reqTopic.getResources()[0])) {
-			this.m_activityLogService.saveLog("Decoding Requested");
-			respPayload.addMetric("data",
-					this.m_assdCommunication.decode(new String(reqPayload.getBody(), Charsets.UTF_8)));
+		if ("decrypt".equals(reqTopic.getResources()[0])) {
+			this.m_activityLogService.saveLog("Decryption Requested");
+			if (this.m_assdCommunication != null) {
+				respPayload.addMetric("data",
+						this.m_assdCommunication.decrypt(new String(reqPayload.getBody(), Charsets.UTF_8)));
+			}
 		}
 		respPayload.setResponseCode(KuraResponsePayload.RESPONSE_CODE_OK);
 	}

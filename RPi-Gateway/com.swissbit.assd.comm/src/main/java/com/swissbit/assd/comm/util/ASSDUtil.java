@@ -36,17 +36,22 @@ import com.google.common.base.Throwables;
  * @author AMIT KUMAR MONDAL
  *
  */
-public class ASSDUtil {
+public final class ASSDUtil {
 
 	/**
-	 * The ASSD Device representer in POSIX
+	 * The ASSD Device represention in POSIX
 	 */
 	private static final String ASSD_DEVICE = "/dev/assd";
 
 	/**
 	 * Represents the insmod POSIX command utility
 	 */
-	private static final String INSMOD_CMD = "insmod";
+	private static final String CMD_INSMOD = "insmod";
+
+	/**
+	 * Represents the python POSIX command utility
+	 */
+	private static final String CMD_PYTHON = "python";
 
 	/**
 	 * Logger.
@@ -54,15 +59,10 @@ public class ASSDUtil {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ASSDUtil.class);
 
 	/**
-	 * Represents the python POSIX command utility
-	 */
-	private static final String PYTHON_CMD = "python";
-
-	/**
 	 * Validates whether ASSD is present
 	 */
 	public static boolean checkASSD() {
-		LOGGER.info("Checking ASSD presence...");
+		LOGGER.info("Checking ASSD Device presence...");
 		return Files.exists(Paths.get(ASSD_DEVICE));
 	}
 
@@ -70,17 +70,17 @@ public class ASSDUtil {
 	 * Encodes or decodes the provided text
 	 */
 	public static String cryptoTool(final String text, final String fileName) {
-		SafeProcess proc = null;
+		SafeProcess process = null;
 		BufferedReader br = null;
 		StringBuilder sb = null;
-		final String[] command = { PYTHON_CMD, fileName, text };
+		final String[] command = { CMD_PYTHON, fileName, text };
 
 		final boolean assdAvail = checkASSD();
 
 		if (assdAvail) {
 			try {
-				proc = ProcessUtil.exec(command);
-				br = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+				process = ProcessUtil.exec(command);
+				br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 				sb = new StringBuilder();
 				String line = null;
 
@@ -94,8 +94,9 @@ public class ASSDUtil {
 				LOGGER.error(Throwables.getStackTraceAsString(e));
 			} finally {
 				try {
+					LOGGER.debug("Closing Buffered Reader and destroying Process", process);
 					br.close();
-					proc.destroy();
+					process.destroy();
 				} catch (final IOException e) {
 					LOGGER.error("Error closing read buffer", Throwables.getStackTraceAsString(e));
 				}
@@ -109,11 +110,11 @@ public class ASSDUtil {
 	 * Loads the ASSD Secure Element if not loaded
 	 */
 	public static boolean loadASSD() {
-		SafeProcess proc = null;
+		SafeProcess process = null;
 		BufferedReader br = null;
 		StringBuilder sb = null;
 		final String commandParam = "~/assd.ko";
-		final String[] command = { INSMOD_CMD, commandParam };
+		final String[] command = { CMD_INSMOD, commandParam };
 
 		final boolean assdAvail = checkASSD();
 
@@ -122,8 +123,8 @@ public class ASSDUtil {
 		}
 
 		try {
-			proc = ProcessUtil.exec(command);
-			br = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+			process = ProcessUtil.exec(command);
+			br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 			sb = new StringBuilder();
 			String line = null;
 
@@ -137,8 +138,9 @@ public class ASSDUtil {
 			LOGGER.error(Throwables.getStackTraceAsString(e));
 		} finally {
 			try {
+				LOGGER.debug("Closing Buffered Reader and destroying Process", process);
 				br.close();
-				proc.destroy();
+				process.destroy();
 			} catch (final IOException e) {
 				LOGGER.error("Error closing read buffer", Throwables.getStackTraceAsString(e));
 			}
