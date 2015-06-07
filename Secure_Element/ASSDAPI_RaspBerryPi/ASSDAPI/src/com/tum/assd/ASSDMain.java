@@ -2,7 +2,10 @@ package com.tum.assd;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ASSDMain implements ASSDInterface{
 
@@ -17,28 +20,21 @@ public class ASSDMain implements ASSDInterface{
 	}
 
 	@Override
-	public boolean loadASSD() {
-		boolean assdAvail = checkASSD();
-		if(assdAvail){
-			return true;
-		} else{
-			StringBuffer output = new StringBuffer();
-			String command = "sudo insmod ~/assd.ko"; 
-			Process p;
-			try {
-				p = Runtime.getRuntime().exec(command);
-				p.waitFor();
-
-				BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-				String line = "";			
-				while ((line = reader.readLine())!= null) {
-					output.append(line + "\n");
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+	public boolean loadASSD(String adminPassword) {
+		List<String> commands = new ArrayList<String>();
+		commands.add("sudo");
+		commands.add("insmod");
+		commands.add("assd.ko");
+		SystemCommandExecutor commandExecutor = new SystemCommandExecutor(commands, adminPassword);
+		try {
+			commandExecutor.execCommand();
+			System.out.println("Executor: " + commandExecutor.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
-		return false;
+		return true;
 	}
 
 	@Override
@@ -54,7 +50,7 @@ public class ASSDMain implements ASSDInterface{
 		if(assdAvail){
 			try{
 				ProcessBuilder pb = new ProcessBuilder();
-				pb.command("python","encrypt.py",plainText);
+				pb.command("sudo","python","./encrypt.py",plainText);
 				Process p = pb.start();
 
 				BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -76,7 +72,7 @@ public class ASSDMain implements ASSDInterface{
 		if(assdAvail){
 			try{
 				ProcessBuilder pb = new ProcessBuilder();
-				pb.command("python","decrypt.py",cipher);
+				pb.command("sudo","python","./decrypt.py",cipher);
 				Process p = pb.start();
 
 				BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));

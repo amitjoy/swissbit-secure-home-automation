@@ -4,7 +4,7 @@ public interface ASSDInterface {
 
 	public boolean checkASSD();
 	
-	public boolean loadASSD();
+	public boolean loadASSD(String adminPassword);
 	
 	public boolean isCardPresent();
 	

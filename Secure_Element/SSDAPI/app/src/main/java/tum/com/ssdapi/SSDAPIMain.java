@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 import android.content.Intent;
 
 import com.secureflashcard.sfclibrary.SfcTerminal;
@@ -27,8 +26,6 @@ public class SSDAPIMain extends Activity {
 
         Bundle bundle = getIntent().getExtras();
         int function = bundle.getInt("Function");
-        Toast msg = Toast.makeText(this, function + "::In Main1 of another activity", Toast.LENGTH_LONG);
-        msg.show();
 
         switch(function){
 
