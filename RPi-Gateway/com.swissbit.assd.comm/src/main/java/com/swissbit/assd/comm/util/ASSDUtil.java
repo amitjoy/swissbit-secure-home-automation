@@ -39,7 +39,7 @@ import com.google.common.base.Throwables;
 public final class ASSDUtil {
 
 	/**
-	 * The ASSD Device represention in POSIX
+	 * The ASSD Device representation in POSIX
 	 */
 	private static final String ASSD_DEVICE = "/dev/assd";
 
