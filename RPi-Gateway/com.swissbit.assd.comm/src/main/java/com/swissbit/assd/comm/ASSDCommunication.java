@@ -39,14 +39,14 @@ public class ASSDCommunication implements IASSDCommunication {
 
 	/** {@inheritDoc}} */
 	@Override
-	public String decode(final String text) {
+	public String decrypt(final String text) {
 		LOGGER.debug("Decrypting data...");
 		return ASSDUtil.cryptoTool(text, "decrypt.py");
 	}
 
 	/** {@inheritDoc}} */
 	@Override
-	public String encode(final String text) {
+	public String encrypt(final String text) {
 		LOGGER.debug("Encrypting data...");
 		return ASSDUtil.cryptoTool(text, "encrypt.py");
 	}

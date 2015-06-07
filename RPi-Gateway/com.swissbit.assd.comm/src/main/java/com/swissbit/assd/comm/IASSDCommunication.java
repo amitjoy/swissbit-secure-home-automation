@@ -27,12 +27,12 @@ public interface IASSDCommunication {
 	/**
 	 * Decodes the provided text
 	 */
-	public String decode(String text);
+	public String decrypt(String text);
 
 	/**
 	 * Encodes the provided text
 	 */
-	public String encode(String text);
+	public String encrypt(String text);
 
 	/**
 	 * Checks if card is present in the system
