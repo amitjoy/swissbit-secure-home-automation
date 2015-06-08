@@ -2,7 +2,12 @@ package com.swissbit.homeautomation.asyncTask;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.BaseAdapter;
+import android.widget.ListAdapter;
 
+import com.android.swissbit.homeautomation.R;
+import com.swissbit.homeautomation.activity.MainActivity;
+import com.swissbit.homeautomation.utils.CustomAdapter;
 import com.swissbit.homeautomation.utils.MQTTFactory;
 import com.swissbit.homeautomation.utils.TopicsConstants;
 import com.swissbit.mqtt.client.adapter.MessageListener;
@@ -26,10 +31,13 @@ public class LWTAsync extends AsyncTask {
                 @Override
                 public void processMessage(KuraPayload kuraPayload) {
                     if (kuraPayload != null) {
+                        CustomAdapter.setImageStatus(R.drawable.btnoff);
                         Log.d("Kura HeartBeat", "Raspberry Dead...");
                     }
                 }
             });
         return null;
     }
+
+
 }

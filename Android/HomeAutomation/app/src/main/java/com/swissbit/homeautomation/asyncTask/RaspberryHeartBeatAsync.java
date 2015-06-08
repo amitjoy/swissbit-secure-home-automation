@@ -3,6 +3,9 @@ package com.swissbit.homeautomation.asyncTask;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.android.swissbit.homeautomation.R;
+import com.swissbit.homeautomation.activity.MainActivity;
+import com.swissbit.homeautomation.utils.CustomAdapter;
 import com.swissbit.homeautomation.utils.MQTTFactory;
 import com.swissbit.homeautomation.utils.TopicsConstants;
 import com.swissbit.mqtt.client.adapter.MessageListener;
@@ -25,10 +28,18 @@ public class RaspberryHeartBeatAsync extends AsyncTask {
                 @Override
                 public void processMessage(KuraPayload kuraPayload) {
                     if (kuraPayload != null) {
+//                        CustomAdapter customAdapter = null;
                         Log.d("Kura HeartBeat", "Raspberry Alive...");
+                        publishProgress(null);
                     }
                 }
             });
         return null;
+    }
+
+    @Override
+    protected void onProgressUpdate(Object[] values) {
+//        CustomAdapter.setImageStatus(R.drawable.btnon);
+//        MainActivity.customAdapter.notifyDataSetChanged();
     }
 }
