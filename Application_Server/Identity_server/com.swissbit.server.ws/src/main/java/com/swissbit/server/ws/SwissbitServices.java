@@ -1,5 +1,7 @@
 package com.swissbit.server.ws;
 
+import com.swissbit.server.ws.controller.CustomerController;
+import com.swissbit.server.ws.controller.MQTTController;
 import com.swissbit.server.ws.services.impl.ClientDataService;
 import com.swissbit.server.ws.services.impl.MQTTService;
 
