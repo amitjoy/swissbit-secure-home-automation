@@ -10,7 +10,7 @@ public interface IClientDataService {
 
 	public List<Customer> getAllUsers();
 
-	public Customer getRaspPi(String name);
+	public Customer getUser(String name);
 
 	public Customer updateUser(String id, String name, String email, String username, String password, String pin);
 

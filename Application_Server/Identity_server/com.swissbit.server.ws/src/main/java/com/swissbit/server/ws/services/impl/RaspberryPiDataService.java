@@ -11,19 +11,19 @@ import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import com.swissbit.server.ws.model.Customer;
-import com.swissbit.server.ws.services.IClientDataService;
+import com.swissbit.server.ws.model.RaspberryPi;
+import com.swissbit.server.ws.services.IRaspberryPiDataService;;
 
-public class ClientDataService implements IClientDataService {
+public class RaspberryPiDataService implements IRaspberryPiDataService {
 
 	private final String databaseUrl = "jdbc:mysql://localhost/spark";
 	private static final String MYSQL_USER = "root";
 	private static final String MYSQL_PASSWORD = "root";
 	
 	private ConnectionSource connectionSource = null;
-	private Dao<Customer, String> piDao = null;
+	private Dao<RaspberryPi, String> piDao = null;
 
-	public ClientDataService() {
+	public RaspberryPiDataService() {
 		try {
 			this.connectionSource = new JdbcConnectionSource(this.databaseUrl);
 		} catch (final SQLException e) {
@@ -32,23 +32,19 @@ public class ClientDataService implements IClientDataService {
 		((JdbcConnectionSource) this.connectionSource).setUsername(MYSQL_USER);
 		((JdbcConnectionSource) this.connectionSource).setPassword(MYSQL_PASSWORD);
 		try {
-			TableUtils.createTableIfNotExists(this.connectionSource, Customer.class);
-			this.piDao = DaoManager.createDao(this.connectionSource, Customer.class);
+			TableUtils.createTableIfNotExists(this.connectionSource, RaspberryPi.class);
+			this.piDao = DaoManager.createDao(this.connectionSource, RaspberryPi.class);
 		} catch (final SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public Customer createUser(final String name, final String email, final String username, final String password,
-			final String pin) {
-		this.failIfInvalid(name, email, username, password, pin);
-		final Customer rasp = new Customer();
+	public RaspberryPi createRaspberryPi(final String name, final String pin) {
+		this.failIfInvalid(name, pin);
+		final RaspberryPi rasp = new RaspberryPi();
 		rasp.setId(UUID.randomUUID().toString());
-		rasp.setEmail(email);
 		rasp.setName(name);
-		rasp.setUsername(username);
-		rasp.setPassword(password);
 		rasp.setPin(pin);
 		try {
 			this.piDao.create(rasp);
@@ -63,19 +59,9 @@ public class ClientDataService implements IClientDataService {
 		return rasp;
 	}
 
-	private void failIfInvalid(final String name, final String email, final String username, final String password,
-			final String pin) {
+	private void failIfInvalid(final String name, final String pin) {
 		if ((name == null) || name.isEmpty()) {
 			throw new IllegalArgumentException("Parameter 'name' cannot be empty");
-		}
-		if ((email == null) || email.isEmpty()) {
-			throw new IllegalArgumentException("Parameter 'email' cannot be empty");
-		}
-		if ((username == null) || username.isEmpty()) {
-			throw new IllegalArgumentException("Parameter 'username' cannot be empty");
-		}
-		if ((password == null) || password.isEmpty()) {
-			throw new IllegalArgumentException("Parameter 'password' cannot be empty");
 		}
 		if ((pin == null) || pin.isEmpty()) {
 			throw new IllegalArgumentException("Parameter 'pin' cannot be empty");
@@ -83,15 +69,15 @@ public class ClientDataService implements IClientDataService {
 	}
 
 	@Override
-	public List<Customer> getAllUsers() {
+	public List<RaspberryPi> getAllRaspberryPi() {
 
-		ArrayList<Customer> userList = null;
+		ArrayList<RaspberryPi> piList = null;
 		try {
-			userList = (ArrayList<Customer>) this.piDao.queryForAll();
+			piList = (ArrayList<RaspberryPi>) this.piDao.queryForAll();
 		} catch (final SQLException e1) {
 			e1.printStackTrace();
 		}
-		if (userList.size() > 0) {
+		if (piList.size() > 0) {
 
 		}
 		try {
@@ -99,14 +85,14 @@ public class ClientDataService implements IClientDataService {
 		} catch (final SQLException e) {
 			e.printStackTrace();
 		}
-		return userList;
+		return piList;
 	}
 
 	@Override
-	public Customer getUser(final String name) {
-		final QueryBuilder<Customer, String> queryBuilder = this.piDao.queryBuilder();
-		List<Customer> raspPi = null;
-		Customer pi = null;
+	public RaspberryPi getRaspberryPi(final String name) {
+		final QueryBuilder<RaspberryPi, String> queryBuilder = this.piDao.queryBuilder();
+		List<RaspberryPi> raspPi = null;
+		RaspberryPi pi = null;
 		try {
 			raspPi = this.piDao.query(queryBuilder.where().eq("name", name).prepare());
 
@@ -128,25 +114,21 @@ public class ClientDataService implements IClientDataService {
 	}
 
 	@Override
-	public Customer updateUser(final String id, final String name, final String email, final String username,
-			final String password, final String pin) {
-		final Customer user = this.getUser(id);
-		if (user == null) {
+	public RaspberryPi updateRaspberryPi(final String id, final String name, final String pin) {
+		final RaspberryPi rasp = this.getRaspberryPi(id);
+		if (rasp == null) {
 			throw new IllegalArgumentException("No user with id '" + id + "' found");
 		}
-		this.failIfInvalid(name, email, username, password, pin);
-		user.setName(name);
-		user.setEmail(email);
-		user.setUsername(username);
-		user.setPassword(password);
-		user.setPin(pin);
+		this.failIfInvalid(name, pin);
+		rasp.setName(name);
+		rasp.setPin(pin);
 
 		try {
-			this.piDao.update(user);
+			this.piDao.update(rasp);
 		} catch (final SQLException e) {
 			e.printStackTrace();
-			return user;
+			return rasp;
 		}
-		return user;
+		return rasp;
 	}
 }
