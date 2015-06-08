@@ -11,11 +11,10 @@ public class MQTTController {
 
 		// Used to ask the provided Raspberry Pi whether the Mobile client who
 		// is trying to add it, is authorized (mainly used by mobile client)
-		get("/addRPi/:rPiMacAddress/:mobileClientMacAddress/", (req, res) -> {
+		get("/addRPi/:rPiMacAddress/:mobileClientMacAddress", (req, res) -> {
 			final String rPiMacAddress = req.params(":rPiMacAddress");
 			final String mobileClientMacAddress = req.params(":mobileClientMacAddress");
-			final boolean status = mqttService.verifyClient(mobileClientMacAddress, rPiMacAddress);
-			return status;
+			return mqttService.verifyClient(mobileClientMacAddress, rPiMacAddress);
 		} , json());
 	}
 }
