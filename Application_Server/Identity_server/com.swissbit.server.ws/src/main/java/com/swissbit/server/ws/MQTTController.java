@@ -9,7 +9,7 @@ public class MQTTController {
 
 	public MQTTController(final IMQTTService mqttService) {
 
-		get("/pi/:mobileClientMacAddress/:rPiMacAddress", (req, res) -> {
+		get("/addRPi/:rPiMacAddress/:mobileClientMacAddress/", (req, res) -> {
 			final String rPiMacAddress = req.params(":rPiMacAddress");
 			final String mobileClientMacAddress = req.params(":mobileClientMacAddress");
 			final boolean status = mqttService.verifyClient(mobileClientMacAddress, rPiMacAddress);

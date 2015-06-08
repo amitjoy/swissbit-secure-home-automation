@@ -2,14 +2,14 @@ package com.swissbit.server.ws.error;
 
 public class ResponseError {
 
-	private String message;
+	private final String message;
 
-	public ResponseError(String message, String... args) {
-		this.message = String.format(message, args);
+	public ResponseError(final Exception e) {
+		this.message = e.getMessage();
 	}
 
-	public ResponseError(Exception e) {
-		this.message = e.getMessage();
+	public ResponseError(final String message, final String... args) {
+		this.message = String.format(message, args);
 	}
 
 	public String getMessage() {

@@ -24,7 +24,6 @@ public class ClientDataService implements IClientDataService {
 		try {
 			this.connectionSource = new JdbcConnectionSource(this.databaseUrl);
 		} catch (final SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		((JdbcConnectionSource) this.connectionSource).setUsername("root");
@@ -33,7 +32,6 @@ public class ClientDataService implements IClientDataService {
 			TableUtils.createTableIfNotExists(this.connectionSource, RaspPi.class);
 			this.piDao = DaoManager.createDao(this.connectionSource, RaspPi.class);
 		} catch (final SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -52,13 +50,11 @@ public class ClientDataService implements IClientDataService {
 		try {
 			this.piDao.create(rasp);
 		} catch (final SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		try {
 			this.connectionSource.close();
 		} catch (final SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return rasp;
@@ -90,7 +86,6 @@ public class ClientDataService implements IClientDataService {
 		try {
 			userList = (ArrayList<RaspPi>) this.piDao.queryForAll();
 		} catch (final SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		if (userList.size() > 0) {
@@ -99,7 +94,6 @@ public class ClientDataService implements IClientDataService {
 		try {
 			this.connectionSource.close();
 		} catch (final SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return userList;
@@ -117,14 +111,12 @@ public class ClientDataService implements IClientDataService {
 				pi = raspPi.get(0);
 			}
 		} catch (final SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return pi;
 		} finally {
 			try {
 				this.connectionSource.close();
 			} catch (final SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				return pi;
 			}
@@ -149,7 +141,6 @@ public class ClientDataService implements IClientDataService {
 		try {
 			this.piDao.update(user);
 		} catch (final SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return user;
 		}
