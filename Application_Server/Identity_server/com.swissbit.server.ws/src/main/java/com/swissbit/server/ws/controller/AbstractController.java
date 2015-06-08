@@ -1,4 +1,4 @@
-package com.swissbit.server.ws;
+package com.swissbit.server.ws.controller;
 
 //Marker Interface
 public abstract class AbstractController {

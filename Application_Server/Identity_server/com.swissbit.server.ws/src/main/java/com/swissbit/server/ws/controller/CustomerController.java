@@ -1,4 +1,4 @@
-package com.swissbit.server.ws;
+package com.swissbit.server.ws.controller;
 
 import static com.swissbit.server.ws.util.JsonUtil.json;
 import static com.swissbit.server.ws.util.JsonUtil.toJson;

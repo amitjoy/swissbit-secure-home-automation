@@ -3,6 +3,7 @@ package com.swissbit.server.ws;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+import com.swissbit.server.ws.controller.AbstractController;
 
 public final class ControllerBuilder<T extends AbstractController> {
 
