@@ -37,7 +37,7 @@ public class ASSDCommunication implements IASSDCommunication {
 	/**
 	 * The location of the python programs
 	 */
-	private static final String LOCATION = "/home/pi/assd";
+	private static final String LOCATION = "/home/pi/assd/";
 
 	/**
 	 * Logger.
