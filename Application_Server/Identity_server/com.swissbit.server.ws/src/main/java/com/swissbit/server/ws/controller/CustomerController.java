@@ -23,7 +23,7 @@ public class CustomerController extends AbstractController {
 		// used by Mobile Client)
 		get("/user/:id", (req, res) -> {
 			final String id = req.params(":id");
-			final Customer user = customerService.getRaspPi(id);
+			final Customer user = customerService.getUser(id);
 			if (user != null) {
 				return user;
 			}
