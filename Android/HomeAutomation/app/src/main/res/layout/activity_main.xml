@@ -6,33 +6,11 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enter Code"
-        android:id="@+id/btnSecureCode"
-        android:layout_marginTop="41dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="getSecureCode" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="Publish"
         android:id="@+id/btnPublish"
         android:onClick="askForMQTTCredential"
-        android:layout_below="@+id/btnSecureCode"
-        android:layout_alignLeft="@+id/txtPublish"
-        android:layout_alignStart="@+id/txtPublish"
-        android:layout_marginTop="81dp" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txtPublish"
-        android:layout_below="@+id/btnSecureCode"
-        android:layout_alignLeft="@+id/btnSecureCode"
-        android:layout_alignStart="@+id/btnSecureCode"
-        android:layout_alignRight="@+id/btnSecureCode"
-        android:layout_alignEnd="@+id/btnSecureCode" />
+        android:layout_centerHorizontal="true"
+        android:visibility="gone" />
 
     <ListView
         android:layout_width="wrap_content"

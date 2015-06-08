@@ -2,25 +2,46 @@
 <items version="2" >
 
     <item
+        jar="/Users/manit/.m2/repository/com/swissbit/com.swissbit.mqtt.client/1.0-SNAPSHOT/com.swissbit.mqtt.client-1.0-SNAPSHOT.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="99eac1056d6536e894e7d320f6f964529dc2d27a">
+        <dex dex="/Users/manit/Documents/Manit/Masters in Informatics/Android Praktikum/Project/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/com.swissbit.mqtt.client-1.0-SNAPSHOT-0eab476588ee4a4dc2179d3b9e917c4fe5aa815e.jar" />
+    </item>
+    <item
+        jar="/Users/manit/Documents/Manit/Masters in Informatics/Android Praktikum/Project/Android/HomeAutomation/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/libs/internal_impl-22.2.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
+        <dex dex="/Users/manit/Documents/Manit/Masters in Informatics/Android Praktikum/Project/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-e2ab45fd550db184b25a62d3d94cec0b1fe6373b.jar" />
+    </item>
+    <item
+        jar="/Users/manit/Documents/Manit/Masters in Informatics/Android Praktikum/Project/Android/HomeAutomation/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="73753982da6bde518f3a4c6b372749981d14d1a0">
+        <dex dex="/Users/manit/Documents/Manit/Masters in Informatics/Android Praktikum/Project/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/classes-ab639c9c015a2696aa1de633b8fa37f116e22952.jar" />
+    </item>
+    <item
+        jar="/Users/manit/.gradle/caches/modules-2/files-2.1/com.google.protobuf/protobuf-java/3.0.0-alpha-2/5bbf5638696e0d959b16278353560b2300024403/protobuf-java-3.0.0-alpha-2.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="5bbf5638696e0d959b16278353560b2300024403">
+        <dex dex="/Users/manit/Documents/Manit/Masters in Informatics/Android Praktikum/Project/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/protobuf-java-3.0.0-alpha-2-a99370efcbe51d384340e6f44828e5397b84878f.jar" />
+    </item>
+    <item
+        jar="/Users/manit/Documents/Manit/Masters in Informatics/Android Praktikum/Project/Android/HomeAutomation/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="1ee588ff2c4daf7b97c1cbf922a6c7f027285c2f">
+        <dex dex="/Users/manit/Documents/Manit/Masters in Informatics/Android Praktikum/Project/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/classes-c102030e9957b7ebd6e06c96185934889230f467.jar" />
+    </item>
+    <item
         jar="/Users/manit/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/22.2.0/support-annotations-22.2.0.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="66b42a1f3eb7676070b7ef7f14b603483aecbee1">
         <dex dex="/Users/manit/Documents/Manit/Masters in Informatics/Android Praktikum/Project/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/support-annotations-22.2.0-e463a50dc4e8aa07372b0cbd92dc0acb55a140c6.jar" />
-    </item>
-    <item
-        jar="/Users/manit/.gradle/caches/modules-2/files-2.1/org.fusesource.mqtt-client/mqtt-client/1.10/b7fd7e41d2f5a9d4391d6830dc1bb69627845268/mqtt-client-1.10.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="b7fd7e41d2f5a9d4391d6830dc1bb69627845268">
-        <dex dex="/Users/manit/Documents/Manit/Masters in Informatics/Android Praktikum/Project/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/mqtt-client-1.10-99ddfedc19d02442bef31abb04aaeabba2f401f2.jar" />
-    </item>
-    <item
-        jar="/Users/manit/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.6.4/2396d74b12b905f780ed7966738bb78438e8371a/slf4j-api-1.6.4.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="2396d74b12b905f780ed7966738bb78438e8371a">
-        <dex dex="/Users/manit/Documents/Manit/Masters in Informatics/Android Praktikum/Project/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/slf4j-api-1.6.4-83ff9082ef2a201ab761537fc8611ea3dec5f9fd.jar" />
     </item>
     <item
         jar="/Users/manit/.gradle/caches/modules-2/files-2.1/org.fusesource.hawtdispatch/hawtdispatch-transport/1.20/b4f58ecdc9fa770b86f1caf88da7ed71eaa511f2/hawtdispatch-transport-1.20.jar"
@@ -44,18 +65,18 @@
         <dex dex="/Users/manit/Documents/Manit/Masters in Informatics/Android Praktikum/Project/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/hawtbuf-1.10-dd85ad9c0edf1e369d9fea1ce1d6cf5b1c21009b.jar" />
     </item>
     <item
-        jar="/Users/manit/.gradle/caches/modules-2/files-2.1/com.google.protobuf/protobuf-java/3.0.0-alpha-2/5bbf5638696e0d959b16278353560b2300024403/protobuf-java-3.0.0-alpha-2.jar"
+        jar="/Users/manit/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.6.4/2396d74b12b905f780ed7966738bb78438e8371a/slf4j-api-1.6.4.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="5bbf5638696e0d959b16278353560b2300024403">
-        <dex dex="/Users/manit/Documents/Manit/Masters in Informatics/Android Praktikum/Project/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/protobuf-java-3.0.0-alpha-2-a99370efcbe51d384340e6f44828e5397b84878f.jar" />
+        sha1="2396d74b12b905f780ed7966738bb78438e8371a">
+        <dex dex="/Users/manit/Documents/Manit/Masters in Informatics/Android Praktikum/Project/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/slf4j-api-1.6.4-83ff9082ef2a201ab761537fc8611ea3dec5f9fd.jar" />
     </item>
     <item
-        jar="/Users/manit/Documents/Manit/Masters in Informatics/Android Praktikum/Project/Android/HomeAutomation/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/libs/internal_impl-22.2.0.jar"
+        jar="/Users/manit/.gradle/caches/modules-2/files-2.1/org.fusesource.mqtt-client/mqtt-client/1.10/b7fd7e41d2f5a9d4391d6830dc1bb69627845268/mqtt-client-1.10.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
-        <dex dex="/Users/manit/Documents/Manit/Masters in Informatics/Android Praktikum/Project/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-e2ab45fd550db184b25a62d3d94cec0b1fe6373b.jar" />
+        sha1="b7fd7e41d2f5a9d4391d6830dc1bb69627845268">
+        <dex dex="/Users/manit/Documents/Manit/Masters in Informatics/Android Praktikum/Project/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/mqtt-client-1.10-99ddfedc19d02442bef31abb04aaeabba2f401f2.jar" />
     </item>
     <item
         jar="/Users/manit/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/18.0/cce0823396aa693798f8882e64213b1772032b09/guava-18.0.jar"
@@ -70,27 +91,6 @@
         revision="22.0.1"
         sha1="77bf7cacf9cefe19dc105e5425d2eb1bb5285881">
         <dex dex="/Users/manit/Documents/Manit/Masters in Informatics/Android Praktikum/Project/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/android-async-http-1.4.5-6ff56541830c85903f9cb01e0354d0fe42b6ed71.jar" />
-    </item>
-    <item
-        jar="/Users/manit/.m2/repository/com/swissbit/com.swissbit.mqtt.client/1.0-SNAPSHOT/com.swissbit.mqtt.client-1.0-SNAPSHOT.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="99eac1056d6536e894e7d320f6f964529dc2d27a">
-        <dex dex="/Users/manit/Documents/Manit/Masters in Informatics/Android Praktikum/Project/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/com.swissbit.mqtt.client-1.0-SNAPSHOT-0eab476588ee4a4dc2179d3b9e917c4fe5aa815e.jar" />
-    </item>
-    <item
-        jar="/Users/manit/Documents/Manit/Masters in Informatics/Android Praktikum/Project/Android/HomeAutomation/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="1ee588ff2c4daf7b97c1cbf922a6c7f027285c2f">
-        <dex dex="/Users/manit/Documents/Manit/Masters in Informatics/Android Praktikum/Project/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/classes-c102030e9957b7ebd6e06c96185934889230f467.jar" />
-    </item>
-    <item
-        jar="/Users/manit/Documents/Manit/Masters in Informatics/Android Praktikum/Project/Android/HomeAutomation/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/jars/classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="73753982da6bde518f3a4c6b372749981d14d1a0">
-        <dex dex="/Users/manit/Documents/Manit/Masters in Informatics/Android Praktikum/Project/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/classes-ab639c9c015a2696aa1de633b8fa37f116e22952.jar" />
     </item>
 
 </items>

@@ -18,18 +18,18 @@
 
 package com.swissbit.homeautomation.activity;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.DataSetObserver;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
@@ -42,18 +42,21 @@ import com.android.swissbit.homeautomation.R;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.swissbit.homeautomation.asyncTask.RaspberryHeartBeatAsync;
+import com.swissbit.homeautomation.db.DevicesInfoDbAdapter;
 import com.swissbit.homeautomation.utils.CustomAdapter;
 import com.swissbit.homeautomation.utils.DBFactory;
 import com.swissbit.homeautomation.utils.MQTTFactory;
+import com.swissbit.homeautomation.utils.SecureCodeDialog;
 import com.swissbit.homeautomation.utils.TopicsConstants;
 import com.swissbit.homeautomation.utils.WSConstants;
-import com.swissbit.mqtt.client.message.KuraPayload;
 import com.loopj.android.http.*;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -64,8 +67,6 @@ public class MainActivity extends ActionBarActivity {
 
     private EditText txtPublish;
 
-    private AlertDialog.Builder dialogBuilder;
-
     private MqttSubscribeAsync mqttSubscribeAsync;
 
     private LWTAsync LWTAsync;
@@ -74,29 +75,26 @@ public class MainActivity extends ActionBarActivity {
 
     private ListView listView;
 
-    private AsyncHttpClient asyncHttpClient;
+    public static CustomAdapter customAdapter;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        btnSecureCode = (Button) findViewById(R.id.btnSecureCode);
         btnPublish = (Button) findViewById(R.id.btnPublish);
-        txtPublish = (EditText) findViewById(R.id.txtPublish);
-
         listView = (ListView) findViewById(R.id.listRaspberryPi);
+
+        getSecureCode();
+        Log.d("Check", "1");
+        addToListView();
 
         mqttSubscribeAsync = new MqttSubscribeAsync();
         mqttSubscribeAsync.execute();
 
         LWTAsync = new LWTAsync();
         LWTAsync.execute();
-
-        raspberryHeartBeatAsync = new RaspberryHeartBeatAsync();
-        raspberryHeartBeatAsync.execute();
-
-        asyncHttpClient = new AsyncHttpClient();
 
     }
 
@@ -118,64 +116,14 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void getSecureCode(View view) {
-        dialogBuilder = new AlertDialog.Builder(this);
-        final EditText txtCode = new EditText(this);
-
-        dialogBuilder.setTitle("Enter the Secure Code");
-        dialogBuilder.setMessage("Enter the Secure Code");
-        dialogBuilder.setView(txtCode);
-        dialogBuilder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String secretCode = txtCode.getText().toString();
-                executeCredentialWS();
-                Log.d("DEBUG SWISS", "INSIDE 1");
-            }
-        });
-
-
-        AlertDialog dialogSecretCode = dialogBuilder.create();
-        dialogSecretCode.show();
+    public void getSecureCode() {
+        DevicesInfoDbAdapter devicesInfoDbAdapter = DBFactory.getDevicesInfoDbAdapter(this);
+        if(devicesInfoDbAdapter.checkSecretCodeDialogShow() == 0) {
+            SecureCodeDialog secureCodeDialog = new SecureCodeDialog();
+            secureCodeDialog.getSecureCode(this);
+        }
     }
 
-    private void executeCredentialWS() {
-        Log.d("DEBUG SWISS", "INSIDE 2");
-        asyncHttpClient.get(WSConstants.CREDENTIAL_WS, new JsonHttpResponseHandler() {
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                try {
-                    Log.d("fgggfgfggfgf", "here"+response.getString("username"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                Log.d("DEBUG SWISS", "INSIDE 3");
-                JSONObject username = null;
-                JSONObject password = null;
-                try {
-                    username = (JSONObject) response.get(0);
-                    password = (JSONObject) response.get(1);
-                    Log.d("WSCred", username.getString("username"));
-                    Log.d("WSCred", password.getString("password"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
-            }
-
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d("DEBUG SWISS", "INSIDE 4"+throwable.getCause());
-            }
-
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                Log.d("DEBUG SWISS", "INSIDE 5");
-            }
-        });
-    }
 
     public void askForMQTTCredential(View view) {
         //TODO
@@ -202,15 +150,20 @@ public class MainActivity extends ActionBarActivity {
     public void checkRaspberryId(String rid) {
         if (DBFactory.checkRaspberryPiInDB(rid, this)) {
             DBFactory.addRaspberryPi(rid);
-            addToListView(rid);
+            addToListView();
         } else
             Toast.makeText(getApplicationContext(), "Duplicate Server", Toast.LENGTH_LONG).show();
     }
 
-    private void addToListView(String rId) {
-        if (rId != null) {
-            ListAdapter listAdapter = new CustomAdapter(this, new String[]{rId});
-            listView.setAdapter(listAdapter);
+    private void addToListView() {
+        ArrayList<String> raspberryDetails = DBFactory.getRaspberrys();
+
+        if (!raspberryDetails.isEmpty()) {
+            customAdapter = new CustomAdapter(this, raspberryDetails);
+            listView.setAdapter(customAdapter);
+
+            raspberryHeartBeatAsync = new RaspberryHeartBeatAsync();
+            raspberryHeartBeatAsync.execute();
         }
 
     }
