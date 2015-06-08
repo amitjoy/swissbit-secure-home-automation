@@ -9,21 +9,21 @@ import static spark.Spark.post;
 import static spark.Spark.put;
 
 import com.swissbit.server.ws.error.ResponseError;
-import com.swissbit.server.ws.model.RaspPi;
+import com.swissbit.server.ws.model.Customer;
 import com.swissbit.server.ws.services.IClientDataService;
 
-public class RaspPiController {
+public class CustomerController extends AbstractController {
 
-	public RaspPiController(final IClientDataService userService) {
+	public CustomerController(final IClientDataService customerService) {
 
 		// Used to show all the users by the Front-end UI
-		get("/pi", (req, res) -> userService.getAllUsers(), json());
+		get("/users", (req, res) -> customerService.getAllUsers(), json());
 
 		// Used to check whether the QR Code is owned by genuine user (mainly
 		// used by Mobile Client)
-		get("/pi/:id", (req, res) -> {
+		get("/user/:id", (req, res) -> {
 			final String id = req.params(":id");
-			final RaspPi user = userService.getRaspPi(id);
+			final Customer user = customerService.getRaspPi(id);
 			if (user != null) {
 				return user;
 			}
@@ -32,12 +32,12 @@ public class RaspPiController {
 		} , json());
 
 		// Used to create user details (used at the Front-End UI)
-		post("/pi", (req, res) -> userService.createUser(req.queryParams("name"), req.queryParams("email"),
+		post("/user", (req, res) -> customerService.createUser(req.queryParams("name"), req.queryParams("email"),
 				req.queryParams("username"), req.queryParams("password"), req.queryParams("pin")), json());
 
 		// Used to update user details (used at the front-End UI)
-		put("/pi/:id",
-				(req, res) -> userService.updateUser(req.params(":id"), req.queryParams("name"),
+		put("/user/:id",
+				(req, res) -> customerService.updateUser(req.params(":id"), req.queryParams("name"),
 						req.queryParams("email"), req.queryParams("username"), req.queryParams("password"),
 						req.queryParams("pin")),
 				json());

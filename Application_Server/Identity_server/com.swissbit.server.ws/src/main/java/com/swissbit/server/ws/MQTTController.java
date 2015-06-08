@@ -5,7 +5,7 @@ import static spark.Spark.get;
 
 import com.swissbit.server.ws.services.IMQTTService;
 
-public class MQTTController {
+public class MQTTController extends AbstractController {
 
 	public MQTTController(final IMQTTService mqttService) {
 

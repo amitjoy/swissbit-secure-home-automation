@@ -5,11 +5,10 @@ import com.swissbit.server.ws.services.impl.MQTTService;
 
 public class SwissbitServices {
 
-	public static void main(final String[] args) {
+	public static void main(final String... args) {
 
-		new RaspPiController(new ClientDataService());
-		new MQTTController(new MQTTService());
-
+		ControllerBuilder.getInstance().addController(new CustomerController(new ClientDataService()))
+				.addController(new MQTTController(new MQTTService()));
 	}
 
 }
