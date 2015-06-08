@@ -9,7 +9,9 @@ This is the repository for the development of a complete end-to-end secure home 
 
 ### How do I get set up for Application Server? ###
 
-* Will be updated soon
+* Import the project as Maven Project
+* Read the How-To Guide in Project Directory to build
+* It will create an executable fat JAR
 
 ### Contribution guidelines ###
 
@@ -20,4 +22,6 @@ This is the repository for the development of a complete end-to-end secure home 
 ### Who do I talk to? ###
 
 * Subburam (ga59ciq@mytum.de) for Application Server
+* Amit Kumar Mondal (admin@amitinside.com)
+* Gaurav Srivastava (gaurav.srivastava7@gmail.com)
 * Swissbit AG
