@@ -3,8 +3,10 @@ package com.swissbit.server.ws.controller;
 import static com.swissbit.server.ws.util.JsonUtil.json;
 import static spark.Spark.get;
 
+
 import com.swissbit.server.ws.services.IAbstractService;
-import com.swissbit.server.ws.services.IMQTTService;
+import com.swissbit.server.ws.services.IMQTTService;import com.swissbit.server.ws.services.IRaspberryPiService;
+
 
 public class MQTTController extends AbstractController {
 
@@ -18,7 +20,11 @@ public class MQTTController extends AbstractController {
 		get("/addRPi/:rPiMacAddress/:encryptedMobileClientMacAddress", (req, res) -> {
 			final String rPiMacAddress = req.params(":rPiMacAddress");
 			final String encryptedMobileClientMacAddress = req.params(":encryptedMobileClientMacAddress");
-			return mqttService.verifyClient(encryptedMobileClientMacAddress, rPiMacAddress);
+			 if(mqttService.verifyClient(encryptedMobileClientMacAddress, rPiMacAddress)){
+				 final IRaspberryPiService raspService = (IRaspberryPiService) iAbstractService;
+				 return raspService.validateRaspberryPi(rPiMacAddress);
+			 }
+			 return false;
 		} , json());
 
 	}
