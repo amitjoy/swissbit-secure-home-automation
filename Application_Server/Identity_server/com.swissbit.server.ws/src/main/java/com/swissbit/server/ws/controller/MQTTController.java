@@ -15,10 +15,10 @@ public class MQTTController extends AbstractController {
 
 		// Used to ask the provided Raspberry Pi whether the Mobile client who
 		// is trying to add it, is authorized (mainly used by mobile client)
-		get("/addRPi/:rPiMacAddress/:mobileClientMacAddress", (req, res) -> {
+		get("/addRPi/:rPiMacAddress/:encryptedMobileClientMacAddress", (req, res) -> {
 			final String rPiMacAddress = req.params(":rPiMacAddress");
-			final String mobileClientMacAddress = req.params(":mobileClientMacAddress");
-			return mqttService.verifyClient(mobileClientMacAddress, rPiMacAddress);
+			final String encryptedMobileClientMacAddress = req.params(":encryptedMobileClientMacAddress");
+			return mqttService.verifyClient(encryptedMobileClientMacAddress, rPiMacAddress);
 		} , json());
 
 	}
