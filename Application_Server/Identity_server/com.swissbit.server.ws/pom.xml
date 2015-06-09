@@ -60,7 +60,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>com.swissbit.server.ws.SwissbitServices</mainClass>
+							<mainClass>com.swissbit.server.ws.SwissbitServiceStarter</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>

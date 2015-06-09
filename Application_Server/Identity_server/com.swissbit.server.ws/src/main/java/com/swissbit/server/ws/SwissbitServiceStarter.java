@@ -7,7 +7,7 @@ import com.swissbit.server.ws.services.impl.ClientDataService;
 import com.swissbit.server.ws.services.impl.MQTTService;
 import com.swissbit.server.ws.services.impl.RaspberryPiDataService;
 
-public class SwissbitServices {
+public class SwissbitServiceStarter {
 
 	public static void main(final String... args) {
 
