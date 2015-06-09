@@ -12,9 +12,9 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.swissbit.server.ws.model.RaspberryPi;
-import com.swissbit.server.ws.services.IRaspberryPiDataService;;
+import com.swissbit.server.ws.services.IRaspberryPiService;;
 
-public class RaspberryPiService implements IRaspberryPiDataService {
+public class RaspberryPiService implements IRaspberryPiService {
 
 	private final String databaseUrl = "jdbc:mysql://localhost/spark";
 	private static final String MYSQL_USER = "root";
@@ -40,12 +40,15 @@ public class RaspberryPiService implements IRaspberryPiDataService {
 	}
 
 	@Override
-	public RaspberryPi createRaspberryPi(final String name, final String pin) {
-		this.failIfInvalid(name, pin);
+	public RaspberryPi createRaspberryPi(final String name, final String pin, final String macaddr) {
+		this.failIfInvalid(name, pin, macaddr);
 		final RaspberryPi rasp = new RaspberryPi();
 		rasp.setId(UUID.randomUUID().toString());
 		rasp.setName(name);
 		rasp.setPin(pin);
+		rasp.setMacAddr(macaddr);
+		rasp.setValidated("1");
+		
 		try {
 			this.piDao.create(rasp);
 		} catch (final SQLException e) {
@@ -59,12 +62,15 @@ public class RaspberryPiService implements IRaspberryPiDataService {
 		return rasp;
 	}
 
-	private void failIfInvalid(final String name, final String pin) {
+	private void failIfInvalid(final String name, final String pin, final String macaddr) {
 		if ((name == null) || name.isEmpty()) {
 			throw new IllegalArgumentException("Parameter 'name' cannot be empty");
 		}
 		if ((pin == null) || pin.isEmpty()) {
 			throw new IllegalArgumentException("Parameter 'pin' cannot be empty");
+		}
+		if ((macaddr == null) || macaddr.isEmpty()) {
+			throw new IllegalArgumentException("Parameter 'macaddr' cannot be empty");
 		}
 	}
 
@@ -89,12 +95,12 @@ public class RaspberryPiService implements IRaspberryPiDataService {
 	}
 
 	@Override
-	public RaspberryPi getRaspberryPi(final String name) {
+	public RaspberryPi getRaspberryPi(final String field, final String value) {
 		final QueryBuilder<RaspberryPi, String> queryBuilder = this.piDao.queryBuilder();
 		List<RaspberryPi> raspPi = null;
 		RaspberryPi pi = null;
 		try {
-			raspPi = this.piDao.query(queryBuilder.where().eq("id", name).prepare());
+			raspPi = this.piDao.query(queryBuilder.where().eq(field, value).prepare());
 
 			if (raspPi.size() > 0) {
 				pi = raspPi.get(0);
@@ -115,11 +121,12 @@ public class RaspberryPiService implements IRaspberryPiDataService {
 
 	@Override
 	public RaspberryPi updateRaspberryPi(final String id, final String name, final String pin) {
-		final RaspberryPi rasp = this.getRaspberryPi(id);
+		final RaspberryPi rasp = this.getRaspberryPi("id", id);
 		if (rasp == null) {
 			throw new IllegalArgumentException("No user with id '" + id + "' found");
 		}
-		this.failIfInvalid(name, pin);
+		
+		this.failIfInvalid(name, pin, rasp.getMacAddr());
 		rasp.setName(name);
 		rasp.setPin(pin);
 
@@ -131,4 +138,26 @@ public class RaspberryPiService implements IRaspberryPiDataService {
 		}
 		return rasp;
 	}
+
+	@Override
+	public boolean validateRaspberryPi(String macAddr) {
+		
+		final RaspberryPi rasp = this.getRaspberryPi("macaddr", macAddr);
+		if (rasp == null) {
+			throw new IllegalArgumentException("No Raspberry Pi with Mac Address '" + macAddr + "' found");
+		}
+
+		//Validated = 0 means is verified and added by customer.
+		rasp.setValidated("0");
+		
+		try {
+			this.piDao.update(rasp);
+			
+		} catch (final SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
 }
