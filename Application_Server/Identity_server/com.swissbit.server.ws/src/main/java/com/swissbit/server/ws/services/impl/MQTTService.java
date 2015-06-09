@@ -36,18 +36,18 @@ public final class MQTTService implements IMQTTService {
 		});
 	}
 
-	private void publishDecryptionRequest(final String mobileClientMacAddress, final String rPiMacAddress) {
+	private void publishDecryptionRequest(final String encryptedMobileClientMacAddress, final String rPiMacAddress) {
 		final KuraPayload payload = new KuraPayload();
 		payload.addMetric("request.id", MQTT_REQUEST_ID);
 		payload.addMetric("requester.client.id", CLIENT_ID);
-		payload.setBody(mobileClientMacAddress.getBytes());
+		payload.setBody(encryptedMobileClientMacAddress.getBytes());
 
 		s_kuraClient.publish(MQTT_TOPIC_PREFIX + rPiMacAddress + "/" + APP_ID + "/EXEC/decrypt", payload);
 	}
 
 	@Override
-	public boolean verifyClient(final String mobileClientMacAddress, final String rPiMacAddress) {
-		this.publishDecryptionRequest(mobileClientMacAddress, rPiMacAddress);
+	public boolean verifyClient(final String encryptedMobileClientMacAddress, final String rPiMacAddress) {
+		this.publishDecryptionRequest(encryptedMobileClientMacAddress, rPiMacAddress);
 
 		try {
 			TimeUnit.SECONDS.sleep(2);
