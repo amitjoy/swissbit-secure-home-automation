@@ -10,11 +10,15 @@ import static spark.Spark.put;
 
 import com.swissbit.server.ws.error.ResponseError;
 import com.swissbit.server.ws.model.Customer;
+import com.swissbit.server.ws.services.IAbstractService;
 import com.swissbit.server.ws.services.IClientDataService;
 
 public class CustomerController extends AbstractController {
 
-	public CustomerController(final IClientDataService customerService) {
+	@Override
+	public void apply(final IAbstractService iAbstractService) {
+
+		final IClientDataService customerService = (IClientDataService) iAbstractService;
 
 		// Used to show all the users by the Front-end UI
 		get("/users", (req, res) -> customerService.getAllUsers(), json());
@@ -50,5 +54,6 @@ public class CustomerController extends AbstractController {
 			res.status(400);
 			res.body(toJson(new ResponseError(e)));
 		});
+
 	}
 }

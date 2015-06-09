@@ -3,11 +3,15 @@ package com.swissbit.server.ws.controller;
 import static com.swissbit.server.ws.util.JsonUtil.json;
 import static spark.Spark.get;
 
+import com.swissbit.server.ws.services.IAbstractService;
 import com.swissbit.server.ws.services.IMQTTService;
 
 public class MQTTController extends AbstractController {
 
-	public MQTTController(final IMQTTService mqttService) {
+	@Override
+	public void apply(final IAbstractService iAbstractService) {
+
+		final IMQTTService mqttService = (IMQTTService) iAbstractService;
 
 		// Used to ask the provided Raspberry Pi whether the Mobile client who
 		// is trying to add it, is authorized (mainly used by mobile client)
@@ -16,5 +20,6 @@ public class MQTTController extends AbstractController {
 			final String mobileClientMacAddress = req.params(":mobileClientMacAddress");
 			return mqttService.verifyClient(mobileClientMacAddress, rPiMacAddress);
 		} , json());
+
 	}
 }

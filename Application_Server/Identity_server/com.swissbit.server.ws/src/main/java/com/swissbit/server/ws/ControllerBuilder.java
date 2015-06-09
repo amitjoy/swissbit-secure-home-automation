@@ -1,28 +1,34 @@
 package com.swissbit.server.ws;
 
-import java.util.List;
-
-import com.google.common.collect.Lists;
 import com.swissbit.server.ws.controller.AbstractController;
+import com.swissbit.server.ws.services.IAbstractService;
 
-public final class ControllerBuilder<T extends AbstractController> {
+public final class ControllerBuilder<T extends AbstractController, U extends IAbstractService> {
 
-	public static ControllerBuilder<AbstractController> getInstance() {
-		return new ControllerBuilder<>();
+	private final Class<T> clazz;
+	private final Class<U> clazzz;
+
+	public ControllerBuilder(final Class<T> clazz, final Class<U> clazzz) {
+		this.clazz = clazz;
+		this.clazzz = clazzz;
 	}
 
-	private final List<T> controllers = Lists.newArrayList();
-
-	private ControllerBuilder() {
-
+	public T buildController() {
+		try {
+			return this.clazz.newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
-	public ControllerBuilder<T> addController(final T t) {
-		this.controllers.add(t);
-		return this;
+	public U buildService() {
+		try {
+			return this.clazzz.newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
-	public List<T> getControllers() {
-		return this.controllers;
-	}
 }
