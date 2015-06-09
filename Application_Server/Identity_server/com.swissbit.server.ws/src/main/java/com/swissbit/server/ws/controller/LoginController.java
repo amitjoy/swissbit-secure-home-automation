@@ -9,14 +9,14 @@ import static spark.Spark.get;
 import com.swissbit.server.ws.error.ResponseError;
 import com.swissbit.server.ws.model.Customer;
 import com.swissbit.server.ws.services.IAbstractService;
-import com.swissbit.server.ws.services.ICustomerService;
+import com.swissbit.server.ws.services.ILoginService;
 
 public class LoginController extends AbstractController {
 
 	@Override
 	public void apply(final IAbstractService iAbstractService) {
 
-		final ICustomerService customerService = (ICustomerService) iAbstractService;
+		final ILoginService customerService = (ILoginService) iAbstractService;
 
 		// Used to check whether the admin user exits and is entering the right
 		// Password.
@@ -27,7 +27,7 @@ public class LoginController extends AbstractController {
 				return user;
 			}
 			res.status(400);
-			return new ResponseError("No Raspberry Pi with id '%s' found", id);
+			return new ResponseError("No Adminstrator with username '%s' found", id);
 		} , json());
 
 		after((req, res) -> {
