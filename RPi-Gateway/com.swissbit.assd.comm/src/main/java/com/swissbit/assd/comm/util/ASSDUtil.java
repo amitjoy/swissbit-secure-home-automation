@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Throwables;
 
 /**
- * Responsible for executing all the necessary commands for ASSD Communciation
+ * Responsible for executing all the necessary commands for ASSD Communication
  *
  * @author AMIT KUMAR MONDAL
  *
@@ -52,6 +52,11 @@ public final class ASSDUtil {
 	 * Represents the python POSIX command utility
 	 */
 	private static final String CMD_PYTHON = "python";
+
+	/**
+	 * The Home Location of the current user
+	 */
+	private static final String HOME_LOCATION = "/home/pi/";
 
 	/**
 	 * Logger.
@@ -75,7 +80,11 @@ public final class ASSDUtil {
 		StringBuilder sb = null;
 		final String[] command = { CMD_PYTHON, fileName, text };
 
-		final boolean assdAvail = checkASSD();
+		boolean assdAvail = checkASSD();
+
+		if (!assdAvail) {
+			assdAvail = loadASSD();
+		}
 
 		if (assdAvail) {
 			try {
@@ -88,7 +97,7 @@ public final class ASSDUtil {
 					if (line.contains("command not found")) {
 						throw new KuraException(KuraErrorCode.OPERATION_NOT_SUPPORTED);
 					}
-					sb.append(line + "\n");
+					sb.append(line);
 				}
 			} catch (final Exception e) {
 				LOGGER.error(Throwables.getStackTraceAsString(e));
@@ -113,14 +122,8 @@ public final class ASSDUtil {
 		SafeProcess process = null;
 		BufferedReader br = null;
 		StringBuilder sb = null;
-		final String commandParam = "~/assd.ko";
+		final String commandParam = HOME_LOCATION + "/assd.ko";
 		final String[] command = { CMD_INSMOD, commandParam };
-
-		final boolean assdAvail = checkASSD();
-
-		if (assdAvail) {
-			return true;
-		}
 
 		try {
 			process = ProcessUtil.exec(command);
