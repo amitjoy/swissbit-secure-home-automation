@@ -10,11 +10,15 @@ import static spark.Spark.put;
 
 import com.swissbit.server.ws.error.ResponseError;
 import com.swissbit.server.ws.model.RaspberryPi;
+import com.swissbit.server.ws.services.IAbstractService;
 import com.swissbit.server.ws.services.IRaspberryPiDataService;
 
 public class RaspberryPiController extends AbstractController {
 
-	public RaspberryPiController(final IRaspberryPiDataService raspberryPiService) {
+	@Override
+	public void apply(final IAbstractService iAbstractService) {
+
+		final IRaspberryPiDataService raspberryPiService = (IRaspberryPiDataService) iAbstractService;
 
 		// Used to show all the Raspberry Pi by the Front-end UI
 		get("/pis", (req, res) -> raspberryPiService.getAllRaspberryPi(), json());
@@ -32,11 +36,12 @@ public class RaspberryPiController extends AbstractController {
 		} , json());
 
 		// Used to create Raspberry Pi details (used at the Front-End UI)
-		post("/pi", (req, res) -> raspberryPiService.createRaspberryPi(req.queryParams("name"), req.queryParams("pin")), json());
+		post("/pi", (req, res) -> raspberryPiService.createRaspberryPi(req.queryParams("name"), req.queryParams("pin")),
+				json());
 
 		// Used to update Raspberry Pi details (used at the front-End UI)
-		put("/pi/:id",
-				(req, res) -> raspberryPiService.updateRaspberryPi(req.params(":id"), req.queryParams("name"), req.queryParams("pin")), json());
+		put("/pi/:id", (req, res) -> raspberryPiService.updateRaspberryPi(req.params(":id"), req.queryParams("name"),
+				req.queryParams("pin")), json());
 
 		after((req, res) -> {
 			res.type("application/json");
@@ -46,5 +51,6 @@ public class RaspberryPiController extends AbstractController {
 			res.status(400);
 			res.body(toJson(new ResponseError(e)));
 		});
+
 	}
 }

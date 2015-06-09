@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.swissbit.server.ws.model.RaspberryPi;
 
-public interface IRaspberryPiDataService {
+public interface IRaspberryPiDataService extends IAbstractService {
 
 	public RaspberryPi createRaspberryPi(String name, String pin);
 
