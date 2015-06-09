@@ -94,7 +94,7 @@ public class RaspberryPiDataService implements IRaspberryPiDataService {
 		List<RaspberryPi> raspPi = null;
 		RaspberryPi pi = null;
 		try {
-			raspPi = this.piDao.query(queryBuilder.where().eq("name", name).prepare());
+			raspPi = this.piDao.query(queryBuilder.where().eq("id", name).prepare());
 
 			if (raspPi.size() > 0) {
 				pi = raspPi.get(0);
