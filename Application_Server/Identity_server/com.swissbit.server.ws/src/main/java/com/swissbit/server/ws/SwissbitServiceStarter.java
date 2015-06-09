@@ -3,7 +3,7 @@ package com.swissbit.server.ws;
 import com.swissbit.server.ws.controller.CustomerController;
 import com.swissbit.server.ws.controller.MQTTController;
 import com.swissbit.server.ws.controller.RaspberryPiController;
-import com.swissbit.server.ws.services.impl.ClientDataService;
+import com.swissbit.server.ws.services.impl.CustomerService;
 import com.swissbit.server.ws.services.impl.MQTTService;
 import com.swissbit.server.ws.services.impl.RaspberryPiDataService;
 
@@ -12,8 +12,8 @@ public class SwissbitServiceStarter {
 	public static void main(final String... args) {
 
 		// Building customer controller
-		final ControllerBuilder<CustomerController, ClientDataService> customerBuilder = new ControllerBuilder<CustomerController, ClientDataService>(
-				CustomerController.class, ClientDataService.class);
+		final ControllerBuilder<CustomerController, CustomerService> customerBuilder = new ControllerBuilder<CustomerController, CustomerService>(
+				CustomerController.class, CustomerService.class);
 
 		customerBuilder.buildController().apply(customerBuilder.buildService());
 

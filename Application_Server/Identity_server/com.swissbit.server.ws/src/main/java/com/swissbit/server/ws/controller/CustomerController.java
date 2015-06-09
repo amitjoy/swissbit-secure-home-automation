@@ -11,14 +11,14 @@ import static spark.Spark.put;
 import com.swissbit.server.ws.error.ResponseError;
 import com.swissbit.server.ws.model.Customer;
 import com.swissbit.server.ws.services.IAbstractService;
-import com.swissbit.server.ws.services.IClientDataService;
+import com.swissbit.server.ws.services.ICustomerService;
 
 public class CustomerController extends AbstractController {
 
 	@Override
 	public void apply(final IAbstractService iAbstractService) {
 
-		final IClientDataService customerService = (IClientDataService) iAbstractService;
+		final ICustomerService customerService = (ICustomerService) iAbstractService;
 
 		// Used to show all the users by the Front-end UI
 		get("/users", (req, res) -> customerService.getAllUsers(), json());

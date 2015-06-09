@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.swissbit.server.ws.model.Customer;
 
-public interface IClientDataService extends IAbstractService {
+public interface ICustomerService extends IAbstractService {
 
 	public Customer createUser(String name, String email, String username, String password, String pin);
 

@@ -12,9 +12,9 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.swissbit.server.ws.model.Customer;
-import com.swissbit.server.ws.services.IClientDataService;
+import com.swissbit.server.ws.services.ICustomerService;
 
-public class ClientDataService implements IClientDataService {
+public class CustomerService implements ICustomerService {
 
 	private final String databaseUrl = "jdbc:mysql://localhost/spark";
 	private static final String MYSQL_USER = "root";
@@ -23,7 +23,7 @@ public class ClientDataService implements IClientDataService {
 	private ConnectionSource connectionSource = null;
 	private Dao<Customer, String> piDao = null;
 
-	public ClientDataService() {
+	public CustomerService() {
 		try {
 			this.connectionSource = new JdbcConnectionSource(this.databaseUrl);
 		} catch (final SQLException e) {
