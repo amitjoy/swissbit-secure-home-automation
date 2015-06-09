@@ -5,7 +5,7 @@ import com.swissbit.server.ws.controller.MQTTController;
 import com.swissbit.server.ws.controller.RaspberryPiController;
 import com.swissbit.server.ws.services.impl.CustomerService;
 import com.swissbit.server.ws.services.impl.MQTTService;
-import com.swissbit.server.ws.services.impl.RaspberryPiDataService;
+import com.swissbit.server.ws.services.impl.RaspberryPiService;
 
 public class SwissbitServiceStarter {
 
@@ -17,17 +17,17 @@ public class SwissbitServiceStarter {
 
 		customerBuilder.buildController().apply(customerBuilder.buildService());
 
+		// Building RPi controller
+		final ControllerBuilder<RaspberryPiController, RaspberryPiService> rpiBuilder = new ControllerBuilder<RaspberryPiController, RaspberryPiService>(
+				RaspberryPiController.class, RaspberryPiService.class);
+
+		rpiBuilder.buildController().apply(rpiBuilder.buildService());
+
 		// Building MQTT controller
 		final ControllerBuilder<MQTTController, MQTTService> mqttBuilder = new ControllerBuilder<MQTTController, MQTTService>(
 				MQTTController.class, MQTTService.class);
 
 		mqttBuilder.buildController().apply(mqttBuilder.buildService());
-
-		// Building RPi controller
-		final ControllerBuilder<RaspberryPiController, RaspberryPiDataService> rpiBuilder = new ControllerBuilder<RaspberryPiController, RaspberryPiDataService>(
-				RaspberryPiController.class, RaspberryPiDataService.class);
-
-		rpiBuilder.buildController().apply(rpiBuilder.buildService());
 
 	}
 
