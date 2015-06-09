@@ -14,7 +14,7 @@ import com.j256.ormlite.table.TableUtils;
 import com.swissbit.server.ws.model.RaspberryPi;
 import com.swissbit.server.ws.services.IRaspberryPiDataService;;
 
-public class RaspberryPiDataService implements IRaspberryPiDataService {
+public class RaspberryPiService implements IRaspberryPiDataService {
 
 	private final String databaseUrl = "jdbc:mysql://localhost/spark";
 	private static final String MYSQL_USER = "root";
@@ -23,7 +23,7 @@ public class RaspberryPiDataService implements IRaspberryPiDataService {
 	private ConnectionSource connectionSource = null;
 	private Dao<RaspberryPi, String> piDao = null;
 
-	public RaspberryPiDataService() {
+	public RaspberryPiService() {
 		try {
 			this.connectionSource = new JdbcConnectionSource(this.databaseUrl);
 		} catch (final SQLException e) {

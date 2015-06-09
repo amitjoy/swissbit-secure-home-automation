@@ -14,7 +14,7 @@ import com.j256.ormlite.table.TableUtils;
 import com.swissbit.server.ws.model.Customer;
 import com.swissbit.server.ws.services.ICustomerService;
 
-public class CustomerService implements ICustomerService {
+public class LoginService implements ICustomerService {
 
 	private final String databaseUrl = "jdbc:mysql://localhost/spark";
 	private static final String MYSQL_USER = "root";
@@ -23,7 +23,7 @@ public class CustomerService implements ICustomerService {
 	private ConnectionSource connectionSource = null;
 	private Dao<Customer, String> piDao = null;
 
-	public CustomerService() {
+	public LoginService() {
 		try {
 			this.connectionSource = new JdbcConnectionSource(this.databaseUrl);
 		} catch (final SQLException e) {
@@ -108,7 +108,7 @@ public class CustomerService implements ICustomerService {
 		List<Customer> raspPi = null;
 		Customer pi = null;
 		try {
-			raspPi = this.piDao.query(queryBuilder.where().eq("pin", name).prepare());
+			raspPi = this.piDao.query(queryBuilder.where().eq("name", name).prepare());
 
 			if (raspPi.size() > 0) {
 				pi = raspPi.get(0);
