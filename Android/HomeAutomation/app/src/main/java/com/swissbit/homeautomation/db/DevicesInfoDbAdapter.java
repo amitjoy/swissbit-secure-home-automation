@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.swissbit.homeautomation.model.RaspberryPi;
 import com.swissbit.homeautomation.utils.DBConstants;
 
 import java.util.ArrayList;
@@ -34,7 +35,20 @@ public class DevicesInfoDbAdapter  {
         return id;
     }
 
-    public boolean getRaspberryId(String id){
+    public String getRaspberryId(){
+        String[] columns= {DBConstants.RASPBERRYID};
+        Cursor cursor = db.query(DBConstants.TABLE_NAME_RASPBERRYINFO, columns, null,
+                null, null, null, null);
+
+        if(cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            String id = cursor.getString(cursor.getColumnIndex(DBConstants.RASPBERRYID));
+            return id;
+        }
+        return null;
+    }
+
+    public boolean checkRaspberryId(String id){
         String[] columns= {DBConstants.RASPBERRYID};
         Cursor cursor = db.query(DBConstants.TABLE_NAME_RASPBERRYINFO, columns, DBConstants.RASPBERRYID + " = '" + id + "'",
                 null, null, null, null);
@@ -45,21 +59,20 @@ public class DevicesInfoDbAdapter  {
             return true;
     }
 
-    public ArrayList getRaspberrys(){
-        ArrayList<String> raspberryDetails = new ArrayList<String>();
+    public RaspberryPi getRaspberrys(){
         String[] columns= {DBConstants.RASPBERRYID,DBConstants.RASPBERRYNAME,DBConstants.RASPBERRYDESC};
         Cursor cursor = db.query(DBConstants.TABLE_NAME_RASPBERRYINFO, columns, null,
                 null, null, null, null);
         if(cursor.getCount() != 0) {
             cursor.moveToFirst();
-            raspberryDetails.add(cursor.getString(cursor.getColumnIndex(DBConstants.RASPBERRYID)));
-            raspberryDetails.add(cursor.getString(cursor.getColumnIndex(DBConstants.RASPBERRYNAME)));
-            raspberryDetails.add(cursor.getString(cursor.getColumnIndex(DBConstants.RASPBERRYDESC)));
+            String id = cursor.getString(cursor.getColumnIndex(DBConstants.RASPBERRYID));
+            String name = cursor.getString(cursor.getColumnIndex(DBConstants.RASPBERRYNAME));
+            String desc = cursor.getString(cursor.getColumnIndex(DBConstants.RASPBERRYDESC));
+            RaspberryPi raspberryPi = RaspberryPi.createRaspberrPi(id, name, desc, false);
 
-            return raspberryDetails;
+            return raspberryPi;
         }
-        else
-            return raspberryDetails;
+            return null;
     }
 
     public int checkSecretCodeDialogShow(){
@@ -79,6 +92,19 @@ public class DevicesInfoDbAdapter  {
         contentValues.put(DBConstants.PASSWORD,password);
         contentValues.put(DBConstants.DIALOGSHOW,1);
         db.update(DBConstants.TABLE_NAME_CREDENTIALS,contentValues,null,null);
+    }
+
+    public String[] getCredentials() {
+        String[] columns = {DBConstants.USERNAME, DBConstants.PASSWORD};
+        String[] credentials = new String[2];
+        Cursor cursor = db.query(DBConstants.TABLE_NAME_CREDENTIALS, columns, null,
+                null, null, null, null);
+        if (cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            credentials[0] = cursor.getString(cursor.getColumnIndex(DBConstants.USERNAME));
+            credentials[1] = cursor.getString(cursor.getColumnIndex(DBConstants.PASSWORD));
+        }
+        return credentials;
     }
 
     static class DevicesInfoDb extends SQLiteOpenHelper{
