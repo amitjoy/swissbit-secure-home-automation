@@ -1,6 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
-    <item android:id="@+id/register_server" android:title="@string/register_server" />
+
+    <item android:id="@+id/register_server"
+        android:title="@string/register_server"
+        android:icon="@drawable/registericon"
+        app:showAsAction="always"/>
 </menu>
 <!-- From: file:/Users/manit/Documents/Manit/Masters%20in%20Informatics/Android%20Praktikum/Project/Android/HomeAutomation/app/src/main/res/menu/menu_main.xml -->

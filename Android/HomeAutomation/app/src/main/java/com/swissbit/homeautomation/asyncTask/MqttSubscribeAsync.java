@@ -1,5 +1,6 @@
 package com.swissbit.homeautomation.asyncTask;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -15,15 +16,20 @@ import com.swissbit.mqtt.client.message.KuraPayload;
  */
 public class MqttSubscribeAsync extends AsyncTask {
 
-    private IKuraMQTTClient client = MQTTFactory.getClient();
+    private IKuraMQTTClient client = null;
+    private Context m_context;
+
+    public MqttSubscribeAsync(Context context) {
+        m_context = context;
+    }
 
     @Override
     protected Object doInBackground(Object[] params) {
         final boolean status = client.connect();
         String requestId = null;
         String topic = null;
-        final Object topicData = MQTTFactory.getTopicToSubscribe(TopicsConstants.DUMMY_PUBLISH_TOPIC);
-        Log.d("Kura MQTT", Boolean.toString(status));
+        final Object topicData = MQTTFactory.getTopicToSubscribe(m_context,TopicsConstants.DUMMY_PUBLISH_TOPIC);
+        Log.d("Kura MQTT2", Boolean.toString(status));
 
         if (topicData instanceof Object[]) {
             topic = (String)(((Object[])topicData)[0]);

@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.util.Log;
 
 import com.swissbit.homeautomation.db.DevicesInfoDbAdapter;
+import com.swissbit.homeautomation.model.RaspberryPi;
 
 import java.util.ArrayList;
 
@@ -34,10 +35,10 @@ public final class DBFactory {
     }
 
     public static boolean checkRaspberryPiInDB(String rid, Context context) {
-        return getDevicesInfoDbAdapter(context).getRaspberryId(rid);
+        return getDevicesInfoDbAdapter(context).checkRaspberryId(rid);
     }
 
-    public static ArrayList getRaspberrys(){
+    public static RaspberryPi getRaspberrys(){
         return devicesInfoDbAdapter.getRaspberrys();
     }
 }
