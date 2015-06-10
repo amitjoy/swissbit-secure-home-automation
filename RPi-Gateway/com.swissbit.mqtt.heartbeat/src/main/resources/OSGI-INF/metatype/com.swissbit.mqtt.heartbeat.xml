@@ -13,7 +13,7 @@
 			description="Configurable property to set MQTT Hearbeat Topic Namespace" />
 			
 		<AD id="com.swissbit.mqtt.heartbeat.period" name="com.swissbit.mqtt.heartbeat.period"
-			type="Integer" cardinality="0" required="true" default="10"
+			type="Integer" cardinality="0" required="true" default="30"
 			description="Configurable Property specifying the time period of sending each hearbeat" />
 
 	</OCD>

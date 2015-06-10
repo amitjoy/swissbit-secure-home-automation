@@ -25,10 +25,10 @@ Name: com.swissbit.hsql.conf-1.0-SNAPSHOT.jar
 Bundle-SymbolicName: com.swissbit.hsql.conf
 Bundle-Version: 1.0.0.SNAPSHOT
 
-Name: com.swissbit.mqtt.heartbeat-1.0-SNAPSHOT.jar
-Bundle-SymbolicName: com.swissbit.mqtt.heartbeat
-Bundle-Version: 1.0.0.SNAPSHOT
-
 Name: com.swissbit.assd.comm-1.0-SNAPSHOT.jar
 Bundle-SymbolicName: com.swissbit.assd.comm
+Bundle-Version: 1.0.0.SNAPSHOT
+
+Name: com.swissbit.mqtt.heartbeat-1.0-SNAPSHOT.jar
+Bundle-SymbolicName: com.swissbit.mqtt.heartbeat
 Bundle-Version: 1.0.0.SNAPSHOT
