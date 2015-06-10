@@ -147,7 +147,6 @@ public class KuraMQTTClient implements IKuraMQTTClient {
 			mqtt.setClientId(this.clientId);
 			mqtt.setPassword(this.password);
 			mqtt.setUserName(this.username);
-
 		} catch (final URISyntaxException e) {
 			LOGGER.error(Throwables.getStackTraceAsString(e));
 		}
