@@ -1,5 +1,0 @@
-Build HOW-TO
-
-Build using mvn clean compile assembly:single
-
-This will create a Fat Executable JAR
