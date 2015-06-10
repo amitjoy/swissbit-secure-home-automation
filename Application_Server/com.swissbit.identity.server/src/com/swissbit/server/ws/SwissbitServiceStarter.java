@@ -18,7 +18,7 @@ public class SwissbitServiceStarter {
 
 	public static void main(final String... args) {
 
-		Spark.port(PORT);
+		Spark.port(new Integer(PORT));
 		Spark.ipAddress(IP_ADDRESS);
 
 		// Building customer controller
