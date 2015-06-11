@@ -23,6 +23,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -52,6 +53,8 @@ import com.swissbit.mqtt.client.IKuraMQTTClient;
 import com.swissbit.mqtt.client.adapter.MessageListener;
 import com.swissbit.mqtt.client.message.KuraPayload;
 
+import junit.framework.Assert;
+
 import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
@@ -78,22 +81,23 @@ public class MainActivity extends ActionBarActivity {
 
     private AsyncTask rPiHeartBeatAsync = new AsyncTask() {
 
-
         @Override
         protected Object doInBackground(Object[] params) {
-            final boolean status = client.connect();
+            boolean status = client.connect();
+            Log.d("Kura MQTT Connect ", Boolean.toString(status));
 
-            if (!status)
-                client.connect();
+//            if (!status)
+            for(int i=0; i<10 && !status; i++ )
+                status = client.connect();
 
-            Log.d("Kura MQTT1", Boolean.toString(status));
+            Log.d("Kura MQTT Connect ", Boolean.toString(status));
             if (status) {
                 client.subscribe((String) MQTTFactory.getTopicToSubscribe(getApplicationContext(), TopicsConstants.HEARTBEAT), new MessageListener() {
                     @Override
                     public void processMessage(KuraPayload kuraPayload) {
                         if (kuraPayload != null) {
                             Log.d("Kura HeartBeat", "Raspberry Alive...");
-                            publishProgress(null);
+                            publishProgress();
                         }
                     }
                 });
@@ -107,6 +111,7 @@ public class MainActivity extends ActionBarActivity {
             imageView.setImageResource(R.drawable.btnon);
         }
     };
+
 
     private AsyncTask lwtAsync = new AsyncTask() {
         @Override
@@ -122,7 +127,7 @@ public class MainActivity extends ActionBarActivity {
                     public void processMessage(KuraPayload kuraPayload) {
                         if (kuraPayload != null) {
                             Log.d("Kura HeartBeat", "Raspberry Dead...");
-                            publishProgress(null);
+                            publishProgress();
                         }
                     }
                 });
@@ -140,13 +145,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        btnPublish = (Button) findViewById(R.id.btnPublish);
-        listView = (ListView) findViewById(R.id.listRaspberryPi);
         devicesInfoDbAdapter = DBFactory.getDevicesInfoDbAdapter(this);
-        raspberryPi = DBFactory.getRaspberrys();
-        listOfRPi = Lists.newArrayList(raspberryPi);
-        adapter = new RPiAdapter(getApplicationContext(), listOfRPi);
         client = MQTTFactory.getClient(getApplicationContext());
 
         getSecureCode();
@@ -222,11 +221,19 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void addToListView() {
-            listView.setAdapter(adapter);
 
-            rPiHeartBeatAsync.execute();
+            raspberryPi = DBFactory.getRaspberrys();
+            if(raspberryPi != null) {
+                listOfRPi = Lists.newArrayList(raspberryPi);
+                adapter = new RPiAdapter(getApplicationContext(), listOfRPi);
+                listView = (ListView) findViewById(R.id.listRaspberryPi);
+                listView.setAdapter(adapter);
 
-            lwtAsync.execute();
+                rPiHeartBeatAsync.execute();
+
+                lwtAsync.execute();
+            }
+
 
     }
 
