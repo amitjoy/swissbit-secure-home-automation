@@ -55,11 +55,6 @@ public class RaspberryPiService implements IRaspberryPiService {
 		} catch (final SQLException e) {
 			e.printStackTrace();
 		}
-		try {
-			this.connectionSource.close();
-		} catch (final SQLException e) {
-			e.printStackTrace();
-		}
 		return rasp;
 	}
 
@@ -87,11 +82,6 @@ public class RaspberryPiService implements IRaspberryPiService {
 		if (piList.size() > 0) {
 
 		}
-		try {
-			this.connectionSource.close();
-		} catch (final SQLException e) {
-			e.printStackTrace();
-		}
 		return piList;
 	}
 
@@ -109,13 +99,6 @@ public class RaspberryPiService implements IRaspberryPiService {
 		} catch (final SQLException e) {
 			e.printStackTrace();
 			return pi;
-		} finally {
-			try {
-				this.connectionSource.close();
-			} catch (final SQLException e) {
-				e.printStackTrace();
-				return pi;
-			}
 		}
 		return pi;
 	}

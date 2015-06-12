@@ -8,10 +8,12 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 import static spark.Spark.put;
 
+import com.swissbit.server.ws.ControllerBuilder;
 import com.swissbit.server.ws.error.ResponseError;
 import com.swissbit.server.ws.model.RaspberryPi;
 import com.swissbit.server.ws.services.IAbstractService;
 import com.swissbit.server.ws.services.IRaspberryPiService;
+import com.swissbit.server.ws.services.impl.RaspberryPiService;
 
 public class RaspberryPiController extends AbstractController {
 
@@ -33,6 +35,11 @@ public class RaspberryPiController extends AbstractController {
 			}
 			res.status(400);
 			return new ResponseError("No Raspberry Pi with id '%s' found", id);
+		} , json());
+		
+		get("/addPi/:rPiMacAddress", (req, res) -> {
+			final String rPiMacAddress = req.params(":rPiMacAddress");
+			return raspberryPiService.validateRaspberryPi(rPiMacAddress);
 		} , json());
 
 		// Used to create Raspberry Pi details (used at the Front-End UI)
