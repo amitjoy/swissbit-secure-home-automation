@@ -14,8 +14,10 @@ import com.swissbit.homeautomation.activity.EncryptCommandActivity;
 import com.swissbit.homeautomation.activity.MainActivity;
 import com.swissbit.homeautomation.db.DevicesInfoDbAdapter;
 import com.swissbit.homeautomation.utils.DBFactory;
+import com.swissbit.homeautomation.utils.MQTTFactory;
 import com.swissbit.homeautomation.utils.WSConstants;
 import com.swissbit.homeautomation.ws.VerifySecretCode;
+import com.swissbit.mqtt.client.IKuraMQTTClient;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
@@ -33,6 +35,7 @@ public class SecureCodeDialog {
     private DevicesInfoDbAdapter devicesInfoDbAdapter;
     private String secretCode;
 
+
     public void getSecureCode(Context context){
         this.mainContext = context;
         devicesInfoDbAdapter = DBFactory.getDevicesInfoDbAdapter(context);
@@ -47,15 +50,18 @@ public class SecureCodeDialog {
         dialogBuilder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                secretCode = txtCode.getText().toString();
-                verifySecretCode = new VerifySecretCode(mainContext,devicesInfoDbAdapter,secretCode);
+                secretCode = txtCode.getText().toString().trim();
+                Log.d("After Dialog", "Trim"+secretCode);
+                verifySecretCode = new VerifySecretCode(mainContext, devicesInfoDbAdapter, secretCode);
                 verifySecretCode.executeCredentialWS();
+                Log.d("After Set","ExecWS");
+
             }
         });
 
         AlertDialog dialogSecretCode = dialogBuilder.create();
         dialogSecretCode.show();
-        Log.d("After Dialog","Dailog");
+        Log.d("After Dialog", "Dailog");
     }
 
 

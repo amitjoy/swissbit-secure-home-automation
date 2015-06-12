@@ -18,6 +18,7 @@
 
 package com.swissbit.homeautomation.activity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -37,6 +38,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.common.collect.Lists;
+import com.swissbit.homeautomation.asyncTask.AuthenticationAsync;
 import com.swissbit.homeautomation.asyncTask.MqttSubscribeAsync;
 import com.android.swissbit.homeautomation.R;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -44,6 +46,7 @@ import com.google.zxing.integration.android.IntentResult;
 import com.swissbit.homeautomation.db.DevicesInfoDbAdapter;
 import com.swissbit.homeautomation.model.RaspberryPi;
 import com.swissbit.homeautomation.ui.adapter.RPiAdapter;
+import com.swissbit.homeautomation.utils.ActivityContexts;
 import com.swissbit.homeautomation.utils.DBFactory;
 import com.swissbit.homeautomation.utils.MQTTFactory;
 import com.swissbit.homeautomation.ui.dialog.SecureCodeDialog;
@@ -83,16 +86,16 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         protected Object doInBackground(Object[] params) {
+            client = MQTTFactory.getClient();
             boolean status = client.connect();
             Log.d("Kura MQTT Connect ", Boolean.toString(status));
 
-//            if (!status)
-            for(int i=0; i<10 && !status; i++ )
+            if (!status)
                 status = client.connect();
 
             Log.d("Kura MQTT Connect ", Boolean.toString(status));
             if (status) {
-                client.subscribe((String) MQTTFactory.getTopicToSubscribe(getApplicationContext(), TopicsConstants.HEARTBEAT), new MessageListener() {
+                client.subscribe((String) MQTTFactory.getTopicToSubscribe(TopicsConstants.HEARTBEAT), new MessageListener() {
                     @Override
                     public void processMessage(KuraPayload kuraPayload) {
                         if (kuraPayload != null) {
@@ -122,7 +125,7 @@ public class MainActivity extends ActionBarActivity {
                 client.connect();
 
             if (status)
-                client.subscribe((String) MQTTFactory.getTopicToSubscribe(getApplicationContext(), TopicsConstants.LWT), new MessageListener() {
+                client.subscribe((String) MQTTFactory.getTopicToSubscribe(TopicsConstants.LWT), new MessageListener() {
                     @Override
                     public void processMessage(KuraPayload kuraPayload) {
                         if (kuraPayload != null) {
@@ -145,11 +148,16 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Save the context of MainActivity for later usage in other classes
+        ActivityContexts.setMainActivityContext(this);
+
         devicesInfoDbAdapter = DBFactory.getDevicesInfoDbAdapter(this);
-        client = MQTTFactory.getClient(getApplicationContext());
 
         getSecureCode();
         Log.d("Check", "1");
+
+
         addToListView();
 
 //        mqttSubscribeAsync = new MqttSubscribeAsync();
@@ -185,15 +193,15 @@ public class MainActivity extends ActionBarActivity {
 
     public void askForMQTTCredential(View view) {
         //TODO
-        final boolean status = MQTTFactory.getClient(getApplicationContext()).isConnected();
+        final boolean status = MQTTFactory.getClient().isConnected();
 
         Log.d("Kura MQTT ......", Boolean.toString(status));
 
         if (!status)
-            MQTTFactory.getClient(getApplicationContext()).connect();
+            MQTTFactory.getClient().connect();
 
         if (status)
-            MQTTFactory.getClient(getApplicationContext()).publish(MQTTFactory.getTopicToPublish(getApplicationContext(),TopicsConstants.DUMMY_PUBLISH_TOPIC), MQTTFactory.generatePayload(getApplicationContext(),"ASD", "5323523532"));
+            MQTTFactory.getClient().publish(MQTTFactory.getTopicToPublish(TopicsConstants.DUMMY_PUBLISH_TOPIC), MQTTFactory.generatePayload("ASD", "5323523532"));
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -201,6 +209,10 @@ public class MainActivity extends ActionBarActivity {
         if (scanResult != null && scanResult.getContents()!=null) {
             String rid = scanResult.getContents();
             Toast.makeText(getApplicationContext(), rid, Toast.LENGTH_LONG).show();
+
+            AuthenticationAsync authenticationAsync = new AuthenticationAsync();
+            authenticationAsync.execute();
+            authenticationAsync.cancel(true);
             VerifyRaspberryPi verifyRaspberryPi = new VerifyRaspberryPi();
             if(verifyRaspberryPi.executeVerifyRaspberryPiWS(this,rid)){
                 checkRaspberryId(rid);

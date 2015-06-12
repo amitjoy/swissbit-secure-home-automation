@@ -80,8 +80,10 @@ public class DevicesInfoDbAdapter  {
         Cursor cursor = db.query(DBConstants.TABLE_NAME_CREDENTIALS,columns,null,null,null,null,null);
         if(cursor.getCount()!=0) {
             cursor.moveToFirst();
+            Log.d("Dialog","1");
             return cursor.getInt(cursor.getColumnIndex(DBConstants.DIALOGSHOW));
         }
+        Log.d("Dialog","0");
         return 0;
     }
 
@@ -91,7 +93,8 @@ public class DevicesInfoDbAdapter  {
         contentValues.put(DBConstants.USERNAME,username);
         contentValues.put(DBConstants.PASSWORD,password);
         contentValues.put(DBConstants.DIALOGSHOW,1);
-        db.update(DBConstants.TABLE_NAME_CREDENTIALS,contentValues,null,null);
+        db.update(DBConstants.TABLE_NAME_CREDENTIALS, contentValues, null, null);
+        Log.d("After Set", "SetCred");
     }
 
     public String[] getCredentials() {
