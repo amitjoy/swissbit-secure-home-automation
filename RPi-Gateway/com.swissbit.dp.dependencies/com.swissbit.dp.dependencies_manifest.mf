@@ -45,6 +45,6 @@ Name: netty-transport-rxtx-4.0.28.Final.jar
 Bundle-SymbolicName: io.netty.transport-rxtx
 Bundle-Version: 4.0.28.Final
 
-Name: RXTXComm_1.0.0.jar
-Bundle-SymbolicName: RXTXComm
-Bundle-Version: 1.0.0
+Name: com.swissbit.rxtx-osgi-1.0-SNAPSHOT.jar
+Bundle-SymbolicName: com.swissbit.rxtx-osgi
+Bundle-Version: 1.0.0.SNAPSHOT

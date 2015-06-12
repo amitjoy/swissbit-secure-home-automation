@@ -153,6 +153,7 @@ public class ZWaveControllerOperation extends Cloudlet
 	protected synchronized void deactivate(final ComponentContext context) {
 		LOGGER.info("Deactivating Zwave Controller Component....");
 		super.deactivate(context);
+		this.searchControllerServiceAndUnregister();
 		LOGGER.info("Deactivating Zwave Controller Component... Done.");
 	}
 
@@ -187,12 +188,12 @@ public class ZWaveControllerOperation extends Cloudlet
 	/** {@inheritDoc} */
 	@Override
 	public void onZWaveNodeAdded(final ZWaveEndpoint node) {
-		LOGGER.info("New ZWave Device Found " + node.getGenericDeviceClass());
+		LOGGER.info("New ZWave Device Found " + node.getNodeId());
 		try {
 			final KuraPayload payload = new KuraPayload();
-			payload.addMetric("node.address", node.getGenericDeviceClass());
 			payload.addMetric("node.id", node.getNodeId());
-			this.getCloudApplicationClient().publish("zwave/node/added", payload, DFLT_PUB_QOS, DFLT_RETAIN);
+			this.getCloudApplicationClient().controlPublish("zwave/node/added", payload, DFLT_PUB_QOS, DFLT_RETAIN,
+					DFLT_PRIORITY);
 			this.registerZwaveEndpointAsService(node);
 		} catch (final KuraException e) {
 			LOGGER.error(Throwables.getStackTraceAsString(e));
@@ -207,7 +208,8 @@ public class ZWaveControllerOperation extends Cloudlet
 			final KuraPayload payload = new KuraPayload();
 			payload.addMetric("node.address", node.getGenericDeviceClass());
 			payload.addMetric("node.id", node.getNodeId());
-			this.getCloudApplicationClient().publish("zwave/node/updated", payload, DFLT_PUB_QOS, DFLT_RETAIN);
+			this.getCloudApplicationClient().controlPublish("zwave/node/updated", payload, DFLT_PUB_QOS, DFLT_RETAIN,
+					DFLT_PRIORITY);
 			this.reregisterZwaveEndpointAsService(node);
 		} catch (final KuraException e) {
 			LOGGER.error(Throwables.getStackTraceAsString(e));
@@ -237,6 +239,35 @@ public class ZWaveControllerOperation extends Cloudlet
 		}
 		this.registerZwaveEndpointAsService(node);
 		LOGGER.info("Re-rgistering Updated Node in Registry... Done" + node.getNodeId());
+	}
+
+	/**
+	 * Used to consume the {@link ZWaveController} Service for unregistering the
+	 * previous invalid service references
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private void searchControllerServiceAndUnregister() {
+
+		final String filterText = "(objectClass=" + ZWaveController.class.getName() + ")";
+
+		Filter filter = null;
+		try {
+			filter = this.m_context.createFilter(filterText);
+		} catch (final InvalidSyntaxException e) {
+			LOGGER.error(Throwables.getStackTraceAsString(e));
+		}
+		final ServiceTracker zWaveTracker = new ServiceTracker(this.m_context, filter, null);
+
+		zWaveTracker.open();
+
+		// It will always return an array of length 1
+		final Object[] services = zWaveTracker.getServices();
+
+		if (services != null) {
+			final ServiceReference reference = zWaveTracker.getServiceReference();
+			this.m_context.ungetService(reference);
+		}
+
 	}
 
 	/**
@@ -271,13 +302,17 @@ public class ZWaveControllerOperation extends Cloudlet
 		final String controllerDeviceAddr = (String) this.m_properties.get(CONTROLLER_DEVICE_ADDR);
 		this.m_zwaveController = new NettyZWaveController(controllerDeviceAddr);
 		this.m_zwaveController.setListener(this);
+		this.m_zwaveController.start();
 
 		final Dictionary<String, Object> properties = new Hashtable<String, Object>();
 		properties.put("controller.device.address", controllerDeviceAddr);
 		properties.put("controller.node.id", this.m_zwaveController.getNodeId());
 		properties.put("controller.home.id", this.m_zwaveController.getHomeId());
 
+		LOGGER.info("ZWave Controller is registering as an OSGi Service....");
+		this.searchControllerServiceAndUnregister();
 		this.m_context.registerService(ZWaveController.class, this.m_zwaveController, properties);
+		LOGGER.info("ZWave Controller is registering as an OSGi Service....Done");
 		LOGGER.info("ZWave Controller is starting....Done");
 	}
 
@@ -286,6 +321,7 @@ public class ZWaveControllerOperation extends Cloudlet
 	public void stop() {
 		LOGGER.info("ZWave Controller is stopping....");
 		this.m_zwaveController.stop();
+		this.searchControllerServiceAndUnregister();
 		this.getCloudApplicationClient().release();
 		LOGGER.info("ZWave Controller is stopping....Done");
 	}
