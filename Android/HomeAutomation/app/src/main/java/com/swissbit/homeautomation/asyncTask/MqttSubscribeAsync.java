@@ -28,7 +28,7 @@ public class MqttSubscribeAsync extends AsyncTask {
         final boolean status = client.connect();
         String requestId = null;
         String topic = null;
-        final Object topicData = MQTTFactory.getTopicToSubscribe(m_context,TopicsConstants.DUMMY_PUBLISH_TOPIC);
+        final Object topicData = MQTTFactory.getTopicToSubscribe(TopicsConstants.DUMMY_PUBLISH_TOPIC);
         Log.d("Kura MQTT2", Boolean.toString(status));
 
         if (topicData instanceof Object[]) {

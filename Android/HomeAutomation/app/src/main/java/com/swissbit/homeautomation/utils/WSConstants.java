@@ -9,4 +9,6 @@ public interface WSConstants {
     public static final String CREDENTIAL_WS = "http://andropraktikumtum-agms.rhcloud.com/user/";
 //    public static final String ADD_RPI_WS = "http://192.168.0.13:4567/addRPi";
     public static final String ADD_RPI_WS = "http://131.159.215.87:4567/pi/";
+
+
 }

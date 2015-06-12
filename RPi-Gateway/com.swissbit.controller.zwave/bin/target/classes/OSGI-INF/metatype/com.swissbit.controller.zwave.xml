@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MetaData xmlns="http://www.osgi.org/xmlns/metatype/v1.2.0"
+	localization="en_us">
+	<OCD id="com.swissbit.controller.zwave" name="ZWave Controller"
+		description="This is used to specifiy ZWave Controller Interface">
+
+		<Icon
+			resource="http://icons.iconarchive.com/icons/hopstarter/soft-scraps/128/USB-icon.png"
+			size="32" />
+
+		<AD id="controller.device.address" name="controller.device.address"
+			type="String" cardinality="0" required="false"
+			default="/dev/tty.SLAB_USBtoUART"
+			description="Configurable property to specify ZWave Controller Device Address" />
+
+	</OCD>
+
+	<Designate pid="com.swissbit.controller.zwave">
+		<Object ocdref="com.swissbit.controller.zwave" />
+	</Designate>
+</MetaData>

@@ -6,24 +6,28 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.android.swissbit.homeautomation.R;
+import com.swissbit.homeautomation.utils.ActivityContexts;
+import com.swissbit.homeautomation.utils.EncryptionFactory;
+import com.swissbit.homeautomation.utils.MQTTFactory;
 
 /**
  * Created by manit on 05/06/15.
  */
 public class EncryptCommandActivity extends Activity{
 
-    private String encryptedString;
+    EncryptionFactory encryptionFactory = new EncryptionFactory();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.encrpyt_command_activity);
+        ActivityContexts.setEncryptCommandActivityContext(this);
 
         Intent intent = new Intent("tum.com.ssdapi.MAIN_ACTIVITY");
 
         Bundle bundle = new Bundle();
 
         bundle.putInt("Function", 1006);
-        bundle.putString("MSG", "ABC");
+        bundle.putString("MSG", MQTTFactory.getRaspberryPiById(1));
         intent.putExtras(bundle);
 
         startActivityForResult(intent, 6403);
@@ -37,10 +41,10 @@ public class EncryptCommandActivity extends Activity{
         {
             if (resultCode == Activity.RESULT_OK )
             {
-                encryptedString = pData.getExtras().get("Response").toString();
+                encryptionFactory.setEncryptedString(pData.getExtras().get("Response").toString());
             }
         }
-        Log.d("Encrypted Data", encryptedString);
+        Log.d("Encrypted Data", encryptionFactory.getEncryptedString());
     }
 
 }

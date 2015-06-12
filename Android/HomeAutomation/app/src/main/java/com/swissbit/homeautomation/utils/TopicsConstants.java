@@ -21,4 +21,8 @@ public interface TopicsConstants {
 
     public static final String TOPIC_SUBSCRIBE = "SUB";
 
+    public static final String RASPBERRY_AUTH_PUB = "AUTH-V1/EXEC/decrypt";
+
+    public static final String RASPBERRY_AUTH_SUB = "AUTH-V1/REPLY/";
+
 }
