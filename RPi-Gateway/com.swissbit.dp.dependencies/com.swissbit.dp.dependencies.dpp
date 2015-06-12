@@ -1,5 +1,5 @@
 #Deployment Plugin Project File
-#Tue Jun 02 08:56:49 CEST 2015
+#Thu Jun 11 15:25:57 CEST 2015
 build.ant.name=<.>/com.swissbit.dp.dependencies_build.xml
 build.dp.file=<.>/com.swissbit.dp.dependencies.dp
 build.location=
@@ -17,13 +17,13 @@ bundles.1.missing=false
 bundles.1.name=commons-collections-3.2.1.jar
 bundles.1.symbolic_name=org.apache.commons.collections
 bundles.1.version=3.2.1
-bundles.10.bundle_path=<.>/lib/RXTXComm_1.0.0.jar
+bundles.10.bundle_path=/Users/AMIT/swissbit/RPi-Gateway/com.swissbit.rxtx-osgi/target/com.swissbit.rxtx-osgi-1.0-SNAPSHOT.jar
 bundles.10.customizer=false
 bundles.10.headers.count=0
 bundles.10.missing=false
-bundles.10.name=RXTXComm_1.0.0.jar
-bundles.10.symbolic_name=RXTXComm
-bundles.10.version=1.0.0
+bundles.10.name=com.swissbit.rxtx-osgi-1.0-SNAPSHOT.jar
+bundles.10.symbolic_name=com.swissbit.rxtx-osgi
+bundles.10.version=1.0.0.SNAPSHOT
 bundles.2.bundle_path=<.>/lib/netty-buffer-4.0.28.Final.jar
 bundles.2.customizer=false
 bundles.2.headers.count=0
