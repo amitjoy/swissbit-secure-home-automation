@@ -9,7 +9,7 @@ public class RaspberryPi {
 	@DatabaseField
 	private String customer;
 
-	@DatabaseField
+	@DatabaseField(id = true)
 	private String id;
 
 	@DatabaseField

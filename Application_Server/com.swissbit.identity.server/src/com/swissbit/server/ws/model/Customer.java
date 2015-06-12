@@ -9,7 +9,7 @@ public class Customer {
 	@DatabaseField
 	private String email;
 
-	@DatabaseField
+	@DatabaseField(id = true)
 	private String id;
 
 	@DatabaseField
