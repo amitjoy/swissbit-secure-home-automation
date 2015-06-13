@@ -42,7 +42,7 @@ import com.swissbit.device.zwave.util.CommandUtil;
  * @author AMIT KUMAR MONDAL
  */
 @Component(name = "com.swissbit.device.zwave")
-@Service(value = { IZwaveDeviceAction.class })
+@Service(value = { IZwaveDeviceAction.class, ZWaveDeviceAction.class })
 public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 
 	/**
@@ -125,7 +125,7 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	protected void doExec(final CloudletTopic reqTopic, final KuraRequestPayload reqPayload,
 			final KuraResponsePayload respPayload) throws KuraException {
 		// Parse the nodeId
-		final String nodeId = (String) reqPayload.getMetric("nodeId");
+		final String nodeId = String.valueOf(reqPayload.getMetric("nodeId"));
 
 		if ("on".equals(reqTopic.getResources()[0])) {
 			this.m_activityLogService.saveLog("Device is turned on");
