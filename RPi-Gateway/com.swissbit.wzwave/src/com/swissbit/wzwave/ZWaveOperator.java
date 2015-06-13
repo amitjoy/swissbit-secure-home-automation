@@ -32,7 +32,7 @@ import com.whizzosoftware.wzwave.node.ZWaveEndpoint;
  * @author AMIT KUMAR MONDAL
  *
  */
-public class ZWaveOperator implements ZWaveControllerListener {
+public final class ZWaveOperator implements ZWaveControllerListener {
 
 	/**
 	 * Used to hold the passed argument as command
