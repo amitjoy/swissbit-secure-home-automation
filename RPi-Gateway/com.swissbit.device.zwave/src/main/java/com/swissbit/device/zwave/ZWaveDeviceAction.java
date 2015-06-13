@@ -143,7 +143,7 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	protected void doGet(final CloudletTopic reqTopic, final KuraRequestPayload reqPayload,
 			final KuraResponsePayload respPayload) throws KuraException {
 		// Parse the nodeId
-		final String nodeId = (String) reqPayload.getMetric("nodeId");
+		final String nodeId = String.valueOf(reqPayload.getMetric("nodeId"));
 
 		if ("status".equals(reqTopic.getResources()[0])) {
 			this.m_activityLogService.saveLog("Device status is retrieved");
@@ -151,7 +151,10 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 		}
 		if ("list".equals(reqTopic.getResources()[0])) {
 			this.m_activityLogService.saveLog("Connected Devices List is retrieved");
-			this.getConnectedDevices().forEach(node -> respPayload.addMetric("node.id", ""));
+			this.getConnectedDevices().forEach(node -> {
+				int i = 0;
+				respPayload.addMetric("node.id_" + i++, node);
+			});
 		}
 		respPayload.setResponseCode(KuraResponsePayload.RESPONSE_CODE_OK);
 	}
