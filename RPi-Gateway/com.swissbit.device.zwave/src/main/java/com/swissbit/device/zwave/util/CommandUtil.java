@@ -101,10 +101,8 @@ public final class CommandUtil {
 				}
 
 				if ("LIST".equals(operationName)) {
-					if (line.contains("ZWave Device Added:")) {
-						if (Integer.valueOf(line.split(":")[1]) != 2) {
-							listOfDevices.add(line.split(":")[1]);
-						}
+					if (line.contains("ZWave Device Added")) {
+						listOfDevices.add(line.split(":")[1]);
 						return listOfDevices;
 					}
 				}

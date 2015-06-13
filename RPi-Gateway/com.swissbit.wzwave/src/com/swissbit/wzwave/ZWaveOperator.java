@@ -117,7 +117,11 @@ public class ZWaveOperator implements ZWaveControllerListener {
 	/** {@inheritDoc}} */
 	@Override
 	public void onZWaveNodeAdded(final ZWaveEndpoint node) {
-		System.out.println("ZWave Device Added:" + node.getNodeId());
+		// Don't consider the RPi as a ZWave Node to which the ZWave PC
+		// Controller is attached
+		if (node.getNodeId() != 2) {
+			System.out.println("ZWave Device Added:" + node.getNodeId());
+		}
 		switch (s_argDevCommand) {
 		case "ON":
 			if (node.getNodeId() == s_nodeId) {
