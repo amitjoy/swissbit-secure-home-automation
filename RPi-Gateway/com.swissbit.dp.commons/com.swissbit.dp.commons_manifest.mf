@@ -17,10 +17,6 @@ Name: com.swissbit.authentication-1.0-SNAPSHOT.jar
 Bundle-SymbolicName: com.swissbit.authentication
 Bundle-Version: 1.0.0.SNAPSHOT
 
-Name: com.swissbit.controller.zwave-1.0-SNAPSHOT.jar
-Bundle-SymbolicName: com.swissbit.controller.zwave
-Bundle-Version: 1.0.0.SNAPSHOT
-
 Name: com.swissbit.hsql.conf-1.0-SNAPSHOT.jar
 Bundle-SymbolicName: com.swissbit.hsql.conf
 Bundle-Version: 1.0.0.SNAPSHOT
