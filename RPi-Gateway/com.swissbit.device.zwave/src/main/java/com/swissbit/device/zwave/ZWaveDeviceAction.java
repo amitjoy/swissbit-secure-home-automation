@@ -16,13 +16,11 @@
 package com.swissbit.device.zwave;
 
 import java.util.List;
-import java.util.Objects;
 
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Deactivate;
 import org.apache.felix.scr.annotations.Reference;
-import org.apache.felix.scr.annotations.ReferenceCardinality;
 import org.apache.felix.scr.annotations.Service;
 import org.eclipse.kura.KuraException;
 import org.eclipse.kura.cloud.CloudService;
@@ -36,9 +34,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 import com.swissbit.activity.log.IActivityLogService;
-import com.whizzosoftware.wzwave.commandclass.BasicCommandClass;
-import com.whizzosoftware.wzwave.controller.ZWaveController;
-import com.whizzosoftware.wzwave.node.ZWaveEndpoint;
+import com.swissbit.device.zwave.util.CommandUtil;
 
 /**
  * The implementation of {@link IZwaveDeviceAction}
@@ -56,14 +52,14 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	private static final String APP_ID = "DEVICE-V1";
 
 	/**
+	 * The list to hold all the device lists
+	 */
+	private static final List<String> list = Lists.newArrayList();
+
+	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(ZWaveDeviceAction.class);
-
-	/**
-	 * Stores list of all {@link ZWaveEndpoint} service objects
-	 */
-	private final List<ZWaveEndpoint> list = Lists.newCopyOnWriteArrayList();
 
 	/**
 	 * Activity Log Service Dependency
@@ -76,18 +72,6 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	 */
 	@Reference(bind = "bindCloudService", unbind = "unbindCloudService")
 	private volatile CloudService m_cloudService;
-
-	/**
-	 * ZWave Controller Service
-	 */
-	@Reference(bind = "bindZwaveController", unbind = "unbindZwaveController", cardinality = ReferenceCardinality.OPTIONAL_UNARY)
-	private volatile ZWaveController m_controller;
-
-	/**
-	 * ZWave Endpoint Service
-	 */
-	@Reference(bind = "bindZwaveNode", unbind = "unbindZwaveNode", cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE)
-	private volatile ZWaveEndpoint m_waveEndpoint;
 
 	/**
 	 * Constructor
@@ -129,25 +113,6 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	}
 
 	/**
-	 * ZWaveController Service Binding Callback
-	 */
-	public synchronized void bindZwaveController(final ZWaveController zWaveController) {
-		if (this.m_controller == null) {
-			this.m_controller = zWaveController;
-		}
-	}
-
-	/**
-	 * ZWaveNode Service Binding Callback
-	 */
-	public synchronized void bindZwaveNode(final ZWaveEndpoint zWaveEndpoint) {
-		if (!this.list.contains(zWaveEndpoint)) {
-			this.list.add(zWaveEndpoint);
-			this.m_waveEndpoint = zWaveEndpoint;
-		}
-	}
-
-	/**
 	 * Callback while this component is getting deregistered
 	 *
 	 * @param properties
@@ -166,7 +131,7 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	protected void doExec(final CloudletTopic reqTopic, final KuraRequestPayload reqPayload,
 			final KuraResponsePayload respPayload) throws KuraException {
 		// Parse the nodeId
-		final byte nodeId = (byte) ((int) (Integer.valueOf((String) reqPayload.getMetric("nodeId"))));
+		final String nodeId = (String) reqPayload.getMetric("nodeId");
 
 		if ("on".equals(reqTopic.getResources()[0])) {
 			this.m_activityLogService.saveLog("Device is turned on");
@@ -184,7 +149,7 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	protected void doGet(final CloudletTopic reqTopic, final KuraRequestPayload reqPayload,
 			final KuraResponsePayload respPayload) throws KuraException {
 		// Parse the nodeId
-		final byte nodeId = (byte) ((int) (Integer.valueOf((String) reqPayload.getMetric("nodeId"))));
+		final String nodeId = (String) reqPayload.getMetric("nodeId");
 
 		if ("status".equals(reqTopic.getResources()[0])) {
 			this.m_activityLogService.saveLog("Device status is retrieved");
@@ -192,62 +157,34 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 		}
 		if ("list".equals(reqTopic.getResources()[0])) {
 			this.m_activityLogService.saveLog("Connected Devices List is retrieved");
-			this.list.forEach(node -> respPayload.addMetric("node.id", node.getNodeId()));
+			this.list.forEach(node -> respPayload.addMetric("node.id", ""));
 		}
 		respPayload.setResponseCode(KuraResponsePayload.RESPONSE_CODE_OK);
 	}
 
-	/**
-	 * Returns {@link ZWaveEndpoint} reference for the given node id
-	 */
-	private ZWaveEndpoint findNode(final byte nodeId) {
-		for (final ZWaveEndpoint node : this.list) {
-			if (node.getNodeId() == nodeId) {
-				return node;
-			}
-		}
+	/** {@inheritDoc} */
+	@Override
+	public List<String> getConnectedDevices() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public List<? extends ZWaveEndpoint> getConnectedDevices() {
-		return this.list;
+	public boolean getStatus(final String nodeId) {
+		return CommandUtil.switchOp(nodeId, "status");
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean getStatus(final byte nodeId) {
-		final ZWaveEndpoint node = this.findNode(nodeId);
-		final BasicCommandClass basicCommandClass = (BasicCommandClass) node.getCommandClass(BasicCommandClass.ID);
-		final byte value = basicCommandClass.getValue();
-		if (value == (byte) 0xFF) {
-			return false;
-		} else {
-			return true;
-		}
+	public boolean switchOff(final String nodeId) {
+		return CommandUtil.switchOp(nodeId, "off");
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean switchOff(final byte nodeId) {
-		final ZWaveEndpoint node = this.findNode(nodeId);
-		if (Objects.nonNull(node)) {
-			this.m_controller.sendDataFrame(BasicCommandClass.createSetv1(nodeId, (byte) 0x00));
-			return true;
-		}
-		return false;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public boolean switchOn(final byte nodeId) {
-		final ZWaveEndpoint node = this.findNode(nodeId);
-		if (Objects.nonNull(node)) {
-			this.m_controller.sendDataFrame(BasicCommandClass.createSetv1(nodeId, (byte) 0xFF));
-			return true;
-		}
-		return false;
+	public boolean switchOn(final String nodeId) {
+		return CommandUtil.switchOp(nodeId, "on");
 	}
 
 	/**
@@ -265,24 +202,6 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	public synchronized void unbindCloudService(final CloudService cloudService) {
 		if (this.m_cloudService == cloudService) {
 			super.setCloudService(this.m_cloudService = null);
-		}
-	}
-
-	/**
-	 * ZWaveController Service Callback while deregistering
-	 */
-	public synchronized void unbindZwaveController(final ZWaveController zWaveController) {
-		if (this.m_controller == zWaveController) {
-			this.m_controller = null;
-		}
-	}
-
-	/**
-	 * ZWaveNode Service Callback while deregistering
-	 */
-	public synchronized void unbindZwaveNode(final ZWaveEndpoint zWaveEndpoint) {
-		if ((this.list.size() > 0) && this.list.contains(zWaveEndpoint)) {
-			this.list.remove(zWaveEndpoint);
 		}
 	}
 

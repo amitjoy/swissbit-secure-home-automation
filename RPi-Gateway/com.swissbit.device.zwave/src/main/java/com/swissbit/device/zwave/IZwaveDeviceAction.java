@@ -17,34 +17,32 @@ package com.swissbit.device.zwave;
 
 import java.util.List;
 
-import com.whizzosoftware.wzwave.node.ZWaveEndpoint;
-
 /**
  * Used to provide simple device on off operation
- * 
+ *
  * @author AMIT KUMAR MONDAL
  *
  */
 public interface IZwaveDeviceAction {
 
 	/**
-	 * Used to switch the device on
+	 * Returns the list of devices connected to the RPi
 	 */
-	public boolean switchOn(byte nodeId);
-
-	/**
-	 * Used to switch the device off
-	 */
-	public boolean switchOff(byte nodeId);
+	public List<String> getConnectedDevices();
 
 	/**
 	 * Returns the device status
 	 */
-	public boolean getStatus(byte nodeId);
+	public boolean getStatus(String nodeId);
 
 	/**
-	 * Returns the list of devices connected to the RPi
+	 * Used to switch the device off
 	 */
-	public List<? extends ZWaveEndpoint> getConnectedDevices();
+	public boolean switchOff(String nodeId);
+
+	/**
+	 * Used to switch the device on
+	 */
+	public boolean switchOn(String nodeId);
 
 }

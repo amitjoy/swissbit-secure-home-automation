@@ -180,7 +180,7 @@
 		<module>../com.swissbit.activity.log</module>
 		<module>../com.swissbit.device.zwave</module>
 		<module>../com.swissbit.authentication</module>
-		<module>../com.swissbit.controller.zwave</module>
+		
 		<module>../com.swissbit.hsql.conf</module>
 		<module>../com.swissbit.mqtt.client</module>
 		<module>../com.swissbit.mqtt.heartbeat</module>
