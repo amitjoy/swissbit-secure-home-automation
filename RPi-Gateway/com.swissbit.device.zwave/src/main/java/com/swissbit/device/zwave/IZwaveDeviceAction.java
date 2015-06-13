@@ -33,16 +33,16 @@ public interface IZwaveDeviceAction {
 	/**
 	 * Returns the device status
 	 */
-	public boolean getStatus(String nodeId);
+	public Boolean getStatus(String nodeId);
 
 	/**
 	 * Used to switch the device off
 	 */
-	public boolean switchOff(String nodeId);
+	public Boolean switchOff(String nodeId);
 
 	/**
 	 * Used to switch the device on
 	 */
-	public boolean switchOn(String nodeId);
+	public Boolean switchOn(String nodeId);
 
 }

@@ -18,6 +18,7 @@ package com.swissbit.device.zwave.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 
 import org.eclipse.kura.KuraErrorCode;
 import org.eclipse.kura.KuraException;
@@ -27,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Throwables;
+import com.google.common.collect.Lists;
 
 /**
  * Used to execute commands for ZWave Operations
@@ -44,7 +46,7 @@ public final class CommandUtil {
 	/**
 	 * Represents location for all the ZWave Related Commands
 	 */
-	private static final String JAR_LOCATION = "/home/pi/abc.jar";
+	private static final String JAR_LOCATION = "/home/pi/com.swissbit.device.zwave.operation.jar";
 
 	/**
 	 * Logger.
@@ -64,10 +66,11 @@ public final class CommandUtil {
 	/**
 	 * Used to be called to turn off the specified device
 	 */
-	public static boolean switchOp(final String nodeId, final String operationName) {
+	public static Object switchOp(final String nodeId, final String operationName) {
 		SafeProcess process = null;
 		BufferedReader br = null;
 		StringBuilder sb = null;
+		final List<String> listOfDevices = Lists.newArrayList();
 		final String[] command = { CMD_JAVA, "-Djava.library.path=" + RXTX_LIBRARY_PATH, "-cp " + RXTX_LOCATION,
 				"-jar " + JAR_LOCATION, nodeId, operationName };
 
@@ -83,14 +86,29 @@ public final class CommandUtil {
 				}
 
 				if ("ON".equals(operationName)) {
-					if (line.contains("Z-Wave node added")) {
-						// TODO
+					if (line.contains("ZWave Node is switched on")) {
+						return true;
 					}
 				}
 
 				if ("OFF".equals(operationName)) {
-					if (line.contains("Z-Wave node added")) {
-						// TODO
+					if (line.contains("ZWave Node is switched off")) {
+						return true;
+					}
+				}
+
+				if ("STATUS".equals(operationName)) {
+					if (line.contains("Status:")) {
+						return line.split(":")[1];
+					}
+				}
+
+				if ("LIST".equals(operationName)) {
+					if (line.contains("ZWave Device Added:")) {
+						if (Integer.valueOf(line.split(":")[1]) != 2) {
+							listOfDevices.add(line.split(":")[1]);
+						}
+						return listOfDevices;
 					}
 				}
 				sb.append(line);
