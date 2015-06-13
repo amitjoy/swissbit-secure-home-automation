@@ -22,8 +22,6 @@ import java.util.List;
 
 import org.eclipse.kura.KuraErrorCode;
 import org.eclipse.kura.KuraException;
-import org.eclipse.kura.core.util.ProcessUtil;
-import org.eclipse.kura.core.util.SafeProcess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +44,7 @@ public final class CommandUtil {
 	/**
 	 * Represents location for all the ZWave Related Commands
 	 */
-	private static final String JAR_LOCATION = "/home/pi/com.swissbit.device.zwave.operation.jar";
+	private static final String JAR_LOCATION = "/home/pi/swissbit/com.swissbit.device.zwave.operation.jar";
 
 	/**
 	 * Logger.
@@ -67,15 +65,14 @@ public final class CommandUtil {
 	 * Used to be called to turn off the specified device
 	 */
 	public static Object switchOp(final String nodeId, final String operationName) {
-		SafeProcess process = null;
+		Process process = null;
 		BufferedReader br = null;
 		StringBuilder sb = null;
 		final List<String> listOfDevices = Lists.newArrayList();
-		final String[] command = { CMD_JAVA, "-Djava.library.path=" + RXTX_LIBRARY_PATH, "-cp " + RXTX_LOCATION,
-				"-jar " + JAR_LOCATION, nodeId, operationName };
 
 		try {
-			process = ProcessUtil.exec(command);
+			process = Runtime.getRuntime().exec("java -Djava.library.path=" + RXTX_LIBRARY_PATH + " -cp "
+					+ RXTX_LOCATION + " -jar " + JAR_LOCATION + " " + nodeId + " " + operationName);
 			br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 			sb = new StringBuilder();
 			String line = null;
