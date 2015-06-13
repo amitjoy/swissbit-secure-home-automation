@@ -15,6 +15,11 @@
  *******************************************************************************/
 package com.swissbit.wzwave;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.concurrent.TimeUnit;
+
 import com.whizzosoftware.wzwave.commandclass.BasicCommandClass;
 import com.whizzosoftware.wzwave.controller.ZWaveController;
 import com.whizzosoftware.wzwave.controller.ZWaveControllerListener;
@@ -49,6 +54,11 @@ public class ZWaveOperator implements ZWaveControllerListener {
 	 */
 	private static final String ZWAVE_PC_CONTROLLER = "/dev/ttyUSB0";
 
+	/**
+	 * ZWave PC Controller Location
+	 */
+	private static final String ZWAVE_PC_CONTROLLER_LOCK_FILE = "/var/lock/LCK..ttyUSB0";
+
 	public static void main(final String... args) {
 
 		if (args.length > 1) {
@@ -60,9 +70,28 @@ public class ZWaveOperator implements ZWaveControllerListener {
 			throw new IllegalArgumentException("You have to mention command and node id to operate on the device");
 		}
 
-		s_nodeId = ((byte) ((int) (Integer.valueOf(s_argCommand))));
+		try {
+			s_nodeId = ((byte) ((int) (Integer.valueOf(s_argCommand))));
+		} catch (final NumberFormatException e) {
+			throw new IllegalArgumentException("You have to mention an integer as node id");
+		}
 
-		new ZWaveOperator();
+		try {
+			if (Files.exists(Paths.get(ZWAVE_PC_CONTROLLER_LOCK_FILE))) {
+				Files.delete(Paths.get(ZWAVE_PC_CONTROLLER_LOCK_FILE));
+			}
+		} catch (final IOException e) {
+			// No need to log
+		}
+
+		try {
+			new ZWaveOperator();
+			TimeUnit.SECONDS.sleep(7);
+		} catch (final InterruptedException e) {
+			e.printStackTrace();
+		} finally {
+			System.exit(0);
+		}
 	}
 
 	/**
@@ -88,32 +117,38 @@ public class ZWaveOperator implements ZWaveControllerListener {
 	/** {@inheritDoc}} */
 	@Override
 	public void onZWaveNodeAdded(final ZWaveEndpoint node) {
-		System.out.println("Z-Wave node added: " + node.getNodeId());
+		System.out.println("ZWave Device Added:" + node.getNodeId());
 		switch (s_argDevCommand) {
 		case "ON":
 			if (node.getNodeId() == s_nodeId) {
+				System.out.println("ZWave Node is switched on");
 				this.controller.sendDataFrame(BasicCommandClass.createSetv1(node.getNodeId(), (byte) 0xFF));
 			}
 			break;
 
 		case "OFF":
 			if (node.getNodeId() == s_nodeId) {
+				System.out.println("ZWave Node is switched off");
 				this.controller.sendDataFrame(BasicCommandClass.createSetv1(node.getNodeId(), (byte) 0x00));
 			}
 			break;
 
 		case "STATUS":
-			// TODO Implement Status
+			if (node.getNodeId() == s_nodeId) {
+				this.controller.sendDataFrame(BasicCommandClass.createGetv1(node.getNodeId()));
+				final BasicCommandClass bcc = (BasicCommandClass) node.getCommandClass(BasicCommandClass.ID);
+				System.out.println("Status:" + bcc.getValue());
+			}
 			break;
 
 		default:
-			break;
+			throw new IllegalArgumentException("Your command is not recognized");
 		}
 	}
 
 	/** {@inheritDoc}} */
 	@Override
 	public void onZWaveNodeUpdated(final ZWaveEndpoint node) {
-		System.out.println("Z-Wave node updated: " + node.getNodeId());
+		// No need
 	}
 }

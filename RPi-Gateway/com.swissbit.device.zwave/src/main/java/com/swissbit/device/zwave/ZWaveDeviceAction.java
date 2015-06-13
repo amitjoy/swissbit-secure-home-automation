@@ -32,7 +32,6 @@ import org.osgi.service.component.ComponentContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Lists;
 import com.swissbit.activity.log.IActivityLogService;
 import com.swissbit.device.zwave.util.CommandUtil;
 
@@ -50,11 +49,6 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	 * Defines Application ID for ZWave Component
 	 */
 	private static final String APP_ID = "DEVICE-V1";
-
-	/**
-	 * The list to hold all the device lists
-	 */
-	private static final List<String> list = Lists.newArrayList();
 
 	/**
 	 * Logger.
@@ -157,34 +151,35 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 		}
 		if ("list".equals(reqTopic.getResources()[0])) {
 			this.m_activityLogService.saveLog("Connected Devices List is retrieved");
-			this.list.forEach(node -> respPayload.addMetric("node.id", ""));
+			this.getConnectedDevices().forEach(node -> respPayload.addMetric("node.id", ""));
 		}
 		respPayload.setResponseCode(KuraResponsePayload.RESPONSE_CODE_OK);
 	}
 
 	/** {@inheritDoc} */
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> getConnectedDevices() {
-		// TODO Auto-generated method stub
-		return null;
+		return (List<String>) CommandUtil.switchOp("10", "LIST");
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean getStatus(final String nodeId) {
-		return CommandUtil.switchOp(nodeId, "status");
+	public Boolean getStatus(final String nodeId) {
+		// TODO
+		return true;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean switchOff(final String nodeId) {
-		return CommandUtil.switchOp(nodeId, "off");
+	public Boolean switchOff(final String nodeId) {
+		return (Boolean) CommandUtil.switchOp(nodeId, "OFF");
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean switchOn(final String nodeId) {
-		return CommandUtil.switchOp(nodeId, "on");
+	public Boolean switchOn(final String nodeId) {
+		return (Boolean) CommandUtil.switchOp(nodeId, "ON");
 	}
 
 	/**
