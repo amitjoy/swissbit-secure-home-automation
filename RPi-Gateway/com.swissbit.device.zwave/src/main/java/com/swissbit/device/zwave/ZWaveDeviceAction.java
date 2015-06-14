@@ -169,8 +169,7 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	/** {@inheritDoc} */
 	@Override
 	public Boolean getStatus(final String nodeId) {
-		// TODO
-		return true;
+		return Boolean.valueOf((String) CommandUtil.switchOp(nodeId, "STATUS"));
 	}
 
 	/** {@inheritDoc} */
