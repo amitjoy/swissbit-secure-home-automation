@@ -122,7 +122,7 @@
 				<artifactId>rxtx</artifactId>
 				<version>${rxtx.version}</version>
 			</dependency>
-			
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -176,19 +176,20 @@
 		<url>http://www.swissbit.com</url>
 		<name>Swissbit AG</name>
 	</organization>
+	
 	<modules>
 		<module>../com.swissbit.activity.log</module>
 		<module>../com.swissbit.device.zwave</module>
 		<module>../com.swissbit.authentication</module>
-		
 		<module>../com.swissbit.hsql.conf</module>
 		<module>../com.swissbit.mqtt.client</module>
 		<module>../com.swissbit.mqtt.heartbeat</module>
 		<module>../com.swissbit.assd.comm</module>
-		
 		<module>../com.swissbit.rxtx-osgi</module>
+		<module>../com.swissbit.accesscontrol</module>
 		<module>../com.swissbit.dp.parent</module>
 	</modules>
+	
 	<scm>
 		<url>https://bitbucket.org/i-am-it/swissbit-secure-home-automation</url>
 		<developerConnection>Amit Kumar Mondal</developerConnection>
