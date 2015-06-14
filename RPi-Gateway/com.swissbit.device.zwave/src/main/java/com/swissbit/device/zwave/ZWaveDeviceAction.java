@@ -33,6 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.swissbit.activity.log.IActivityLogService;
+import com.swissbit.assd.comm.IASSDCommunication;
 import com.swissbit.device.zwave.util.CommandUtil;
 
 /**
@@ -60,6 +61,12 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	 */
 	@Reference(bind = "bindActivityLogService", unbind = "unbindActivityLogService")
 	private volatile IActivityLogService m_activityLogService;
+
+	/**
+	 * ASSD Communication Service Dependency
+	 */
+	@Reference(bind = "bindASSDCommunicationService", unbind = "unbindASSDCommunicationService")
+	private volatile IASSDCommunication m_assdCommunication;
 
 	/**
 	 * Kura Cloud Service Injection
@@ -98,6 +105,15 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	}
 
 	/**
+	 * ASSD Communication Service Binding Callback
+	 */
+	public synchronized void bindASSDCommunicationService(final IASSDCommunication iassdCommunication) {
+		if (this.m_assdCommunication == null) {
+			this.m_assdCommunication = iassdCommunication;
+		}
+	}
+
+	/**
 	 * Kura Cloud Service Binding Callback
 	 */
 	public synchronized void bindCloudService(final CloudService cloudService) {
@@ -127,6 +143,7 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 		// Parse the nodeId
 		final String nodeId = String.valueOf(reqPayload.getMetric("nodeId"));
 
+		// TODO Decrypt the nodeId metric
 		if ("on".equals(reqTopic.getResources()[0])) {
 			this.m_activityLogService.saveLog("Device is turned on");
 			this.switchOn(nodeId);
@@ -145,6 +162,7 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 		// Parse the nodeId
 		final String nodeId = String.valueOf(reqPayload.getMetric("nodeId"));
 
+		// TODO Encrypt the payload metric
 		if ("status".equals(reqTopic.getResources()[0])) {
 			this.m_activityLogService.saveLog("Device status is retrieved");
 			respPayload.addMetric("status", this.getStatus(nodeId));
@@ -190,6 +208,15 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	public synchronized void unbindActivityLogService(final IActivityLogService activityLogService) {
 		if (this.m_activityLogService == activityLogService) {
 			this.m_activityLogService = null;
+		}
+	}
+
+	/**
+	 * ASSD Communication Service Unbinding Callback
+	 */
+	public synchronized void unbindASSDCommunicationService(final IASSDCommunication iassdCommunication) {
+		if (this.m_assdCommunication == iassdCommunication) {
+			this.m_assdCommunication = null;
 		}
 	}
 
