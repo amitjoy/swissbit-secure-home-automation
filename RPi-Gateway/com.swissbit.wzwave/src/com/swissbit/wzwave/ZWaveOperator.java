@@ -20,7 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
-import com.whizzosoftware.wzwave.commandclass.BasicCommandClass;
+import com.whizzosoftware.wzwave.commandclass.BinarySwitchCommandClass;
 import com.whizzosoftware.wzwave.controller.ZWaveController;
 import com.whizzosoftware.wzwave.controller.ZWaveControllerListener;
 import com.whizzosoftware.wzwave.controller.netty.NettyZWaveController;
@@ -126,22 +126,23 @@ public final class ZWaveOperator implements ZWaveControllerListener {
 		case "ON":
 			if (node.getNodeId() == s_nodeId) {
 				System.out.println("ZWave Node is switched on");
-				this.controller.sendDataFrame(BasicCommandClass.createSetv1(node.getNodeId(), (byte) 0xFF));
+				this.controller.sendDataFrame(BinarySwitchCommandClass.createSetv1(node.getNodeId(), true));
 			}
 			break;
 
 		case "OFF":
 			if (node.getNodeId() == s_nodeId) {
 				System.out.println("ZWave Node is switched off");
-				this.controller.sendDataFrame(BasicCommandClass.createSetv1(node.getNodeId(), (byte) 0x00));
+				this.controller.sendDataFrame(BinarySwitchCommandClass.createSetv1(node.getNodeId(), false));
 			}
 			break;
 
 		case "STATUS":
 			if (node.getNodeId() == s_nodeId) {
-				this.controller.sendDataFrame(BasicCommandClass.createGetv1(node.getNodeId()));
-				final BasicCommandClass bcc = (BasicCommandClass) node.getCommandClass(BasicCommandClass.ID);
-				System.out.println("Status:" + bcc.getValue());
+				this.controller.sendDataFrame(BinarySwitchCommandClass.createGetv1(node.getNodeId()));
+				final BinarySwitchCommandClass bcc = (BinarySwitchCommandClass) node
+						.getCommandClass(BinarySwitchCommandClass.ID);
+				System.out.println("Status:" + (bcc.isOn()));
 			}
 			break;
 

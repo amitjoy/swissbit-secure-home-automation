@@ -95,7 +95,7 @@ public final class CommandUtil {
 				}
 
 				if ("STATUS".equals(operationName)) {
-					if (line.contains("Status:")) {
+					if (line.contains("Status")) {
 						return line.split(":")[1];
 					}
 				}
