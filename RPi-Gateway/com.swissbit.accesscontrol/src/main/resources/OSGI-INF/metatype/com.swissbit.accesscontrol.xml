@@ -9,7 +9,7 @@
 			size="32" />
 
 		<AD id="com.swissbit.accesscontrol.clients" name="com.swissbit.accesscontrol.clients"
-			type="String" cardinality="0" required="true" default=""
+			type="String" cardinality="0" required="true" default="123456789"
 			description="Configurable property to set Client Ids to revoke permission to access this Raspberry Pi (To add multiple clients, separate the Ids by # Separator)" />
 
 	</OCD>

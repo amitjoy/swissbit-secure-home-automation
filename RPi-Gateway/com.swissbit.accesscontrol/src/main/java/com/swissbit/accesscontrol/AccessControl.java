@@ -53,7 +53,8 @@ public class AccessControl extends Cloudlet implements ConfigurableComponent {
 	private static final String APP_ID = "SURVEILLANCE-V1";
 
 	/**
-	 * Configurable property to set MQTT Hearbeat Topic Namespace
+	 * Configurable property to set Client Ids to revoke permission to access
+	 * this Raspberry Pi
 	 */
 	private static final String CLIENTS_LIST = "com.swissbit.accesscontrol.clients";
 
