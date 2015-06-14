@@ -21,6 +21,7 @@ import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
 import com.whizzosoftware.wzwave.commandclass.BinarySwitchCommandClass;
+import com.whizzosoftware.wzwave.commandclass.MeterCommandClass;
 import com.whizzosoftware.wzwave.controller.ZWaveController;
 import com.whizzosoftware.wzwave.controller.ZWaveControllerListener;
 import com.whizzosoftware.wzwave.controller.netty.NettyZWaveController;
@@ -140,9 +141,18 @@ public final class ZWaveOperator implements ZWaveControllerListener {
 		case "STATUS":
 			if (node.getNodeId() == s_nodeId) {
 				this.controller.sendDataFrame(BinarySwitchCommandClass.createGetv1(node.getNodeId()));
-				final BinarySwitchCommandClass bcc = (BinarySwitchCommandClass) node
+				final BinarySwitchCommandClass bscc = (BinarySwitchCommandClass) node
 						.getCommandClass(BinarySwitchCommandClass.ID);
-				System.out.println("Status:" + (bcc.isOn()));
+				System.out.println("Status:" + (bscc.isOn()));
+			}
+			break;
+
+		case "CONSUMPTION":
+			if (node.getNodeId() == s_nodeId) {
+				this.controller.sendDataFrame(
+						MeterCommandClass.createGetv2(node.getNodeId(), MeterCommandClass.SCALE_ELECTRIC_W));
+				final MeterCommandClass mcc = (MeterCommandClass) node.getCommandClass(MeterCommandClass.ID);
+				System.out.println("Consumption:" + (mcc.getCurrentValue()));
 			}
 			break;
 
