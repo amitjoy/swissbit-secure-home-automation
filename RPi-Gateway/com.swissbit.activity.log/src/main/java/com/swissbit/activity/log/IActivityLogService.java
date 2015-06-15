@@ -19,25 +19,25 @@ import java.util.List;
 
 /**
  * Used to save and retrieve activity logs
- * 
+ *
  * @author AMIT KUMAR MONDAL
  *
  */
 public interface IActivityLogService {
 
 	/**
+	 * Used to retrieve saved activity logs
+	 *
+	 * @return the list of logs
+	 */
+	public List<ActivityLog> retrieveLogs();
+
+	/**
 	 * Used to save log to the database
-	 * 
+	 *
 	 * @param log
 	 *            the log to be saved
 	 */
 	public void saveLog(String log);
-
-	/**
-	 * Used to retrieve saved activity logs
-	 * 
-	 * @return the list of logs
-	 */
-	public List<ActivityLog> retrieveLogs();
 
 }

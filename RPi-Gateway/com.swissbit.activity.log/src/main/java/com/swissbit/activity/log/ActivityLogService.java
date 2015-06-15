@@ -59,7 +59,7 @@ public class ActivityLogService extends Cloudlet implements IActivityLogService 
 	/**
 	 * HyperSQL Database name which comprises all the activity logs
 	 */
-	private static final String DB_TABLE_NAME = "logs";
+	private static final String DB_TABLE_NAME = "LOGS.LOGS";
 
 	/**
 	 * Logger.
@@ -69,7 +69,7 @@ public class ActivityLogService extends Cloudlet implements IActivityLogService 
 	/**
 	 * Activity logs data retrieval query
 	 */
-	private static final String QUERY = "SELECT * FROM " + DB_TABLE_NAME + " WHERE 1 ";
+	private static final String QUERY = "SELECT * FROM " + DB_TABLE_NAME;
 
 	/**
 	 * Kura Cloud Service Injection
@@ -206,8 +206,8 @@ public class ActivityLogService extends Cloudlet implements IActivityLogService 
 	@Override
 	public void saveLog(final String log) {
 		LOGGER.debug("Saving log to the Activity Logs Database...");
-		final String insertStatment = "INSERT INTO " + DB_TABLE_NAME + " VALUES (" + "'" + log + "'" + "," + "'"
-				+ LocalDateTime.now() + "'" + " )";
+		final String insertStatment = "INSERT INTO " + DB_TABLE_NAME + " (TIMESTAMP, DESCRIPTION) " + " VALUES (" + "'"
+				+ LocalDateTime.now() + "'" + "," + "'" + log + "'" + " )";
 		try {
 			this.m_statement.execute(insertStatment);
 		} catch (final SQLException e) {

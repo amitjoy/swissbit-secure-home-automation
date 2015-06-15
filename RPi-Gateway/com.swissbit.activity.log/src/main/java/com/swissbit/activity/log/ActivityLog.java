@@ -17,35 +17,35 @@ package com.swissbit.activity.log;
 
 /**
  * Represents the Activity Log
- * 
+ *
  * @author AMIT KUMAR MONDAL
  *
  */
 public final class ActivityLog {
 
-	/** Log Timestamp */
-	private final String timestamp;
-
 	/** Log Description */
 	private final String description;
 
-	public ActivityLog(String timestamp, String log) {
+	/** Log Timestamp */
+	private final String timestamp;
+
+	public ActivityLog(final String timestamp, final String log) {
 		this.timestamp = timestamp;
 		this.description = log;
-	}
-
-	/**
-	 * @return the timestamp
-	 */
-	public String getTimestamp() {
-		return timestamp;
 	}
 
 	/**
 	 * @return the description
 	 */
 	public String getDescription() {
-		return description;
+		return this.description;
+	}
+
+	/**
+	 * @return the timestamp
+	 */
+	public String getTimestamp() {
+		return this.timestamp;
 	}
 
 }
