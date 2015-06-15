@@ -48,6 +48,7 @@ import com.swissbit.homeautomation.model.RaspberryPi;
 import com.swissbit.homeautomation.ui.adapter.RPiAdapter;
 import com.swissbit.homeautomation.utils.ActivityContexts;
 import com.swissbit.homeautomation.utils.DBFactory;
+import com.swissbit.homeautomation.utils.EncryptionFactory;
 import com.swissbit.homeautomation.utils.MQTTFactory;
 import com.swissbit.homeautomation.ui.dialog.SecureCodeDialog;
 import com.swissbit.homeautomation.utils.TopicsConstants;
@@ -80,22 +81,27 @@ public class MainActivity extends ActionBarActivity {
 
     private List<RaspberryPi> listOfRPi;
 
-    private IKuraMQTTClient client = null;
+    public AuthenticationAsync authenticationAsync;
 
     private AsyncTask rPiHeartBeatAsync = new AsyncTask() {
 
         @Override
         protected Object doInBackground(Object[] params) {
-            client = MQTTFactory.getClient();
-            boolean status = client.connect();
-            Log.d("Kura MQTT Connect ", Boolean.toString(status));
+            boolean status = false;
+            IKuraMQTTClient client = MQTTFactory.getClient();
+            Log.d("Kura MQTT Client ", "" + client);
 
-            if (!status)
+            if (!client.isConnected()) {
                 status = client.connect();
+            } else
+                Log.d("Kura MQTT Connected HB", Boolean.toString(client.isConnected()));
 
-            Log.d("Kura MQTT Connect ", Boolean.toString(status));
+            status = client.isConnected();
+
+            Log.d("Kura MQTT Connect HB", Boolean.toString(status));
             if (status) {
-                client.subscribe((String) MQTTFactory.getTopicToSubscribe(TopicsConstants.HEARTBEAT), new MessageListener() {
+                Log.d("HEARTBEATTOPIC", MQTTFactory.getTopicToSubscribe(TopicsConstants.HEARTBEAT)[0]);
+                client.subscribe(MQTTFactory.getTopicToSubscribe(TopicsConstants.HEARTBEAT)[0], new MessageListener() {
                     @Override
                     public void processMessage(KuraPayload kuraPayload) {
                         if (kuraPayload != null) {
@@ -109,8 +115,8 @@ public class MainActivity extends ActionBarActivity {
         }
 
         @Override
-        public void onProgressUpdate(Object[] values){
-            final ImageView imageView = (ImageView)findViewById(R.id.imgStatus);
+        public void onProgressUpdate(Object[] values) {
+            final ImageView imageView = (ImageView) findViewById(R.id.imgStatus);
             imageView.setImageResource(R.drawable.btnon);
         }
     };
@@ -119,13 +125,19 @@ public class MainActivity extends ActionBarActivity {
     private AsyncTask lwtAsync = new AsyncTask() {
         @Override
         protected Object doInBackground(Object[] params) {
-            final boolean status = client.isConnected();
+            IKuraMQTTClient client = MQTTFactory.getClient();
+            boolean status = false;
 
-            if (!status)
-                client.connect();
+            if (!client.isConnected())
+                status = client.connect();
 
-            if (status)
-                client.subscribe((String) MQTTFactory.getTopicToSubscribe(TopicsConstants.LWT), new MessageListener() {
+            status = client.isConnected();
+
+            Log.d("Kura MQTT Connect LWT", Boolean.toString(status));
+
+            if (status) {
+                Log.d("LWTTOPIC", MQTTFactory.getTopicToSubscribe(TopicsConstants.LWT)[0]);
+                client.subscribe(MQTTFactory.getTopicToSubscribe(TopicsConstants.LWT)[0], new MessageListener() {
                     @Override
                     public void processMessage(KuraPayload kuraPayload) {
                         if (kuraPayload != null) {
@@ -134,12 +146,15 @@ public class MainActivity extends ActionBarActivity {
                         }
                     }
                 });
+            }
             return null;
+
         }
+
         @Override
-        public void onProgressUpdate(Object[] values){
+        public void onProgressUpdate(Object[] values) {
             Toast.makeText(getApplicationContext(), "Server Connection Lost", Toast.LENGTH_LONG).show();
-            final ImageView imageView = (ImageView)findViewById(R.id.imgStatus);
+            final ImageView imageView = (ImageView) findViewById(R.id.imgStatus);
             imageView.setImageResource(R.drawable.btnoff);
         }
     };
@@ -153,6 +168,7 @@ public class MainActivity extends ActionBarActivity {
         ActivityContexts.setMainActivityContext(this);
 
         devicesInfoDbAdapter = DBFactory.getDevicesInfoDbAdapter(this);
+
 
         getSecureCode();
         Log.d("Check", "1");
@@ -176,55 +192,52 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         if (id == R.id.register_server) {
-            IntentIntegrator integrator = new IntentIntegrator(this);
-            integrator.initiateScan();
+            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            alertDialog.setTitle("Caution!");
+            alertDialog.setMessage("Please make sure your RaspberryPi was turned on atleast 1 minute ago");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            IntentIntegrator integrator = new IntentIntegrator(MainActivity.this);
+                            integrator.initiateScan();
+                        }
+                    });
+            alertDialog.show();
+
         }
 
         return super.onOptionsItemSelected(item);
     }
 
     public void getSecureCode() {
-        if(devicesInfoDbAdapter.checkSecretCodeDialogShow() == 0) {
+        if (devicesInfoDbAdapter.checkSecretCodeDialogShow() == 0) {
             SecureCodeDialog secureCodeDialog = new SecureCodeDialog();
             secureCodeDialog.getSecureCode(this);
         }
     }
 
 
-    public void askForMQTTCredential(View view) {
-        //TODO
-        final boolean status = MQTTFactory.getClient().isConnected();
-
-        Log.d("Kura MQTT ......", Boolean.toString(status));
-
-        if (!status)
-            MQTTFactory.getClient().connect();
-
-        if (status)
-            MQTTFactory.getClient().publish(MQTTFactory.getTopicToPublish(TopicsConstants.DUMMY_PUBLISH_TOPIC), MQTTFactory.generatePayload("ASD", "5323523532"));
-    }
-
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-        if (scanResult != null && scanResult.getContents()!=null) {
+        if (scanResult != null && scanResult.getContents() != null) {
             String rid = scanResult.getContents();
+            MQTTFactory.setRaspberryId(rid);
             Toast.makeText(getApplicationContext(), rid, Toast.LENGTH_LONG).show();
 
-            AuthenticationAsync authenticationAsync = new AuthenticationAsync();
-            authenticationAsync.execute();
-            authenticationAsync.cancel(true);
-            VerifyRaspberryPi verifyRaspberryPi = new VerifyRaspberryPi();
-            if(verifyRaspberryPi.executeVerifyRaspberryPiWS(this,rid)){
-                checkRaspberryId(rid);
-            }
-            else{
-                Toast.makeText(getApplicationContext(), "Invalid Server", Toast.LENGTH_LONG).show();
-            }
+            Intent intent2 = new Intent(this, EncryptCommandActivity.class);
+            startActivity(intent2);
+            finishActivity(1);
+
+//            EncryptionFactory encryptionFactory = new EncryptionFactory();
+//            Log.d("Kura Encrpyt",encryptionFactory.getEncryptedString());
+
 
         }
     }
 
     public void checkRaspberryId(String rid) {
+
         if (DBFactory.checkRaspberryPiInDB(rid, this)) {
             DBFactory.addRaspberryPi(rid);
             addToListView();
@@ -234,18 +247,19 @@ public class MainActivity extends ActionBarActivity {
 
     public void addToListView() {
 
-            raspberryPi = DBFactory.getRaspberrys();
-            if(raspberryPi != null) {
-                listOfRPi = Lists.newArrayList(raspberryPi);
-                adapter = new RPiAdapter(getApplicationContext(), listOfRPi);
-                listView = (ListView) findViewById(R.id.listRaspberryPi);
-                listView.setAdapter(adapter);
+        raspberryPi = DBFactory.getRaspberrys();
 
-                rPiHeartBeatAsync.execute();
+        if (raspberryPi != null) {
+            MQTTFactory.setRaspberryId(raspberryPi.getId());
+            listOfRPi = Lists.newArrayList(raspberryPi);
+            adapter = new RPiAdapter(getApplicationContext(), listOfRPi);
+            listView = (ListView) findViewById(R.id.listRaspberryPi);
+            listView.setAdapter(adapter);
 
-                lwtAsync.execute();
-            }
+            rPiHeartBeatAsync.execute();
 
+            lwtAsync.execute();
+        }
 
     }
 
