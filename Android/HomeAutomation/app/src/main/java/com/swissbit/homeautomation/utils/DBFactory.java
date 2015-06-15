@@ -1,13 +1,10 @@
 package com.swissbit.homeautomation.utils;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.util.Log;
 
 import com.swissbit.homeautomation.db.DevicesInfoDbAdapter;
 import com.swissbit.homeautomation.model.RaspberryPi;
-
-import java.util.ArrayList;
 
 /**
  * Created by manit on 04/06/15.
@@ -24,7 +21,7 @@ public final class DBFactory {
     }
 
     public static void addRaspberryPi(String rid){
-        long id = devicesInfoDbAdapter.insertData(rid,"Raspberry",rid);
+        long id = devicesInfoDbAdapter.insertRaspberry(rid, "Raspberry", rid);
         if(id<0){
             Log.d("Insert", "Failed to insert");
         }

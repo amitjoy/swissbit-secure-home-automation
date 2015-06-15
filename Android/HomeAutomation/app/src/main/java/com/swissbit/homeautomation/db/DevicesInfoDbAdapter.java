@@ -26,7 +26,7 @@ public class DevicesInfoDbAdapter  {
         db = helper.getWritableDatabase();
     }
 
-    public long insertData(String rid,String name, String desc){
+    public long insertRaspberry(String rid, String name, String desc){
         ContentValues contentValues = new ContentValues();
         contentValues.put(DBConstants.RASPBERRYID, rid);
         contentValues.put(DBConstants.RASPBERRYNAME, name);
@@ -123,6 +123,7 @@ public class DevicesInfoDbAdapter  {
             try {
                 db.execSQL(DBConstants.CREATE_TABLE_RASPBERRYINFO);
                 db.execSQL(DBConstants.CREATE_TABLE_CREDENTIALS);
+                db.execSQL(DBConstants.CREATE_TABLE_DEVICES);
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(DBConstants.DIALOGSHOW, 0);
                 db.insert(DBConstants.TABLE_NAME_CREDENTIALS, null, contentValues);
@@ -137,6 +138,7 @@ public class DevicesInfoDbAdapter  {
             try {
                 db.execSQL(DBConstants.DROP_TABLE_RASPBERRYINFO);
                 db.execSQL(DBConstants.DROP_TABLE_CREDENTIALS);
+                db.execSQL(DBConstants.DROP_TABLE_DEVICES);
                 onCreate(db);
             } catch(SQLException e){
                 Log.e("UpgradeDb", "" +e);
