@@ -56,6 +56,7 @@ public class AuthenticationAsync extends AsyncTask {
         this.mainActivity = mainActivity;
         this.rid = rid;
         encryptCommandActivity = (EncryptCommandActivity)context;
+        encryptionFactory = new EncryptionFactory();
 
         alertDialog = new AlertDialog.Builder(context).create();
         alertDialog.setTitle("Information");
@@ -126,6 +127,8 @@ public class AuthenticationAsync extends AsyncTask {
 
         Log.d("EncryptAsyncFactory", "" + MQTTFactory.getTopicToPublish(TopicsConstants.RASPBERRY_AUTH_PUB));
 
+        Log.d("EncryptAsyncFactory", "" + EncryptionFactory.getEncryptedString());
+
         KuraPayload payload = MQTTFactory.generatePayload("81896ecbb9afb39894c7144b5e962b08f132e9fd228539521aba75d4abbc18fe".replaceAll(" ", ""), requestId);
         if (status)
             MQTTFactory.getClient().publish(MQTTFactory.getTopicToPublish(TopicsConstants.RASPBERRY_AUTH_PUB), payload);
@@ -147,16 +150,9 @@ public class AuthenticationAsync extends AsyncTask {
 
     @Override
     protected void onCancelled() {
-        Log.d("Async","cancelled");
-        mainActivity.checkRaspberryId(rid);
-    }
+        Log.d("Async", "cancelled");
 
-    @Override
-    protected void onCancelled(Object o) {
-        Log.d("Async2","cancelled");
-        mainActivity.checkRaspberryId(rid);
     }
-
     @Override
     protected void onPostExecute(Object o) {
         Log.d("Inside onPost", "" + subResponse);
@@ -177,13 +173,12 @@ public class AuthenticationAsync extends AsyncTask {
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                     Log.d("DEBUG AUTHASYNC", "INSIDE FAILURE");
                     Toast.makeText(ActivityContexts.getMainActivityContext(), "RaspberryPi Registration Unsuccessful. Please try Again1", Toast.LENGTH_LONG).show();
-                    alertDialog.show();
-
                 }
             });
 
         } else {
             Toast.makeText(ActivityContexts.getMainActivityContext(), "RaspberryPi Registration Unsuccessful. Please try Again3", Toast.LENGTH_LONG).show();
         }
+        cancel(true);
     }
 }

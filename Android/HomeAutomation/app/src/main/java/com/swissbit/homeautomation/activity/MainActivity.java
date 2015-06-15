@@ -223,7 +223,7 @@ public class MainActivity extends ActionBarActivity {
         if (scanResult != null && scanResult.getContents() != null) {
             String rid = scanResult.getContents();
             MQTTFactory.setRaspberryId(rid);
-            Toast.makeText(getApplicationContext(), rid, Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), rid, Toast.LENGTH_SHORT).show();
 
             Intent intent2 = new Intent(this, EncryptCommandActivity.class);
             startActivity(intent2);
