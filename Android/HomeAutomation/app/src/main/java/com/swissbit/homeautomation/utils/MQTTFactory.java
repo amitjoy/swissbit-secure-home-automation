@@ -19,22 +19,23 @@ public final class MQTTFactory {
 
     private static String clientId;
 
+    private static String raspberryId;
 
     private static IKuraMQTTClient iKuraMQTTClient;
 
-    public static String generateClientId() {
+    public static String getClientId() {
         if (clientId == null)
             clientId = Integer.toString(new Random().nextInt(Integer.MAX_VALUE));
         Log.d("Kura MQTT",clientId);
         return clientId;
     }
 
-    public static IKuraMQTTClient getClient() {
+    public static synchronized IKuraMQTTClient getClient() {
 
         if (iKuraMQTTClient == null){
             iKuraMQTTClient = new KuraMQTTClient.Builder()
                     .setHost("m20.cloudmqtt.com").setPort("13273")
-                    .setClientId(generateClientId()).setUsername(getUsername())
+                    .setClientId(getClientId()).setUsername(getUsername())
                     .setPassword(getPassword()).build();
         }
         return iKuraMQTTClient;
@@ -50,27 +51,32 @@ public final class MQTTFactory {
         return DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getMainActivityContext()).getCredentials()[1];
     }
 
-    public static String getRaspberryPiById(int id) {
-
-//        return DBFactory.getDevicesInfoDbAdapter(context).getRaspberryId();
-        return "B8:27:EB:BE:3F:BF";
+    public static void setRaspberryId(String raspberryId) {
+        MQTTFactory.raspberryId = raspberryId;
     }
 
-    public static Object getTopicToSubscribe(String id) {
+    public static String getRaspberryPiById() {
+//        return DBFactory.getDevicesInfoDbAdapter(context).getRaspberryId();
+        return raspberryId;
+    }
+
+    public static String[] getTopicToSubscribe(String id) {
 
         final String requestId = Integer.toString(new Random().nextInt(Integer.MAX_VALUE));
         switch (id) {
             case TopicsConstants.LWT:
-                return getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.LWT;
+                return new String[]{getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.LWT};
             //TODO
             case TopicsConstants.HEARTBEAT:
-                return getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.HEARTBEAT + "mqtt/heartbeat";
+                return new String[]{getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.HEARTBEAT + "mqtt/heartbeat"};
 
             case TopicsConstants.ZWAVE_STATUS:
-                return new Object[] { getMQTTTopicPrefix(TopicsConstants.TOPIC_SUBSCRIBE) + TopicsConstants.ZWAVE_STATUS + requestId, requestId };
+                return new String[]{getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.ZWAVE_STATUS, requestId};
 
-            case TopicsConstants.DUMMY_PUBLISH_TOPIC:
-                return new Object[] { getMQTTTopicPrefix(TopicsConstants.TOPIC_SUBSCRIBE) + TopicsConstants.DUMMY_PUBLISH_TOPIC + requestId, requestId };
+            case TopicsConstants.RASPBERRY_AUTH_SUB:
+                return new String[]{getMQTTTopicPrefix(TopicsConstants.TOPIC_SUBSCRIBE) + TopicsConstants.RASPBERRY_AUTH_SUB + requestId, requestId};
+
+
         }
 
         return null;
@@ -80,10 +86,10 @@ public final class MQTTFactory {
 
         switch (type) {
             case TopicsConstants.TOPIC_PUBLISH:
-                return "$EDC/" + "swissbit/" + getRaspberryPiById(1) + "/";
+                return "$EDC/" + "swissbit/" + getRaspberryPiById() + "/";
 
             case TopicsConstants.TOPIC_SUBSCRIBE:
-                return "$EDC/" + "swissbit/" + generateClientId() + "/";
+                return "$EDC/" + "swissbit/" + getClientId() + "/";
         }
 
         return null;
@@ -101,6 +107,9 @@ public final class MQTTFactory {
 
             case TopicsConstants.ZWAVE_POST:
                 return getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.ZWAVE_POST;
+
+            case TopicsConstants.RASPBERRY_AUTH_PUB:
+                return getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.RASPBERRY_AUTH_PUB;
         }
 
         return null;
@@ -110,7 +119,7 @@ public final class MQTTFactory {
         final KuraPayload payload = new KuraPayload();
 
         payload.addMetric("request.id", requestId);
-        payload.addMetric("requester.client.id", generateClientId());
+        payload.addMetric("requester.client.id", getClientId());
         payload.setBody(extraBody.getBytes());
         return payload;
     }

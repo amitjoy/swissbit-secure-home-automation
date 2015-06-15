@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.swissbit.homeautomation.R;
+import com.swissbit.homeautomation.asyncTask.AuthenticationAsync;
 import com.swissbit.homeautomation.utils.ActivityContexts;
 import com.swissbit.homeautomation.utils.EncryptionFactory;
 import com.swissbit.homeautomation.utils.MQTTFactory;
@@ -13,7 +15,13 @@ import com.swissbit.homeautomation.utils.MQTTFactory;
 /**
  * Created by manit on 05/06/15.
  */
-public class EncryptCommandActivity extends Activity{
+public class EncryptCommandActivity extends Activity {
+
+    private MainActivity mainActivity;
+
+    public EncryptCommandActivity() {
+        this.mainActivity = (MainActivity) ActivityContexts.getMainActivityContext();
+    }
 
     EncryptionFactory encryptionFactory = new EncryptionFactory();
 
@@ -27,24 +35,30 @@ public class EncryptCommandActivity extends Activity{
         Bundle bundle = new Bundle();
 
         bundle.putInt("Function", 1006);
-        bundle.putString("MSG", MQTTFactory.getRaspberryPiById(1));
+        bundle.putString("MSG", "AB");
         intent.putExtras(bundle);
 
-        startActivityForResult(intent, 6403);
-        finish();
+        startActivityForResult(intent, 0);
+
 
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent pData)
-    {
-        if ( requestCode == 6403 )
-        {
-            if (resultCode == Activity.RESULT_OK )
-            {
-                encryptionFactory.setEncryptedString(pData.getExtras().get("Response").toString());
-            }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent pData) {
+        super.onActivityResult(requestCode, resultCode, pData);
+
+        if (requestCode == 0) {
+            Toast.makeText(this, "encrypt", Toast.LENGTH_LONG).show();
+            encryptionFactory.setEncryptedString(pData.getExtras().get("Response").toString());
+            Log.d("Encrypted Data", encryptionFactory.getEncryptedString());
+
+            AuthenticationAsync authenticationAsync = new AuthenticationAsync(this, mainActivity, MQTTFactory.getRaspberryPiById());
+            Log.d("Main EncryptCmd", "" + mainActivity);
+            authenticationAsync.execute();
+
+//            authenticationAsync.cancel(true);
+
         }
-        Log.d("Encrypted Data", encryptionFactory.getEncryptedString());
-    }
 
+    }
 }
