@@ -3,15 +3,15 @@ package com.swissbit.homeautomation.utils;
 /**
  * Created by manit on 11/06/15.
  */
-public class EncryptionFactory {
+public final class EncryptionFactory {
 
-    public String getEncryptedString() {
+    public static String getEncryptedString() {
         return encryptedString;
     }
 
-    public void setEncryptedString(String encryptedString) {
-        this.encryptedString = encryptedString;
+    public static void setEncryptedString(String encryptedStringTmp) {
+        encryptedString = encryptedStringTmp;
     }
 
-    private String encryptedString;
+    private static String encryptedString;
 }

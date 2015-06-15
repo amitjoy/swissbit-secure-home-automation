@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.widget.Toast;
 
 import com.android.swissbit.homeautomation.R;
@@ -19,18 +20,18 @@ public class EncryptCommandActivity extends Activity {
 
     private MainActivity mainActivity;
 
+    private Intent intent;
+
     public EncryptCommandActivity() {
         this.mainActivity = (MainActivity) ActivityContexts.getMainActivityContext();
     }
-
-    EncryptionFactory encryptionFactory = new EncryptionFactory();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.encrpyt_command_activity);
         ActivityContexts.setEncryptCommandActivityContext(this);
 
-        Intent intent = new Intent("tum.com.ssdapi.MAIN_ACTIVITY");
+        intent = new Intent("tum.com.ssdapi.MAIN_ACTIVITY");
 
         Bundle bundle = new Bundle();
 
@@ -48,9 +49,9 @@ public class EncryptCommandActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, pData);
 
         if (requestCode == 0) {
-            Toast.makeText(this, "encrypt", Toast.LENGTH_LONG).show();
-            encryptionFactory.setEncryptedString(pData.getExtras().get("Response").toString());
-            Log.d("Encrypted Data", encryptionFactory.getEncryptedString());
+//            Toast.makeText(this, "encrypt", Toast.LENGTH_LONG).show();
+            EncryptionFactory.setEncryptedString(pData.getExtras().get("Response").toString());
+            Log.d("Encrypted Data", EncryptionFactory.getEncryptedString());
 
             AuthenticationAsync authenticationAsync = new AuthenticationAsync(this, mainActivity, MQTTFactory.getRaspberryPiById());
             Log.d("Main EncryptCmd", "" + mainActivity);
