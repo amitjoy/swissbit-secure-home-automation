@@ -16,6 +16,17 @@
         android:paddingRight="20dp"
         android:paddingBottom="20dp"/>
 
+        <TextView
+            android:id="@+id/empty_list_item"
+            android:text="@string/empty_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:textStyle="italic"
+            android:gravity="center">
+        </TextView>
+
+
 
 </RelativeLayout>
 <!-- From: file:/Users/manit/Documents/Manit/Masters%20in%20Informatics/Android%20Praktikum/Project/Android/HomeAutomation/app/src/main/res/layout/activity_main.xml -->

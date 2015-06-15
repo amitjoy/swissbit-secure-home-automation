@@ -16,5 +16,16 @@
         android:paddingRight="20dp"
         android:paddingBottom="20dp"/>
 
+        <TextView
+            android:id="@+id/empty_list_item"
+            android:text="@string/empty_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:textStyle="italic"
+            android:gravity="center">
+        </TextView>
+
+
 
 </RelativeLayout>
