@@ -32,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Splitter;
+import com.google.common.base.Throwables;
 
 /**
  * This is used to revoke permissions of clients to access the raspberry pi
@@ -137,6 +138,7 @@ public class AccessControl extends Cloudlet implements ConfigurableComponent {
 				this.getCloudApplicationClient().controlPublish(clientId + "/surveillance", payload, QoS, retain,
 						DFLT_PRIORITY);
 			} catch (final Exception e) {
+				LOGGER.error(Throwables.getStackTraceAsString(e));
 			}
 		});
 
