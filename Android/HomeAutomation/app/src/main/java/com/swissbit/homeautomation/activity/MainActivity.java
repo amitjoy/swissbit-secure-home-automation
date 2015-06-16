@@ -168,7 +168,8 @@ public class MainActivity extends ActionBarActivity {
         ActivityContexts.setMainActivityContext(this);
 
         devicesInfoDbAdapter = DBFactory.getDevicesInfoDbAdapter(this);
-
+        listView = (ListView) findViewById(R.id.listRaspberryPi);
+        listView.setEmptyView(findViewById(R.id.empty_list_item));
 
         getSecureCode();
         Log.d("Check", "1");
@@ -253,7 +254,7 @@ public class MainActivity extends ActionBarActivity {
             MQTTFactory.setRaspberryId(raspberryPi.getId());
             listOfRPi = Lists.newArrayList(raspberryPi);
             adapter = new RPiAdapter(getApplicationContext(), listOfRPi);
-            listView = (ListView) findViewById(R.id.listRaspberryPi);
+
             listView.setAdapter(adapter);
 
             rPiHeartBeatAsync.execute();
