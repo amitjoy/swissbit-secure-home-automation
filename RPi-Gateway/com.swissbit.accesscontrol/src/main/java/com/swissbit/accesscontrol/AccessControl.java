@@ -87,7 +87,7 @@ public class AccessControl extends Cloudlet implements IAccessControl {
 		super.activate(componentContext);
 
 		// this.doRevokePermission(this.m_properties);
-		// TODO Observer File Change and revoke permission
+		// TODO Observer File Change (another file) and revoke permission
 
 		LOGGER.info("Activating Access Control Component... Done.");
 
@@ -121,12 +121,27 @@ public class AccessControl extends Cloudlet implements IAccessControl {
 	protected void doPost(final CloudletTopic reqTopic, final KuraRequestPayload reqPayload,
 			final KuraResponsePayload respPayload) throws KuraException {
 		final String clientId = reqPayload.getRequesterClientId();
-		savePermission(clientId);
+		try {
+			Files.append(System.lineSeparator() + clientId, new File(ALL_CLIENTS_FILE_LOCATION), Charsets.UTF_8);
+		} catch (final IOException e) {
+			LOGGER.error(Throwables.getStackTraceAsString(e));
+		}
 	}
 
 	/** {@inheritDoc}} */
 	@Override
-	public String readPermission() {
+	public String readAllClientsFile() {
+		try {
+			return Files.toString(new File(ALL_CLIENTS_FILE_LOCATION), Charsets.UTF_8);
+		} catch (final IOException e) {
+			LOGGER.error(Throwables.getStackTraceAsString(e));
+		}
+		return null;
+	}
+
+	/** {@inheritDoc}} */
+	@Override
+	public String readPermissionFile() {
 		try {
 			return Files.toString(new File(PERMISSION_FILE_LOCATION), Charsets.UTF_8);
 		} catch (final IOException e) {
@@ -139,7 +154,7 @@ public class AccessControl extends Cloudlet implements IAccessControl {
 	@Override
 	public void savePermission(final String permissionData) {
 		try {
-			Files.append(System.lineSeparator() + permissionData, new File(PERMISSION_FILE_LOCATION), Charsets.UTF_8);
+			Files.write(permissionData, new File(PERMISSION_FILE_LOCATION), Charsets.UTF_8);
 		} catch (final IOException e) {
 			LOGGER.error(Throwables.getStackTraceAsString(e));
 		}

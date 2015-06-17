@@ -13,5 +13,6 @@ public interface GwtPermissionsService extends RemoteService {
 	
 	public boolean saveToPermissionsFile(String data);
 	public String retrievePermissionFileData();
+	public String retrieveAllConnectedClientsData();
 
 }

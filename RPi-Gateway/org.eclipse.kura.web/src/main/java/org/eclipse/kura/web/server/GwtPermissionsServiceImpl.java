@@ -36,7 +36,21 @@ public class GwtPermissionsServiceImpl extends OsgiRemoteServiceServlet implemen
 		try {
 			m_accessControl = ServiceLocator.getInstance().getService(IAccessControl.class);
 			if (m_accessControl != null) {
-				return m_accessControl.readPermission();
+				return m_accessControl.readPermissionFile();
+			}
+				
+		} catch (Throwable t) {
+			s_logger.warn("Exception: {}", t.toString());
+		}
+		return null;
+	}
+	
+	public String retrieveAllConnectedClientsData() {
+		IAccessControl m_accessControl = null;
+		try {
+			m_accessControl = ServiceLocator.getInstance().getService(IAccessControl.class);
+			if (m_accessControl != null) {
+				return m_accessControl.readAllClientsFile();
 			}
 				
 		} catch (Throwable t) {

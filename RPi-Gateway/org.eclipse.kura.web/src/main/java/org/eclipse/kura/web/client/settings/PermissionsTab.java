@@ -60,9 +60,8 @@ public class PermissionsTab extends LayoutContainer {
 	private TextArea m_permissionRevokedClients;
 
 	private Button m_saveButton;
-	private Button m_resetButton;
 	private ButtonBar m_buttonBar;
-	
+
 	public PermissionsTab(GwtSession currentSession) {
 		m_currentSession = currentSession;
 	}
@@ -72,7 +71,7 @@ public class PermissionsTab extends LayoutContainer {
 		setLayout(new FitLayout());
 		setId("client-permissions");
 
-		FormData formData = new FormData("95% 40%");
+		FormData formData = new FormData("65% 40%");
 
 		m_formPanel = new FormPanel();
 		m_formPanel.setFrame(true);
@@ -97,21 +96,23 @@ public class PermissionsTab extends LayoutContainer {
 		m_previouslyConnectedClients = new TextArea();
 		m_previouslyConnectedClients.setBorders(true);
 		m_previouslyConnectedClients.setReadOnly(true);
-		m_previouslyConnectedClients.setEmptyText("");
+		m_previouslyConnectedClients
+				.setEmptyText("It will be populated automatically as soon as Clients access this Gateway");
 		m_previouslyConnectedClients.setName("");
-		
-		m_gwtPermissionsService.retrievePermissionFileData(new AsyncCallback<String>() {
 
+		m_gwtPermissionsService.retrieveAllConnectedClientsData(new AsyncCallback<String>() {
+			
 			public void onFailure(Throwable caught) {
 				Info.display(MSGS.error(), caught.getLocalizedMessage());
 			}
-
+			
 			public void onSuccess(String result) {
 				m_previouslyConnectedClients.setValue(result);
-				Info.display(MSGS.info(), "Permissions Retrieved");
+				Info.display(MSGS.info(), "All Connected Clients Info Retrieved");
 			}
 			
 		});
+		
 		
 		m_previouslyConnectedClients.setAllowBlank(true);
 		m_previouslyConnectedClients.setFieldLabel(MSGS.clientList());
@@ -121,9 +122,23 @@ public class PermissionsTab extends LayoutContainer {
 		m_permissionRevokedClients.setName("");
 		m_permissionRevokedClients.setPassword(true);
 		m_permissionRevokedClients.setAllowBlank(false);
-		m_permissionRevokedClients.setEmptyText("");
+		m_permissionRevokedClients.setEmptyText("Please enter the Client ID from the above list to revoke permissions");
 		m_permissionRevokedClients.setFieldLabel(MSGS.permissionRevokedClientList());
-		m_formPanel.add(m_permissionRevokedClients, new FormData("95%"));
+		m_formPanel.add(m_permissionRevokedClients, new FormData("65%"));
+		
+		
+		m_gwtPermissionsService.retrievePermissionFileData(new AsyncCallback<String>() {
+
+			public void onFailure(Throwable caught) {
+				Info.display(MSGS.error(), caught.getLocalizedMessage());
+			}
+
+			public void onSuccess(String result) {
+				m_permissionRevokedClients.setValue(result);
+				Info.display(MSGS.info(), "Permissions Retrieved");
+			}
+
+		});
 
 		m_commandInput = m_formPanel;
 
@@ -145,23 +160,20 @@ public class PermissionsTab extends LayoutContainer {
 		m_saveButton.addSelectionListener(new SelectionListener<ButtonEvent>() {
 			@Override
 			public void componentSelected(ButtonEvent ce) {
-				if (m_formPanel.isValid()) {
-					// m_result.clear();
-					m_commandInput.mask(MSGS.waiting());
-					m_formPanel.submit();
-				}
+				m_gwtPermissionsService.saveToPermissionsFile(m_permissionRevokedClients.getValue(), new AsyncCallback<Boolean>() {
+
+					public void onFailure(Throwable caught) {
+						Info.display(MSGS.error(), caught.getLocalizedMessage());
+					}
+
+					public void onSuccess(Boolean result) {
+						Info.display(MSGS.info(), "Permissions Saved");
+					}
+
+				});
 			}
 		});
 
-		m_resetButton = new Button(MSGS.reset());
-		m_resetButton.addSelectionListener(new SelectionListener<ButtonEvent>() {
-			@Override
-			public void componentSelected(ButtonEvent ce) {
-				m_formPanel.reset();
-			}
-		});
-
-		m_buttonBar.add(m_resetButton);
 		m_buttonBar.add(m_saveButton);
 	}
 
