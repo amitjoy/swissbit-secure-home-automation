@@ -15,7 +15,8 @@
  *******************************************************************************/
 package com.swissbit.accesscontrol;
 
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 import org.apache.felix.scr.annotations.Activate;
@@ -23,16 +24,19 @@ import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Deactivate;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
+import org.eclipse.kura.KuraException;
 import org.eclipse.kura.cloud.CloudService;
 import org.eclipse.kura.cloud.Cloudlet;
-import org.eclipse.kura.configuration.ConfigurableComponent;
-import org.eclipse.kura.message.KuraPayload;
+import org.eclipse.kura.cloud.CloudletTopic;
+import org.eclipse.kura.message.KuraRequestPayload;
+import org.eclipse.kura.message.KuraResponsePayload;
 import org.osgi.service.component.ComponentContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Splitter;
+import com.google.common.base.Charsets;
 import com.google.common.base.Throwables;
+import com.google.common.io.Files;
 
 /**
  * This is used to revoke permissions of clients to access the raspberry pi
@@ -41,23 +45,13 @@ import com.google.common.base.Throwables;
  *
  */
 @Component(immediate = false, name = "com.swissbit.accesscontrol")
-@Service(value = { AccessControl.class })
-public class AccessControl extends Cloudlet implements ConfigurableComponent {
-	/**
-	 * Defines Application Configuration Metatype Id
-	 */
-	private static final String APP_CONF_ID = "com.swissbit.accesscontrol";
+@Service(value = { IAccessControl.class })
+public class AccessControl extends Cloudlet implements IAccessControl {
 
 	/**
 	 * Application Identifier
 	 */
 	private static final String APP_ID = "SURVEILLANCE-V1";
-
-	/**
-	 * Configurable property to set Client Ids to revoke permission to access
-	 * this Raspberry Pi
-	 */
-	private static final String CLIENTS_LIST = "com.swissbit.accesscontrol.clients";
 
 	/**
 	 * Logger
@@ -92,7 +86,8 @@ public class AccessControl extends Cloudlet implements ConfigurableComponent {
 		super.setCloudService(this.m_cloudService);
 		super.activate(componentContext);
 
-		this.doRevokePermission(this.m_properties);
+		// this.doRevokePermission(this.m_properties);
+		// TODO Observer File Change and revoke permission
 
 		LOGGER.info("Activating Access Control Component... Done.");
 
@@ -121,37 +116,38 @@ public class AccessControl extends Cloudlet implements ConfigurableComponent {
 		LOGGER.debug("Deactivating Access Control Component... Done.");
 	}
 
-	/**
-	 * Used to revoke permission of the specified clients
-	 */
-	private void doRevokePermission(final Map<String, Object> properties) {
-		final String clientList = (String) properties.get(CLIENTS_LIST);
-		final List<String> clients = this.parseClientIds(clientList);
-		final boolean retain = true;
-		final int QoS = 1;
-
-		final KuraPayload payload = new KuraPayload();
-		payload.addMetric("access", false);
-
-		clients.forEach(clientId -> {
-			try {
-				this.getCloudApplicationClient().controlPublish(clientId + "/surveillance", payload, QoS, retain,
-						DFLT_PRIORITY);
-			} catch (final Exception e) {
-				LOGGER.error(Throwables.getStackTraceAsString(e));
-			}
-		});
-
+	/** {@inheritDoc}} */
+	@Override
+	protected void doPost(final CloudletTopic reqTopic, final KuraRequestPayload reqPayload,
+			final KuraResponsePayload respPayload) throws KuraException {
+		final String clientId = reqPayload.getRequesterClientId();
+		final File file = new File(PERMISSION_FILE_LOCATION);
+		try {
+			Files.write(System.lineSeparator() + clientId, file, Charsets.UTF_8);
+		} catch (final IOException e) {
+			LOGGER.error(Throwables.getStackTraceAsString(e));
+		}
 	}
 
-	/**
-	 * Used to parse all the clients ids
-	 */
-	private List<String> parseClientIds(final String clientList) {
-		final String SEPARATOR = "#";
+	/** {@inheritDoc}} */
+	@Override
+	public String readPermission() {
+		try {
+			return Files.toString(new File(PERMISSION_FILE_LOCATION), Charsets.UTF_8);
+		} catch (final IOException e) {
+			LOGGER.error(Throwables.getStackTraceAsString(e));
+		}
+		return null;
+	}
 
-		final Splitter splitter = Splitter.on(SEPARATOR).omitEmptyStrings().trimResults();
-		return splitter.splitToList(clientList);
+	/** {@inheritDoc}} */
+	@Override
+	public void savePermission(final String permissionData) {
+		try {
+			Files.write(System.lineSeparator() + permissionData, new File(PERMISSION_FILE_LOCATION), Charsets.UTF_8);
+		} catch (final IOException e) {
+			LOGGER.error(Throwables.getStackTraceAsString(e));
+		}
 	}
 
 	/**
@@ -172,7 +168,7 @@ public class AccessControl extends Cloudlet implements ConfigurableComponent {
 		this.m_properties = properties;
 		properties.keySet().forEach(s -> LOGGER.info("Update - " + s + ": " + properties.get(s)));
 
-		this.doRevokePermission(this.m_properties);
+		// this.doRevokePermission(this.m_properties);
 		LOGGER.info("Updated MQTT Heartbeat Component... Done.");
 	}
 

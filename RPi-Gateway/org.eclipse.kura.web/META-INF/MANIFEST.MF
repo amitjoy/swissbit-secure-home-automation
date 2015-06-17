@@ -4,7 +4,6 @@ Bundle-Name: org.eclipse.kura.web
 Bundle-SymbolicName: org.eclipse.kura.web;singleton:=true
 Bundle-Version: 1.0.4.qualifier
 Bundle-Vendor: EUROTECH
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Service-Component: OSGI-INF/*.xml
 Import-Package: 
  com.allen_sauer.gwt.log.client,
@@ -39,6 +38,7 @@ Import-Package:
  com.google.gwt.user.rebind.rpc,
  com.google.gwt.user.server.rpc,
  com.google.gwt.user.server.rpc.impl,
+ com.swissbit.accesscontrol,
  javax.crypto,
  javax.crypto.spec,
  javax.security.auth,
