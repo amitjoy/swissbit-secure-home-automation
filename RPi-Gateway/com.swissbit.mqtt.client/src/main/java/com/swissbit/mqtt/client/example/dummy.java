@@ -8,7 +8,7 @@ import com.swissbit.mqtt.client.message.KuraPayload;
 public class dummy {
 
 	private static IKuraMQTTClient client;
-	private static String clientId = "AMA";
+	private static String clientId = "ANNIT";
 	private static final String REQUEST_TOPIC = "$EDC/swissbit/B8:27:EB:BE:3F:BF/AUTH-V1/EXEC/decrypt";
 	private static final String REQUEST_TOPIC1 = "$EDC/swissbit/B8:27:EB:BE:3F:BF/CONF-V1/GET/configurations";
 	private static final String REQUEST_ZWAVE = "$EDC/swissbit/B8:27:EB:BE:3F:BF/DEVICE-V1/EXEC/on";

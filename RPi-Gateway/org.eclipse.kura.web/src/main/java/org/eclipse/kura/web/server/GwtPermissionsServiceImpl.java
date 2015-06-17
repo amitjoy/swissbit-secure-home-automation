@@ -32,13 +32,10 @@ public class GwtPermissionsServiceImpl extends OsgiRemoteServiceServlet implemen
 	}
 
 	public String retrievePermissionFileData() {
-		s_logger.info("INFO.......!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		IAccessControl m_accessControl = null;
 		try {
 			m_accessControl = ServiceLocator.getInstance().getService(IAccessControl.class);
-			s_logger.info("IAccessControl:::::"+m_accessControl);
 			if (m_accessControl != null) {
-				System.out.println("Data::::::"+ m_accessControl.readPermission());
 				return m_accessControl.readPermission();
 			}
 				
