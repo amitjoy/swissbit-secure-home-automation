@@ -121,12 +121,7 @@ public class AccessControl extends Cloudlet implements IAccessControl {
 	protected void doPost(final CloudletTopic reqTopic, final KuraRequestPayload reqPayload,
 			final KuraResponsePayload respPayload) throws KuraException {
 		final String clientId = reqPayload.getRequesterClientId();
-		final File file = new File(PERMISSION_FILE_LOCATION);
-		try {
-			Files.write(System.lineSeparator() + clientId, file, Charsets.UTF_8);
-		} catch (final IOException e) {
-			LOGGER.error(Throwables.getStackTraceAsString(e));
-		}
+		savePermission(clientId);
 	}
 
 	/** {@inheritDoc}} */
@@ -144,7 +139,7 @@ public class AccessControl extends Cloudlet implements IAccessControl {
 	@Override
 	public void savePermission(final String permissionData) {
 		try {
-			Files.write(System.lineSeparator() + permissionData, new File(PERMISSION_FILE_LOCATION), Charsets.UTF_8);
+			Files.append(System.lineSeparator() + permissionData, new File(PERMISSION_FILE_LOCATION), Charsets.UTF_8);
 		} catch (final IOException e) {
 			LOGGER.error(Throwables.getStackTraceAsString(e));
 		}

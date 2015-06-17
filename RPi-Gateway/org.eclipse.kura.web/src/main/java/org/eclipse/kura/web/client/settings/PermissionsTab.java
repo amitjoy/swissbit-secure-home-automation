@@ -63,8 +63,6 @@ public class PermissionsTab extends LayoutContainer {
 	private Button m_resetButton;
 	private ButtonBar m_buttonBar;
 	
-	private String m_clientsList = "-- NO PERMISSION --";
-
 	public PermissionsTab(GwtSession currentSession) {
 		m_currentSession = currentSession;
 	}
@@ -109,13 +107,12 @@ public class PermissionsTab extends LayoutContainer {
 			}
 
 			public void onSuccess(String result) {
-				m_clientsList = result;
-				Info.display(MSGS.info(), "Data Retrieved");
+				m_previouslyConnectedClients.setValue(result);
+				Info.display(MSGS.info(), "Permissions Retrieved");
 			}
 			
 		});
 		
-		m_previouslyConnectedClients.setValue(m_clientsList);
 		m_previouslyConnectedClients.setAllowBlank(true);
 		m_previouslyConnectedClients.setFieldLabel(MSGS.clientList());
 		m_formPanel.add(m_previouslyConnectedClients, formData);
