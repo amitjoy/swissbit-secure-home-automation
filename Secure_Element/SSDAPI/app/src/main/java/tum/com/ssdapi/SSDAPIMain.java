@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.content.Intent;
+import java.util.Random;
 
 import com.secureflashcard.sfclibrary.SfcTerminal;
 
@@ -55,7 +56,7 @@ public class SSDAPIMain extends Activity {
             case 1007:
 
                 Log.d("Function Called: ", "Decrypt");
-                decryptMsg(bundle.getByteArray("MSG"));
+                decryptMsg(bundle.getString("MSG"));
                 break;
 
             /*
@@ -64,7 +65,7 @@ public class SSDAPIMain extends Activity {
             case 1008:
 
                 Log.d("Function Called: ", "Get Card ID");
-                decryptMsg(bundle.getByteArray("MSG"));
+                decryptMsg(bundle.getString("MSG"));
                 break;
 
             /*
@@ -162,20 +163,27 @@ public class SSDAPIMain extends Activity {
                  */
                 selectApplet();
 
+                /*
+                 * Get Nonce String To make High Security
+                 */
+                byte[] nonce = new byte[16];
+                new Random().nextBytes(nonce);
+
                 byte[] cmd = new byte[] { (byte) 0x90, (byte) 0x21, (byte) 0x00, (byte)0x00, (byte)0x40 };
 
-                cmd[4] = (byte) plainText.length;
+                cmd[4] = (byte) (plainText.length + nonce.length);
 
-                byte[] encryptCommand = new byte[cmd.length + plainText.length];
+                byte[] encryptCommand = new byte[cmd.length + nonce.length + plainText.length];
 
                 System.arraycopy (cmd, 0, encryptCommand, 0, cmd.length);
-                System.arraycopy (plainText, 0, encryptCommand, cmd.length, plainText.length);
+                System.arraycopy (nonce, 0, encryptCommand, cmd.length, nonce.length);
+                System.arraycopy (plainText, 0, encryptCommand, cmd.length + nonce.length, plainText.length);
 
-                Log.d("Encryption Command:", bytesToString(encryptCommand));
+                Log.d("Encryption Command:", byteArrayToHex(encryptCommand));
 
                 response = sfcTerminal.transmit(encryptCommand);
 
-                Log.d("Encrypted Message:", bytesToString(response));
+                Log.d("Encrypted Message:", byteArrayToHex(response));
 
                 /*
                  * Should make a check that last 2 bytes are 90 00 which means everything went well.
@@ -183,9 +191,9 @@ public class SSDAPIMain extends Activity {
                 byte[] responseBytes = new byte[response.length - 2];
                 System.arraycopy (response, 0, responseBytes, 0, responseBytes.length);
 
-                iData.putExtra("Response", responseBytes);
+                iData.putExtra("Response", byteArrayToHex(responseBytes));
 
-                Log.d("API returns encrypted:", bytesToString(responseBytes));
+                Log.d("API returns encrypted:", byteArrayToHex(responseBytes));
 
 
             } else {
@@ -203,7 +211,7 @@ public class SSDAPIMain extends Activity {
         }
     }
 
-    public void decryptMsg(byte[] msg) {
+    public void decryptMsg(String msg) {
 
         Log.d("Inside Function:", "decryptMsg, Sets the response with 'Plain Text' .");
 
@@ -216,9 +224,9 @@ public class SSDAPIMain extends Activity {
 
                 atr = sfcTerminal.getAtr();
 
-                Log.d("Byte Array Received:", bytesToString(msg));
+                Log.d("Byte Array Received:", msg);
 
-                byte[] msgBytes = msg;
+                byte[] msgBytes = hexToByteArray(msg);
 
 
                 // library cares about keep alive, if app has android.permission.WAKE_LOCK permission!
@@ -235,15 +243,16 @@ public class SSDAPIMain extends Activity {
 
                 byte[] cmd = new byte[] { (byte) 0x90, (byte) 0x22, (byte) 0x00, (byte)0x00, (byte)0x40 };
 
-                cmd[4] = (byte)msgBytes.length;
+                cmd[4] = (byte) msgBytes.length;
 
                 byte[] decryptCommand = new byte[cmd.length + msgBytes.length];
                 System.arraycopy (cmd, 0, decryptCommand, 0, cmd.length);
                 System.arraycopy (msgBytes, 0, decryptCommand, cmd.length, msgBytes.length);
 
-                Log.d("Decryption Command:", bytesToString(decryptCommand));
+                Log.d("Decryption Command:", byteArrayToHex(decryptCommand));
 
                 response = sfcTerminal.transmit(decryptCommand);
+                Log.d("Response Message:", byteArrayToHex(response));
 
                 this.plainMessage = getMessageFromResponse(response);
 
@@ -299,15 +308,26 @@ public class SSDAPIMain extends Activity {
         }
     }
 
-    private static String bytesToString(byte[] bytes) {
-        StringBuffer sb = new StringBuffer();
+    private static String byteArrayToHex(byte[] bytes) {
+        StringBuilder sb = new StringBuilder(bytes.length * 2);
         for (byte b : bytes) {
-            if(b==0)	// we need leading zeroes ...
-                sb.append("00 ");
-            else
-                sb.append(String.format("%02X ", b & 0xFF));
+            sb.append(String.format("%02x", b & 0xff));
         }
         return sb.toString();
+    }
+
+    private static byte[] hexToByteArray(String bytes) {
+        byte[]  sb = new byte[bytes.length() / 2];
+        int counter = 0;
+
+        char[] msg = bytes.toCharArray();
+
+        for (int i=0; i < msg.length; i++) {
+            sb[counter] = (byte) (msg[i] + msg[i+1]);
+            counter ++;
+            i++;
+        }
+        return sb;
     }
 
     /*
@@ -316,14 +336,15 @@ public class SSDAPIMain extends Activity {
      */
     private String getMessageFromResponse(byte[] bytes) {
         StringBuffer sb = new StringBuffer();
-        int lengthOfMessage = bytes[0];
+        int lengthOfMessage = bytes[16];
+
         Log.d("Length of Message: ", lengthOfMessage + "");
 
-        byte[] message = new byte[bytes.length - 1];
+        byte[] message = new byte[bytes.length - 17];
 
-        System.arraycopy(bytes, 1, message, 0, bytes.length - 1);
+        System.arraycopy(bytes, 17, message, 0, bytes.length - 17);
 
-        int counter = 1;
+        int counter = 17;
         while (lengthOfMessage != 0){
            sb.append((char) bytes[counter]);
            counter ++;
