@@ -59,15 +59,13 @@
       <file leaf-file-name="SSDAPIMain.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/tum/com/ssdapi/SSDAPIMain.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.38858196" vertical-offset="1829" max-vertical-offset="3675">
-              <caret line="226" column="49" selection-start-line="226" selection-start-column="49" selection-end-line="226" selection-end-column="49" />
+            <state vertical-scroll-proportion="0.7790055" vertical-offset="4377" max-vertical-offset="5175">
+              <caret line="340" column="0" selection-start-line="340" selection-start-column="0" selection-end-line="340" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
                 <element signature="method#connectCard#0;class#SSDAPIMain#0" expanded="false" />
                 <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
                 <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-                <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -1380,6 +1378,33 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SSDAPI" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SSDAPI" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SSDAPI" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="PackagesPane">
+        <subPane />
+      </pane>
       <pane id="AndroidView">
         <subPane>
           <PATH>
@@ -1446,34 +1471,7 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane">
-        <subPane />
-      </pane>
       <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SSDAPI" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SSDAPI" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SSDAPI" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -1490,7 +1488,7 @@
     <property name="recentsLimit" value="5" />
     <property name="android.project.structure.last.selected" value="app" />
     <property name="android.project.structure.proportion" value="0.15" />
-    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="TA9330EQV8" />
+    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="192.168.1.3:5555" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_AVD" value="Nexus_5_API_21_x86" />
     <property name="restartRequiresConfirmation" value="true" />
     <property name="FullScreen" value="false" />
@@ -1703,7 +1701,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="16" y="23" width="1604" height="947" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -1761,11 +1759,9 @@
           <caret line="28" column="27" selection-start-line="28" selection-start-column="27" selection-end-line="28" selection-end-column="27" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#connectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1784,11 +1780,9 @@
           <caret line="31" column="42" selection-start-line="31" selection-start-column="42" selection-end-line="31" selection-end-column="42" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#connectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1807,11 +1801,9 @@
           <caret line="31" column="42" selection-start-line="31" selection-start-column="42" selection-end-line="31" selection-end-column="42" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#connectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1830,11 +1822,9 @@
           <caret line="15" column="27" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="27" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#connectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1853,11 +1843,9 @@
           <caret line="4" column="24" selection-start-line="4" selection-start-column="24" selection-end-line="4" selection-end-column="24" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#connectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1876,11 +1864,9 @@
           <caret line="343" column="29" selection-start-line="343" selection-start-column="29" selection-end-line="343" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#connectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1899,11 +1885,9 @@
           <caret line="331" column="63" selection-start-line="331" selection-start-column="63" selection-end-line="331" selection-end-column="63" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#connectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1922,11 +1906,9 @@
           <caret line="225" column="62" selection-start-line="225" selection-start-column="62" selection-end-line="225" selection-end-column="62" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#connectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1945,11 +1927,9 @@
           <caret line="235" column="6" selection-start-line="235" selection-start-column="6" selection-end-line="235" selection-end-column="6" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#connectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1968,11 +1948,9 @@
           <caret line="235" column="6" selection-start-line="235" selection-start-column="6" selection-end-line="235" selection-end-column="6" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#connectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1991,11 +1969,9 @@
           <caret line="125" column="53" selection-start-line="125" selection-start-column="53" selection-end-line="125" selection-end-column="53" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#connectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2014,11 +1990,9 @@
           <caret line="142" column="67" selection-start-line="142" selection-start-column="67" selection-end-line="142" selection-end-column="67" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#connectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2029,11 +2003,9 @@
           <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#connectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2044,11 +2016,9 @@
           <caret line="211" column="1" selection-start-line="211" selection-start-column="1" selection-end-line="211" selection-end-column="1" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#connectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2059,11 +2029,9 @@
           <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#connectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2082,11 +2050,9 @@
           <caret line="20" column="46" selection-start-line="20" selection-start-column="46" selection-end-line="20" selection-end-column="46" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#connectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2105,11 +2071,9 @@
           <caret line="20" column="46" selection-start-line="20" selection-start-column="46" selection-end-line="20" selection-end-column="46" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#connectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2128,11 +2092,9 @@
           <caret line="20" column="46" selection-start-line="20" selection-start-column="46" selection-end-line="20" selection-end-column="46" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#connectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2151,11 +2113,9 @@
           <caret line="20" column="46" selection-start-line="20" selection-start-column="46" selection-end-line="20" selection-end-column="46" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#connectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2174,11 +2134,9 @@
           <caret line="20" column="46" selection-start-line="20" selection-start-column="46" selection-end-line="20" selection-end-column="46" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#connectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2197,11 +2155,9 @@
           <caret line="20" column="46" selection-start-line="20" selection-start-column="46" selection-end-line="20" selection-end-column="46" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#connectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2220,11 +2176,9 @@
           <caret line="20" column="46" selection-start-line="20" selection-start-column="46" selection-end-line="20" selection-end-column="46" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#connectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2235,11 +2189,9 @@
           <caret line="20" column="46" selection-start-line="20" selection-start-column="46" selection-end-line="20" selection-end-column="46" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#connectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2308,15 +2260,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/tum/com/ssdapi/SSDAPIMain.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.38858196" vertical-offset="1829" max-vertical-offset="3675">
-          <caret line="226" column="49" selection-start-line="226" selection-start-column="49" selection-end-line="226" selection-end-column="49" />
+        <state vertical-scroll-proportion="0.7790055" vertical-offset="4377" max-vertical-offset="5175">
+          <caret line="340" column="0" selection-start-line="340" selection-start-column="0" selection-end-line="340" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#connectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
             <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
           </folding>
         </state>
       </provider>

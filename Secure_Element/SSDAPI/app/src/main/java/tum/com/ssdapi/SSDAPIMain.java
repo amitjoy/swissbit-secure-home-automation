@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.content.Intent;
-import java.util.Random;
 
+import java.io.UnsupportedEncodingException;
+import java.util.Random;
+import android.util.Base64;
 import com.secureflashcard.sfclibrary.SfcTerminal;
 
 
@@ -316,18 +318,20 @@ public class SSDAPIMain extends Activity {
         return sb.toString();
     }
 
-    private static byte[] hexToByteArray(String bytes) {
-        byte[]  sb = new byte[bytes.length() / 2];
-        int counter = 0;
+    private static byte[] hexToByteArray(String encoded) {
 
-        char[] msg = bytes.toCharArray();
+        if ((encoded.length() % 2) != 0)
+            throw new IllegalArgumentException("Input string must contain an even number of characters");
 
-        for (int i=0; i < msg.length; i++) {
-            sb[counter] = (byte) (msg[i] + msg[i+1]);
-            counter ++;
-            i++;
+        final byte result[] = new byte[encoded.length()/2];
+        final char enc[] = encoded.toCharArray();
+        for (int i = 0; i < enc.length; i += 2) {
+            StringBuilder curr = new StringBuilder(2);
+            curr.append(enc[i]).append(enc[i + 1]);
+            result[i/2] = (byte) Integer.parseInt(curr.toString(), 16);
         }
-        return sb;
+        return result;
+
     }
 
     /*
