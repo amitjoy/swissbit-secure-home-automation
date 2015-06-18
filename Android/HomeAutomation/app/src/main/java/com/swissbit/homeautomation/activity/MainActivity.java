@@ -172,9 +172,6 @@ public class MainActivity extends ActionBarActivity {
         addToListView();
 
 
-//        mqttSubscribeAsync = new MqttSubscribeAsync();
-//        mqttSubscribeAsync.execute();
-
     }
 
     @Override
@@ -224,10 +221,6 @@ public class MainActivity extends ActionBarActivity {
             Intent intent2 = new Intent(this, EncryptCommandActivity.class);
             startActivity(intent2);
             finishActivity(1);
-
-//            EncryptionFactory encryptionFactory = new EncryptionFactory();
-//            Log.d("Kura Encrpyt",encryptionFactory.getEncryptedString());
-
 
         }
     }
