@@ -7,6 +7,8 @@ public final class RaspberryPi {
 
     private String id;
     private boolean status;
+    private String description;
+    private String name;
 
     public RaspberryPi(String id, String description, String name, boolean status) {
         this.id = id;
@@ -14,11 +16,6 @@ public final class RaspberryPi {
         this.name = name;
         this.status = status;
     }
-
-    private String description;
-    private String name;
-
-
 
     public String getId() {
         return id;
@@ -52,7 +49,7 @@ public final class RaspberryPi {
         this.name = name;
     }
 
-    public static RaspberryPi createRaspberrPi(final String id, final String desc, final String name, final boolean status){
+    public static RaspberryPi createRaspberryPi(final String id, final String desc, final String name, final boolean status){
         return new RaspberryPi(id, desc, name, status);
     }
 

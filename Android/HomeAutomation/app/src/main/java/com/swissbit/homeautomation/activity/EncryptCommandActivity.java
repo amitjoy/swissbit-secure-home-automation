@@ -3,6 +3,7 @@ package com.swissbit.homeautomation.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.widget.Toast;
@@ -16,7 +17,7 @@ import com.swissbit.homeautomation.utils.MQTTFactory;
 /**
  * Created by manit on 05/06/15.
  */
-public class EncryptCommandActivity extends Activity {
+public class EncryptCommandActivity extends ActionBarActivity {
 
     private MainActivity mainActivity;
 
@@ -36,7 +37,8 @@ public class EncryptCommandActivity extends Activity {
         Bundle bundle = new Bundle();
 
         bundle.putInt("Function", 1006);
-        bundle.putString("MSG", "AB");
+        bundle.putString("MSG", "B8:27:EB:BE:3F:BF");
+
         intent.putExtras(bundle);
 
         startActivityForResult(intent, 0);
@@ -50,8 +52,8 @@ public class EncryptCommandActivity extends Activity {
 
         if (requestCode == 0) {
 //            Toast.makeText(this, "encrypt", Toast.LENGTH_LONG).show();
-            EncryptionFactory.setEncryptedString(pData.getExtras().get("Response").toString());
-            Log.d("Encrypted Data", EncryptionFactory.getEncryptedString());
+            EncryptionFactory.setEncryptedString(pData.getExtras().getByteArray("Response"));
+            Log.d("Encrypted Data", EncryptionFactory.getEncryptedString().toString());
 
             AuthenticationAsync authenticationAsync = new AuthenticationAsync(this, mainActivity, MQTTFactory.getRaspberryPiById());
             Log.d("Main EncryptCmd", "" + mainActivity);

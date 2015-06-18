@@ -25,7 +25,7 @@ public final class MQTTFactory {
 
     public static String getClientId() {
         if (clientId == null)
-            clientId = Integer.toString(new Random().nextInt(Integer.MAX_VALUE));
+            clientId = DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getMainActivityContext()).getCredentials()[2];
         Log.d("Kura MQTT",clientId);
         return clientId;
     }
@@ -76,6 +76,8 @@ public final class MQTTFactory {
             case TopicsConstants.RASPBERRY_AUTH_SUB:
                 return new String[]{getMQTTTopicPrefix(TopicsConstants.TOPIC_SUBSCRIBE) + TopicsConstants.RASPBERRY_AUTH_SUB + requestId, requestId};
 
+            case TopicsConstants.SWITCH_ON_OFF_LIST_STATUS_SUB:
+                return new String[]{getMQTTTopicPrefix(TopicsConstants.TOPIC_SUBSCRIBE) + TopicsConstants.SWITCH_ON_OFF_LIST_STATUS_SUB + requestId, requestId};
 
         }
 
@@ -110,6 +112,15 @@ public final class MQTTFactory {
 
             case TopicsConstants.RASPBERRY_AUTH_PUB:
                 return getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.RASPBERRY_AUTH_PUB;
+
+            case TopicsConstants.SURVEILLANCE:
+                return getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.SURVEILLANCE;
+
+            case TopicsConstants.SWITCH_ON_PUB:
+                return getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.SWITCH_ON_PUB;
+
+            case TopicsConstants.SWITCH_OFF_PUB:
+                return getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.SWITCH_OFF_PUB;
         }
 
         return null;

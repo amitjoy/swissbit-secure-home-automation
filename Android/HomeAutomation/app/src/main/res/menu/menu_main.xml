@@ -4,6 +4,6 @@
 
     <item android:id="@+id/register_server"
         android:title="@string/register_server"
-        android:icon="@drawable/registericon"
+        android:icon="@drawable/register"
         app:showAsAction="always"/>
 </menu>

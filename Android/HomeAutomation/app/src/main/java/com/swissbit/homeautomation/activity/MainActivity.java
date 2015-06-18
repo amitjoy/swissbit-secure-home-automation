@@ -18,19 +18,17 @@
 
 package com.swissbit.homeautomation.activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -48,16 +46,12 @@ import com.swissbit.homeautomation.model.RaspberryPi;
 import com.swissbit.homeautomation.ui.adapter.RPiAdapter;
 import com.swissbit.homeautomation.utils.ActivityContexts;
 import com.swissbit.homeautomation.utils.DBFactory;
-import com.swissbit.homeautomation.utils.EncryptionFactory;
 import com.swissbit.homeautomation.utils.MQTTFactory;
 import com.swissbit.homeautomation.ui.dialog.SecureCodeDialog;
 import com.swissbit.homeautomation.utils.TopicsConstants;
-import com.swissbit.homeautomation.ws.VerifyRaspberryPi;
 import com.swissbit.mqtt.client.IKuraMQTTClient;
 import com.swissbit.mqtt.client.adapter.MessageListener;
 import com.swissbit.mqtt.client.message.KuraPayload;
-
-import junit.framework.Assert;
 
 import java.util.List;
 
@@ -177,6 +171,7 @@ public class MainActivity extends ActionBarActivity {
 
         addToListView();
 
+
 //        mqttSubscribeAsync = new MqttSubscribeAsync();
 //        mqttSubscribeAsync.execute();
 
@@ -256,11 +251,21 @@ public class MainActivity extends ActionBarActivity {
             adapter = new RPiAdapter(getApplicationContext(), listOfRPi);
 
             listView.setAdapter(adapter);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(getApplicationContext(), DeviceActivity.class);
+                    RaspberryPi clickedItem = (RaspberryPi) listView.getItemAtPosition(position);
+                    intent.putExtra("RaspberryId", clickedItem.getId());
+                    startActivity(intent);
+                }
+            });
 
             rPiHeartBeatAsync.execute();
 
             lwtAsync.execute();
         }
+
 
     }
 
