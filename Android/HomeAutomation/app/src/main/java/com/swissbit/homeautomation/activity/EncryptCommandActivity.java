@@ -37,7 +37,7 @@ public class EncryptCommandActivity extends ActionBarActivity {
         Bundle bundle = new Bundle();
 
         bundle.putInt("Function", 1006);
-        bundle.putString("MSG", "B8:27:EB:BE:3F:BF");
+        bundle.putString("MSG", "AB");
 
         intent.putExtras(bundle);
 
@@ -52,7 +52,7 @@ public class EncryptCommandActivity extends ActionBarActivity {
 
         if (requestCode == 0) {
 //            Toast.makeText(this, "encrypt", Toast.LENGTH_LONG).show();
-            EncryptionFactory.setEncryptedString(pData.getExtras().getByteArray("Response"));
+            EncryptionFactory.setEncryptedString(pData.getExtras().getString("Response"));
             Log.d("Encrypted Data", EncryptionFactory.getEncryptedString().toString());
 
             AuthenticationAsync authenticationAsync = new AuthenticationAsync(this, mainActivity, MQTTFactory.getRaspberryPiById());
