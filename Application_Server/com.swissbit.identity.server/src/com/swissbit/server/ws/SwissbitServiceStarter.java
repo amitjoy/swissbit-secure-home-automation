@@ -20,6 +20,7 @@ public class SwissbitServiceStarter {
 
 		Spark.port(new Integer(PORT));
 		Spark.ipAddress(IP_ADDRESS);
+		Spark.staticFileLocation("/resources/public");
 
 		// Building customer controller
 		final ControllerBuilder<CustomerController, CustomerService> customerBuilder = new ControllerBuilder<CustomerController, CustomerService>(

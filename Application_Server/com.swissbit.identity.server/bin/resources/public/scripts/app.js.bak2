@@ -1,0 +1,43 @@
+var app = angular.module('identity-server', [
+    'ngCookies',
+    'ngResource',
+    'ngSanitize',
+    'ngRoute'
+]);
+
+app.config(function ($routeProvider) {
+    $routeProvider.when('/', {
+        templateUrl: 'views/displayHome.html',
+        controller: 'defaultCtrl'
+    }).when('/viewCustomers', {
+        templateUrl: 'views/viewCustomers.html',
+        controller: 'viewCustomersCtrl'
+    }).when('/viewRaspPis', {
+        templateUrl: 'viewRaspPis.html',
+        controller: 'viewRaspPisCtrl'
+    }).otherwise({
+        redirectTo: '/'
+    })
+});
+
+app.controller('defaultCtrl', function ($scope, $http) {
+
+});
+
+app.controller('viewCustomersCtrl', function ($scope, $http) {
+
+    $scope.displayC = function () {
+        $http.get('/users').success(function (data) {
+        $scope.textdata = data;
+        })
+    }   
+}); 
+
+app.controller('viewRaspPisCtrl', function ($scope, $http) {
+
+    $scope.displayR = function () {
+        $http.get('/pis').success(function (data) {
+        $scope.textdata = data;
+        })
+    }   
+}); 
