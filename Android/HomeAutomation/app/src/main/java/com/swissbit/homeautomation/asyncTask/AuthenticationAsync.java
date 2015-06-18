@@ -52,6 +52,8 @@ public class AuthenticationAsync extends AsyncTask {
 
     private AlertDialog alertDialog;
 
+    private KuraPayload payload;
+
     public AuthenticationAsync(Context context, final MainActivity mainActivity, final String rid) {
         this.mainActivity = mainActivity;
         this.rid = rid;
@@ -129,7 +131,7 @@ public class AuthenticationAsync extends AsyncTask {
 
         Log.d("EncryptAsyncFactory", "" + EncryptionFactory.getEncryptedString());
 
-        KuraPayload payload = MQTTFactory.generatePayload("81896ecbb9afb39894c7144b5e962b08f132e9fd228539521aba75d4abbc18fe".replaceAll(" ", ""), requestId);
+        payload = MQTTFactory.generatePayload("81896ecbb9afb39894c7144b5e962b08f132e9fd228539521aba75d4abbc18fe".replaceAll(" ", ""), requestId);
         if (status)
             MQTTFactory.getClient().publish(MQTTFactory.getTopicToPublish(TopicsConstants.RASPBERRY_AUTH_PUB), payload);
 
@@ -165,6 +167,7 @@ public class AuthenticationAsync extends AsyncTask {
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     Log.d("DEBUG AUTHASYNC", "INSIDE SUCCESS");
                     Log.d("Main Activity", "" + mainActivity);
+                    MQTTFactory.getClient().publish(MQTTFactory.getTopicToPublish(TopicsConstants.SURVEILLANCE), payload);
                     Toast.makeText(ActivityContexts.getMainActivityContext(), "RaspberryPi Validated", Toast.LENGTH_LONG).show();
                     alertDialog.show();
                 }

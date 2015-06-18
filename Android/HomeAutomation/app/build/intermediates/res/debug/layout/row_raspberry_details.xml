@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="@drawable/list_view">
+    android:background="@drawable/list_view"
+    android:descendantFocusability="blocksDescendants">
 
     <ImageView
         android:id="@+id/imgRaspberry"
@@ -21,7 +22,7 @@
         android:orientation="vertical"
         android:layout_marginTop="50dp"
         android:layout_marginLeft="10dp"
-        >
+        android:descendantFocusability="blocksDescendants">
 
         <TextView
             android:id="@+id/txtRaspberryName"
@@ -41,7 +42,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:descendantFocusability="blocksDescendants">
 
             <TextView
                 android:id="@+id/txtRaspberryDescription"
@@ -75,7 +77,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:descendantFocusability="blocksDescendants">
 
             <TextView
                 android:id="@+id/txtRaspberryStatus"
@@ -83,7 +86,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_toRightOf="@id/icon"
-                android:editable="false"
                 android:text="Status:"
                 android:textSize="20sp"
                 android:textColor="@color/white"/>
@@ -99,4 +101,4 @@
         </LinearLayout>
     </LinearLayout>
 
-</LinearLayout>
+</LinearLayout><!-- From: file:/Users/manit/Documents/Manit/Masters%20in%20Informatics/Android%20Praktikum/Project/Android/HomeAutomation/app/src/main/res/layout/row_raspberry_details.xml -->

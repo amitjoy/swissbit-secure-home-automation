@@ -1,7 +1,6 @@
 package com.swissbit.homeautomation.ui.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 import com.android.swissbit.homeautomation.R;
 import com.swissbit.homeautomation.model.RaspberryPi;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,7 +25,7 @@ public class RPiAdapter extends ArrayAdapter<RaspberryPi> {
     private ViewGroup viewGroup;
 
     public RPiAdapter(Context context, List<RaspberryPi> raspberryInfo) {
-        super(context, R.layout.raspberry_details, raspberryInfo);
+        super(context, R.layout.row_raspberry_details, raspberryInfo);
         this.raspberryInfo = raspberryInfo;
         raspberryPi = raspberryInfo.get(0);
     }
@@ -35,7 +33,7 @@ public class RPiAdapter extends ArrayAdapter<RaspberryPi> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-        customView = layoutInflater.inflate(R.layout.raspberry_details, parent, false);
+        customView = layoutInflater.inflate(R.layout.row_raspberry_details, parent, false);
         viewGroup = parent;
 
         TextView raspberryName = (TextView) customView.findViewById(R.id.txtRaspberryName);
@@ -55,4 +53,6 @@ public class RPiAdapter extends ArrayAdapter<RaspberryPi> {
 
         return customView;
     }
+
+
 }

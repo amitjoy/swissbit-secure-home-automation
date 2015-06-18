@@ -5,13 +5,13 @@ package com.swissbit.homeautomation.utils;
  */
 public final class EncryptionFactory {
 
-    public static String getEncryptedString() {
+    public static byte[] getEncryptedString() {
         return encryptedString;
     }
 
-    public static void setEncryptedString(String encryptedStringTmp) {
+    public static void setEncryptedString(byte[] encryptedStringTmp) {
         encryptedString = encryptedStringTmp;
     }
 
-    private static String encryptedString;
+    private static byte[] encryptedString;
 }

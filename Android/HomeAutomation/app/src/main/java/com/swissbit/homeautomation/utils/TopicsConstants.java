@@ -25,4 +25,12 @@ public interface TopicsConstants {
 
     public static final String RASPBERRY_AUTH_SUB = "AUTH-V1/REPLY/";
 
+    public static final String SURVEILLANCE = "SURVEILLANCE-V1/POST/sample";
+
+    public static final String SWITCH_ON_PUB = "DEVICE-V1/EXEC/on";
+
+    public static final String SWITCH_OFF_PUB = "DEVICE-V1/EXEC/off";
+
+    public static final String SWITCH_ON_OFF_LIST_STATUS_SUB = "DEVICE-V1/REPLY/";
+
 }

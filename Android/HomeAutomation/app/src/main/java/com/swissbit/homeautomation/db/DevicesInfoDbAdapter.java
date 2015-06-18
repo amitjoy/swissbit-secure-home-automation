@@ -11,7 +11,7 @@ import android.util.Log;
 import com.swissbit.homeautomation.model.RaspberryPi;
 import com.swissbit.homeautomation.utils.DBConstants;
 
-import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by manit on 02/06/15.
@@ -68,7 +68,7 @@ public class DevicesInfoDbAdapter  {
             String id = cursor.getString(cursor.getColumnIndex(DBConstants.RASPBERRYID));
             String name = cursor.getString(cursor.getColumnIndex(DBConstants.RASPBERRYNAME));
             String desc = cursor.getString(cursor.getColumnIndex(DBConstants.RASPBERRYDESC));
-            RaspberryPi raspberryPi = RaspberryPi.createRaspberrPi(id, name, desc, false);
+            RaspberryPi raspberryPi = RaspberryPi.createRaspberryPi(id, name, desc, false);
 
             return raspberryPi;
         }
@@ -92,20 +92,23 @@ public class DevicesInfoDbAdapter  {
         contentValues.put(DBConstants.CODE,code);
         contentValues.put(DBConstants.USERNAME,username);
         contentValues.put(DBConstants.PASSWORD,password);
+        contentValues.put(DBConstants.CLIENTID,Integer.toString(new Random().nextInt(Integer.MAX_VALUE)));
         contentValues.put(DBConstants.DIALOGSHOW,1);
+
         db.update(DBConstants.TABLE_NAME_CREDENTIALS, contentValues, null, null);
         Log.d("After Set", "SetCred");
     }
 
     public String[] getCredentials() {
-        String[] columns = {DBConstants.USERNAME, DBConstants.PASSWORD};
-        String[] credentials = new String[2];
+        String[] columns = {DBConstants.USERNAME, DBConstants.PASSWORD, DBConstants.CLIENTID};
+        String[] credentials = new String[3];
         Cursor cursor = db.query(DBConstants.TABLE_NAME_CREDENTIALS, columns, null,
                 null, null, null, null);
         if (cursor.getCount() != 0) {
             cursor.moveToFirst();
             credentials[0] = cursor.getString(cursor.getColumnIndex(DBConstants.USERNAME));
             credentials[1] = cursor.getString(cursor.getColumnIndex(DBConstants.PASSWORD));
+            credentials[2] = cursor.getString(cursor.getColumnIndex(DBConstants.CLIENTID));
         }
         return credentials;
     }
