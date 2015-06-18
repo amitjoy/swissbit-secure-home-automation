@@ -7,11 +7,14 @@ import android.app.Activity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.util.Log;
+
+import java.io.IOException;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
 
-    static byte[] message;
+    static String message;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +64,7 @@ public class MainActivity extends ActionBarActivity {
                          Intent intent = new Intent("tum.com.ssdapi.MAIN_ACTIVITY");
                          Bundle bundle = new Bundle();
                          bundle.putInt("Function", 1007);
-                         bundle.putByteArray("MSG", message);
+                         bundle.putString("MSG", message);
                          intent.putExtras(bundle);
                        /*
                         * 6404 is REQUEST_CODE. This is just a number to uniquely identify a request.
@@ -79,12 +82,18 @@ public class MainActivity extends ActionBarActivity {
         {
             if (resultCode == Activity.RESULT_OK )
             {
-                final byte[] zData = pData.getExtras().getByteArray("Response");
+                final String zData = pData.getExtras().getString("Response");
 
                 EditText resp = (EditText) findViewById(R.id.decryptText);
-                resp.setText("" + zData);
+                resp.setText(zData);
 
-                message = zData;
+                Log.d("tester: ", "" + zData);
+                try{
+                    message = zData;
+                }catch (Exception e){
+
+                }
+
             }
         }
 

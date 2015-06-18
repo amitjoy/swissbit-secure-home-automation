@@ -65,13 +65,6 @@ public class DeviceActivity extends ActionBarActivity {
         adapter = new DeviceAdapter(getApplicationContext(), listOfDevice);
         deviceListView.setAdapter(adapter);
 
-//        LayoutInflater layoutInflater = LayoutInflater.from(this);
-//        View customView = layoutInflater.inflate(R.layout.row_device_details, adapter.getViewGroup(), false);
-//        ImageButton btnRefresh = (ImageButton) findViewById(R.id.btnRefresh);
-//        final Switch socketSwitch = (Switch) adapter.getView(0,null,adapter.getViewGroup()).findViewById(R.id.socketSwitch);
-
-
-
     }
 
 

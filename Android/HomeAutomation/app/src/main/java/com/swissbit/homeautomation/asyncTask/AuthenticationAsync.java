@@ -54,15 +54,19 @@ public class AuthenticationAsync extends AsyncTask {
 
     private KuraPayload payload;
 
+    private String dialogMessage;
+
     public AuthenticationAsync(Context context, final MainActivity mainActivity, final String rid) {
         this.mainActivity = mainActivity;
         this.rid = rid;
         encryptCommandActivity = (EncryptCommandActivity)context;
         encryptionFactory = new EncryptionFactory();
+    }
 
-        alertDialog = new AlertDialog.Builder(context).create();
+    public void showDialog(){
+        alertDialog = new AlertDialog.Builder(ActivityContexts.getEncryptCommandActivityContext()).create();
         alertDialog.setTitle("Information");
-        alertDialog.setMessage("RaspberryPi Validated");
+        alertDialog.setMessage(dialogMessage);
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -72,8 +76,8 @@ public class AuthenticationAsync extends AsyncTask {
                         dialog.dismiss();
                     }
                 });
+        alertDialog.show();
     }
-
 
     @Override
     protected Object doInBackground(Object[] params) {
@@ -103,7 +107,7 @@ public class AuthenticationAsync extends AsyncTask {
                 @Override
                 public void processMessage(KuraPayload kuraPayload) {
                     try {
-                        //Log.d("Kura MSG", String.valueOf(kuraPayload.getMetric("data")));
+
                         String metricData = String.valueOf(kuraPayload.getMetric("data"));
                         if (metricData.isEmpty()) {
                             Log.d("Metrics......1", "" + kuraPayload.metrics());
@@ -131,7 +135,7 @@ public class AuthenticationAsync extends AsyncTask {
 
         Log.d("EncryptAsyncFactory", "" + EncryptionFactory.getEncryptedString());
 
-        payload = MQTTFactory.generatePayload("81896ecbb9afb39894c7144b5e962b08f132e9fd228539521aba75d4abbc18fe".replaceAll(" ", ""), requestId);
+        payload = MQTTFactory.generatePayload(EncryptionFactory.getEncryptedString().replaceAll(" ", ""), requestId);
         if (status)
             MQTTFactory.getClient().publish(MQTTFactory.getTopicToPublish(TopicsConstants.RASPBERRY_AUTH_PUB), payload);
 
@@ -141,10 +145,6 @@ public class AuthenticationAsync extends AsyncTask {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-//        client.disconnect();
-//        if (client.isConnected())
-//            Log.d("Kura MQTT","still connected");
 
         return null;
 
@@ -169,18 +169,23 @@ public class AuthenticationAsync extends AsyncTask {
                     Log.d("Main Activity", "" + mainActivity);
                     MQTTFactory.getClient().publish(MQTTFactory.getTopicToPublish(TopicsConstants.SURVEILLANCE), payload);
                     Toast.makeText(ActivityContexts.getMainActivityContext(), "RaspberryPi Validated", Toast.LENGTH_LONG).show();
-                    alertDialog.show();
+                    dialogMessage = "RaspberryPi Validated";
+                    showDialog();
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                     Log.d("DEBUG AUTHASYNC", "INSIDE FAILURE");
                     Toast.makeText(ActivityContexts.getMainActivityContext(), "RaspberryPi Registration Unsuccessful. Please try Again1", Toast.LENGTH_LONG).show();
+                    dialogMessage = "RaspberryPi Registration Unsuccessful. Please try Again";
+                    showDialog();
                 }
             });
 
         } else {
             Toast.makeText(ActivityContexts.getMainActivityContext(), "RaspberryPi Registration Unsuccessful. Please try Again3", Toast.LENGTH_LONG).show();
+            dialogMessage = "RaspberryPi Registration Unsuccessful. Please try Again";
+            showDialog();
         }
         cancel(true);
     }
