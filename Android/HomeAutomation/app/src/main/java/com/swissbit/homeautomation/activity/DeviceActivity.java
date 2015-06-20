@@ -9,9 +9,11 @@ import com.android.swissbit.homeautomation.R;
 import com.google.common.collect.Lists;
 import com.swissbit.homeautomation.asyncTask.DeviceCmdAsync;
 import com.swissbit.homeautomation.asyncTask.RetrieveDeviceListAsync;
+import com.swissbit.homeautomation.db.DevicesInfoDbAdapter;
 import com.swissbit.homeautomation.model.Device;
 import com.swissbit.homeautomation.ui.adapter.DeviceAdapter;
 import com.swissbit.homeautomation.utils.ActivityContexts;
+import com.swissbit.homeautomation.utils.DBFactory;
 import com.swissbit.homeautomation.utils.MQTTFactory;
 import com.swissbit.mqtt.client.IKuraMQTTClient;
 import com.swissbit.mqtt.client.message.KuraPayload;
@@ -41,13 +43,16 @@ public class DeviceActivity extends ActionBarActivity {
 
     private String raspberryId;
 
+    private DevicesInfoDbAdapter devicesInfoDbAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_details);
-        //Save the context of MainActivity for later usage in other classes
-        ActivityContexts.setMainActivityContext(this);
+        //Save the context of DeviceActivity for later usage in other classes
+        ActivityContexts.setDeviceActivity(this);
         client = MQTTFactory.getClient();
+        devicesInfoDbAdapter = DBFactory.getDevicesInfoDbAdapter(this);
 
         deviceListView = (ListView) findViewById(R.id.listDevice);
         extras = getIntent().getExtras();
@@ -55,17 +60,23 @@ public class DeviceActivity extends ActionBarActivity {
 
         Log.d("Device Activity", raspberryId);
         getDeviceList();
-        addToListView();
+
     }
 
     public void getDeviceList(){
-        RetrieveDeviceListAsync retrieveDeviceListAsync = new RetrieveDeviceListAsync(raspberryId);
-        retrieveDeviceListAsync.execute();
+        if(devicesInfoDbAdapter.getDevice() == null){
+            RetrieveDeviceListAsync retrieveDeviceListAsync = new RetrieveDeviceListAsync(raspberryId);
+            retrieveDeviceListAsync.execute();
+        }
+        else
+            addToListView();
+
     }
 
 
     public void addToListView() {
-        device = Device.createDevice(8, "B8:27:EB:BE:3F:BF", "Device1", "Device1", "false");
+        Log.d("Adding List view","Added");
+        device = devicesInfoDbAdapter.getDevice();
         listOfDevice = Lists.newArrayList(device);
 
         adapter = new DeviceAdapter(getApplicationContext(), listOfDevice);
