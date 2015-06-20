@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html ng-app="identity-server">
+    <head>
+        <title>Swissbit Home Automation System</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+	<base href="/">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    </head>
+
+    <body>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <br/>
+                <div class="row">
+                    <div class="col-md-5" pull-left>
+                        <!--<img src="images/swissbit-blue.png">-->
+        		<img src="images/android.png"> 
+			<!--<h1>Welcome to Swissbit Home Automation System</h1>-->
+	           </div>
+                    <div class="collapse navbar-collapse pull-right" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li>
+                                <a href="/">Home</a>
+                            </li>
+                            <li>
+                                <a href="/viewCustomers" id="loginButton">Customers</a>
+                            </li>
+                            <li>
+                                <a href="/viewRaspPis" id="loginButton">Raspberry Pi</a>
+                            </li>
+			    <li>
+                          	<a href="#" id="loginButton">Login</a>
+			    </li>
+                            <li>
+                                <a href="#" id="signupButton">Signup</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+	<div class="container" ng-view="">
+			<!--displays different pages here-->	
+	</div>
+<script src="/js/jquery.js"></script>
+<script src="/js/angular.js"></script>
+<script src="/js/angular-route.js"></script>
+<script src="/js/angular-cookies.js"></script>
+<script src="/js/angular-sanitize.js"></script>
+<script src="/js/angular-resource.js"></script>
+
+<script src="/scripts/app.js"></script>
+    </body>
+</html>

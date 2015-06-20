@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">SwissbitHomeAutomation</string>
+    <string name="action_settings">Settings</string>
+    <string name="register_server">Register Server</string>
+    <string name="empty_list">You do not have any Servers registered. Please register a server by clicking on the "+" button in the menu bar</string>
+</resources>
