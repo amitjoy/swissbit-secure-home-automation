@@ -1602,6 +1602,7 @@ containing a value of this type.
         public static final int progress_circular=0x7f0c0005;
         public static final int progress_horizontal=0x7f0c0006;
         public static final int radio=0x7f0c003a;
+        public static final int refreshStatus=0x7f0c0061;
         public static final int register_server=0x7f0c006a;
         public static final int screen=0x7f0c001f;
         public static final int scrollView=0x7f0c0032;
@@ -1627,7 +1628,6 @@ containing a value of this type.
         public static final int src_over=0x7f0c0022;
         public static final int status_bar_latest_event_content=0x7f0c0054;
         public static final int submit_area=0x7f0c004b;
-        public static final int switchStatus=0x7f0c0061;
         public static final int tabMode=0x7f0c000b;
         public static final int text=0x7f0c005c;
         public static final int text2=0x7f0c005a;
