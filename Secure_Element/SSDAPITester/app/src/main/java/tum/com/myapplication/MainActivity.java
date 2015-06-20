@@ -1,6 +1,5 @@
 package tum.com.myapplication;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.content.Intent;
 import android.app.Activity;
@@ -8,9 +7,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.util.Log;
+import android.widget.Toast;
 
-import java.io.IOException;
-
+import com.tum.ssdapi.CardAPI;
 
 public class MainActivity extends Activity {
 
@@ -20,6 +19,10 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        final CardAPI apiAccess = new CardAPI(getApplicationContext());
+        if(apiAccess.isCardPresent()){
+
 
         /*
          * This part of the code is added to call the SSDAPI apk which will
@@ -34,7 +37,11 @@ public class MainActivity extends Activity {
                                              @Override
                                              public void onClick(View v) {
                           EditText plainMsg = (EditText) findViewById(R.id.encryptText);
-                          Intent intent = new Intent("tum.com.ssdapi.MAIN_ACTIVITY");
+
+                          EditText resp = (EditText) findViewById(R.id.decryptText);
+                          resp.setText(apiAccess.encryptMsg(plainMsg.getText().toString()));
+
+                          /*Intent intent = new Intent("tum.com.ssdapi.MAIN_ACTIVITY");
                           Bundle bundle = new Bundle();
                           bundle.putInt("Function", 1006);
                           bundle.putString("MSG", plainMsg.getText().toString());
@@ -43,10 +50,12 @@ public class MainActivity extends Activity {
                            * 6403 is REQUEST_CODE. This is just a number to uniquely identify a request.
                            * The Function id is used to define the task, like encrypt or decrypt
                            */
-                           startActivityForResult(intent, 6403);
+                          //startActivityForResult(intent, 6403);
                         }
                                          }
+
         );
+
 
          /*
          * This part of the code is added to call the SSDAPI apk which will
@@ -61,19 +70,25 @@ public class MainActivity extends Activity {
                      @Override
                      public void onClick(View v) {
                          EditText encryptMsg = (EditText) findViewById(R.id.decryptText);
-                         Intent intent = new Intent("tum.com.ssdapi.MAIN_ACTIVITY");
+
+                         EditText resp = (EditText) findViewById(R.id.decryptText);
+                         resp.setText(apiAccess.decryptMsg(encryptMsg.getText().toString()));
+
+                         /*Intent intent = new Intent("tum.com.ssdapi.MAIN_ACTIVITY");
                          Bundle bundle = new Bundle();
                          bundle.putInt("Function", 1007);
                          bundle.putString("MSG", message);
-                         intent.putExtras(bundle);
+                         intent.putExtras(bundle);*/
                        /*
                         * 6404 is REQUEST_CODE. This is just a number to uniquely identify a request.
                         * The Function id is used to define the task, like encrypt or decrypt
                         */
-                         startActivityForResult(intent, 6404);
+                         //startActivityForResult(intent, 6404);
                      }
                  }
         );
+        }
+
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent pData)

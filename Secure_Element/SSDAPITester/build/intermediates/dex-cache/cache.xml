@@ -9,6 +9,20 @@
         <dex dex="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Secure_Element/SSDAPITester/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-f060c9290b56d75201f6826da5a9f1388c5d8e19.jar" />
     </item>
     <item
+        jar="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Secure_Element/SSDAPITester/app/libs/com.tum.ssdapi.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="570c6b394814bb4293fcfe522c5952259f413e30">
+        <dex dex="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Secure_Element/SSDAPITester/app/build/intermediates/pre-dexed/debug/com.tum.ssdapi-2f3fa140a2a8b96ccd5de39180b8c33f1bc74d8c.jar" />
+    </item>
+    <item
+        jar="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Secure_Element/SSDAPITester/app/libs/com.secureflashcard.sfclibrary.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="2b33ab5c7f64e40f7b1625ed1a092aa1a2e0569d">
+        <dex dex="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Secure_Element/SSDAPITester/app/build/intermediates/pre-dexed/debug/com.secureflashcard.sfclibrary-ad53773188a47f1a56b67b5768f4db172841e854.jar" />
+    </item>
+    <item
         jar="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Secure_Element/SSDAPITester/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/classes.jar"
         jumboMode="false"
         revision="22.0.1"
