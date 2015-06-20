@@ -7,7 +7,7 @@ public interface DBConstants {
 
     public static final String DATABASE_NAME="DevicesInfoDb";
 
-    public static final int DATABASE_VERSION = 50;
+    public static final int DATABASE_VERSION = 53;
 
     public static final String TABLE_NAME_RASPBERRYINFO="RaspberryInfo";
     public static final String UID = "_id";
@@ -44,7 +44,7 @@ public interface DBConstants {
 
     public static final String CREATE_TABLE_DEVICES = "CREATE TABLE " + TABLE_NAME_DEVICES
             + " (" + UID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + DEVICE_ID
-            + " VARCHAR(15), " + RASPBERRYID
+            + " INTEGER, " + RASPBERRYID
             + " VARCHAR(15), " + DEVICE_NAME
             + " VARCHAR(25), " + DEVICE_DESCRIPTION
             + " VARCHAR(50), " + DEVICE_STATUS

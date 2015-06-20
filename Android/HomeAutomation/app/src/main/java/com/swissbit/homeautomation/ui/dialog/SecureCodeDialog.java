@@ -3,26 +3,11 @@ package com.swissbit.homeautomation.ui.dialog;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.util.Log;
 import android.widget.EditText;
-import android.widget.Toast;
-
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.swissbit.homeautomation.activity.EncryptCommandActivity;
-import com.swissbit.homeautomation.activity.MainActivity;
 import com.swissbit.homeautomation.db.DevicesInfoDbAdapter;
 import com.swissbit.homeautomation.utils.DBFactory;
-import com.swissbit.homeautomation.utils.MQTTFactory;
-import com.swissbit.homeautomation.utils.WSConstants;
 import com.swissbit.homeautomation.ws.VerifySecretCode;
-import com.swissbit.mqtt.client.IKuraMQTTClient;
-
-import org.apache.http.Header;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Created by manit on 06/06/15.

@@ -59,7 +59,7 @@ public class DeviceAdapter extends ArrayAdapter<Device> {
         TextView switchStatus = (TextView) customView.findViewById(R.id.switchStatus);
         ImageButton btnRefresh = (ImageButton) customView.findViewById(R.id.btnRefresh);
 
-        if (device.getStatus()){
+        if (device.getStatus().equals("true")){
             socketSwitch.setChecked(true);
         }
         else{

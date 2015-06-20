@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.swissbit.homeautomation.model.Device;
 import com.swissbit.homeautomation.model.RaspberryPi;
 import com.swissbit.homeautomation.utils.DBConstants;
 
@@ -59,7 +60,7 @@ public class DevicesInfoDbAdapter  {
             return true;
     }
 
-    public RaspberryPi getRaspberrys(){
+    public RaspberryPi getRaspberry(){
         String[] columns= {DBConstants.RASPBERRYID,DBConstants.RASPBERRYNAME,DBConstants.RASPBERRYDESC};
         Cursor cursor = db.query(DBConstants.TABLE_NAME_RASPBERRYINFO, columns, null,
                 null, null, null, null);
@@ -113,6 +114,46 @@ public class DevicesInfoDbAdapter  {
         return credentials;
     }
 
+
+    public long insertDevice(int deviceId,String raspberryId,String raspberryName, String raspberryDesc, String deviceStatus){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DBConstants.DEVICE_ID, deviceId);
+        contentValues.put(DBConstants.RASPBERRYID, raspberryId);
+        contentValues.put(DBConstants.DEVICE_NAME, raspberryName);
+        contentValues.put(DBConstants.DEVICE_DESCRIPTION, raspberryDesc);
+        contentValues.put(DBConstants.DEVICE_STATUS,deviceStatus);
+        long id = db.insert(DBConstants.TABLE_NAME_DEVICES, null, contentValues);
+//        Device device = new Device(deviceId,raspberryId,raspberryName,raspberryDesc,deviceStatus);
+        return id;
+    }
+
+    public boolean checkDeviceById(int id){
+        String[] columns = {DBConstants.DEVICE_ID};
+        Cursor cursor = db.query(DBConstants.TABLE_NAME_DEVICES, columns, DBConstants.DEVICE_ID + " = '" + id + "'",
+                null, null, null, null);
+        if(cursor.getCount() != 0)
+            return true;
+        return false;
+    }
+
+    public Device getDevice(){
+        String[] columns= {DBConstants.DEVICE_ID,DBConstants.RASPBERRYID,DBConstants.DEVICE_NAME,DBConstants.DEVICE_DESCRIPTION,
+                            DBConstants.DEVICE_STATUS};
+        Cursor cursor = db.query(DBConstants.TABLE_NAME_DEVICES, columns, null,
+                null, null, null, null);
+        if(cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            int deviceId = cursor.getInt(cursor.getColumnIndex(DBConstants.DEVICE_ID));
+            String raspberryId = cursor.getString(cursor.getColumnIndex(DBConstants.RASPBERRYID));
+            String deviceName = cursor.getString(cursor.getColumnIndex(DBConstants.DEVICE_NAME));
+            String deviceDesc = cursor.getString(cursor.getColumnIndex(DBConstants.DEVICE_DESCRIPTION));
+            String deviceStatus = cursor.getString(cursor.getColumnIndex(DBConstants.DEVICE_STATUS));
+            Device device = Device.createDevice(deviceId,raspberryId,deviceName,deviceDesc,deviceStatus);
+
+            return device;
+        }
+        return null;
+    }
     static class DevicesInfoDb extends SQLiteOpenHelper{
 
         private Context context;
