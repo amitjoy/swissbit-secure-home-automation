@@ -68,7 +68,7 @@ public class DeviceCmdAsync extends AsyncTask {
                         }
                         Log.d("Inside onProcess", "" + subResponse);
                     } catch (Exception e) {
-                        Log.e("Kura MQTT", e.getCause().getMessage());
+                        Log.e("Kura MQTT Exception", e.getCause().getMessage());
                     }
 
                 }
@@ -104,5 +104,13 @@ public class DeviceCmdAsync extends AsyncTask {
         Log.d("Inside onPost", "" + subResponse);
         if (!subResponse)
             Toast.makeText(ActivityContexts.getMainActivityContext(), "Device Command Failed! Try again", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    protected void onCancelled() {
+        Log.d("Inside onCancelled", "" + subResponse);
+        if (!subResponse)
+            Toast.makeText(ActivityContexts.getMainActivityContext(), "Device Command Failed! Try again", Toast.LENGTH_LONG).show();
+
     }
 }

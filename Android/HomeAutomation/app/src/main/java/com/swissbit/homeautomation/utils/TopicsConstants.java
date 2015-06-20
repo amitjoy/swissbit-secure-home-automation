@@ -33,4 +33,6 @@ public interface TopicsConstants {
 
     public static final String SWITCH_ON_OFF_LIST_STATUS_SUB = "DEVICE-V1/REPLY/";
 
+    public static final String RETRIEVE_DEVICE_LIST_PUB = "DEVICE-V1/GET/list";
+
 }

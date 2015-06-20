@@ -46,12 +46,14 @@ import com.swissbit.homeautomation.model.RaspberryPi;
 import com.swissbit.homeautomation.ui.adapter.RPiAdapter;
 import com.swissbit.homeautomation.utils.ActivityContexts;
 import com.swissbit.homeautomation.utils.DBFactory;
+import com.swissbit.homeautomation.utils.EncryptionFactory;
 import com.swissbit.homeautomation.utils.MQTTFactory;
 import com.swissbit.homeautomation.ui.dialog.SecureCodeDialog;
 import com.swissbit.homeautomation.utils.TopicsConstants;
 import com.swissbit.mqtt.client.IKuraMQTTClient;
 import com.swissbit.mqtt.client.adapter.MessageListener;
 import com.swissbit.mqtt.client.message.KuraPayload;
+import com.tum.ssdapi.CardAPI;
 
 import java.util.List;
 
@@ -75,7 +77,11 @@ public class MainActivity extends ActionBarActivity {
 
     private List<RaspberryPi> listOfRPi;
 
+    private CardAPI secureElementAccess;
+
     public AuthenticationAsync authenticationAsync;
+
+
 
     private AsyncTask rPiHeartBeatAsync = new AsyncTask() {
 
@@ -165,6 +171,8 @@ public class MainActivity extends ActionBarActivity {
         listView = (ListView) findViewById(R.id.listRaspberryPi);
         listView.setEmptyView(findViewById(R.id.empty_list_item));
 
+        secureElementAccess = new CardAPI(getApplicationContext());
+
         getSecureCode();
         Log.d("Check", "1");
 
@@ -218,10 +226,18 @@ public class MainActivity extends ActionBarActivity {
             MQTTFactory.setRaspberryId(rid);
             Toast.makeText(getApplicationContext(), rid, Toast.LENGTH_SHORT).show();
 
-            Intent intent2 = new Intent(this, EncryptCommandActivity.class);
-            startActivity(intent2);
-            finishActivity(1);
+            Log.d("Secureelement", ""+secureElementAccess.isCardPresent());
 
+            if(secureElementAccess.isCardPresent()){
+                String encryptedString = secureElementAccess.encryptMsg("AB");
+                EncryptionFactory.setEncryptedString(encryptedString);
+                Log.d("Encrypted Data", EncryptionFactory.getEncryptedString());
+                AuthenticationAsync authenticationAsync = new AuthenticationAsync(this, MQTTFactory.getRaspberryPiById());
+                authenticationAsync.execute();
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "Secure SD card not present", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

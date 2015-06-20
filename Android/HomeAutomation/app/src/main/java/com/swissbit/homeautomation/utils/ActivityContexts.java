@@ -9,17 +9,7 @@ public class ActivityContexts {
 
     private static Context mainActivityContext;
 
-    private static Context encryptCommandActivityContext;
-
     private static Context deviceActivity;
-
-    public static Context getEncryptCommandActivityContext() {
-        return encryptCommandActivityContext;
-    }
-
-    public static void setEncryptCommandActivityContext(Context encryptCommandActivityContext) {
-        ActivityContexts.encryptCommandActivityContext = encryptCommandActivityContext;
-    }
 
     public static Context getMainActivityContext() {
         return mainActivityContext;

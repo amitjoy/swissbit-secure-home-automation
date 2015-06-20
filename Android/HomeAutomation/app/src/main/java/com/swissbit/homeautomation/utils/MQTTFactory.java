@@ -121,6 +121,9 @@ public final class MQTTFactory {
 
             case TopicsConstants.SWITCH_OFF_PUB:
                 return getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.SWITCH_OFF_PUB;
+
+            case TopicsConstants.RETRIEVE_DEVICE_LIST_PUB:
+                return getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.RETRIEVE_DEVICE_LIST_PUB;
         }
 
         return null;

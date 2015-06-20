@@ -1,18 +1,14 @@
 package com.swissbit.homeautomation.ws;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.swissbit.homeautomation.activity.EncryptCommandActivity;
 import com.swissbit.homeautomation.utils.WSConstants;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -26,9 +22,6 @@ public class VerifyRaspberryPi {
 
     public boolean executeVerifyRaspberryPiWS(Context context, String rid) {
         this.maincontext = context;
-
-//        Intent intent = new Intent(context, EncryptCommandActivity.class);
-//        context.startActivity(intent);
 
         asyncHttpClient = new AsyncHttpClient();
         asyncHttpClient.get(WSConstants.ADD_RPI_WS + "/" + rid, new JsonHttpResponseHandler() {

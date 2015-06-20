@@ -36,6 +36,6 @@ public final class DBFactory {
     }
 
     public static RaspberryPi getRaspberrys(){
-        return devicesInfoDbAdapter.getRaspberrys();
+        return devicesInfoDbAdapter.getRaspberry();
     }
 }

@@ -1,23 +1,15 @@
 package com.swissbit.homeautomation.asyncTask;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.android.swissbit.homeautomation.R;
-import com.google.zxing.integration.android.IntentIntegrator;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.swissbit.homeautomation.activity.EncryptCommandActivity;
 import com.swissbit.homeautomation.activity.MainActivity;
-import com.swissbit.homeautomation.ui.dialog.SecureCodeDialog;
 import com.swissbit.homeautomation.utils.ActivityContexts;
 import com.swissbit.homeautomation.utils.EncryptionFactory;
 import com.swissbit.homeautomation.utils.MQTTFactory;
@@ -28,9 +20,6 @@ import com.swissbit.mqtt.client.adapter.MessageListener;
 import com.swissbit.mqtt.client.message.KuraPayload;
 
 import org.apache.http.Header;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Created by manit on 11/06/15.
@@ -48,30 +37,29 @@ public class AuthenticationAsync extends AsyncTask {
 
     private AsyncHttpClient asyncHttpClient;
 
-    private EncryptCommandActivity encryptCommandActivity;
-
     private AlertDialog alertDialog;
 
     private KuraPayload payload;
 
     private String dialogMessage;
 
-    public AuthenticationAsync(Context context, final MainActivity mainActivity, final String rid) {
-        this.mainActivity = mainActivity;
+    private Context mainActivityContext;
+
+    public AuthenticationAsync(Context context, final String rid) {
+        this.mainActivity = (MainActivity)context;
+        this.mainActivityContext = context;
         this.rid = rid;
-        encryptCommandActivity = (EncryptCommandActivity)context;
         encryptionFactory = new EncryptionFactory();
     }
 
     public void showDialog(){
-        alertDialog = new AlertDialog.Builder(ActivityContexts.getEncryptCommandActivityContext()).create();
+        alertDialog = new AlertDialog.Builder(mainActivityContext).create();
         alertDialog.setTitle("Information");
         alertDialog.setMessage(dialogMessage);
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         cancel(true);
-                        encryptCommandActivity.finish();
                         mainActivity.checkRaspberryId(rid);
                         dialog.dismiss();
                     }
