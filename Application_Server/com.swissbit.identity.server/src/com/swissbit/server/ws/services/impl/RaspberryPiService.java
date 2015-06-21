@@ -41,9 +41,10 @@ public class RaspberryPiService implements IRaspberryPiService {
 	}
 
 	@Override
-	public RaspberryPi createRaspberryPi(final String name, final String pin, final String macaddr) {
-		this.failIfInvalid(name, pin, macaddr);
+	public RaspberryPi createRaspberryPi(final String customer, final String name, final String pin, final String macaddr) {
+		this.failIfInvalid(customer, name, pin, macaddr);
 		final RaspberryPi rasp = new RaspberryPi();
+		rasp.setCustomer(customer);
 		rasp.setId(UUID.randomUUID().toString());
 		rasp.setName(name);
 		rasp.setPin(pin);
@@ -58,7 +59,10 @@ public class RaspberryPiService implements IRaspberryPiService {
 		return rasp;
 	}
 
-	private void failIfInvalid(final String name, final String pin, final String macaddr) {
+	private void failIfInvalid(final String customer, final String name, final String pin, final String macaddr) {
+		if ((customer == null) || customer.isEmpty()) {
+			throw new IllegalArgumentException("Parameter 'customer' cannot be empty");
+		}
 		if ((name == null) || name.isEmpty()) {
 			throw new IllegalArgumentException("Parameter 'name' cannot be empty");
 		}

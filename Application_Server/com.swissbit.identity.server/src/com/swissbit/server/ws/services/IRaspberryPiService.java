@@ -6,7 +6,7 @@ import com.swissbit.server.ws.model.RaspberryPi;
 
 public interface IRaspberryPiService extends IAbstractService {
 
-	public RaspberryPi createRaspberryPi(String name, String pin, String macaddr);
+	public RaspberryPi createRaspberryPi(String customer, String name, String pin, String macaddr);
 
 	public List<RaspberryPi> getAllRaspberryPi();
 
