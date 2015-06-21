@@ -31,12 +31,20 @@ public class DeviceCmdAsync extends AsyncTask {
 
     private String requestId;
 
+    private Object monitor;
+
     public DeviceCmdAsync(String cmd) {
         this.cmd = cmd;
     }
 
     @Override
     protected void onPreExecute() {
+
+    }
+
+    @Override
+    protected Object doInBackground(Object[] params) {
+
         IKuraMQTTClient client = MQTTFactory.getClient();
         boolean status = false;
 
@@ -46,6 +54,8 @@ public class DeviceCmdAsync extends AsyncTask {
         status = client.isConnected();
 
         String topic = null;
+
+        monitor = new Object();
 
         String[] topicData = MQTTFactory.getTopicToSubscribe(TopicsConstants.SWITCH_ON_OFF_LIST_STATUS_SUB);
         requestId = topicData[1];
@@ -66,6 +76,10 @@ public class DeviceCmdAsync extends AsyncTask {
                             Log.d("Response", "Failed");
                             subResponse = false;
                         }
+                        synchronized (monitor) {
+                            monitor.notify();
+                            Log.d("Notify1", "After");
+                        }
                         Log.d("Inside onProcess", "" + subResponse);
                     } catch (Exception e) {
                         Log.e("Kura MQTT Exception", e.getCause().getMessage());
@@ -73,10 +87,6 @@ public class DeviceCmdAsync extends AsyncTask {
 
                 }
             });
-    }
-
-    @Override
-    protected Object doInBackground(Object[] params) {
 
         payload = MQTTFactory.generatePayload("", requestId);
         payload.addMetric("nodeId", 8);
@@ -89,11 +99,16 @@ public class DeviceCmdAsync extends AsyncTask {
             Log.d("Switch", "offpresses");
         }
 
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        synchronized (monitor) {
+            try {
+                Log.d("Notify", "Before");
+                monitor.wait();
+                Log.d("Notify", "After");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+
         cancel(true);
 
         return null;
