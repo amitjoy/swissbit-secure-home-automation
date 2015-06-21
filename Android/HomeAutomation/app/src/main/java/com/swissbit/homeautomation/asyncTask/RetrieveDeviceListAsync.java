@@ -37,7 +37,7 @@ public class RetrieveDeviceListAsync extends AsyncTask {
 
     private String raspberryId;
 
-    private final Object monitor = new Object();
+    private Object monitor;
 
     @Override
     protected void onPreExecute() {
@@ -49,6 +49,8 @@ public class RetrieveDeviceListAsync extends AsyncTask {
         final IKuraMQTTClient client = MQTTFactory.getClient();
         devicesInfoDbAdapter = DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getDeviceActivity());
         boolean status = false;
+
+        monitor = new Object();
 
         if (!client.isConnected())
             status = client.connect();
