@@ -137,7 +137,7 @@ public class AccessControl extends Cloudlet implements IAccessControl {
 		final String secureElementId = (String) reqPayload.getMetric("secure_element");
 		this.m_activityLogService.saveLog("Saving New Permissions..");
 		try {
-			Files.append(System.lineSeparator() + secureElementId, new File(ALL_CLIENTS_FILE_LOCATION), Charsets.UTF_8);
+			Files.append(secureElementId + System.lineSeparator(), new File(ALL_CLIENTS_FILE_LOCATION), Charsets.UTF_8);
 		} catch (final IOException e) {
 			LOGGER.error(Throwables.getStackTraceAsString(e));
 		}
