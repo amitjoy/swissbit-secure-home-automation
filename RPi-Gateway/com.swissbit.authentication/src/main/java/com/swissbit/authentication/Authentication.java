@@ -139,13 +139,7 @@ public class Authentication extends Cloudlet {
 	@Override
 	protected void doExec(final CloudletTopic reqTopic, final KuraRequestPayload reqPayload,
 			final KuraResponsePayload respPayload) throws KuraException {
-		if ("encrypt".equals(reqTopic.getResources()[0])) {
-			this.m_activityLogService.saveLog("Encryption Requested");
-			if (this.m_assdCommunication != null) {
-				respPayload.addMetric("data",
-						this.m_assdCommunication.encrypt(new String(reqPayload.getBody(), Charsets.UTF_8)));
-			}
-		}
+
 		if ("decrypt".equals(reqTopic.getResources()[0])) {
 			this.m_activityLogService.saveLog("Decryption Requested");
 			if (this.m_assdCommunication != null) {

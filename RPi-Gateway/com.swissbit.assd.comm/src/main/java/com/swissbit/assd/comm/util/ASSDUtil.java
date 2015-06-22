@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 
 import org.eclipse.kura.KuraErrorCode;
 import org.eclipse.kura.KuraException;
@@ -29,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Throwables;
+import com.google.common.collect.Lists;
 
 /**
  * Responsible for executing all the necessary commands for ASSD Communication
@@ -59,6 +61,11 @@ public final class ASSDUtil {
 	private static final String HOME_LOCATION = "/home/pi/";
 
 	/**
+	 * The location of the python programs
+	 */
+	private static final String LOCATION = "/home/pi/assd/";
+
+	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(ASSDUtil.class);
@@ -72,13 +79,59 @@ public final class ASSDUtil {
 	}
 
 	/**
-	 * Encodes or decodes the provided text
+	 * Decodes the provided text
 	 */
-	public static String cryptoTool(final String text, final String fileName) {
+	public static List<String> decrypt(final String text) {
+		SafeProcess process = null;
+		BufferedReader br = null;
+		List<String> lines = null;
+		final String fileName = LOCATION + "decrypt.py";
+		final String[] command = { CMD_PYTHON, fileName, text };
+
+		boolean assdAvail = checkASSD();
+
+		if (!assdAvail) {
+			assdAvail = loadASSD();
+		}
+
+		if (assdAvail) {
+			try {
+				process = ProcessUtil.exec(command);
+				br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+				lines = Lists.newArrayList();
+				String line = null;
+
+				while ((line = br.readLine()) != null) {
+					if (line.contains("command not found")) {
+						throw new KuraException(KuraErrorCode.OPERATION_NOT_SUPPORTED);
+					}
+					lines.add(line);
+				}
+			} catch (final Exception e) {
+				LOGGER.error(Throwables.getStackTraceAsString(e));
+			} finally {
+				try {
+					LOGGER.debug("Closing Buffered Reader and destroying Process", process);
+					br.close();
+					process.destroy();
+				} catch (final IOException e) {
+					LOGGER.error("Error closing read buffer", Throwables.getStackTraceAsString(e));
+				}
+			}
+			return lines;
+		}
+		return null;
+	}
+
+	/**
+	 * Encodes the provided text
+	 */
+	public static String encrypt(final String text, final String secureElementId) {
 		SafeProcess process = null;
 		BufferedReader br = null;
 		StringBuilder sb = null;
-		final String[] command = { CMD_PYTHON, fileName, text };
+		final String fileName = LOCATION + "encrypt.py";
+		final String[] command = { CMD_PYTHON, fileName, secureElementId, text };
 
 		boolean assdAvail = checkASSD();
 
@@ -122,7 +175,7 @@ public final class ASSDUtil {
 		SafeProcess process = null;
 		BufferedReader br = null;
 		StringBuilder sb = null;
-		final String commandParam = HOME_LOCATION + "/assd.ko";
+		final String commandParam = HOME_LOCATION + "assd.ko";
 		final String[] command = { CMD_INSMOD, commandParam };
 
 		try {

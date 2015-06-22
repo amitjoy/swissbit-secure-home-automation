@@ -15,6 +15,8 @@
  *******************************************************************************/
 package com.swissbit.assd.comm;
 
+import java.util.List;
+
 /**
  * Facilitates encryption and decryption of text in conjunction with Swissbit
  * Secure Element ASSD
@@ -27,12 +29,12 @@ public interface IASSDCommunication {
 	/**
 	 * Decodes the provided text
 	 */
-	public String decrypt(String text);
+	public List<String> decrypt(String text);
 
 	/**
 	 * Encodes the provided text
 	 */
-	public String encrypt(String text);
+	public String encrypt(String secureElementId, String text);
 
 	/**
 	 * Checks if card is present in the system
