@@ -6,8 +6,6 @@
 </br>
 </br>
 </br>
-</br>
-</br>
 <div class="row">
     <div class="col-xs-7">
 		<div class="col-lg-8"><h4>Customer Details</h4> </div>
@@ -23,10 +21,16 @@
                 <td>{{customer.email}}</td>
                 <td>{{customer.id}}</td>
                 <td>{{customer.name}}</td>
-                <td>{{customer.pin}}</td>
+				<td>{{customer.pin}}</td>
+<!--            <td><edit-text value="customer.pin"></edit-text></td>//-->
                 <td>{{customer.username}}</td>
             </tr>
         </table>
+<!--
+		<button class="button" ng-click="delete()">
+    		<span class="glyphicon glyphicon-trash"></span> Delete
+		</button>
+//-->
 	</br>
 	</br>
 	<button ng-click="addCustomer()">Add new Customer Details</button>

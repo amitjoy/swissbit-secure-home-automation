@@ -41,11 +41,11 @@ public class RaspberryPiService implements IRaspberryPiService {
 	}
 
 	@Override
-	public RaspberryPi createRaspberryPi(final String customer, final String name, final String pin, final String macaddr) {
+	public RaspberryPi createRaspberryPi(final String customer, final String id, final String name, final String pin, final String macaddr) {
 		this.failIfInvalid(customer, name, pin, macaddr);
 		final RaspberryPi rasp = new RaspberryPi();
 		rasp.setCustomer(customer);
-		rasp.setId(UUID.randomUUID().toString());
+		rasp.setId(id);
 		rasp.setName(name);
 		rasp.setPin(pin);
 		rasp.setMacAddr(macaddr);
@@ -114,7 +114,7 @@ public class RaspberryPiService implements IRaspberryPiService {
 			throw new IllegalArgumentException("No user with id '" + id + "' found");
 		}
 
-		this.failIfInvalid(name, pin, rasp.getMacAddr());
+		this.failIfInvalid(rasp.getCustomer() ,name, pin, rasp.getMacAddr());
 		rasp.setName(name);
 		rasp.setPin(pin);
 

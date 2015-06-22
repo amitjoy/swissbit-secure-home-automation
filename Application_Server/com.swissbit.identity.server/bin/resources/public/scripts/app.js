@@ -5,6 +5,8 @@ var app = angular.module('identity-server', [
     'ngRoute'
 ]);
 
+
+// Global transform function to convert JSON to query parameters for $http.post
 app.config(function ($httpProvider) {
     $httpProvider.defaults.transformRequest = function(data){
 	$httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
@@ -13,6 +15,31 @@ app.config(function ($httpProvider) {
         }
         return $.param(data);
     }
+});
+
+
+app.directive('editText', function(){
+	return {
+    	restrict: 'E',
+        scope: {
+            value : '='
+        },
+        require: 'value',
+        controller: ['$scope', function($scope){
+            $scope.editing = false;
+            $scope.toggleEdit = function(save) {
+                if (!$scope.editing) {
+                    $scope.editing = true;
+                } else {
+                    if (save) {
+                        $scope.$parent.updateField();
+                    }
+                    $scope.editing = false;
+                }
+            }
+        }],
+        templateUrl: 'views/edit_text.html'
+    };
 });
 
 app.config(function ($routeProvider, $locationProvider) {
@@ -67,6 +94,9 @@ app.controller('viewCustomersCtrl', function ($scope, $http, $location, $route) 
 			}).error(function (data, status) {
     			console.log('Error ' + data);
 			})
+        }
+
+        $scope.updateField = function () {
         }
 
         $scope.removeForm = function () {

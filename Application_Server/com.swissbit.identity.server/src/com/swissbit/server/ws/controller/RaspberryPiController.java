@@ -43,7 +43,7 @@ public class RaspberryPiController extends AbstractController {
 		} , json());
 
 		// Used to create Raspberry Pi details (used at the Front-End UI)
-		post("/pi", (req, res) -> raspberryPiService.createRaspberryPi(req.queryParams("customer"), req.queryParams("name"), 
+		post("/pi", (req, res) -> raspberryPiService.createRaspberryPi(req.queryParams("customer"), req.queryParams("id"), req.queryParams("name"), 
 				req.queryParams("pin"), req.queryParams("macaddr")), json());
 
 		// Used to update Raspberry Pi details (used at the front-End UI)

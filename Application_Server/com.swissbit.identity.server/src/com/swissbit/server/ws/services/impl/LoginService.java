@@ -13,13 +13,13 @@ import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import com.swissbit.server.ws.model.Customer;
+import com.swissbit.server.ws.model.Admin;
 import com.swissbit.server.ws.services.ILoginService;
 
 public class LoginService implements ILoginService {
 
 	private ConnectionSource connectionSource = null;
-	private Dao<Customer, String> piDao = null;
+	private Dao<Admin, String> piDao = null;
 
 	public LoginService() {
 		try {
@@ -30,36 +30,36 @@ public class LoginService implements ILoginService {
 		((JdbcConnectionSource) this.connectionSource).setUsername(MYSQL_USER);
 		((JdbcConnectionSource) this.connectionSource).setPassword(MYSQL_PASSWORD);
 		try {
-			TableUtils.createTableIfNotExists(this.connectionSource, Customer.class);
-			this.piDao = DaoManager.createDao(this.connectionSource, Customer.class);
+			TableUtils.createTableIfNotExists(this.connectionSource, Admin.class);
+			this.piDao = DaoManager.createDao(this.connectionSource, Admin.class);
 		} catch (final SQLException e) {
 			e.printStackTrace();
 		}
 	}
-
-	@Override
-	public Customer getUser(final String username) {
-		final QueryBuilder<Customer, String> queryBuilder = this.piDao.queryBuilder();
-		List<Customer> user = null;
-		Customer admin = null;
+	
+	public Admin getId(final String id) {
+		final QueryBuilder<Admin, String> queryBuilder = this.piDao.queryBuilder();
+		List<Admin> ids = null;
+		Admin administrator = null;
 		try {
-			user = this.piDao.query(queryBuilder.where().eq("username", username).prepare());
+			ids = this.piDao.query(queryBuilder.where().eq("id", id).prepare());
 
-			if (user.size() > 0) {
-				admin = user.get(0);
+			if (ids.size() > 0) {
+				administrator = ids.get(0);
 			}
 		} catch (final SQLException e) {
 			e.printStackTrace();
-			return admin;
+			return administrator;
 		} finally {
 			try {
 				this.connectionSource.close();
 			} catch (final SQLException e) {
 				e.printStackTrace();
-				return admin;
+				return administrator;
 			}
 		}
-		return admin;
+		return administrator;
 	}
 
 }
+
