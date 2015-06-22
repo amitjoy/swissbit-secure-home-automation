@@ -38,6 +38,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Charsets;
 import com.google.common.base.Throwables;
 import com.google.common.io.Files;
+import com.swissbit.activity.log.IActivityLogService;
 
 /**
  * This is used to revoke permissions of clients to access the raspberry pi
@@ -58,6 +59,12 @@ public class AccessControl extends Cloudlet implements IAccessControl {
 	 * Logger
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(AccessControl.class);
+
+	/**
+	 * Activity Log Service Dependency
+	 */
+	@Reference(bind = "bindActivityLogService", unbind = "unbindActivityLogService")
+	private volatile IActivityLogService m_activityLogService;
 
 	/**
 	 * Eclipse Kura Cloud Service Dependency
@@ -92,6 +99,15 @@ public class AccessControl extends Cloudlet implements IAccessControl {
 	}
 
 	/**
+	 * Callback to be used while {@link IActivityLogService} is registering
+	 */
+	public synchronized void bindActivityLogService(final IActivityLogService activityLogService) {
+		if (this.m_activityLogService == null) {
+			this.m_activityLogService = activityLogService;
+		}
+	}
+
+	/**
 	 * Callback to be used while {@link CloudService} is registering
 	 */
 	public synchronized void bindCloudService(final CloudService cloudService) {
@@ -119,6 +135,7 @@ public class AccessControl extends Cloudlet implements IAccessControl {
 	protected void doPost(final CloudletTopic reqTopic, final KuraRequestPayload reqPayload,
 			final KuraResponsePayload respPayload) throws KuraException {
 		final String secureElementId = (String) reqPayload.getMetric("secure_element");
+		this.m_activityLogService.saveLog("Saving New Permissions..");
 		try {
 			Files.append(System.lineSeparator() + secureElementId, new File(ALL_CLIENTS_FILE_LOCATION), Charsets.UTF_8);
 		} catch (final IOException e) {
@@ -176,6 +193,15 @@ public class AccessControl extends Cloudlet implements IAccessControl {
 			this.doRevokePermision(file);
 		} catch (final IOException e) {
 			LOGGER.error(Throwables.getStackTraceAsString(e));
+		}
+	}
+
+	/**
+	 * Callback to be used while {@link IActivityLogService} is deregistering
+	 */
+	public synchronized void unbindActivityLogService(final IActivityLogService activityLogService) {
+		if (this.m_activityLogService == activityLogService) {
+			this.m_activityLogService = null;
 		}
 	}
 
