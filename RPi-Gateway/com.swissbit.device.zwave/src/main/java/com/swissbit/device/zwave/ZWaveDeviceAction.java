@@ -143,7 +143,6 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 		// Parse the nodeId
 		final String nodeId = String.valueOf(reqPayload.getMetric("nodeId"));
 
-		// TODO Decrypt the nodeId metric
 		if ("on".equals(reqTopic.getResources()[0])) {
 			this.m_activityLogService.saveLog("Device is turned on");
 			this.switchOn(nodeId);
@@ -162,7 +161,6 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 		// Parse the nodeId
 		final String nodeId = String.valueOf(reqPayload.getMetric("nodeId"));
 
-		// TODO Encrypt the payload metric
 		if ("status".equals(reqTopic.getResources()[0])) {
 			this.m_activityLogService.saveLog("Device status is retrieved");
 			respPayload.addMetric("status", this.getStatus(nodeId));
