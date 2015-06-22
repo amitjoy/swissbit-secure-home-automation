@@ -24,7 +24,7 @@ package com.swissbit.accesscontrol;
 public interface IAccessControl {
 
 	/**
-	 * Represents the location of the permission file
+	 * Represents the location of the all clients file
 	 */
 	public static final String ALL_CLIENTS_FILE_LOCATION = "/home/pi/swissbit/all-clients-connected.perm";
 

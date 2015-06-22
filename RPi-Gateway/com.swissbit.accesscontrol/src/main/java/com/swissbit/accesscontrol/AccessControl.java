@@ -28,6 +28,7 @@ import org.eclipse.kura.KuraException;
 import org.eclipse.kura.cloud.CloudService;
 import org.eclipse.kura.cloud.Cloudlet;
 import org.eclipse.kura.cloud.CloudletTopic;
+import org.eclipse.kura.message.KuraPayload;
 import org.eclipse.kura.message.KuraRequestPayload;
 import org.eclipse.kura.message.KuraResponsePayload;
 import org.osgi.service.component.ComponentContext;
@@ -86,9 +87,6 @@ public class AccessControl extends Cloudlet implements IAccessControl {
 		super.setCloudService(this.m_cloudService);
 		super.activate(componentContext);
 
-		// this.doRevokePermission(this.m_properties);
-		// TODO Observer File Change (another file) and revoke permission
-
 		LOGGER.info("Activating Access Control Component... Done.");
 
 	}
@@ -120,12 +118,30 @@ public class AccessControl extends Cloudlet implements IAccessControl {
 	@Override
 	protected void doPost(final CloudletTopic reqTopic, final KuraRequestPayload reqPayload,
 			final KuraResponsePayload respPayload) throws KuraException {
-		final String clientId = reqPayload.getRequesterClientId();
+		final String secureElementId = (String) reqPayload.getMetric("secure_element");
 		try {
-			Files.append(System.lineSeparator() + clientId, new File(ALL_CLIENTS_FILE_LOCATION), Charsets.UTF_8);
+			Files.append(System.lineSeparator() + secureElementId, new File(ALL_CLIENTS_FILE_LOCATION), Charsets.UTF_8);
 		} catch (final IOException e) {
 			LOGGER.error(Throwables.getStackTraceAsString(e));
 		}
+	}
+
+	/**
+	 * Used to publish a message to a control topic for revoking permissions
+	 * from the clients
+	 */
+	private void doRevokePermision(final File file) throws IOException {
+		// publish permission data to
+		// $EDC/swissbit/RPi-MAC/SURVEILLANCE-V1/permission/revoked
+		Files.readLines(file, Charsets.UTF_8).forEach(secureElementId -> {
+			final KuraPayload payload = new KuraPayload();
+			payload.addMetric("permission", "revoked");
+			try {
+				this.getCloudApplicationClient().controlPublish("permission/revoked", payload, 2, true, DFLT_PRIORITY);
+			} catch (final Exception e) {
+				LOGGER.error(Throwables.getStackTraceAsString(e));
+			}
+		});
 	}
 
 	/** {@inheritDoc}} */
@@ -154,7 +170,10 @@ public class AccessControl extends Cloudlet implements IAccessControl {
 	@Override
 	public void savePermission(final String permissionData) {
 		try {
-			Files.write(permissionData, new File(PERMISSION_FILE_LOCATION), Charsets.UTF_8);
+			final File file = new File(PERMISSION_FILE_LOCATION);
+			Files.write(permissionData, file, Charsets.UTF_8);
+
+			this.doRevokePermision(file);
 		} catch (final IOException e) {
 			LOGGER.error(Throwables.getStackTraceAsString(e));
 		}
