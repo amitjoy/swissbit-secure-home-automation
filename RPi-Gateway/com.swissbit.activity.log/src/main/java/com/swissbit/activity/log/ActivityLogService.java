@@ -149,7 +149,8 @@ public class ActivityLogService extends Cloudlet implements IActivityLogService 
 	public void saveLog(final String log) {
 		LOGGER.debug("Saving log to the Activity Logs Database...");
 		try {
-			Files.append(LocalDateTime.now() + System.lineSeparator(), new File(LOCATION_KURA_LOG), Charsets.UTF_8);
+			Files.append(LocalDateTime.now() + " " + log + System.lineSeparator(), new File(LOCATION_KURA_LOG),
+					Charsets.UTF_8);
 		} catch (final IOException e) {
 			LOGGER.error(Throwables.getStackTraceAsString(e));
 		}
