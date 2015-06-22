@@ -123,7 +123,6 @@ public class DevicesInfoDbAdapter  {
         contentValues.put(DBConstants.DEVICE_DESCRIPTION, raspberryDesc);
         contentValues.put(DBConstants.DEVICE_STATUS,deviceStatus);
         long id = db.insert(DBConstants.TABLE_NAME_DEVICES, null, contentValues);
-//        Device device = new Device(deviceId,raspberryId,raspberryName,raspberryDesc,deviceStatus);
         return id;
     }
 
