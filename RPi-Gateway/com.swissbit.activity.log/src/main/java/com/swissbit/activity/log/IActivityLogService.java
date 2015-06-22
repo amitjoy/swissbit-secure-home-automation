@@ -26,11 +26,29 @@ import java.util.List;
 public interface IActivityLogService {
 
 	/**
+	 * Represents Log File Types
+	 *
+	 */
+	public enum LogFileType {
+		KURA, SWISSBIT
+	}
+
+	/**
+	 * The location of the swissbit application specific log file
+	 */
+	public static String LOCATION_KURA_LOG = "/var/log/kura.log";
+
+	/**
+	 * The location of the kura specific log file
+	 */
+	public static String LOCATION_SWISSBIT_LOG = "/home/pi/swissbit/swissbit.log";
+
+	/**
 	 * Used to retrieve saved activity logs
 	 *
 	 * @return the list of logs
 	 */
-	public List<ActivityLog> retrieveLogs();
+	public List<String> retrieveLogs(LogFileType type);
 
 	/**
 	 * Used to save log to the database

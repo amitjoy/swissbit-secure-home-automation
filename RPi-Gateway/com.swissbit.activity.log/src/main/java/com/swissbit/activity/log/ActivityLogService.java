@@ -15,10 +15,8 @@
  *******************************************************************************/
 package com.swissbit.activity.log;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -31,15 +29,15 @@ import org.eclipse.kura.KuraException;
 import org.eclipse.kura.cloud.CloudService;
 import org.eclipse.kura.cloud.Cloudlet;
 import org.eclipse.kura.cloud.CloudletTopic;
-import org.eclipse.kura.db.DbService;
 import org.eclipse.kura.message.KuraRequestPayload;
 import org.eclipse.kura.message.KuraResponsePayload;
 import org.osgi.service.component.ComponentContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Charsets;
 import com.google.common.base.Throwables;
-import com.google.common.collect.Lists;
+import com.google.common.io.Files;
 
 /**
  * The implementation of IActivityLogService
@@ -57,41 +55,15 @@ public class ActivityLogService extends Cloudlet implements IActivityLogService 
 	private static final String APP_ID = "LOGS-V1";
 
 	/**
-	 * HyperSQL Database name which comprises all the activity logs
-	 */
-	private static final String DB_TABLE_NAME = "LOGS.LOGS";
-
-	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(ActivityLogService.class);
-
-	/**
-	 * Activity logs data retrieval query
-	 */
-	private static final String QUERY = "SELECT * FROM " + DB_TABLE_NAME;
 
 	/**
 	 * Kura Cloud Service Injection
 	 */
 	@Reference(bind = "bindCloudService", unbind = "unbindCloudService")
 	private volatile CloudService m_cloudService;
-
-	/**
-	 * The HyperSQL Connection Reference
-	 */
-	private Connection m_connection;
-
-	/**
-	 * Kura DB Service Reference
-	 */
-	@Reference(bind = "bindDBService", unbind = "unbindDBService")
-	private volatile DbService m_dbService;
-
-	/**
-	 * The HyperSQL Statement Reference
-	 */
-	private Statement m_statement;
 
 	/**
 	 * Constructor
@@ -112,12 +84,6 @@ public class ActivityLogService extends Cloudlet implements IActivityLogService 
 		LOGGER.info("Activating Activity Log Service....");
 		super.setCloudService(this.m_cloudService);
 		super.activate(context);
-		try {
-			this.m_connection = this.m_dbService.getConnection();
-			this.m_statement = this.m_connection.createStatement();
-		} catch (final SQLException e) {
-			LOGGER.error(Throwables.getStackTraceAsString(e));
-		}
 		LOGGER.info("Activating Activity Log Service... Done.");
 	}
 
@@ -127,15 +93,6 @@ public class ActivityLogService extends Cloudlet implements IActivityLogService 
 	public synchronized void bindCloudService(final CloudService cloudService) {
 		if (this.m_cloudService == null) {
 			super.setCloudService(this.m_cloudService = cloudService);
-		}
-	}
-
-	/**
-	 * Kura DB Service Binding Callback
-	 */
-	protected synchronized void bindDBService(final DbService dbService) {
-		if (this.m_dbService == null) {
-			this.m_dbService = dbService;
 		}
 	}
 
@@ -151,14 +108,6 @@ public class ActivityLogService extends Cloudlet implements IActivityLogService 
 		LOGGER.info("Deactivating Activity Log Service....");
 		super.deactivate(context);
 
-		if (this.m_statement != null) {
-			this.m_dbService.close(this.m_statement);
-		}
-
-		if (this.m_connection != null) {
-			this.m_dbService.close(this.m_connection);
-		}
-
 		LOGGER.info("Deactivating Activity Log Service... Done.");
 	}
 
@@ -167,11 +116,8 @@ public class ActivityLogService extends Cloudlet implements IActivityLogService 
 	protected void doGet(final CloudletTopic reqTopic, final KuraRequestPayload reqPayload,
 			final KuraResponsePayload respPayload) throws KuraException {
 		if ("logs".equals(reqTopic.getResources()[0])) {
-			final List<ActivityLog> logs = this.retrieveLogs();
-
-			logs.forEach(
-					activityLog -> respPayload.addMetric(activityLog.getTimestamp(), activityLog.getDescription()));
-
+			respPayload.addMetric("swissbitlog", this.retrieveLogs(LogFileType.SWISSBIT));
+			respPayload.addMetric("kuralog", this.retrieveLogs(LogFileType.KURA));
 		}
 		respPayload.setResponseCode(KuraResponsePayload.RESPONSE_CODE_OK);
 	}
@@ -180,24 +126,20 @@ public class ActivityLogService extends Cloudlet implements IActivityLogService 
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<ActivityLog> retrieveLogs() {
+	public List<String> retrieveLogs(final LogFileType type) {
 		LOGGER.debug("Retrieving logs from the Activity Logs Database...");
-		final List<ActivityLog> logs = Lists.newArrayList();
 		try {
-			final ResultSet resultSet = this.m_statement.executeQuery(QUERY);
-			while (resultSet.next()) {
-				final String timestamp = resultSet.getString("timestamp");
-				final String description = resultSet.getString("description");
-
-				final ActivityLog activityLog = new ActivityLog(timestamp, description);
-				logs.add(activityLog);
+			if (type == LogFileType.KURA) {
+				return Files.readLines(new File(LOCATION_KURA_LOG), Charsets.UTF_8);
 			}
-		} catch (final SQLException e) {
+			if (type == LogFileType.SWISSBIT) {
+				return Files.readLines(new File(LOCATION_SWISSBIT_LOG), Charsets.UTF_8);
+			}
+		} catch (final Exception e) {
 			LOGGER.error(Throwables.getStackTraceAsString(e));
 		}
-
 		LOGGER.debug("Retrieving logs from the Activity Logs Database...Done");
-		return logs;
+		return null;
 	}
 
 	/**
@@ -206,11 +148,9 @@ public class ActivityLogService extends Cloudlet implements IActivityLogService 
 	@Override
 	public void saveLog(final String log) {
 		LOGGER.debug("Saving log to the Activity Logs Database...");
-		final String insertStatment = "INSERT INTO " + DB_TABLE_NAME + " (TIMESTAMP, DESCRIPTION) " + " VALUES (" + "'"
-				+ LocalDateTime.now() + "'" + "," + "'" + log + "'" + " )";
 		try {
-			this.m_statement.execute(insertStatment);
-		} catch (final SQLException e) {
+			Files.append(LocalDateTime.now() + System.lineSeparator(), new File(LOCATION_KURA_LOG), Charsets.UTF_8);
+		} catch (final IOException e) {
 			LOGGER.error(Throwables.getStackTraceAsString(e));
 		}
 		LOGGER.debug("Saving log to the Activity Logs Database...Done");
@@ -222,15 +162,6 @@ public class ActivityLogService extends Cloudlet implements IActivityLogService 
 	public synchronized void unbindCloudService(final CloudService cloudService) {
 		if (this.m_cloudService == cloudService) {
 			super.setCloudService(this.m_cloudService = null);
-		}
-	}
-
-	/**
-	 * Kura DB Service Binding Callback
-	 */
-	protected synchronized void unbindDBService(final DbService dbService) {
-		if (this.m_dbService == dbService) {
-			this.m_dbService = null;
 		}
 	}
 }
