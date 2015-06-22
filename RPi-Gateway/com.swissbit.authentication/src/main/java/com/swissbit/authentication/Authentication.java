@@ -15,6 +15,8 @@
  *******************************************************************************/
 package com.swissbit.authentication;
 
+import java.util.List;
+
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Deactivate;
@@ -143,8 +145,11 @@ public class Authentication extends Cloudlet {
 		if ("decrypt".equals(reqTopic.getResources()[0])) {
 			this.m_activityLogService.saveLog("Decryption Requested");
 			if (this.m_assdCommunication != null) {
-				respPayload.addMetric("data",
-						this.m_assdCommunication.decrypt(new String(reqPayload.getBody(), Charsets.UTF_8)));
+				final List<String> decryptData = this.m_assdCommunication
+						.decrypt(new String(reqPayload.getBody(), Charsets.UTF_8));
+				if (decryptData != null) {
+					respPayload.addMetric("data", decryptData.get(1));
+				}
 			}
 		}
 		respPayload.setResponseCode(KuraResponsePayload.RESPONSE_CODE_OK);
