@@ -7,7 +7,7 @@ public interface DBConstants {
 
     public static final String DATABASE_NAME="DevicesInfoDb";
 
-    public static final int DATABASE_VERSION = 53;
+    public static final int DATABASE_VERSION = 1;
 
     public static final String TABLE_NAME_RASPBERRYINFO="RaspberryInfo";
     public static final String UID = "_id";

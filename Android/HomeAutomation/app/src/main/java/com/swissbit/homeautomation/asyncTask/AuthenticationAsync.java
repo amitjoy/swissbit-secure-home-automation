@@ -45,6 +45,8 @@ public class AuthenticationAsync extends AsyncTask {
 
     private Context mainActivityContext;
 
+    private Object monitor;
+
     public AuthenticationAsync(Context context, final String rid) {
         this.mainActivity = (MainActivity)context;
         this.mainActivityContext = context;
@@ -71,6 +73,8 @@ public class AuthenticationAsync extends AsyncTask {
     protected Object doInBackground(Object[] params) {
         IKuraMQTTClient client = MQTTFactory.getClient();
         boolean status = false;
+
+        monitor = new Object();
 
         if (!client.isConnected())
             status = client.connect();
@@ -104,6 +108,10 @@ public class AuthenticationAsync extends AsyncTask {
                             Log.d("Metrics......2", "" + kuraPayload.metrics());
                             subResponse = true;
                         }
+                        synchronized (monitor) {
+                            monitor.notify();
+                            Log.d("Notify1", "After");
+                        }
                         Log.d("Inside onProcess", "" + subResponse);
                     } catch (Exception e) {
                         Log.e("Kura MQTT", e.getCause().getMessage());
@@ -128,10 +136,14 @@ public class AuthenticationAsync extends AsyncTask {
             MQTTFactory.getClient().publish(MQTTFactory.getTopicToPublish(TopicsConstants.RASPBERRY_AUTH_PUB), payload);
 
 
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        synchronized (monitor) {
+            try {
+                Log.d("Notify", "Before");
+                monitor.wait();
+                Log.d("Notify", "After");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         return null;

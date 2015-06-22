@@ -1,6 +1,5 @@
 package com.swissbit.homeautomation.ui.adapter;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,12 +13,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.android.swissbit.homeautomation.R;
-import com.swissbit.homeautomation.activity.DeviceActivity;
 import com.swissbit.homeautomation.asyncTask.DeviceCmdAsync;
 import com.swissbit.homeautomation.model.Device;
-import com.swissbit.homeautomation.utils.ActivityContexts;
 import com.swissbit.homeautomation.utils.MQTTFactory;
-import com.swissbit.homeautomation.utils.TopicsConstants;
 import com.swissbit.mqtt.client.IKuraMQTTClient;
 import com.swissbit.mqtt.client.message.KuraPayload;
 
@@ -56,7 +52,7 @@ public class DeviceAdapter extends ArrayAdapter<Device> {
 
         ImageView imageDevice = (ImageView) customView.findViewById(R.id.imgDevice);
         socketSwitch = (Switch) customView.findViewById(R.id.socketSwitch);
-        TextView switchStatus = (TextView) customView.findViewById(R.id.switchStatus);
+        TextView switchStatus = (TextView) customView.findViewById(R.id.refreshStatus);
         ImageButton btnRefresh = (ImageButton) customView.findViewById(R.id.btnRefresh);
 
         if (device.getStatus().equals("true")){

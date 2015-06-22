@@ -252,7 +252,7 @@ public class MainActivity extends ActionBarActivity {
 
     public void addToListView() {
 
-        raspberryPi = DBFactory.getRaspberrys();
+        raspberryPi = DBFactory.getRaspberry();
 
         if (raspberryPi != null) {
             MQTTFactory.setRaspberryId(raspberryPi.getId());

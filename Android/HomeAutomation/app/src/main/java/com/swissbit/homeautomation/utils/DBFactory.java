@@ -35,7 +35,7 @@ public final class DBFactory {
         return getDevicesInfoDbAdapter(context).checkRaspberryId(rid);
     }
 
-    public static RaspberryPi getRaspberrys(){
+    public static RaspberryPi getRaspberry(){
         return devicesInfoDbAdapter.getRaspberry();
     }
 }
