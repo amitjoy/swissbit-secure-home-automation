@@ -1,0 +1,92 @@
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+<div class="row">
+    <div class="col-xs-7">
+		<div class="col-lg-8"></div>
+			<form class="form-horizontal" name="newAdmin" role="form" novalidate>
+				<div class="container text-center">
+    			<br/>
+				<div class="row">
+					<div class="col-lg-4"></div>
+					<div class="col-lg-4"><h4>New User Registration</h4> </div>
+					</div>
+					<br/>
+        		<div class="row">
+            		<div class="form-group">
+						<div class="col-lg-4"></div>
+                		<div class="col-lg-4">
+                    		<input type="email" name="email" class="form-control" id="email"  placeholder="Email (used for login)" ng-model="newAdminInfo.email" required>
+                		</div>
+            		</div>
+        		</div>
+        		<br/>
+        		<div class="row">
+    				<div class="form-group">
+            			<div class="col-lg-4"></div>
+        				<div class="col-lg-4">
+            				<input type="text" class="form-control" id="id" placeholder="ID" ng-model="newAdminInfo.id" required>
+        				</div>
+    	    		</div>
+				</div>
+				<br/>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-lg-4"></div>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" id="fname" placeholder="First Name" ng-model="newAdminInfo.fname" required>
+                        </div> 
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-lg-4"></div>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" id="lname" placeholder="Last Name" ng-model="newAdminInfo.lname" required>
+                        </div> 
+                    </div>
+                </div>
+                <br/>
+				<div class="row">
+            		<div class="form-group">
+                		<div class="col-lg-4"></div>
+                		<div class="col-lg-4">
+                    		<input type="password" class="form-control" id="password" name="password" placeholder="Password" ng-model="newAdminInfo.password" ng-minlength="8" ng-maxlength="20" ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/" required>
+							<span ng-show="newAdmin.password.$error.required && newAdmin.password.$dirty">required</span>
+   							<span ng-show="!newAdmin.password.$error.required && (newAdmin.password.$error.minlength || newAdmin.password.$error.maxlength) && newAdmin.password.$dirty">Passwords must be between 8 and 20 characters.</span>
+   							<span ng-show="!newAdmin.password.$error.required && !newAdmin.password.$error.minlength && !newAdmin.password.$error.maxlength && newAdmin.password.$error.pattern && newAdmin.password.$dirty">Must contain one lower &amp; uppercase letter, and one non-alpha character (a number or a symbol.)</span>
+                		</div>
+            		</div>
+        		</div>
+        		<br/>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-lg-4"></div>
+                        <div class="col-lg-4">
+                            <input type="password" class="form-control" id="password_c" name="password_c" placeholder="Confirm Password" ng-model="newAdminInfo.password_c" valid-password-c required>
+			   				<span ng-show="newAdmin.password_c.$error.required && newAdmin.password_c.$dirty">Please confirm your password.</span>
+   							<span ng-show="!newAdmin.password_c.$error.required && newAdmin.password_c.$error.noMatch && newAdmin.password.$dirty">Passwords do not match.</span>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+				<div class="row">
+            		<div class="form-group">
+                		<div class="col-lg-4"></div>
+                		<div class="col-lg-4">
+                    	<input type="submit" class="btn btn-info btn-block" value="Submit" ng-click="updateAdmin(newAdminInfo)">
+		    			<input type="submit" class="btn btn-info btn-block" value="Cancel" ng-click="removeForm()">
+						<input type="submit" class="btn btn-info btn-block" value="Reset" ng-click="resetForm()"> 
+                	</div>
+            	</div>
+        	</div>
+    	</form>
+	</div>
+</div>
+</div>

@@ -1,0 +1,51 @@
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+<div class="row">
+    <div class="col-xs-7">
+		<div class="col-lg-8"></div>
+			<form class="form-horizontal" name="existingAdmin" role="form" novalidate>
+				<div class="container text-center">
+    			<br/>
+				<div class="row">
+					<div class="col-lg-4"></div>
+					<div class="col-lg-4"><h4> Existing User Login</h4> </div>
+					</div>
+					<br/>
+        		<div class="row">
+            		<div class="form-group">
+						<div class="col-lg-4"></div>
+                		<div class="col-lg-4">
+                    		<input type="email" name="email" class="form-control" id="email"  placeholder="Email" ng-model="existingAdminInfo.email" required>
+                		</div>
+            		</div>
+        		</div>
+        		<br/>
+				<div class="row">
+            		<div class="form-group">
+                		<div class="col-lg-4"></div>
+                		<div class="col-lg-4">
+                    		<input type="password" class="form-control" id="password" name="password" placeholder="Password" ng-model="existingAdminInfo.password" required>
+                		</div>
+            		</div>
+        		</div>
+        		<br/>
+				<div class="row">
+            		<div class="form-group">
+                		<div class="col-lg-4"></div>
+                		<div class="col-lg-4">
+					    <button type="submit" ng-disabled="existingAdmin.$invalid" class="btn btn-primary" ng-click="validateAdmin(existingAdminInfo)">Login</button>	
+						<a href="/signUp" class="btn btn-link">New User Registration</a>
+						<h4>{{userNotification}}</h4>
+                	</div>
+            	</div>
+        	</div>
+    	</form>
+	</div>
+</div>
+</div>
