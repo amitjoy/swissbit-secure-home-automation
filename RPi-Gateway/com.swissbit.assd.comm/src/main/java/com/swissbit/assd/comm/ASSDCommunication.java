@@ -15,6 +15,8 @@
  *******************************************************************************/
 package com.swissbit.assd.comm;
 
+import java.util.List;
+
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 import org.slf4j.Logger;
@@ -35,27 +37,22 @@ import com.swissbit.assd.comm.util.ASSDUtil;
 public class ASSDCommunication implements IASSDCommunication {
 
 	/**
-	 * The location of the python programs
-	 */
-	private static final String LOCATION = "/home/pi/assd/";
-
-	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(ASSDCommunication.class);
 
 	/** {@inheritDoc}} */
 	@Override
-	public String decrypt(final String text) {
+	public List<String> decrypt(final String text) {
 		LOGGER.debug("Decrypting data...");
-		return ASSDUtil.cryptoTool(text, LOCATION + "decrypt.py");
+		return ASSDUtil.decrypt(text);
 	}
 
 	/** {@inheritDoc}} */
 	@Override
-	public String encrypt(final String text) {
+	public String encrypt(final String secureElementId, final String text) {
 		LOGGER.debug("Encrypting data...");
-		return ASSDUtil.cryptoTool(text, LOCATION + "encrypt.py");
+		return ASSDUtil.encrypt(text, secureElementId);
 	}
 
 	/** {@inheritDoc}} */
