@@ -21,6 +21,7 @@ public class LoginService implements ILoginService {
 	private ConnectionSource connectionSource = null;
 	private Dao<Admin, String> piDao = null;
 
+
 	public LoginService() {
 		try {
 			this.connectionSource = new JdbcConnectionSource(DB_URL);
@@ -61,5 +62,60 @@ public class LoginService implements ILoginService {
 		return administrator;
 	}
 
+	public Admin getUserByEmail(final String email) {
+		final QueryBuilder<Admin, String> queryBuilder = this.piDao.queryBuilder();
+		List<Admin> emails = null;
+		Admin administrator = null;
+		try {
+			emails = this.piDao.query(queryBuilder.where().eq("email", email).prepare());
+
+			if (emails.size() > 0) {
+				administrator = emails.get(0);
+			}
+		} catch (final SQLException e) {
+			e.printStackTrace();
+			return administrator;
+		} finally {
+			try {
+				this.connectionSource.close();
+			} catch (final SQLException e) {
+				e.printStackTrace();
+				return administrator;
+			}
+		}
+		return administrator;
+	}
+	
+
+	public Admin authenticateUser(String email, String password) {
+		final QueryBuilder<Admin, String> queryBuilder = this.piDao.queryBuilder();
+		List<Admin> ids = null;
+		Admin administrator = null;
+		try {
+			ids = this.piDao.query(queryBuilder.where().eq("email", email).prepare());
+
+			if (ids.size() > 0) {
+				administrator = ids.get(0);
+			}
+		} catch (final SQLException e) {
+			e.printStackTrace();
+			return administrator;
+		} finally {
+			try {
+				this.connectionSource.close();
+			} catch (final SQLException e) {
+				e.printStackTrace();
+				return administrator;
+			}
+		}
+		String adminPassword = administrator.getPassword();
+		if (password == adminPassword) {
+			return administrator;
+		}
+		else {
+			throw new IllegalArgumentException("Username or Password is Incorrect");
+		}
+		
+	}
 }
 

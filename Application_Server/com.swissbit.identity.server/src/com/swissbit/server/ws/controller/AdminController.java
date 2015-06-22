@@ -27,7 +27,7 @@ public class AdminController extends AbstractController {
 		// Used to create admin details (used at the Front-End UI)
 		post("/admin", (req, res) -> adminService.createUser(req.queryParams("email"), req.queryParams("id"), req.queryParams("fname"), 
 				req.queryParams("lname"), req.queryParams("password")), json());
-
+		
 		after((req, res) -> {
 			res.type("application/json");
 		});

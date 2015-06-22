@@ -1,176 +1,92 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Swissbit Home Automation System</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    </head>
-
-<body ng-app="Swissbit Home Automation System">
-	<nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container">
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+<div class="row">
+    <div class="col-xs-7">
+		<div class="col-lg-8"></div>
+			<form class="form-horizontal" name="newAdmin" role="form" novalidate>
+				<div class="container text-center">
+    			<br/>
+				<div class="row">
+					<div class="col-lg-4"></div>
+					<div class="col-lg-4"><h4>New User Registration</h4> </div>
+					</div>
+					<br/>
+        		<div class="row">
+            		<div class="form-group">
+						<div class="col-lg-4"></div>
+                		<div class="col-lg-4">
+                    		<input type="email" name="email" class="form-control" id="email"  placeholder="Email (used for login)" ng-model="newAdminInfo.email" required>
+                		</div>
+            		</div>
+        		</div>
+        		<br/>
+        		<div class="row">
+    				<div class="form-group">
+            			<div class="col-lg-4"></div>
+        				<div class="col-lg-4">
+            				<input type="text" class="form-control" id="id" placeholder="ID" ng-model="newAdminInfo.id" required>
+        				</div>
+    	    		</div>
+				</div>
+				<br/>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-lg-4"></div>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" id="fname" placeholder="First Name" ng-model="newAdminInfo.fname" required>
+                        </div> 
+                    </div>
+                </div>
                 <br/>
                 <div class="row">
-                    <div class="col-md-5" pull-left>
-                        <!--<img src="images/swissbit-blue.png">-->
-        		<img src="images/android.png"> 
-			<!--<h1>Welcome to Swissbit Home Automation System</h1>-->
-	           </div>
-                    <div class="col-md-7">
-                        <div class="home-search pull-right col-md-7">
-                         <!--   <input type="text" id="home-page-search" class="form-control" placeholder="Search for...">-->
+                    <div class="form-group">
+                        <div class="col-lg-4"></div>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" id="lname" placeholder="Last Name" ng-model="newAdminInfo.lname" required>
+                        </div> 
+                    </div>
+                </div>
+                <br/>
+				<div class="row">
+            		<div class="form-group">
+                		<div class="col-lg-4"></div>
+                		<div class="col-lg-4">
+                    		<input type="password" class="form-control" id="password" name="password" placeholder="Password" ng-model="newAdminInfo.password" ng-minlength="8" ng-maxlength="20" ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/" required>
+							<span ng-show="newAdmin.password.$error.required && newAdmin.password.$dirty">required</span>
+   							<span ng-show="!newAdmin.password.$error.required && (newAdmin.password.$error.minlength || newAdmin.password.$error.maxlength) && newAdmin.password.$dirty">Passwords must be between 8 and 20 characters.</span>
+   							<span ng-show="!newAdmin.password.$error.required && !newAdmin.password.$error.minlength && !newAdmin.password.$error.maxlength && newAdmin.password.$error.pattern && newAdmin.password.$dirty">Must contain one lower &amp; uppercase letter, and one non-alpha character (a number or a symbol.)</span>
+                		</div>
+            		</div>
+        		</div>
+        		<br/>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-lg-4"></div>
+                        <div class="col-lg-4">
+                            <input type="password" class="form-control" id="password_c" name="password_c" placeholder="Confirm Password" ng-model="newAdminInfo.password_c" valid-password-c required>
+			   				<span ng-show="newAdmin.password_c.$error.required && newAdmin.password_c.$dirty">Please confirm your password.</span>
+   							<span ng-show="!newAdmin.password_c.$error.required && newAdmin.password_c.$error.noMatch && newAdmin.password.$dirty">Passwords do not match.</span>
                         </div>
                     </div>
-                    <div class="collapse navbar-collapse pull-right" id="bs-example-navbar-collapse-1">
-                        <ul class="nav navbar-nav navbar-right">
-                            <li>
-                                <a href="#">Home</a>
-                            </li>
-                            <li>
-                                <a href="#">About Us</a>
-                            </li>
-                            <li>
-                                <a href="custAddition.html" id="loginButton">Add Customer Details</a>
-                            </li>
-                            <li>
-                                <a href="raspPiAddition.html" id="loginButton">Add Raspberry Pi</a>
-                            </li>
-			    <li>
-                          	<a href="login.html" id="loginButton">Login</a>
-			    </li>
-                            <li>
-                                <a href="signup.html" id="signupButton">Signup</a>
-                            </li>
-
-                        </ul>
-                    </div>
                 </div>
-            </div>
-        </nav>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-
-<div class="row">
-    <div class="col-lg-4"></div>
-    <div class="col-lg-4">
-    </div>
+                <br/>
+				<div class="row">
+            		<div class="form-group">
+                		<div class="col-lg-4"></div>
+                		<div class="col-lg-4">
+                    	<input type="submit" class="btn btn-info btn-block" value="Submit" ng-click="updateAdmin(newAdminInfo)">
+		    			<input type="submit" class="btn btn-info btn-block" value="Cancel" ng-click="removeForm()">
+						<input type="submit" class="btn btn-info btn-block" value="Reset" ng-click="resetForm()"> 
+                	</div>
+            	</div>
+        	</div>
+    	</form>
+	</div>
 </div>
-<div class="container text-center">
-
-    <div class="row">
-        <div class="col-lg-4"></div>
-        <div class="col-lg-4"><h1>Sign Up </h1> </div>
-
-    </div>
-    <br/>
-    <form name="myForm1" novalidate>
-        <div class="row">
-            <div class="form-group">
-                <div class="col-lg-4"></div>
-                <div class="col-lg-4">
-                    <input type="text" class="form-control" id="name" placeholder="Name"  required>
-                </div>
-            </div>
-        </div>
-        <br/>
-        <div class="row">
-            <div class="form-group">
-                <div class="col-lg-4"></div>
-                <div class="col-lg-4">
-                    <input type="text" class="form-control" id="surname" placeholder="Surname" required>
-                </div>
-            </div>
-        </div>
-        <br/>
-        <div class="row">
-            <div class="form-group">
-                <div class="col-lg-4"></div>
-                <div class="col-lg-4">
-                    <input type="email" name="email" class="form-control" id="usr"  placeholder="Email (used for login)" required>
-
-                </div>
-            </div>
-        </div>
-        <br/>
-        <div class="row">
-            <div class="form-group">
-                <div class="col-lg-4"></div>
-                <div class="col-lg-4">
-                    <input type="text" class="form-control" id="housenum" placeholder="HouseNumber"> 
-                </div>
-            </div>
-        </div>
-        <br/>
-        <div class="row">
-            <div class="form-group">
-                <div class="col-lg-4"></div>
-                <div class="col-lg-4">
-                    <input type="text" class="form-control" id="street" placeholder="Street"> 
-                </div>
-            </div>
-        </div>
-        <br/>
-        <div class="row">
-            <div class="form-group">
-                <div class="col-lg-4"></div>
-                <div class="col-lg-4">
-                    <input type="text" class="form-control" id="city" placeholder="City" >
-                </div>
-            </div>
-        </div>
-        <br/>
-        <div class="row">
-            <div class="form-group">
-                <div class="col-lg-4"></div>
-                <div class="col-lg-4">
-                    <input type="text" class="form-control" id="country" placeholder="Country" >
-                </div>
-            </div>
-        </div>
-        <br/>
-        <div class="row">
-            <div class="form-group">
-                <div class="col-lg-4"></div>
-                <div class="col-lg-4">
-                    <input type="text" class="form-control" id="areacode" placeholder="Area Code" >
-                </div>
-            </div>
-        </div>
-        <br/>
-        <div class="row">
-            <div class="form-group">
-                <div class="col-lg-4"></div>
-                <div class="col-lg-4">
-                    <input type="password" class="form-control" id="pwd1" placeholder="Password">
-                </div>
-            </div>
-        </div>
-        <br/>
-        <div class="row">
-            <div class="form-group">
-                <div class="col-lg-4"></div>
-                <div class="col-lg-4">
-                    <input type="password" class="form-control" id="pwd2" placeholder="Repeat Password" >
-                </div>
-            </div>
-        </div>
-        <br/>
-        <div class="row">
-            <div class="form-group">
-                <div class="col-lg-4"></div>
-                <div class="col-lg-4">
-                    <input type="submit" class="btn btn-info btn-block" value="Submit"> 
-                </div>
-            </div>
-        </div>
-    </form>
 </div>
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    </body>
-</html>
-

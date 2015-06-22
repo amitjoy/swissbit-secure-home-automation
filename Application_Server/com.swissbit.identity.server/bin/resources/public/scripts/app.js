@@ -17,6 +17,17 @@ app.config(function ($httpProvider) {
     }
 });
 
+app.directive('validPasswordC', function () {
+    return {
+        require: 'ngModel',
+        link: function (scope, elm, attrs, ctrl) {
+            ctrl.$parsers.unshift(function (viewValue, $scope) {
+                var noMatch = viewValue != scope.newAdmin.password.$viewValue
+                ctrl.$setValidity('noMatch', !noMatch)
+            })
+        }
+    }
+})
 
 app.directive('editText', function(){
 	return {
@@ -55,14 +66,111 @@ app.config(function ($routeProvider, $locationProvider) {
     }).when('/viewRaspPis', {
         templateUrl: 'views/viewRaspPis.html',
         controller: 'viewRaspPisCtrl'
-    }).otherwise({
-        redirectTo: '/'
-    })
-});
+    }).when('/signUp', {
+        templateUrl: 'views/signUp.html',
+        controller: 'viewSignUpCtrl'
+    }).when('/logIn', {
+        templateUrl: 'views/logIn.html',
+        controller: 'viewLogInCtrl'
+    }).when('/home', {
+        templateUrl: 'views/displayUserHome.html',
+        controller: 'viewDisplayUserHomeCtrl'
+    }).otherwise ( { redirectTo: "/home" });
+	}).
+	run(function($rootScope, $location) {
+    	$rootScope.$on( "$routeChangeStart", function(event, next, current) {
+      		if ($rootScope.loggedInUser == null) {
+        			// no logged user, redirect to /login
+        		if ( next.templateUrl === "views/logIn.html") {
+        		} 
+				else if ( next.templateUrl === "views/signUp.html") {
+				}
+				else {
+          			$location.path("/logIn");
+       			}
+      		}
+    	});
+  	});
 
 app.controller('defaultCtrl', function ($scope) {
 	$scope.welcome = "Welcome to Swissbit Home Automation Systems"
-	$scope.notification= "Now you could view and add Customers and Raspberry Pi details"
+	$scope.notification= "Please Login to Continue"
+});
+
+
+app.controller('viewDisplayUserHomeCtrl', function ($scope) {
+    $scope.welcome = "Welcome to your home page"
+});
+
+
+app.controller('viewSignUpCtrl', function ($scope, $http, $location, $route) {
+
+	$scope.newAdminDefaults = {};
+	$scope.updateAdmin = function (newAdminInfo) {
+    	var data = {
+            email: $scope.newAdminInfo.email,
+			id: $scope.newAdminInfo.id,
+			fname: $scope.newAdminInfo.fname,
+            lname: $scope.newAdminInfo.lname,
+            password: $scope.newAdminInfo.password,
+        };
+        $http.post('/admin', data).success(function (data) {
+            console.log('status changed');
+            $scope.newAdminInfo = angular.copy($scope.newAdminDefaults);
+            $location.path('views/displayHome.html');
+            $route.reload();
+        }).error(function (data, status) {
+		    $scope.notification= "Oops.. Something went wrong. Please try after sometime"; 	
+            console.log('Error ' + data);
+        })
+    }
+
+    $scope.removeForm = function () {
+        $scope.newAdminInfo = angular.copy($scope.newAdminDefaults);
+        $location.path('views/displayHome.html');
+		$route.reload();
+    }
+
+    $scope.resetForm = function () {
+        $scope.newAdminInfo = angular.copy($scope.newAdminDefaults);
+    }
+});
+
+app.controller('viewLogInCtrl', function ($scope, $rootScope, $http, $location, $route) { 
+    $scope.existingAdminDefaults = {};
+    $scope.validateAdmin = function (existingAdminInfo) {
+	$scope.userNotification = ""
+
+	    $http.get('/loginEmail/'+$scope.existingAdminInfo.email).success(function (data) {
+            $scope.AdminInfo = data;
+			if ($scope.AdminInfo.password == $scope.existingAdminInfo.password) {
+				console.log('Login Successful');
+				$scope.userNotification = "Login Successful"
+				$rootScope.loggedInUser = $scope.AdminInfo.fname;
+				console.log($scope.AdminInfo.fname);
+				console.log($scope.AdminInfo.password);
+				console.log($rootScope.loggedInUser);
+				$location.path('/home');
+			}
+			else {
+				console.log('password Incorrect');
+				 $scope.userNotification = "Password Incorrect"
+			}
+        }).error(function (data, status) {
+			$scope.userNotification = "Email Address not found"
+  			console.log('Error ' + data);
+		})
+    }
+
+    $scope.removeForm = function () {
+        $scope.existingAdminInfo = angular.copy($scope.existingAdminDefaults);
+        $location.path('views/displayHome.html');
+        $route.reload();
+    }
+
+    $scope.resetForm = function () {
+        $scope.existingAdminInfo = angular.copy($scope.existingAdminDefaults);
+    }
 });
 
 app.controller('viewCustomersCtrl', function ($scope, $http, $location, $route) {
@@ -89,7 +197,7 @@ app.controller('viewCustomersCtrl', function ($scope, $http, $location, $route) 
 			    console.log('status changed');
 				$scope.newCustomerInfo = angular.copy($scope.newCustomerDefaults);
 				$scope.newCustomerForm = false;
-				$location.path('/viewCustomers');
+				$location.path('/home');
 				$route.reload();
 			}).error(function (data, status) {
     			console.log('Error ' + data);

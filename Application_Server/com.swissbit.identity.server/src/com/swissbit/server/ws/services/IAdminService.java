@@ -11,5 +11,4 @@ public interface IAdminService extends IAbstractService {
 
 	public List<Admin> getAllUsers();
 	
-	public Admin getId(String id);
 }
