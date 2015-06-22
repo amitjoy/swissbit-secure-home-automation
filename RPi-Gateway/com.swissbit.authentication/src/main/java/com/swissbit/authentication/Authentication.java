@@ -149,6 +149,8 @@ public class Authentication extends Cloudlet {
 						.decrypt(new String(reqPayload.getBody(), Charsets.UTF_8));
 				if (decryptData != null) {
 					respPayload.addMetric("data", decryptData.get(1));
+				} else {
+					respPayload.addMetric("data", "");
 				}
 			}
 		}
