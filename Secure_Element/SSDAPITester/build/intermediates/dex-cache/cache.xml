@@ -12,7 +12,7 @@
         jar="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Secure_Element/SSDAPITester/app/libs/com.tum.ssdapi.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="570c6b394814bb4293fcfe522c5952259f413e30">
+        sha1="c9612b7b323510c87be131dfe37ef428572bd607">
         <dex dex="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Secure_Element/SSDAPITester/app/build/intermediates/pre-dexed/debug/com.tum.ssdapi-2f3fa140a2a8b96ccd5de39180b8c33f1bc74d8c.jar" />
     </item>
     <item

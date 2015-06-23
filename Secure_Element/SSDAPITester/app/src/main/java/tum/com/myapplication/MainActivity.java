@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.tum.ssdapi.CardAPI;
 
@@ -19,7 +18,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Log.d("In APi Tester;", "He");
         final CardAPI apiAccess = new CardAPI(getApplicationContext());
         if(apiAccess.isCardPresent()){
 
@@ -39,7 +38,8 @@ public class MainActivity extends Activity {
                           EditText plainMsg = (EditText) findViewById(R.id.encryptText);
 
                           EditText resp = (EditText) findViewById(R.id.decryptText);
-                          resp.setText(apiAccess.encryptMsg(plainMsg.getText().toString()));
+                          //resp.setText(apiAccess.encryptMsg(plainMsg.getText().toString()));
+                          resp.setText(apiAccess.encryptMsgWithID("3308e36884b0ae319ffe90011f925dfe", plainMsg.getText().toString()));
 
                           /*Intent intent = new Intent("tum.com.ssdapi.MAIN_ACTIVITY");
                           Bundle bundle = new Bundle();
@@ -72,8 +72,13 @@ public class MainActivity extends Activity {
                          EditText encryptMsg = (EditText) findViewById(R.id.decryptText);
 
                          EditText resp = (EditText) findViewById(R.id.decryptText);
-                         resp.setText(apiAccess.decryptMsg(encryptMsg.getText().toString()));
+                         String [] response = apiAccess.decryptMsgWithID(encryptMsg.getText().toString());
+                         resp.setText(response[1]);
+                         Log.d("Response Legth: ", "" + response.length);
+                         Log.d("Response 0: ", "" + response[0] );
+                         Log.d("Response 1: ", "" + response[1] );
 
+                         //resp.setText(apiAccess.decryptMsg(encryptMsg.getText().toString()));
                          /*Intent intent = new Intent("tum.com.ssdapi.MAIN_ACTIVITY");
                          Bundle bundle = new Bundle();
                          bundle.putInt("Function", 1007);
@@ -87,6 +92,29 @@ public class MainActivity extends Activity {
                      }
                  }
         );
+
+
+            Button myId = (Button) findViewById(R.id.getMyID);
+            myId.setOnClickListener
+                    (new View.OnClickListener() {
+                         @Override
+                         public void onClick(View v) {
+                             EditText resp = (EditText) findViewById(R.id.myID);
+                             resp.setText(apiAccess.getMyId());
+
+                         /*Intent intent = new Intent("tum.com.ssdapi.MAIN_ACTIVITY");
+                         Bundle bundle = new Bundle();
+                         bundle.putInt("Function", 1007);
+                         bundle.putString("MSG", message);
+                         intent.putExtras(bundle);*/
+                       /*
+                        * 6404 is REQUEST_CODE. This is just a number to uniquely identify a request.
+                        * The Function id is used to define the task, like encrypt or decrypt
+                        */
+                             //startActivityForResult(intent, 6404);
+                         }
+                     }
+                    );
         }
 
     }

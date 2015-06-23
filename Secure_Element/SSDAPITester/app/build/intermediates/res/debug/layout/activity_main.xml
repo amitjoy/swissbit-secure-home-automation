@@ -7,6 +7,24 @@
            android:layout_height="wrap_content"
            android:paddingBottom="@dimen/activity_vertical_margin">
            <TableRow>
+               <EditText
+                   android:id="@+id/myID"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:ems="10"
+                   android:paddingBottom="@dimen/activity_vertical_margin"/>
+           </TableRow>
+           <TableRow>
+               <Button
+                   android:id="@+id/getMyID"
+                   android:text="getMyID"
+                   android:paddingTop="10dp"
+                   android:paddingBottom="10dp"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content" />
+
+           </TableRow>
+           <TableRow>
         <EditText
             android:id="@+id/encryptText"
             android:layout_width="wrap_content"

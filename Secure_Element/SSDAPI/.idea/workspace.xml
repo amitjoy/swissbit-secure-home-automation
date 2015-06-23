@@ -55,7 +55,35 @@
     <favorites_list name="SSDAPI" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="ApplicationTest.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/androidTest/java/tum/com/ssdapi/ApplicationTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="225">
+              <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CardAPI.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/tum/com/api/impl/CardAPI.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.8513762" vertical-offset="1" max-vertical-offset="2475">
+              <caret line="45" column="31" selection-start-line="45" selection-start-column="31" selection-end-line="45" selection-end-column="31" />
+              <folding>
+                <element signature="method#disconnectCard#0;class#CardAPI#0" expanded="false" />
+                <element signature="method#isCardPresent#0;class#CardAPI#0" expanded="false" />
+                <element signature="method#decryptMsg#0;class#CardAPI#0" expanded="false" />
+                <element signature="method#byteArrayToHex#0;class#CardAPI#0" expanded="false" />
+                <element signature="method#hexToByteArray#0;class#CardAPI#0" expanded="false" />
+                <element signature="method#getMessageFromResponse#0;class#CardAPI#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -1333,9 +1361,9 @@
     <treeState />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="16" />
-    <option name="y" value="23" />
-    <option name="width" value="1604" />
+    <option name="x" value="190" />
+    <option name="y" value="24" />
+    <option name="width" value="1419" />
     <option name="height" value="947" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -1364,10 +1392,96 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="PackagesPane">
         <subPane />
       </pane>
-      <pane id="Scope" />
+      <pane id="AndroidView">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SSDAPI" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Gradle Scripts" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidBuildScriptsGroupNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SSDAPI" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SSDAPI" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ssdapi" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SSDAPI" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ssdapi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SSDAPI" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="impl" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -1388,26 +1502,6 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="SSDAPI" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="AndroidView">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SSDAPI" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Gradle Scripts" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidBuildScriptsGroupNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SSDAPI" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -1649,27 +1743,27 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="16" y="23" width="1604" height="947" extended-state="0" />
-    <editor active="false" />
+    <frame x="190" y="24" width="1419" height="947" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3116727" sideWeight="0.5012804" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3104693" sideWeight="0.50108933" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28976572" sideWeight="0.50138247" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3116727" sideWeight="0.4987196" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3104693" sideWeight="0.49818447" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.14926419" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3293623" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25224072" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33914307" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3292232" sideWeight="0.49907464" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Memory Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="true" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1714,16 +1808,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="75" max-vertical-offset="5100">
           <caret line="31" column="42" selection-start-line="31" selection-start-column="42" selection-end-line="31" selection-end-column="42" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#decryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#hexToByteArray#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#getMessageFromResponse#0;class#SSDAPIMain#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1739,16 +1823,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="225" max-vertical-offset="5100">
           <caret line="15" column="27" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="27" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#decryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#hexToByteArray#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#getMessageFromResponse#0;class#SSDAPIMain#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1764,16 +1838,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1980" max-vertical-offset="5265">
           <caret line="4" column="24" selection-start-line="4" selection-start-column="24" selection-end-line="4" selection-end-column="24" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#decryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#hexToByteArray#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#getMessageFromResponse#0;class#SSDAPIMain#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1789,16 +1853,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="3622" max-vertical-offset="5265">
           <caret line="343" column="29" selection-start-line="343" selection-start-column="29" selection-end-line="343" selection-end-column="29" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#decryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#hexToByteArray#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#getMessageFromResponse#0;class#SSDAPIMain#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1814,16 +1868,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="4655" max-vertical-offset="5220">
           <caret line="331" column="63" selection-start-line="331" selection-start-column="63" selection-end-line="331" selection-end-column="63" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#decryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#hexToByteArray#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#getMessageFromResponse#0;class#SSDAPIMain#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1839,16 +1883,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="3028" max-vertical-offset="4515">
           <caret line="225" column="62" selection-start-line="225" selection-start-column="62" selection-end-line="225" selection-end-column="62" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#decryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#hexToByteArray#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#getMessageFromResponse#0;class#SSDAPIMain#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1864,16 +1898,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="375" max-vertical-offset="3495">
           <caret line="235" column="6" selection-start-line="235" selection-start-column="6" selection-end-line="235" selection-end-column="6" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#decryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#hexToByteArray#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#getMessageFromResponse#0;class#SSDAPIMain#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1889,16 +1913,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="2075" max-vertical-offset="3495">
           <caret line="235" column="6" selection-start-line="235" selection-start-column="6" selection-end-line="235" selection-end-column="6" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#decryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#hexToByteArray#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#getMessageFromResponse#0;class#SSDAPIMain#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1914,16 +1928,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1747" max-vertical-offset="3405">
           <caret line="125" column="53" selection-start-line="125" selection-start-column="53" selection-end-line="125" selection-end-column="53" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#decryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#hexToByteArray#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#getMessageFromResponse#0;class#SSDAPIMain#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1939,16 +1943,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="2130" max-vertical-offset="3420">
           <caret line="142" column="67" selection-start-line="142" selection-start-column="67" selection-end-line="142" selection-end-column="67" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#decryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#hexToByteArray#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#getMessageFromResponse#0;class#SSDAPIMain#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1956,16 +1950,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1892" max-vertical-offset="3210">
           <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#decryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#hexToByteArray#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#getMessageFromResponse#0;class#SSDAPIMain#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1973,16 +1957,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="3060" max-vertical-offset="3150">
           <caret line="211" column="1" selection-start-line="211" selection-start-column="1" selection-end-line="211" selection-end-column="1" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#decryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#hexToByteArray#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#getMessageFromResponse#0;class#SSDAPIMain#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1990,16 +1964,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="300" max-vertical-offset="3270">
           <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#decryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#hexToByteArray#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#getMessageFromResponse#0;class#SSDAPIMain#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2015,16 +1979,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="300" max-vertical-offset="2790">
           <caret line="20" column="46" selection-start-line="20" selection-start-column="46" selection-end-line="20" selection-end-column="46" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#decryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#hexToByteArray#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#getMessageFromResponse#0;class#SSDAPIMain#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2040,16 +1994,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2790">
           <caret line="20" column="46" selection-start-line="20" selection-start-column="46" selection-end-line="20" selection-end-column="46" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#decryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#hexToByteArray#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#getMessageFromResponse#0;class#SSDAPIMain#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2065,16 +2009,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="300" max-vertical-offset="2790">
           <caret line="20" column="46" selection-start-line="20" selection-start-column="46" selection-end-line="20" selection-end-column="46" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#decryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#hexToByteArray#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#getMessageFromResponse#0;class#SSDAPIMain#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2090,16 +2024,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="300" max-vertical-offset="2790">
           <caret line="20" column="46" selection-start-line="20" selection-start-column="46" selection-end-line="20" selection-end-column="46" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#decryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#hexToByteArray#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#getMessageFromResponse#0;class#SSDAPIMain#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2115,16 +2039,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2790">
           <caret line="20" column="46" selection-start-line="20" selection-start-column="46" selection-end-line="20" selection-end-column="46" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#decryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#hexToByteArray#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#getMessageFromResponse#0;class#SSDAPIMain#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2140,16 +2054,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1140" max-vertical-offset="2790">
           <caret line="20" column="46" selection-start-line="20" selection-start-column="46" selection-end-line="20" selection-end-column="46" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#decryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#hexToByteArray#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#getMessageFromResponse#0;class#SSDAPIMain#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2165,16 +2069,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1140" max-vertical-offset="2790">
           <caret line="20" column="46" selection-start-line="20" selection-start-column="46" selection-end-line="20" selection-end-column="46" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#decryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#hexToByteArray#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#getMessageFromResponse#0;class#SSDAPIMain#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2182,16 +2076,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2790">
           <caret line="20" column="46" selection-start-line="20" selection-start-column="46" selection-end-line="20" selection-end-column="46" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#decryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#hexToByteArray#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#getMessageFromResponse#0;class#SSDAPIMain#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2246,7 +2130,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.19337016" vertical-offset="0" max-vertical-offset="543">
           <caret line="7" column="24" selection-start-line="7" selection-start-column="24" selection-end-line="7" selection-end-column="24" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2258,28 +2141,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/androidTest/java/tum/com/ssdapi/ApplicationTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.19301471" vertical-offset="0" max-vertical-offset="544">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/tum/com/ssdapi/SSDAPIMain.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2355">
           <caret line="19" column="29" selection-start-line="19" selection-start-column="29" selection-end-line="19" selection-end-column="29" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#encryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#decryptMsg#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#disconnectCard#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#selectApplet#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#byteArrayToHex#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#hexToByteArray#0;class#SSDAPIMain#0" expanded="false" />
-            <element signature="method#getMessageFromResponse#0;class#SSDAPIMain#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2287,17 +2152,23 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.2757353" vertical-offset="0" max-vertical-offset="645">
           <caret line="10" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/androidTest/java/tum/com/ssdapi/ApplicationTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="225">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/tum/com/api/impl/CardAPI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.24816176" vertical-offset="0" max-vertical-offset="2310">
-          <caret line="15" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="303" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.8513762" vertical-offset="1" max-vertical-offset="2475">
+          <caret line="45" column="31" selection-start-line="45" selection-start-column="31" selection-end-line="45" selection-end-column="31" />
           <folding>
             <element signature="method#disconnectCard#0;class#CardAPI#0" expanded="false" />
-            <element signature="method#selectApplet#0;class#CardAPI#0" expanded="false" />
             <element signature="method#isCardPresent#0;class#CardAPI#0" expanded="false" />
             <element signature="method#decryptMsg#0;class#CardAPI#0" expanded="false" />
             <element signature="method#byteArrayToHex#0;class#CardAPI#0" expanded="false" />
