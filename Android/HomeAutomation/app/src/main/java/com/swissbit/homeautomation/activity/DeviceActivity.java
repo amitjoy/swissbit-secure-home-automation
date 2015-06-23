@@ -7,6 +7,7 @@ import android.widget.ListView;
 
 import com.android.swissbit.homeautomation.R;
 import com.google.common.collect.Lists;
+import com.swissbit.homeautomation.asyncTask.DeviceStatusRefreshAsync;
 import com.swissbit.homeautomation.asyncTask.RetrieveDeviceListAsync;
 import com.swissbit.homeautomation.db.DevicesInfoDbAdapter;
 import com.swissbit.homeautomation.model.Device;
@@ -50,6 +51,8 @@ public class DeviceActivity extends ActionBarActivity {
         extras = getIntent().getExtras();
         raspberryId = extras.getString("RaspberryId");
 
+
+
 //        Handler handler = new Handler();
 //        handler.postDelayed(new Runnable() {
 //            public void run() {
@@ -66,8 +69,11 @@ public class DeviceActivity extends ActionBarActivity {
             RetrieveDeviceListAsync retrieveDeviceListAsync = new RetrieveDeviceListAsync(raspberryId);
             retrieveDeviceListAsync.execute();
         }
-        else
-            addToListView();
+        else{
+            DeviceStatusRefreshAsync deviceStatusRefreshAsync = new DeviceStatusRefreshAsync();
+            deviceStatusRefreshAsync.execute();
+        }
+//            addToListView();
 
     }
 
