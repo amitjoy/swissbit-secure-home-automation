@@ -168,7 +168,7 @@ public final class ZWaveOperator implements ZWaveControllerListener {
 		case "CONSUMPTION":
 			if (node.getNodeId() == s_nodeId) {
 				this.controller.sendDataFrame(
-						MeterCommandClass.createGetv2(node.getNodeId(), MeterCommandClass.SCALE_ELECTRIC_W));
+						MeterCommandClass.createGetv2(node.getNodeId(), MeterCommandClass.SCALE_ELECTRIC_KWH));
 				final MeterCommandClass mcc = (MeterCommandClass) node.getCommandClass(MeterCommandClass.ID);
 				System.out.println("Consumption:" + (mcc.getCurrentValue()));
 			}

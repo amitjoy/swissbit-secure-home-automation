@@ -39,13 +39,13 @@ public interface IActivityLogService {
 	/**
 	 * The location of the kura specific log file
 	 */
-	public static String LOCATION_SWISSBIT_LOG = "/home/pi/swissbit/swissbit.log";
+	public static String LOCATION_SWISSBIT_LOG = "/home/pi/swissbit/logs/swissbit.log";
 
 	/**
 	 * Used to retrieve saved activity logs
 	 *
 	 *  @param type type of log to retrieve
-	 * 
+	 *
 	 * @return the list of logs
 	 */
 	public String retrieveLogs(LogFileType type);
