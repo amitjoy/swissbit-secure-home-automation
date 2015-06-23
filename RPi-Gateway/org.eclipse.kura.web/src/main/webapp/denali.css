@@ -113,7 +113,7 @@ img.x-tree3-node-icon {
 div.headerLogo { 
 	height: 			38px;
 	width: 				127px;
-	margin: 			5px 0px 5px 15px;
+	margin: 			15px 10px 15px 15px;
 	vertical-align: 	baseline;
 	background: 		url(eclipse/kura/icons/kura_logo_small.png);
 	background-repeat: 	no-repeat;

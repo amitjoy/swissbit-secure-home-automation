@@ -170,7 +170,7 @@ public class denali implements EntryPoint
         
         //
         // west
-        BorderLayoutData westData = new BorderLayoutData(LayoutRegion.WEST, 180);  
+        BorderLayoutData westData = new BorderLayoutData(LayoutRegion.WEST, 250);  
         westData.setSplit(true);  
         westData.setCollapsible(true);  
         westData.setMargins(new Margins(0,5,0,0));
@@ -195,7 +195,7 @@ public class denali implements EntryPoint
         td.setHorizontalAlign(HorizontalAlignment.LEFT);
         south.add(copyright, td);
         
-        Label version = new Label(gwtSession.getKuraVersion());
+        Label version = new Label("Swissbit AG");
         version.setStyleName("x-form-label");
         TableData tdVersion = new TableData();
         tdVersion.setHorizontalAlign(HorizontalAlignment.RIGHT);
