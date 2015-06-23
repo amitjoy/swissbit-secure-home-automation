@@ -18,7 +18,9 @@ package com.swissbit.wzwave;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import com.whizzosoftware.wzwave.commandclass.BinarySwitchCommandClass;
 import com.whizzosoftware.wzwave.commandclass.MeterCommandClass;
@@ -46,9 +48,19 @@ public final class ZWaveOperator implements ZWaveControllerListener {
 	private static String s_argDevCommand = null;
 
 	/**
+	 * Lock before receiving data
+	 */
+	private static final Lock s_lock = new ReentrantLock();
+
+	/**
 	 * Represents the node id to control
 	 */
 	private static byte s_nodeId;
+
+	/**
+	 * Condition to get notified
+	 */
+	private static final Condition s_waker = s_lock.newCondition();
 
 	/**
 	 * ZWave PC Controller Location
@@ -78,21 +90,26 @@ public final class ZWaveOperator implements ZWaveControllerListener {
 		}
 
 		try {
+
 			if (Files.exists(Paths.get(ZWAVE_PC_CONTROLLER_LOCK_FILE))) {
 				Files.delete(Paths.get(ZWAVE_PC_CONTROLLER_LOCK_FILE));
 			}
+
 		} catch (final IOException e) {
 			// No need to log
 		}
 
 		try {
 			new ZWaveOperator();
-			TimeUnit.SECONDS.sleep(7);
+			s_lock.lock();
+			s_waker.await();
 		} catch (final InterruptedException e) {
-			e.printStackTrace();
+			// Ignore
 		} finally {
+			s_lock.unlock();
 			System.exit(0);
 		}
+
 	}
 
 	/**
@@ -120,9 +137,10 @@ public final class ZWaveOperator implements ZWaveControllerListener {
 	public void onZWaveNodeAdded(final ZWaveEndpoint node) {
 		// Don't consider the RPi as a ZWave Node to which the ZWave PC
 		// Controller is attached
-		if (node.getNodeId() != 2) {
-			System.out.println("ZWave Device Added:" + node.getNodeId());
+		if (node.getNodeId() == 2) {
+			return;
 		}
+		System.out.println("ZWave Device Added:" + node.getNodeId());
 		switch (s_argDevCommand) {
 		case "ON":
 			if (node.getNodeId() == s_nodeId) {
@@ -158,6 +176,14 @@ public final class ZWaveOperator implements ZWaveControllerListener {
 
 		default:
 			throw new IllegalArgumentException("Your command is not recognized");
+		}
+
+		// Signal the Thread
+		try {
+			s_lock.lock();
+			s_waker.signal();
+		} finally {
+			s_lock.unlock();
 		}
 	}
 
