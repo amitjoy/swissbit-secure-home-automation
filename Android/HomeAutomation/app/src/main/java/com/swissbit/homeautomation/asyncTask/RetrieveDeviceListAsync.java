@@ -1,5 +1,6 @@
 package com.swissbit.homeautomation.asyncTask;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -39,9 +40,12 @@ public class RetrieveDeviceListAsync extends AsyncTask {
 
     private Object monitor;
 
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onPreExecute() {
-
+        progressDialog = ProgressDialog.show(ActivityContexts.getDeviceActivityContext(), "Retrieving Device List",
+                "Please Wait", true);
     }
 
     @Override
@@ -80,6 +84,7 @@ public class RetrieveDeviceListAsync extends AsyncTask {
                                 devicesInfoDbAdapter.insertDevice(nodeId, raspberryId, null, null, "false");
                                 Log.d("Device", "Inserted");
                             }
+                            publishProgress();
                             Log.d("Notify1", "Before");
                             synchronized (monitor) {
                                 monitor.notify();
@@ -134,6 +139,13 @@ public class RetrieveDeviceListAsync extends AsyncTask {
         Log.d("Inside onCancelled", "" + subResponse);
         if (!subResponse)
             Toast.makeText(ActivityContexts.getMainActivityContext(), "Failed to retrieve device list! Please Try again", Toast.LENGTH_LONG).show();
+
+    }
+
+    @Override
+    public void onProgressUpdate(Object[] values) {
+        progressDialog.dismiss();
+        Log.d("Onprogess", "reached");
 
     }
 }
