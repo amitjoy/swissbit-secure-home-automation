@@ -1,6 +1,7 @@
 package com.swissbit.homeautomation.asyncTask;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
@@ -38,6 +39,8 @@ public class DeviceCmdAsync extends AsyncTask {
 
     private DevicesInfoDbAdapter devicesInfoDbAdapter;
 
+    private ProgressDialog progressDialog;
+
     public DeviceCmdAsync(String cmd, int nodeId) {
         this.cmd = cmd;
         this.nodeId = nodeId;
@@ -45,8 +48,13 @@ public class DeviceCmdAsync extends AsyncTask {
     }
 
     @Override
-    protected Object doInBackground(Object[] params) {
+    protected void onPreExecute() {
+        progressDialog = ProgressDialog.show(ActivityContexts.getDeviceActivityContext(), "Executing Command",
+          "Please Wait", true);
+    }
 
+    @Override
+    protected Object doInBackground(Object[] params) {
 
         IKuraMQTTClient client = MQTTFactory.getClient();
         boolean status = false;
@@ -75,11 +83,14 @@ public class DeviceCmdAsync extends AsyncTask {
                         if (status == 200) {
                             Log.d("Response", "success");
                             subResponse = true;
-                            devicesInfoDbAdapter.updateDeviceStatus("true",nodeId);
+                            if (cmd.equals("on"))
+                                devicesInfoDbAdapter.updateDeviceStatus("true", nodeId);
+                            else
+                                devicesInfoDbAdapter.updateDeviceStatus("false", nodeId);
                         } else {
                             Log.d("Response", "Failed");
                             subResponse = false;
-                            devicesInfoDbAdapter.updateDeviceStatus("false",nodeId);
+
                         }
                         synchronized (monitor) {
                             monitor.notify();
@@ -140,12 +151,14 @@ public class DeviceCmdAsync extends AsyncTask {
     @Override
     public void onProgressUpdate(Object[] values) {
         Log.d("Onprogess", "reached");
-        View rootView = ((Activity)ActivityContexts.getDeviceActivityContext()).getWindow().getDecorView().findViewById(android.R.id.content);
-        ImageView imageDevice1 = (ImageView) rootView.findViewById(R.id.imgDevice);
+        progressDialog.dismiss();
+
+        View rootView = ((Activity) ActivityContexts.getDeviceActivityContext()).getWindow().getDecorView().findViewById(android.R.id.content);
+        imageDevice = (ImageView) rootView.findViewById(R.id.imgDevice);
         if (cmd.equals("on")) {
-            imageDevice1.setImageResource(R.drawable.socketswitchon);
+            imageDevice.setImageResource(R.drawable.socketswitchon);
         } else {
-            imageDevice1.setImageResource(R.drawable.socketswitchoff);
+            imageDevice.setImageResource(R.drawable.socketswitchoff);
         }
     }
 }
