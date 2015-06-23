@@ -47,7 +47,7 @@ public class RetrieveDeviceListAsync extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] params) {
         final IKuraMQTTClient client = MQTTFactory.getClient();
-        devicesInfoDbAdapter = DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getDeviceActivity());
+        devicesInfoDbAdapter = DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getDeviceActivityContext());
         boolean status = false;
 
         monitor = new Object();
@@ -121,7 +121,7 @@ public class RetrieveDeviceListAsync extends AsyncTask {
 
     @Override
     protected void onPostExecute(Object o) {
-        DeviceActivity deviceActivity = (DeviceActivity)ActivityContexts.getDeviceActivity();
+        DeviceActivity deviceActivity = (DeviceActivity)ActivityContexts.getDeviceActivityContext();
         deviceActivity.addToListView();
         cancel(true);
         Log.d("Inside onPost", "" + subResponse);

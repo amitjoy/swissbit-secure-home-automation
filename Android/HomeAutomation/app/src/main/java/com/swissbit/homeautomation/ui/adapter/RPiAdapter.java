@@ -36,14 +36,14 @@ public class RPiAdapter extends ArrayAdapter<RaspberryPi> {
         customView = layoutInflater.inflate(R.layout.row_raspberry_details, parent, false);
         viewGroup = parent;
 
-        TextView raspberryName = (TextView) customView.findViewById(R.id.txtRaspberryName);
+//        TextView raspberryName = (TextView) customView.findViewById(R.id.txtRaspberryName);
         TextView raspberryDescription = (TextView) customView.findViewById(R.id.txtRaspberryDescription);
         TextView raspberryId = (TextView) customView.findViewById(R.id.txtRaspberryId);
         TextView raspberryStatus = (TextView) customView.findViewById(R.id.txtRaspberryStatus);
         ImageView imageRaspberry = (ImageView) customView.findViewById(R.id.imgRaspberry);
         imageStatus = (ImageView) customView.findViewById(R.id.imgStatus);
 
-        raspberryName.setText(raspberryPi.getName());
+//        raspberryName.setText(raspberryPi.getName());
         raspberryId.setText(raspberryPi.getId());
 
         if (raspberryPi.getStatus())

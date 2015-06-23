@@ -7,7 +7,7 @@ public interface DBConstants {
 
     public static final String DATABASE_NAME="DevicesInfoDb";
 
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 13;
 
     public static final String TABLE_NAME_RASPBERRYINFO="RaspberryInfo";
     public static final String UID = "_id";
@@ -48,7 +48,7 @@ public interface DBConstants {
             + " VARCHAR(15), " + DEVICE_NAME
             + " VARCHAR(25), " + DEVICE_DESCRIPTION
             + " VARCHAR(50), " + DEVICE_STATUS
-            + " INTEGER,"
+            + " VARCHAR(15), "
             + " FOREIGN KEY(" + RASPBERRYID + ") REFERENCES " + TABLE_NAME_RASPBERRYINFO + "(" + RASPBERRYID + ") ON DELETE CASCADE);";
 
     public static final String DROP_TABLE_RASPBERRYINFO = "DROP TABLE IF EXISTS " + TABLE_NAME_RASPBERRYINFO;

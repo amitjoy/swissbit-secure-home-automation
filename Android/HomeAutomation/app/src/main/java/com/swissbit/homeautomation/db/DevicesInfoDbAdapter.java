@@ -153,6 +153,14 @@ public class DevicesInfoDbAdapter  {
         }
         return null;
     }
+
+    public void updateDeviceStatus(String status,int nodeId){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DBConstants.DEVICE_STATUS,status);
+        db.update(DBConstants.TABLE_NAME_DEVICES, contentValues, null, null);
+    }
+
+
     static class DevicesInfoDb extends SQLiteOpenHelper{
 
         private Context context;

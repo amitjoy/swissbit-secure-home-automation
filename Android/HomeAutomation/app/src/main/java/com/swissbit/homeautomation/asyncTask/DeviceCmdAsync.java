@@ -1,22 +1,21 @@
 package com.swissbit.homeautomation.asyncTask;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.swissbit.homeautomation.model.Device;
+import com.android.swissbit.homeautomation.R;
+import com.swissbit.homeautomation.db.DevicesInfoDbAdapter;
 import com.swissbit.homeautomation.utils.ActivityContexts;
-import com.swissbit.homeautomation.utils.EncryptionFactory;
+import com.swissbit.homeautomation.utils.DBFactory;
 import com.swissbit.homeautomation.utils.MQTTFactory;
 import com.swissbit.homeautomation.utils.TopicsConstants;
-import com.swissbit.homeautomation.utils.WSConstants;
 import com.swissbit.mqtt.client.IKuraMQTTClient;
 import com.swissbit.mqtt.client.adapter.MessageListener;
 import com.swissbit.mqtt.client.message.KuraPayload;
-
-import org.apache.http.Header;
 
 /**
  * Created by manit on 17/06/15.
@@ -33,17 +32,21 @@ public class DeviceCmdAsync extends AsyncTask {
 
     private Object monitor;
 
-    public DeviceCmdAsync(String cmd) {
+    private int nodeId;
+
+    private ImageView imageDevice;
+
+    private DevicesInfoDbAdapter devicesInfoDbAdapter;
+
+    public DeviceCmdAsync(String cmd, int nodeId) {
         this.cmd = cmd;
-    }
-
-    @Override
-    protected void onPreExecute() {
-
+        this.nodeId = nodeId;
+        devicesInfoDbAdapter = DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getDeviceActivityContext());
     }
 
     @Override
     protected Object doInBackground(Object[] params) {
+
 
         IKuraMQTTClient client = MQTTFactory.getClient();
         boolean status = false;
@@ -72,14 +75,17 @@ public class DeviceCmdAsync extends AsyncTask {
                         if (status == 200) {
                             Log.d("Response", "success");
                             subResponse = true;
+                            devicesInfoDbAdapter.updateDeviceStatus("true",nodeId);
                         } else {
                             Log.d("Response", "Failed");
                             subResponse = false;
+                            devicesInfoDbAdapter.updateDeviceStatus("false",nodeId);
                         }
                         synchronized (monitor) {
                             monitor.notify();
                             Log.d("Notify1", "After");
                         }
+
                         Log.d("Inside onProcess", "" + subResponse);
                     } catch (Exception e) {
                         Log.e("Kura MQTT Exception", e.getCause().getMessage());
@@ -89,7 +95,7 @@ public class DeviceCmdAsync extends AsyncTask {
             });
 
         payload = MQTTFactory.generatePayload("", requestId);
-        payload.addMetric("nodeId", 8);
+        payload.addMetric("nodeId", nodeId);
 
         if (cmd.equals("on")) {
             MQTTFactory.getClient().publish(MQTTFactory.getTopicToPublish(TopicsConstants.SWITCH_ON_PUB), payload);
@@ -109,6 +115,8 @@ public class DeviceCmdAsync extends AsyncTask {
             }
         }
 
+        publishProgress();
+
         cancel(true);
 
         return null;
@@ -118,14 +126,26 @@ public class DeviceCmdAsync extends AsyncTask {
     protected void onPostExecute(Object o) {
         Log.d("Inside onPost", "" + subResponse);
         if (!subResponse)
-            Toast.makeText(ActivityContexts.getMainActivityContext(), "Device Command Failed! Try again", Toast.LENGTH_LONG).show();
+            Toast.makeText(ActivityContexts.getDeviceActivityContext(), "Device Command Failed! Try again", Toast.LENGTH_LONG).show();
     }
 
     @Override
     protected void onCancelled() {
         Log.d("Inside onCancelled", "" + subResponse);
         if (!subResponse)
-            Toast.makeText(ActivityContexts.getMainActivityContext(), "Device Command Failed! Try again", Toast.LENGTH_LONG).show();
+            Toast.makeText(ActivityContexts.getDeviceActivityContext(), "Device Command Failed! Try again", Toast.LENGTH_LONG).show();
 
+    }
+
+    @Override
+    public void onProgressUpdate(Object[] values) {
+        Log.d("Onprogess", "reached");
+        View rootView = ((Activity)ActivityContexts.getDeviceActivityContext()).getWindow().getDecorView().findViewById(android.R.id.content);
+        ImageView imageDevice1 = (ImageView) rootView.findViewById(R.id.imgDevice);
+        if (cmd.equals("on")) {
+            imageDevice1.setImageResource(R.drawable.socketswitchon);
+        } else {
+            imageDevice1.setImageResource(R.drawable.socketswitchoff);
+        }
     }
 }

@@ -19,11 +19,11 @@ public class ActivityContexts {
         ActivityContexts.mainActivityContext = mainActivityContext;
     }
 
-    public static Context getDeviceActivity() {
+    public static Context getDeviceActivityContext() {
         return deviceActivity;
     }
 
-    public static void setDeviceActivity(Context deviceActivity) {
+    public static void setDeviceActivityContext(Context deviceActivity) {
         ActivityContexts.deviceActivity = deviceActivity;
     }
 

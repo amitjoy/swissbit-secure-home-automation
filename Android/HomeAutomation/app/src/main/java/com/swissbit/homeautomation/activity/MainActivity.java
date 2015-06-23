@@ -179,6 +179,7 @@ public class MainActivity extends ActionBarActivity {
 
         addToListView();
 
+        Log.d("SecureElementId", "ID:" + secureElementAccess.encryptMsgWithID("1234567890123456","amit"));
 
     }
 
@@ -226,10 +227,11 @@ public class MainActivity extends ActionBarActivity {
             MQTTFactory.setRaspberryId(rid);
             Toast.makeText(getApplicationContext(), rid, Toast.LENGTH_SHORT).show();
 
-            Log.d("Secureelement", ""+secureElementAccess.isCardPresent());
+            Log.d("Secureelement", "" + secureElementAccess.isCardPresent());
 
             if(secureElementAccess.isCardPresent()){
-                String encryptedString = secureElementAccess.encryptMsg("AB");
+//                String encryptedString = secureElementAccess.encryptMsg("AB");
+                String encryptedString = secureElementAccess.encryptMsgWithID("1234567890123456",rid);
                 EncryptionFactory.setEncryptedString(encryptedString);
                 Log.d("Encrypted Data", EncryptionFactory.getEncryptedString());
                 AuthenticationAsync authenticationAsync = new AuthenticationAsync(this, MQTTFactory.getRaspberryPiById());
