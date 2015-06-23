@@ -1,6 +1,7 @@
 package com.swissbit.homeautomation.asyncTask;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
@@ -47,6 +48,8 @@ public class AuthenticationAsync extends AsyncTask {
 
     private Object monitor;
 
+    private ProgressDialog progressDialog;
+
     public AuthenticationAsync(Context context, final String rid) {
         this.mainActivity = (MainActivity)context;
         this.mainActivityContext = context;
@@ -62,11 +65,18 @@ public class AuthenticationAsync extends AsyncTask {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         cancel(true);
-                        mainActivity.checkRaspberryId(rid);
+                        if(subResponse)
+                            mainActivity.checkRaspberryId(rid);
                         dialog.dismiss();
                     }
                 });
         alertDialog.show();
+    }
+
+    @Override
+    protected void onPreExecute() {
+        progressDialog = ProgressDialog.show(ActivityContexts.getMainActivityContext(), "Authenticating with Server",
+                "Please Wait", true);
     }
 
     @Override
@@ -191,6 +201,7 @@ public class AuthenticationAsync extends AsyncTask {
             dialogMessage = "RaspberryPi Registration Unsuccessful. Please try Again";
             showDialog();
         }
+        progressDialog.dismiss();
         cancel(true);
     }
 }
