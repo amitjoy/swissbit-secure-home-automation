@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="com.tum.ssdapi">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/libs/com.tum.ssdapi.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
