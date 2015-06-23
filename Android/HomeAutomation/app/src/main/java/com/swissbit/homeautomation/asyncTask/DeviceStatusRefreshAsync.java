@@ -1,11 +1,13 @@
 package com.swissbit.homeautomation.asyncTask;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.swissbit.homeautomation.activity.DeviceActivity;
 import com.swissbit.homeautomation.db.DevicesInfoDbAdapter;
 import com.swissbit.homeautomation.utils.ActivityContexts;
 import com.swissbit.homeautomation.utils.DBFactory;
@@ -37,6 +39,15 @@ public class DeviceStatusRefreshAsync extends AsyncTask {
     private Switch socketSwitch;
 
     private ImageView imageDevice;
+
+    private ProgressDialog progressDialog;
+
+
+    @Override
+    protected void onPreExecute() {
+        progressDialog = ProgressDialog.show(ActivityContexts.getDeviceActivityContext(), "Retrieving Device Status",
+                "Please Wait", true);
+    }
 
     @Override
     protected Object doInBackground(Object[] params) {
@@ -73,7 +84,7 @@ public class DeviceStatusRefreshAsync extends AsyncTask {
                         else{
                             devicesInfoDbAdapter.updateDeviceStatus("false", nodeId);
                         }
-//                        publishProgress();
+                        publishProgress();
 
                         Log.d("DeviceStatus", ""+deviceStatus);
                         Log.d("Metrics", ""+kuraPayload.metrics());
@@ -114,14 +125,14 @@ public class DeviceStatusRefreshAsync extends AsyncTask {
             }
         }
 
-        cancel(true);
-
-
         return null;
     }
 
     @Override
     protected void onPostExecute(Object o) {
+        DeviceActivity deviceActivity = (DeviceActivity)ActivityContexts.getDeviceActivityContext();
+        deviceActivity.addToListView();
+        cancel(true);
         Log.d("Inside onPost", "" + subResponse);
         if (!subResponse)
             Toast.makeText(ActivityContexts.getMainActivityContext(), "Device Command Failed! Try again", Toast.LENGTH_LONG).show();
@@ -135,19 +146,10 @@ public class DeviceStatusRefreshAsync extends AsyncTask {
 
     }
 
-//    @Override
-//    public void onProgressUpdate(Object[] values) {
-//        Log.d("Onprogess", "reached");
-//        Log.d("socketswitchon", "" + socketSwitch);
-//        if(deviceStatus){
-//            socketSwitch.setChecked(true);
-//            imageDevice.setImageResource(R.drawable.socketswitchon);
-//        }
-//
-//        else{
-//            socketSwitch.setChecked(false);
-//            imageDevice.setImageResource(R.drawable.socketswitchoff);
-//        }
-//
-//    }
+    @Override
+    public void onProgressUpdate(Object[] values) {
+        progressDialog.dismiss();
+        Log.d("Onprogess", "reached");
+
+    }
 }

@@ -95,22 +95,22 @@ public class DeviceAdapter extends ArrayAdapter<Device> {
             }
         });
 
-        btnRefresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Log.d("socketswitch1", "" + socketSwitch);
-//                DeviceStatusRefreshAsync deviceStatusRefreshAsync = new DeviceStatusRefreshAsync(8, socketSwitch,imageDevice);
-//                deviceStatusRefreshAsync.execute();
-
-//                if ("true".equals(devicesInfoDbAdapter.getDevice().getStatus()))
-//                    socketSwitch.setChecked(false);
-//                else
-//                    socketSwitch.setChecked(false);
-
-                imageDevice.setImageResource(R.drawable.socketswitchoff);
-            }
-        });
+//        btnRefresh.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                Log.d("socketswitch1", "" + socketSwitch);
+////                DeviceStatusRefreshAsync deviceStatusRefreshAsync = new DeviceStatusRefreshAsync(8, socketSwitch,imageDevice);
+////                deviceStatusRefreshAsync.execute();
+//
+////                if ("true".equals(devicesInfoDbAdapter.getDevice().getStatus()))
+////                    socketSwitch.setChecked(false);
+////                else
+////                    socketSwitch.setChecked(false);
+//
+//                imageDevice.setImageResource(R.drawable.socketswitchoff);
+//            }
+//        });
 
         return customView;
     }
