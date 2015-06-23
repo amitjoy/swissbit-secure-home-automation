@@ -415,11 +415,12 @@ int drawable btnoff 0x7f02003b
 int drawable btnon 0x7f02003c
 int drawable image1 0x7f02003d
 int drawable list_view 0x7f02003e
-int drawable notification_template_icon_bg 0x7f020043
+int drawable notification_template_icon_bg 0x7f020044
 int drawable raspberrypi 0x7f02003f
 int drawable refresh 0x7f020040
 int drawable register 0x7f020041
-int drawable socketswitch 0x7f020042
+int drawable socketswitchoff 0x7f020042
+int drawable socketswitchon 0x7f020043
 int id action0 0x7f0c0052
 int id action_bar 0x7f0c0040
 int id action_bar_activity_content 0x7f0c0000

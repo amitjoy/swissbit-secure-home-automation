@@ -35,4 +35,8 @@ public interface TopicsConstants {
 
     public static final String RETRIEVE_DEVICE_LIST_PUB = "DEVICE-V1/GET/list";
 
+    public static final String RETRIEVE_DEVICE_STATUS_PUB = "DEVICE-V1/GET/status";
+
+
+
 }

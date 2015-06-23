@@ -66,7 +66,7 @@ public final class MQTTFactory {
         switch (id) {
             case TopicsConstants.LWT:
                 return new String[]{getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.LWT};
-            //TODO
+
             case TopicsConstants.HEARTBEAT:
                 return new String[]{getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.HEARTBEAT + "mqtt/heartbeat"};
 
@@ -124,6 +124,9 @@ public final class MQTTFactory {
 
             case TopicsConstants.RETRIEVE_DEVICE_LIST_PUB:
                 return getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.RETRIEVE_DEVICE_LIST_PUB;
+
+            case TopicsConstants.RETRIEVE_DEVICE_STATUS_PUB:
+                return getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.RETRIEVE_DEVICE_STATUS_PUB;
         }
 
         return null;
