@@ -59,7 +59,7 @@ public class CardAPI implements CardAPIInterface{
 
 		connectCard();
 
-		Log.d("Inside Function:", "isCardPresent, Sets the response after the call.");
+		System.out.println("Inside Function: " + "isCardPresent, Sets the response after the call.");
 
 		try {
 			boolean avail = sfcTerminal.isCardPresent();
@@ -85,7 +85,7 @@ public class CardAPI implements CardAPIInterface{
 
 	@Override
 	public String defaultCall() {
-		Log.d("Inside Function:", "Default Function call, Invalid Function code passed");
+		System.out.println("Inside Function:" + "Default Function call, Invalid Function code passed");
 		//iData.putExtra("Response", "Invalid Function call.");
 		return "Invalid Function call.";
 		//setResult(android.app.Activity.RESULT_OK, iData);
@@ -94,7 +94,7 @@ public class CardAPI implements CardAPIInterface{
 
 	@Override
 	public String encryptMsg(String msg) {
-		Log.d("Inside Function:", "encryptMsg, Sets the response with ByteArray (Encrypted String).");
+		System.out.println("Inside Function:" + "encryptMsg, Sets the response with ByteArray (Encrypted String).");
 
 		connectCard();
 
@@ -152,7 +152,7 @@ public class CardAPI implements CardAPIInterface{
 				System.arraycopy (nonce, 0, encryptCommand, cmd.length, nonce.length);
 				System.arraycopy (plainText, 0, encryptCommand, cmd.length + nonce.length, plainText.length);
 
-				Log.d("Encryption Command:", byteArrayToHex(encryptCommand));
+				System.out.println("Encryption Command:" + byteArrayToHex(encryptCommand));
 
 				response = sfcTerminal.transmit(encryptCommand);
 
@@ -162,7 +162,7 @@ public class CardAPI implements CardAPIInterface{
 				byte[] responseBytes = new byte[response.length - 2];
 				System.arraycopy (response, 0, responseBytes, 0, responseBytes.length);
 
-				Log.d("API returns encrypted:", byteArrayToHex(responseBytes));
+				System.out.println("API returns encrypted: " + byteArrayToHex(responseBytes));
 
 				//iData.putExtra("Response", byteArrayToHex(responseBytes));
 				return byteArrayToHex(responseBytes);
@@ -189,7 +189,7 @@ public class CardAPI implements CardAPIInterface{
 	@Override
 	public String decryptMsg(String msg) {
 
-		Log.d("Inside Function:", "decryptMsg, Sets the response with 'Plain Text' .");
+		System.out.println("Inside Function: " + "decryptMsg, Sets the response with 'Plain Text' .");
 
 		connectCard();
 
@@ -200,7 +200,7 @@ public class CardAPI implements CardAPIInterface{
 
 				atr = sfcTerminal.getAtr();
 
-				Log.d("Byte Array Received:", msg);
+				System.out.println("Byte Array Received: " + msg);
 
 				byte[] msgBytes = hexToByteArray(msg);
 
@@ -225,14 +225,14 @@ public class CardAPI implements CardAPIInterface{
 				System.arraycopy (cmd, 0, decryptCommand, 0, cmd.length);
 				System.arraycopy (msgBytes, 0, decryptCommand, cmd.length, msgBytes.length);
 
-				Log.d("Decryption Command:", byteArrayToHex(decryptCommand));
+				System.out.println("Decryption Command: " + byteArrayToHex(decryptCommand));
 
 				response = sfcTerminal.transmit(decryptCommand);
-				Log.d("Response Message:", byteArrayToHex(response));
+				System.out.println("Response Message: " + byteArrayToHex(response));
 
 				this.plainMessage = getMessageFromResponse(response);
 
-				Log.d("Decrypted Message:", this.plainMessage);
+				System.out.println("Decrypted Message: " + this.plainMessage);
 
 				//iData.putExtra("Response", plainMessage);
 				return plainMessage;
@@ -285,7 +285,7 @@ public class CardAPI implements CardAPIInterface{
 		StringBuffer sb = new StringBuffer();
 		int lengthOfMessage = bytes[16];
 
-		Log.d("Length of Message: ", lengthOfMessage + "");
+		System.out.println("Length of Message: " + lengthOfMessage + "");
 
 		byte[] message = new byte[bytes.length - 17];
 
@@ -304,7 +304,7 @@ public class CardAPI implements CardAPIInterface{
 	@Override
 	public String getMyId() {
 
-		Log.d("Inside Function:", "getMyId, Set the response to SSD ID.");
+		System.out.println("Inside Function:" + "getMyId, Set the response to SSD ID.");
 
 		connectCard();
 
@@ -328,7 +328,7 @@ public class CardAPI implements CardAPIInterface{
 				/*
 				 * This command is used to get SSD Card ID from the Applet
 				 */
-				byte[] cmd = new byte[] { (byte) 0x90, (byte) 0x10, (byte) 0x00, (byte)0x00, (byte)0x40 };
+				byte[] cmd = new byte[] { (byte) 0x90, (byte) 0x10, (byte) 0x00, (byte)0x00, (byte)0x00 };
 
 
 				response = sfcTerminal.transmit(cmd);
@@ -337,7 +337,9 @@ public class CardAPI implements CardAPIInterface{
 				 * Should make a check that last 2 bytes are 90 00 which means everything went well.
 				 */
 				byte[] responseBytes = new byte[response.length - 2];
-
+				System.arraycopy (response, 0, responseBytes, 0, responseBytes.length);
+				
+				Log.d("ID in bytes: " , bytesToString(responseBytes) );
 				return byteArrayToHex(responseBytes);
 
 			} else {
@@ -356,7 +358,7 @@ public class CardAPI implements CardAPIInterface{
 	@Override
 	public String encryptMsgWithID(String recieverId, String msg) {
 
-		Log.d("Inside Function:", "encryptMsgWithId, Sets the response with ByteArray (Encrypted String With Id).");
+		System.out.println("Inside Function:" + "encryptMsgWithId, Sets the response with ByteArray (Encrypted String With Id).");
 
 		connectCard();
 
@@ -368,7 +370,7 @@ public class CardAPI implements CardAPIInterface{
 				//Converting message to Byte Array.
 				byte[] msgBytes = msg.getBytes("UTF-8");
 				byte[] recieverIdBytes = hexToByteArray(recieverId);
-				byte[] senderIdBytes = hexToByteArray(getMyId());
+				//byte[] senderIdBytes = hexToByteArray(getMyId());
 
 				//Calculate the pad length because the message should be a multiple of 16
 				int padLength = (16 - ((msg.length()+1)%16))%16;
@@ -408,17 +410,17 @@ public class CardAPI implements CardAPIInterface{
 
 				byte[] cmd = new byte[] { (byte) 0x90, (byte) 0x21, (byte) 0x00, (byte)0x00, (byte)0x40 };
 
-				cmd[4] = (byte) (nonce.length + senderIdBytes.length + recieverIdBytes.length + plainText.length);
+				//cmd[4] = (byte) (nonce.length + senderIdBytes.length + recieverIdBytes.length + plainText.length);
+				cmd[4] = (byte) (nonce.length + recieverIdBytes.length + plainText.length);
 
-				byte[] encryptCommand = new byte[cmd.length + nonce.length + senderIdBytes.length + recieverIdBytes.length + plainText.length];
+				byte[] encryptCommand = new byte[cmd.length + nonce.length + recieverIdBytes.length + plainText.length];
 
 				System.arraycopy (cmd, 0, encryptCommand, 0, cmd.length);
-				System.arraycopy (senderIdBytes, 0, encryptCommand, cmd.length, senderIdBytes.length);
-				System.arraycopy (recieverIdBytes, 0, encryptCommand, cmd.length + senderIdBytes.length, recieverIdBytes.length);
-				System.arraycopy (nonce, 0, encryptCommand, cmd.length + senderIdBytes.length + recieverIdBytes.length, nonce.length);
-				System.arraycopy (plainText, 0, encryptCommand, cmd.length + senderIdBytes.length + recieverIdBytes.length + nonce.length, plainText.length);
+				System.arraycopy (recieverIdBytes, 0, encryptCommand, cmd.length, recieverIdBytes.length);
+				System.arraycopy (nonce, 0, encryptCommand, cmd.length + recieverIdBytes.length, nonce.length);
+				System.arraycopy (plainText, 0, encryptCommand, cmd.length + recieverIdBytes.length + nonce.length, plainText.length);
 
-				Log.d("Encryption Command:", byteArrayToHex(encryptCommand));
+				System.out.println("Encryption Command:" + byteArrayToHex(encryptCommand));
 
 				response = sfcTerminal.transmit(encryptCommand);
 
@@ -428,7 +430,7 @@ public class CardAPI implements CardAPIInterface{
 				byte[] responseBytes = new byte[response.length - 2];
 				System.arraycopy (response, 0, responseBytes, 0, responseBytes.length);
 
-				Log.d("API returns encrypted:", byteArrayToHex(responseBytes));
+				System.out.println("API returns encrypted:" + byteArrayToHex(responseBytes));
 
 				//iData.putExtra("Response", byteArrayToHex(responseBytes));
 				return byteArrayToHex(responseBytes);
@@ -457,7 +459,7 @@ public class CardAPI implements CardAPIInterface{
 	public String[] decryptMsgWithID(String msg) {
 
 
-		Log.d("Inside Function:", "decryptMsgWithId, Sets the response with 'Plain Text' .");
+		System.out.println("Inside Function:" + "decryptMsgWithId, Sets the response with 'Plain Text' .");
 
 		connectCard();
 
@@ -468,7 +470,7 @@ public class CardAPI implements CardAPIInterface{
 
 				atr = sfcTerminal.getAtr();
 
-				Log.d("Byte Array Received:", msg);
+				System.out.println("Byte Array Received: " + msg);
 
 				byte[] msgBytes = hexToByteArray(msg);
 
@@ -493,14 +495,19 @@ public class CardAPI implements CardAPIInterface{
 				System.arraycopy (cmd, 0, decryptCommand, 0, cmd.length);
 				System.arraycopy (msgBytes, 0, decryptCommand, cmd.length, msgBytes.length);
 
-				Log.d("Decryption Command:", byteArrayToHex(decryptCommand));
+				System.out.println("Decryption Command: " + byteArrayToHex(decryptCommand));
 
-				response = sfcTerminal.transmit(decryptCommand);
-				Log.d("Response Message:", byteArrayToHex(response));
+				byte[] responseMsg = sfcTerminal.transmit(decryptCommand);
+				
+				byte[] responseBytes = new byte[responseMsg.length - 2];
+				
+				System.arraycopy (responseMsg, 0, responseBytes, 0, responseBytes.length);
 
-				this.plainMessageWithID = getMessageFromResponseWithId(response);
+				System.out.println("Response Message: " + byteArrayToHex(responseBytes));
 
-				Log.d("Decrypted Message:", this.plainMessageWithID[1]);
+				this.plainMessageWithID = getMessageFromResponseWithId(responseMsg);
+
+				System.out.println("Decrypted Message: " + this.plainMessageWithID[1]);
 
 				//iData.putExtra("Response", plainMessage);
 				return plainMessageWithID;
@@ -528,33 +535,48 @@ public class CardAPI implements CardAPIInterface{
 	@Override
 	public String[] getMessageFromResponseWithId(byte[] bytes) {
 		
-		StringBuffer plainText = new StringBuffer();
-		StringBuffer senderId = new StringBuffer();
+		String [] response = {bytesToString(bytes), "Something Went Wrong"};
 		
-		int lengthOfMessage = bytes[48];
+		if (bytes.length == 2) {
+			if ((bytes[0] == (byte) 0x6A) && (bytes[1] == (byte) 0x80)){
+				response[1] = "Error: Message Not for me.";
+			}
+			
+			return response;
+		}
+		StringBuffer plainText = new StringBuffer();
 
-		Log.d("Length of Message: ", lengthOfMessage + "");
+		System.out.println("Message: " + byteArrayToHex(bytes) + "");
+
+		
+		int lengthOfMessage = bytes[32];
+
+		System.out.println("Length of Message: " + lengthOfMessage + "");
 
 		//byte[] message = new byte[bytes.length - 17];
 
 		//System.arraycopy(bytes, 17, message, 0, bytes.length - 17);
 
-		int counter = 49;
+		int counter = 33;
 		while (lengthOfMessage != 0){
 			plainText.append((char) bytes[counter]);
 			counter ++;
 			lengthOfMessage--;
 		}
 
-		lengthOfMessage = 16;
-		counter = 16;
-		while (lengthOfMessage != 0){
-			senderId.append((char) bytes[counter]);
-			counter ++;
-			lengthOfMessage--;
-		}
+		byte[] senderId = new byte[16];
+		System.arraycopy (bytes, 16, senderId, 0, 16);
+		
 
-		String [] response = {plainText.toString(), senderId.toString()};
-		return response;
+		String [] responseMesg = { byteArrayToHex(senderId), plainText.toString()};
+		return responseMesg;
 	}
+	
+	private static String bytesToString(byte[] bytes) {
+        StringBuffer sb = new StringBuffer();
+        for (byte b : bytes) {
+            sb.append(String.format("%02X ", b & 0xFF));
+        }
+        return sb.toString();
+    }
 }
