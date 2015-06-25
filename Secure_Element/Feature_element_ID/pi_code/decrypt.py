@@ -52,14 +52,12 @@ f.closed
 with open(filename, 'r') as f:
         response = f.read()
 f.closed
-#if response.charAt(len(response)-2) == 0x90:
-senderid = response [5+16:5+16+16]
-print senderid
-plaintext = response [5+16+16+16:len(response)-2]
+
+senderid = response [5:5+16]
+print binascii.hexlify(senderid)
+
+plaintext = response [5+16+16:len(response)-2]
 print plaintext
+
 exit()
-
-
-
-
 

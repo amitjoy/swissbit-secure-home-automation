@@ -39,7 +39,9 @@ public class MainActivity extends Activity {
 
                           EditText resp = (EditText) findViewById(R.id.decryptText);
                           //resp.setText(apiAccess.encryptMsg(plainMsg.getText().toString()));
-                          resp.setText(apiAccess.encryptMsgWithID("3308e36884b0ae319ffe90011f925dfe", plainMsg.getText().toString()));
+                          //resp.setText(apiAccess.encryptMsgWithID("3308e36884b0ae319ffe90011f925dfe", plainMsg.getText().toString()));
+                          resp.setText(apiAccess.encryptMsgWithID("6d4479c4acd2ba847fbdb700fd084e9d", plainMsg.getText().toString()));
+                                                 //69e19840f93170156dfe7c24ab1b487d
 
                           /*Intent intent = new Intent("tum.com.ssdapi.MAIN_ACTIVITY");
                           Bundle bundle = new Bundle();
@@ -72,11 +74,11 @@ public class MainActivity extends Activity {
                          EditText encryptMsg = (EditText) findViewById(R.id.decryptText);
 
                          EditText resp = (EditText) findViewById(R.id.decryptText);
-                         String [] response = apiAccess.decryptMsgWithID(encryptMsg.getText().toString());
-                         resp.setText(response[1]);
-                         Log.d("Response Legth: ", "" + response.length);
-                         Log.d("Response 0: ", "" + response[0] );
-                         Log.d("Response 1: ", "" + response[1] );
+                         String [] responseM = apiAccess.decryptMsgWithID(encryptMsg.getText().toString());
+                         resp.setText(responseM[1]);
+                         Log.d("Response Legth: ", "" + responseM.length);
+                         Log.d("Response 0: ", "" + responseM[0] );
+                         Log.d("Response 1: ", "" + responseM[1] );
 
                          //resp.setText(apiAccess.decryptMsg(encryptMsg.getText().toString()));
                          /*Intent intent = new Intent("tum.com.ssdapi.MAIN_ACTIVITY");

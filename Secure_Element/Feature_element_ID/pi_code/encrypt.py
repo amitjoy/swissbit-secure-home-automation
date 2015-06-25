@@ -40,20 +40,13 @@ if response.startswith("TERM#PRESENT"):
 	f.closed
 	#print binascii.hexlify(response)
 
-#Senderid will be obtained by another APDU command by new applet.
-senderid   = '1000000000000001'
-
-#getidcommand = bytearray([0x90, 0x10, 0x00, 0x00, 0x00])
-#with open(filename, 'w') as f:
-#        f.write("APDU#"+getidcommand+"\n")
-#f.closed
-#with open(filename, 'r') as f:
-#        response = f.read()
-#f.closed
-#senderid = response [5:len(response)-2] 
-
-
 recieverid = sys.argv[1]
+#Decode Reciever ID cause is in HEX
+hexdata = recieverid.decode("hex")
+recieveridByte = bytearray(hexdata)
+
+
+
 mypayload  = sys.argv[2]
 
 padlength = 16 - ((len(mypayload)+16)%16)
@@ -63,11 +56,12 @@ pad = bytearray(padlength)
 nonce = os.urandom(16)
 
 encryptcommand = bytearray([0x90, 0x21, 0x00, 0x00, 0x00])
-encryptcommand[4] = len(nonce) + len(senderid) + len(recieverid) + len(mypayload) + padlength
+encryptcommand[4] = len(nonce) + len(recieveridByte) + len(mypayload) + padlength
 
-encryptcommand += nonce + senderid + recieverid + mypayload + pad
+encryptcommand += recieveridByte + nonce + mypayload + pad
 
 #print binascii.hexlify(encryptcommand)
+
 with open(filename, 'w') as f:
 	f.write("APDU#"+encryptcommand+"\n")
 f.closed
@@ -76,6 +70,7 @@ with open(filename, 'r') as f:
 f.closed
 #print binascii.hexlify(response[len(response)-2])
 #if response.charAt(len(response)-2) == 0x90:
+
 response = response [5:len(response)-2]
 
 print binascii.hexlify(response)
