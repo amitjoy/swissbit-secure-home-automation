@@ -143,17 +143,23 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 		// Parse the nodeId
 		final String nodeIdEncrypted = String.valueOf(reqPayload.getMetric("nodeId"));
 		final List<String> list = this.m_assdCommunication.decrypt(nodeIdEncrypted);
-		final String nodeId = list.get(1);
+		String nodeId = null;
+		if (list != null) {
+			nodeId = list.get(1);
+		}
 
-		if ("on".equals(reqTopic.getResources()[0])) {
-			this.m_activityLogService.saveLog("Device is turned on");
-			this.switchOn(nodeId);
+		if (nodeId != null) {
+
+			if ("on".equals(reqTopic.getResources()[0])) {
+				this.m_activityLogService.saveLog("Device is turned on");
+				this.switchOn(nodeId);
+			}
+			if ("off".equals(reqTopic.getResources()[0])) {
+				this.m_activityLogService.saveLog("Device is turned off");
+				this.switchOff(nodeId);
+			}
+			respPayload.setResponseCode(KuraResponsePayload.RESPONSE_CODE_OK);
 		}
-		if ("off".equals(reqTopic.getResources()[0])) {
-			this.m_activityLogService.saveLog("Device is turned off");
-			this.switchOff(nodeId);
-		}
-		respPayload.setResponseCode(KuraResponsePayload.RESPONSE_CODE_OK);
 	}
 
 	/** {@inheritDoc} */
@@ -163,20 +169,25 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 		// Parse the nodeId
 		final String nodeIdEncrypted = String.valueOf(reqPayload.getMetric("nodeId"));
 		final List<String> list = this.m_assdCommunication.decrypt(nodeIdEncrypted);
-		final String nodeId = list.get(1);
+		String nodeId = null;
+		if (list != null) {
+			nodeId = list.get(1);
+		}
 
-		if ("status".equals(reqTopic.getResources()[0])) {
-			this.m_activityLogService.saveLog("Device status is retrieved");
-			respPayload.addMetric("status", this.getStatus(nodeId));
+		if (nodeId != null) {
+			if ("status".equals(reqTopic.getResources()[0])) {
+				this.m_activityLogService.saveLog("Device status is retrieved");
+				respPayload.addMetric("status", this.getStatus(nodeId));
+			}
+			if ("list".equals(reqTopic.getResources()[0])) {
+				this.m_activityLogService.saveLog("Connected Devices List is retrieved");
+				this.getConnectedDevices().forEach(node -> {
+					int i = 0;
+					respPayload.addMetric("node.id_" + i++, node);
+				});
+			}
+			respPayload.setResponseCode(KuraResponsePayload.RESPONSE_CODE_OK);
 		}
-		if ("list".equals(reqTopic.getResources()[0])) {
-			this.m_activityLogService.saveLog("Connected Devices List is retrieved");
-			this.getConnectedDevices().forEach(node -> {
-				int i = 0;
-				respPayload.addMetric("node.id_" + i++, node);
-			});
-		}
-		respPayload.setResponseCode(KuraResponsePayload.RESPONSE_CODE_OK);
 	}
 
 	/** {@inheritDoc} */
