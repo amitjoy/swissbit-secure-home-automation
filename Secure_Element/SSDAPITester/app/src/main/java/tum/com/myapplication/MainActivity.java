@@ -39,10 +39,9 @@ public class MainActivity extends Activity {
 
                           EditText resp = (EditText) findViewById(R.id.decryptText);
                           //resp.setText(apiAccess.encryptMsg(plainMsg.getText().toString()));
-                          //resp.setText(apiAccess.encryptMsgWithID("3308e36884b0ae319ffe90011f925dfe", plainMsg.getText().toString()));
-                          resp.setText(apiAccess.encryptMsgWithID("6d4479c4acd2ba847fbdb700fd084e9d", plainMsg.getText().toString()));
-                                                 //69e19840f93170156dfe7c24ab1b487d
-
+                          resp.setText(apiAccess.encryptMsgWithID("3308e36884b0ae319ffe90011f925dfe", plainMsg.getText().toString()));
+                          //resp.setText(apiAccess.encryptMsgWithID("69e19840f93170156dfe7c24ab1b487d", plainMsg.getText().toString()));
+                          //                       resp.setText("e4afc810b240976621573ad811a806a839e6cbaf7cb399c41841c1e751a6ab84a3bc880ba6f69d748a9be57aaf828e2fdb047809c3034a8adddf136ad17c97e3dcdd0279643bdf7ad81a08e4a0d8246c");
                           /*Intent intent = new Intent("tum.com.ssdapi.MAIN_ACTIVITY");
                           Bundle bundle = new Bundle();
                           bundle.putInt("Function", 1006);
