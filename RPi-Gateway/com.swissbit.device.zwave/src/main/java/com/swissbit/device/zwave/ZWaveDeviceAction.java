@@ -141,7 +141,9 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	protected void doExec(final CloudletTopic reqTopic, final KuraRequestPayload reqPayload,
 			final KuraResponsePayload respPayload) throws KuraException {
 		// Parse the nodeId
-		final String nodeId = String.valueOf(reqPayload.getMetric("nodeId"));
+		final String nodeIdEncrypted = String.valueOf(reqPayload.getMetric("nodeId"));
+		final List<String> list = this.m_assdCommunication.decrypt(nodeIdEncrypted);
+		final String nodeId = list.get(1);
 
 		if ("on".equals(reqTopic.getResources()[0])) {
 			this.m_activityLogService.saveLog("Device is turned on");
@@ -159,7 +161,9 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	protected void doGet(final CloudletTopic reqTopic, final KuraRequestPayload reqPayload,
 			final KuraResponsePayload respPayload) throws KuraException {
 		// Parse the nodeId
-		final String nodeId = String.valueOf(reqPayload.getMetric("nodeId"));
+		final String nodeIdEncrypted = String.valueOf(reqPayload.getMetric("nodeId"));
+		final List<String> list = this.m_assdCommunication.decrypt(nodeIdEncrypted);
+		final String nodeId = list.get(1);
 
 		if ("status".equals(reqTopic.getResources()[0])) {
 			this.m_activityLogService.saveLog("Device status is retrieved");
