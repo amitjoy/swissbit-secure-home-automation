@@ -1,5 +1,6 @@
 package com.swissbit.server.ws.controller;
 
+import static com.swissbit.server.ws.util.GZIPUtil.compressStringToGZip;
 import static com.swissbit.server.ws.util.JsonUtil.json;
 import static spark.Spark.get;
 
@@ -15,8 +16,8 @@ public class LogController extends AbstractController {
 
 		get("/logs/:rPiMacAddress", (req, res) -> {
 			final String rPiMacAddress = req.params(":rPiMacAddress");
-			// TODO ZIP The Response
-			return mqttService.getLogs(rPiMacAddress);
+			final String[] logs = mqttService.getLogs(rPiMacAddress);
+			return compressStringToGZip(logs);
 		} , json());
 
 	}
