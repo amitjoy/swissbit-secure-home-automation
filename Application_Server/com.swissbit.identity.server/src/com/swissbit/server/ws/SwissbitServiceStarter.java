@@ -3,15 +3,15 @@ package com.swissbit.server.ws;
 import static com.swissbit.server.ws.Constants.IP_ADDRESS;
 import static com.swissbit.server.ws.Constants.PORT;
 
-import com.swissbit.server.ws.controller.CustomerController;
-import com.swissbit.server.ws.controller.LoginController;
 import com.swissbit.server.ws.controller.AdminController;
-import com.swissbit.server.ws.controller.MQTTController;
+import com.swissbit.server.ws.controller.CustomerController;
+import com.swissbit.server.ws.controller.LogController;
+import com.swissbit.server.ws.controller.LoginController;
 import com.swissbit.server.ws.controller.RaspberryPiController;
-import com.swissbit.server.ws.services.impl.CustomerService;
-import com.swissbit.server.ws.services.impl.LoginService;
 import com.swissbit.server.ws.services.impl.AdminService;
-import com.swissbit.server.ws.services.impl.MQTTService;
+import com.swissbit.server.ws.services.impl.CustomerService;
+import com.swissbit.server.ws.services.impl.LogService;
+import com.swissbit.server.ws.services.impl.LoginService;
 import com.swissbit.server.ws.services.impl.RaspberryPiService;
 
 import spark.Spark;
@@ -41,18 +41,18 @@ public class SwissbitServiceStarter {
 				LoginController.class, LoginService.class);
 
 		loginBuilder.buildController().apply(loginBuilder.buildService());
-		
+
 		// Admin controller
 		final ControllerBuilder<AdminController, AdminService> adminBuilder = new ControllerBuilder<AdminController, AdminService>(
 				AdminController.class, AdminService.class);
 
 		adminBuilder.buildController().apply(adminBuilder.buildService());
 
-		// Building MQTT controller
-		final ControllerBuilder<MQTTController, MQTTService> mqttBuilder = new ControllerBuilder<MQTTController, MQTTService>(
-				MQTTController.class, MQTTService.class);
+		// Building Log controller
+		final ControllerBuilder<LogController, LogService> logBuilder = new ControllerBuilder<LogController, LogService>(
+				LogController.class, LogService.class);
 
-		mqttBuilder.buildController().apply(mqttBuilder.buildService());
+		logBuilder.buildController().apply(logBuilder.buildService());
 
 	}
 
