@@ -24,7 +24,7 @@ public class RetrieveDeviceListAsync extends AsyncTask {
         this.raspberryId = raspberryId;
     }
 
-    boolean subResponse = false;
+    boolean subscriptionResponse = false;
 
     private KuraPayload payload;
 
@@ -32,7 +32,7 @@ public class RetrieveDeviceListAsync extends AsyncTask {
 
     private String requestId;
 
-    private int nodeId;
+    private int deviceNodeId;
 
     private DevicesInfoDbAdapter devicesInfoDbAdapter;
 
@@ -71,17 +71,17 @@ public class RetrieveDeviceListAsync extends AsyncTask {
                 @Override
                 public void processMessage(KuraPayload kuraPayload) {
                     try {
-
+                        Log.d("Inside", "subscribe");
                         int status = (int) kuraPayload.getMetric("response.code");
 
                         if (status == 200) {
                             Log.d("Response", "success");
-                            nodeId = Integer.valueOf((String) kuraPayload.getMetric("node.id_0"));
-                            Log.d("HaspMap", "" + nodeId);
-                            Log.d("Device", "" + devicesInfoDbAdapter.checkDeviceById(nodeId));
-                            if (!devicesInfoDbAdapter.checkDeviceById(nodeId)) {
+                            deviceNodeId = Integer.valueOf((String) kuraPayload.getMetric("node.id_0"));
+                            Log.d("HaspMap", "" + deviceNodeId);
+                            Log.d("Device", "" + devicesInfoDbAdapter.checkDeviceById(deviceNodeId));
+                            if (!devicesInfoDbAdapter.checkDeviceById(deviceNodeId)) {
                                 Log.d("Device", "Inserted");
-                                devicesInfoDbAdapter.insertDevice(nodeId, raspberryId, null, null, "false");
+                                devicesInfoDbAdapter.insertDevice(deviceNodeId, raspberryId, null, null, "false");
                                 Log.d("Device", "Inserted");
                             }
                             publishProgress();
@@ -90,13 +90,13 @@ public class RetrieveDeviceListAsync extends AsyncTask {
                                 monitor.notify();
                                 Log.d("Notify1", "After");
                             }
-                            subResponse = true;
+                            subscriptionResponse = true;
 
                         } else {
                             Log.d("Response", "Failed");
-                            subResponse = false;
+                            subscriptionResponse = false;
                         }
-                        Log.d("Inside onProcess", "" + subResponse);
+                        Log.d("Inside onProcess", "" + subscriptionResponse);
                     } catch (Exception e) {
                         Log.e("Kura MQTT Exception", e.getCause().getMessage());
                     }
@@ -115,7 +115,7 @@ public class RetrieveDeviceListAsync extends AsyncTask {
         synchronized (monitor) {
             try {
                 Log.d("Notify", "Before");
-                monitor.wait();
+                monitor.wait(20000);
                 Log.d("Notify", "After");
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -126,20 +126,21 @@ public class RetrieveDeviceListAsync extends AsyncTask {
 
     @Override
     protected void onPostExecute(Object o) {
-        DeviceActivity deviceActivity = (DeviceActivity)ActivityContexts.getDeviceActivityContext();
-        deviceActivity.addToListView();
-        cancel(true);
-        Log.d("Inside onPost", "" + subResponse);
-        if (!subResponse)
+        if(subscriptionResponse) {
+            DeviceActivity deviceActivity = (DeviceActivity) ActivityContexts.getDeviceActivityContext();
+            deviceActivity.addToListView();
+        }
+        Log.d("Inside onPost", "" + subscriptionResponse);
+        if (!subscriptionResponse){
+            progressDialog.dismiss();
             Toast.makeText(ActivityContexts.getMainActivityContext(), "Failed to retrieve device list! Please Try again", Toast.LENGTH_LONG).show();
+        }
+        cancel(true);
     }
 
     @Override
     protected void onCancelled() {
-        Log.d("Inside onCancelled", "" + subResponse);
-        if (!subResponse)
-            Toast.makeText(ActivityContexts.getMainActivityContext(), "Failed to retrieve device list! Please Try again", Toast.LENGTH_LONG).show();
-
+        Log.d("Inside onCancelled", "" + subscriptionResponse);
     }
 
     @Override

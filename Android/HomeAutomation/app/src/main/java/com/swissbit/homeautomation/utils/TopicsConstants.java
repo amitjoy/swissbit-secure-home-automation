@@ -15,8 +15,6 @@ public interface TopicsConstants {
 
     public static final String ZWAVE_POST = "ZWAVE-V1/POST/";
 
-    public static final String DUMMY_PUBLISH_TOPIC = "CONF-V1/";
-
     public static final String TOPIC_PUBLISH = "PUB";
 
     public static final String TOPIC_SUBSCRIBE = "SUB";

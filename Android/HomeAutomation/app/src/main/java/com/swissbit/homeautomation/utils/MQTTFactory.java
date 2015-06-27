@@ -21,6 +21,8 @@ public final class MQTTFactory {
 
     private static String raspberryId;
 
+    private static String secureElementId;
+
     private static IKuraMQTTClient iKuraMQTTClient;
 
     public static String getClientId() {
@@ -58,6 +60,14 @@ public final class MQTTFactory {
     public static String getRaspberryPiById() {
 //        return DBFactory.getDevicesInfoDbAdapter(context).getRaspberryId();
         return raspberryId;
+    }
+
+    public static String getSecureElementId() {
+        return secureElementId;
+    }
+
+    public static void setSecureElementId(String secureElementId) {
+        MQTTFactory.secureElementId = secureElementId;
     }
 
     public static String[] getTopicToSubscribe(String id) {
@@ -101,8 +111,6 @@ public final class MQTTFactory {
     public static String getTopicToPublish(String id) {
 
         switch (id) {
-            case TopicsConstants.DUMMY_PUBLISH_TOPIC:
-                return getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + "CONF-V1/GET/configurations" ;
 
             case TopicsConstants.ZWAVE_GET:
                 return getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.ZWAVE_GET;

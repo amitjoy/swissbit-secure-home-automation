@@ -5,26 +5,26 @@ package com.swissbit.homeautomation.model;
  */
 public class Device {
 
-    private int id;
+    private int deviceNodeId;
     private String raspberryId;
     private String name;
     private String description;
     private String status;
 
-    public Device(int id, String raspberryId, String name, String description, String status) {
-        this.id = id;
+    public Device(int deviceNodeId, String raspberryId, String name, String description, String status) {
+        this.deviceNodeId = deviceNodeId;
         this.raspberryId = raspberryId;
         this.name = name;
         this.description = description;
         this.status = status;
     }
 
-    public int getId() {
-        return id;
+    public int getDeviceNodeId() {
+        return deviceNodeId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setDeviceNodeId(int deviceNodeId) {
+        this.deviceNodeId = deviceNodeId;
     }
 
     public String getRaspberryId() {
@@ -34,6 +34,7 @@ public class Device {
     public void setRaspberryId(String raspberryId) {
         this.raspberryId = raspberryId;
     }
+
 
     public String getName() {
         return name;
@@ -59,7 +60,7 @@ public class Device {
         this.status = status;
     }
 
-    public static Device createDevice(final int id,final String raspberryId,final String name,final String description,final String status){
+    public static Device createDevice(final int id,final String raspberryId, final String name,final String description,final String status){
         return new Device(id, raspberryId, name, description, status);
     }
 }

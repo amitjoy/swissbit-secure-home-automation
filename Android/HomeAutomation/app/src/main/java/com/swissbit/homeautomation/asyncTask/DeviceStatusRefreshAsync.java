@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.swissbit.homeautomation.activity.DeviceActivity;
 import com.swissbit.homeautomation.db.DevicesInfoDbAdapter;
+import com.swissbit.homeautomation.model.Device;
 import com.swissbit.homeautomation.utils.ActivityContexts;
 import com.swissbit.homeautomation.utils.DBFactory;
 import com.swissbit.homeautomation.utils.MQTTFactory;
@@ -16,13 +17,14 @@ import com.swissbit.homeautomation.utils.TopicsConstants;
 import com.swissbit.mqtt.client.IKuraMQTTClient;
 import com.swissbit.mqtt.client.adapter.MessageListener;
 import com.swissbit.mqtt.client.message.KuraPayload;
+import com.tum.ssdapi.CardAPI;
 
 /**
  * Created by manit on 21/06/15.
  */
 public class DeviceStatusRefreshAsync extends AsyncTask {
 
-    boolean subResponse = false;
+    boolean subscriptionResponse = false;
 
     private KuraPayload payload;
 
@@ -30,7 +32,7 @@ public class DeviceStatusRefreshAsync extends AsyncTask {
 
     private Object refreshMonitor;
 
-    private int nodeId = 8; //TODO
+    private int deviceNodeId;
 
     private boolean deviceStatus;
 
@@ -42,17 +44,23 @@ public class DeviceStatusRefreshAsync extends AsyncTask {
 
     private ProgressDialog progressDialog;
 
+    private Device device;
+
+    private CardAPI secureElementAccess;
 
     @Override
     protected void onPreExecute() {
         progressDialog = ProgressDialog.show(ActivityContexts.getDeviceActivityContext(), "Retrieving Device Status",
                 "Please Wait", true);
+        devicesInfoDbAdapter = DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getDeviceActivityContext());
+        device = devicesInfoDbAdapter.getDevice();
+        deviceNodeId = device.getDeviceNodeId();
+        secureElementAccess = new CardAPI(ActivityContexts.getMainActivityContext());
+//        Log.d("SE",MQTTFactory.getSecureElementId());
     }
 
     @Override
     protected Object doInBackground(Object[] params) {
-
-        devicesInfoDbAdapter = DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getDeviceActivityContext());
 
         IKuraMQTTClient client = MQTTFactory.getClient();
         boolean status = false;
@@ -79,10 +87,10 @@ public class DeviceStatusRefreshAsync extends AsyncTask {
                         int status = (int) kuraPayload.getMetric("response.code");
                         deviceStatus = (boolean) kuraPayload.getMetric("status");
                         if(deviceStatus == true){
-                            devicesInfoDbAdapter.updateDeviceStatus("true", nodeId);
+                            devicesInfoDbAdapter.updateDeviceStatus("true", deviceNodeId);
                         }
                         else{
-                            devicesInfoDbAdapter.updateDeviceStatus("false", nodeId);
+                            devicesInfoDbAdapter.updateDeviceStatus("false", deviceNodeId);
                         }
                         publishProgress();
 
@@ -91,16 +99,16 @@ public class DeviceStatusRefreshAsync extends AsyncTask {
 
                         if (status == 200) {
                             Log.d("Response", "success");
-                            subResponse = true;
+                            subscriptionResponse = true;
                         } else {
                             Log.d("Response", "Failed");
-                            subResponse = false;
+                            subscriptionResponse = false;
                         }
                         synchronized (refreshMonitor) {
                             refreshMonitor.notify();
                             Log.d("Notify1", "After");
                         }
-                        Log.d("Inside onProcess", "" + subResponse);
+                        Log.d("Inside onProcess", "" + subscriptionResponse);
                     } catch (Exception e) {
                         Log.e("Kura MQTT Exception", e.getCause().getMessage());
                     }
@@ -108,17 +116,23 @@ public class DeviceStatusRefreshAsync extends AsyncTask {
                 }
             });
 
+        Log.d("secureId",MQTTFactory.getSecureElementId());
+
         payload = MQTTFactory.generatePayload("", requestId);
-        payload.addMetric("nodeId", nodeId);
+        String encryptedDeviceNodeId = secureElementAccess.encryptMsgWithID(MQTTFactory.getSecureElementId(),Integer.toString(deviceNodeId));
+        payload.addMetric("nodeId", encryptedDeviceNodeId);
 
 
         MQTTFactory.getClient().publish(MQTTFactory.getTopicToPublish(TopicsConstants.RETRIEVE_DEVICE_STATUS_PUB), payload);
 
 
+        Log.d("NodeId", "" + deviceNodeId);
+        Log.d("statustopic",MQTTFactory.getTopicToPublish(TopicsConstants.RETRIEVE_DEVICE_STATUS_PUB));
+
         synchronized (refreshMonitor) {
             try {
                 Log.d("Notify", "Before");
-                refreshMonitor.wait();
+                refreshMonitor.wait(15000);
                 Log.d("Notify", "After");
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -130,19 +144,22 @@ public class DeviceStatusRefreshAsync extends AsyncTask {
 
     @Override
     protected void onPostExecute(Object o) {
-        DeviceActivity deviceActivity = (DeviceActivity)ActivityContexts.getDeviceActivityContext();
-        deviceActivity.addToListView();
-        cancel(true);
-        Log.d("Inside onPost", "" + subResponse);
-        if (!subResponse)
+//        if(subscriptionResponse) {
+            DeviceActivity deviceActivity = (DeviceActivity) ActivityContexts.getDeviceActivityContext();
+            deviceActivity.addToListView();
+//        }
+
+        Log.d("Inside onPost", "" + subscriptionResponse);
+        if (!subscriptionResponse){
+            progressDialog.dismiss();
             Toast.makeText(ActivityContexts.getMainActivityContext(), "Device Command Failed! Try again", Toast.LENGTH_LONG).show();
+        }
+        cancel(true);
     }
 
     @Override
     protected void onCancelled() {
-        Log.d("Inside onCancelled", "" + subResponse);
-        if (!subResponse)
-            Toast.makeText(ActivityContexts.getMainActivityContext(), "Device Command Failed! Try again", Toast.LENGTH_LONG).show();
+        Log.d("Inside onCancelled", "" + subscriptionResponse);
 
     }
 

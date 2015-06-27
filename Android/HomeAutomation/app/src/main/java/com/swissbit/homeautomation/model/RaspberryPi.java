@@ -6,12 +6,15 @@ package com.swissbit.homeautomation.model;
 public final class RaspberryPi {
 
     private String id;
+    private String secureElementId;
     private boolean status;
     private String description;
     private String name;
 
-    public RaspberryPi(String id, String description, String name, boolean status) {
+
+    public RaspberryPi(String id, String secureElementId, String description, String name, boolean status) {
         this.id = id;
+        this.secureElementId = secureElementId;
         this.description = description;
         this.name = name;
         this.status = status;
@@ -23,6 +26,15 @@ public final class RaspberryPi {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+
+    public String getSecureElementId() {
+        return secureElementId;
+    }
+
+    public void setSecureElementId(String secureElementId) {
+        this.secureElementId = secureElementId;
     }
 
     public boolean getStatus() {
@@ -49,8 +61,8 @@ public final class RaspberryPi {
         this.name = name;
     }
 
-    public static RaspberryPi createRaspberryPi(final String id, final String desc, final String name, final boolean status){
-        return new RaspberryPi(id, desc, name, status);
+    public static RaspberryPi createRaspberryPi(final String id, final String secureElementId, final String name, final String desc, final boolean status){
+        return new RaspberryPi(id, secureElementId, desc, name, status);
     }
 
 }
