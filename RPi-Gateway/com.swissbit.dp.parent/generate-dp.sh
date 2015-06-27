@@ -18,7 +18,7 @@
 # Declaring all the Deployment Package Project Names to facilitate easy finding of 
 # its directory (as the directory name is as same as the project name)
 
-declare -a arr=("com.swissbit.dp.commons" "com.swissbit.dp.dependencies")
+declare -a arr=("com.swissbit.dp.commons" "com.swissbit.dp.dependencies" "com.swissbit.dp.zwave")
 
 # The build file filename extension
 b="_build.xml"
