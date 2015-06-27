@@ -25,7 +25,6 @@ import org.eclipse.kura.KuraException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.CharMatcher;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 
@@ -60,16 +59,13 @@ public final class CommandUtil {
 	/**
 	 * Used to be called to turn off the specified device
 	 */
-	public static Object switchOp(final String nodeIdUnescaped, final String operationName) {
+	public static Object switchOp(final String nodeId, final String operationName) {
 		Process process = null;
 		BufferedReader br = null;
 		StringBuilder sb = null;
 		final List<String> listOfDevices = Lists.newArrayList();
 
 		try {
-			// Validate node id as after decryption null characters are getting
-			// added to it
-			final String nodeId = CharMatcher.inRange('0', '9').retainFrom(nodeIdUnescaped);
 			process = Runtime.getRuntime().exec("java -Djava.library.path=" + RXTX_LIBRARY_PATH + " -cp "
 					+ RXTX_LOCATION + " -jar " + JAR_LOCATION + " " + nodeId + " " + operationName);
 			br = new BufferedReader(new InputStreamReader(process.getInputStream()));
