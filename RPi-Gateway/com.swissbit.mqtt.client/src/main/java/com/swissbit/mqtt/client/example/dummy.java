@@ -12,7 +12,7 @@ public class dummy {
 	private static final String REQUEST_PERM = "$EDC/swissbit/B8:27:EB:BE:3F:BF/SURVEILLANCE-V1/POST/sample";
 	private static final String REQUEST_TOPIC = "$EDC/swissbit/B8:27:EB:BE:3F:BF/AUTH-V1/EXEC/decrypt";
 	private static final String REQUEST_TOPIC1 = "$EDC/swissbit/B8:27:EB:BE:3F:BF/CONF-V1/GET/configurations";
-	private static final String REQUEST_ZWAVE = "$EDC/swissbit/B8:27:EB:BE:3F:BF/DEVICE-V1/EXEC/on";
+	private static final String REQUEST_ZWAVE = "$EDC/swissbit/B8:27:EB:BE:3F:BF/DEVICE-V1/EXEC/off";
 	private static final String REQUEST_ZWAVE_LIST = "$EDC/swissbit/B8:27:EB:BE:3F:BF/DEVICE-V1/GET/list";
 	private static String RESPONSE_PERM = "$EDC/swissbit/AMA/SURVEILLANCE-V1/REPLY/454545454545456";
 	private static String RESPONSE_TOPIC = "$EDC/swissbit/AMA/AUTH-V1/REPLY/454545454545456";
@@ -47,7 +47,8 @@ public class dummy {
 		final KuraPayload payload = new KuraPayload();
 		payload.addMetric("request.id", "454545454545456");
 		payload.addMetric("requester.client.id", clientId);
-		payload.addMetric("nodeId",
+		payload.addMetric("nodeId", "8");
+		payload.addMetric("encVal",
 				"9df38b8729d743d4f8fcfb36f6bb4a5932d87b00e88f964604e86ea7cc599b49986a6d032f4fdb0d2be82d0dd026255ef06d14ac523d393283e1322d396163d91378868dbd45e821fe737f58f90a4a12");
 		// payload.setBody("81896ecbb9afb39894c7144b5e962b08f132e9fd228539521aba75d4abbc18fe".getBytes());
 		System.out.println(status);

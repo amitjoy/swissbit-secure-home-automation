@@ -140,46 +140,57 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	@Override
 	protected void doExec(final CloudletTopic reqTopic, final KuraRequestPayload reqPayload,
 			final KuraResponsePayload respPayload) throws KuraException {
+
 		// Parse the nodeId
-		final String nodeIdEncrypted = String.valueOf(reqPayload.getMetric("nodeId"));
-		final List<String> list = this.m_assdCommunication.decrypt(nodeIdEncrypted);
-		String nodeId = null;
+		final String nodeId = String.valueOf(reqPayload.getMetric("nodeId"));
+		final String encryptedString = String.valueOf(reqPayload.getMetric("encVal"));
+		final List<String> list = this.m_assdCommunication.decrypt(encryptedString);
+
+		String decryptedString = null;
+
 		if (list != null) {
-			nodeId = list.get(1);
+			decryptedString = list.get(1);
 		}
 
-		if (nodeId != null) {
+		if (decryptedString != null) {
 
 			if ("on".equals(reqTopic.getResources()[0])) {
 				this.m_activityLogService.saveLog("Device is turned on");
 				this.switchOn(nodeId);
 			}
+
 			if ("off".equals(reqTopic.getResources()[0])) {
 				this.m_activityLogService.saveLog("Device is turned off");
 				this.switchOff(nodeId);
 			}
 			respPayload.setResponseCode(KuraResponsePayload.RESPONSE_CODE_OK);
 		}
+
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	protected void doGet(final CloudletTopic reqTopic, final KuraRequestPayload reqPayload,
 			final KuraResponsePayload respPayload) throws KuraException {
+
 		// Parse the nodeId
-		final String nodeIdEncrypted = String.valueOf(reqPayload.getMetric("nodeId"));
-		final List<String> list = this.m_assdCommunication.decrypt(nodeIdEncrypted);
-		String nodeId = null;
+		final String nodeId = String.valueOf(reqPayload.getMetric("nodeId"));
+		final String encryptedString = String.valueOf(reqPayload.getMetric("encVal"));
+		final List<String> list = this.m_assdCommunication.decrypt(encryptedString);
+
+		String decryptedString = null;
+
 		if (list != null) {
-			nodeId = list.get(1);
+			decryptedString = list.get(1);
 		}
 
-		if (nodeId != null) {
+		if (decryptedString != null) {
 			if ("status".equals(reqTopic.getResources()[0])) {
 				this.m_activityLogService.saveLog("Device status is retrieved");
 				respPayload.addMetric("status", this.getStatus(nodeId));
 			}
 		}
+
 		if ("list".equals(reqTopic.getResources()[0])) {
 			this.m_activityLogService.saveLog("Connected Devices List is retrieved");
 			this.getConnectedDevices().forEach(node -> {
