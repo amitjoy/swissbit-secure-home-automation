@@ -38,11 +38,6 @@ import com.google.common.collect.Lists;
 public final class CommandUtil {
 
 	/**
-	 * Represents command to execute external jar file
-	 */
-	private static final String CMD_JAVA = "java";
-
-	/**
 	 * Represents location for all the ZWave Related Commands
 	 */
 	private static final String JAR_LOCATION = "/home/pi/swissbit/com.swissbit.device.zwave.operation.jar";
