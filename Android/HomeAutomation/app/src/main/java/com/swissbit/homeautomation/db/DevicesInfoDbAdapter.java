@@ -27,9 +27,10 @@ public class DevicesInfoDbAdapter  {
         db = helper.getWritableDatabase();
     }
 
-    public long insertRaspberry(String rid, String name, String desc){
+    public long insertRaspberry(String rid, String secureElementId, String name, String desc){
         ContentValues contentValues = new ContentValues();
         contentValues.put(DBConstants.RASPBERRYID, rid);
+        contentValues.put(DBConstants.SECURE_ELEMENT_ID,secureElementId);
         contentValues.put(DBConstants.RASPBERRYNAME, name);
         contentValues.put(DBConstants.RASPBERRYDESC, desc);
         long id = db.insert(DBConstants.TABLE_NAME_RASPBERRYINFO, null, contentValues);
@@ -61,15 +62,16 @@ public class DevicesInfoDbAdapter  {
     }
 
     public RaspberryPi getRaspberry(){
-        String[] columns= {DBConstants.RASPBERRYID,DBConstants.RASPBERRYNAME,DBConstants.RASPBERRYDESC};
+        String[] columns= {DBConstants.RASPBERRYID,DBConstants.SECURE_ELEMENT_ID,DBConstants.RASPBERRYNAME,DBConstants.RASPBERRYDESC};
         Cursor cursor = db.query(DBConstants.TABLE_NAME_RASPBERRYINFO, columns, null,
                 null, null, null, null);
         if(cursor.getCount() != 0) {
             cursor.moveToFirst();
             String id = cursor.getString(cursor.getColumnIndex(DBConstants.RASPBERRYID));
+            String secureElementId = cursor.getString(cursor.getColumnIndex(DBConstants.SECURE_ELEMENT_ID));
             String name = cursor.getString(cursor.getColumnIndex(DBConstants.RASPBERRYNAME));
             String desc = cursor.getString(cursor.getColumnIndex(DBConstants.RASPBERRYDESC));
-            RaspberryPi raspberryPi = RaspberryPi.createRaspberryPi(id, name, desc, false);
+            RaspberryPi raspberryPi = RaspberryPi.createRaspberryPi(id, secureElementId, name, desc, false);
 
             return raspberryPi;
         }
@@ -117,7 +119,7 @@ public class DevicesInfoDbAdapter  {
 
     public long insertDevice(int deviceId,String raspberryId,String raspberryName, String raspberryDesc, String deviceStatus){
         ContentValues contentValues = new ContentValues();
-        contentValues.put(DBConstants.DEVICE_ID, deviceId);
+        contentValues.put(DBConstants.DEVICE_NODE_ID, deviceId);
         contentValues.put(DBConstants.RASPBERRYID, raspberryId);
         contentValues.put(DBConstants.DEVICE_NAME, raspberryName);
         contentValues.put(DBConstants.DEVICE_DESCRIPTION, raspberryDesc);
@@ -127,8 +129,8 @@ public class DevicesInfoDbAdapter  {
     }
 
     public boolean checkDeviceById(int id){
-        String[] columns = {DBConstants.DEVICE_ID};
-        Cursor cursor = db.query(DBConstants.TABLE_NAME_DEVICES, columns, DBConstants.DEVICE_ID + " = '" + id + "'",
+        String[] columns = {DBConstants.DEVICE_NODE_ID};
+        Cursor cursor = db.query(DBConstants.TABLE_NAME_DEVICES, columns, DBConstants.DEVICE_NODE_ID + " = '" + id + "'",
                 null, null, null, null);
         if(cursor.getCount() != 0)
             return true;
@@ -136,13 +138,13 @@ public class DevicesInfoDbAdapter  {
     }
 
     public Device getDevice(){
-        String[] columns= {DBConstants.DEVICE_ID,DBConstants.RASPBERRYID,DBConstants.DEVICE_NAME,DBConstants.DEVICE_DESCRIPTION,
+        String[] columns= {DBConstants.DEVICE_NODE_ID,DBConstants.RASPBERRYID,DBConstants.DEVICE_NAME,DBConstants.DEVICE_DESCRIPTION,
                             DBConstants.DEVICE_STATUS};
         Cursor cursor = db.query(DBConstants.TABLE_NAME_DEVICES, columns, null,
                 null, null, null, null);
         if(cursor.getCount() != 0) {
             cursor.moveToFirst();
-            int deviceId = cursor.getInt(cursor.getColumnIndex(DBConstants.DEVICE_ID));
+            int deviceId = cursor.getInt(cursor.getColumnIndex(DBConstants.DEVICE_NODE_ID));
             String raspberryId = cursor.getString(cursor.getColumnIndex(DBConstants.RASPBERRYID));
             String deviceName = cursor.getString(cursor.getColumnIndex(DBConstants.DEVICE_NAME));
             String deviceDesc = cursor.getString(cursor.getColumnIndex(DBConstants.DEVICE_DESCRIPTION));

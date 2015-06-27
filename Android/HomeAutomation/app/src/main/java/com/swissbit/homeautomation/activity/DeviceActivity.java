@@ -14,6 +14,7 @@ import com.swissbit.homeautomation.model.Device;
 import com.swissbit.homeautomation.ui.adapter.DeviceAdapter;
 import com.swissbit.homeautomation.utils.ActivityContexts;
 import com.swissbit.homeautomation.utils.DBFactory;
+import com.swissbit.homeautomation.utils.MQTTFactory;
 
 import java.util.List;
 
@@ -34,6 +35,8 @@ public class DeviceActivity extends ActionBarActivity {
 
     private String raspberryId;
 
+    private String secureElementId;
+
     private DevicesInfoDbAdapter devicesInfoDbAdapter;
 
 
@@ -48,19 +51,18 @@ public class DeviceActivity extends ActionBarActivity {
         devicesInfoDbAdapter = DBFactory.getDevicesInfoDbAdapter(this);
 
         deviceListView = (ListView) findViewById(R.id.listDevice);
+
         extras = getIntent().getExtras();
+        Log.d("Device Activity",""+ extras);
         raspberryId = extras.getString("RaspberryId");
 
+        MQTTFactory.setSecureElementId(extras.getString("SecureElementId"));
 
-
-//        Handler handler = new Handler();
-//        handler.postDelayed(new Runnable() {
-//            public void run() {
-//                getDeviceList();
-//            }
-//        }, 7000);
-        getDeviceList();
         Log.d("Device Activity", raspberryId);
+        Log.d("Device Activity", ""+extras.getString("SecureElementId"));
+
+        getDeviceList();
+
 
     }
 

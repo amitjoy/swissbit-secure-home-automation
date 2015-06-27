@@ -19,6 +19,7 @@ import com.swissbit.homeautomation.utils.WSConstants;
 import com.swissbit.mqtt.client.IKuraMQTTClient;
 import com.swissbit.mqtt.client.adapter.MessageListener;
 import com.swissbit.mqtt.client.message.KuraPayload;
+import com.tum.ssdapi.CardAPI;
 
 import org.apache.http.Header;
 
@@ -34,7 +35,7 @@ public class AuthenticationAsync extends AsyncTask {
 
     private EncryptionFactory encryptionFactory;
 
-    boolean subResponse = false;
+    boolean subscriptionResponse = false;
 
     private AsyncHttpClient asyncHttpClient;
 
@@ -50,11 +51,14 @@ public class AuthenticationAsync extends AsyncTask {
 
     private ProgressDialog progressDialog;
 
+    private CardAPI secureElementAccess;
+
     public AuthenticationAsync(Context context, final String rid) {
         this.mainActivity = (MainActivity)context;
         this.mainActivityContext = context;
         this.rid = rid;
         encryptionFactory = new EncryptionFactory();
+        secureElementAccess = new CardAPI(ActivityContexts.getMainActivityContext());
     }
 
     public void showDialog(){
@@ -65,7 +69,7 @@ public class AuthenticationAsync extends AsyncTask {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         cancel(true);
-                        if(subResponse)
+                        if(subscriptionResponse)
                             mainActivity.checkRaspberryId(rid);
                         dialog.dismiss();
                     }
@@ -113,16 +117,16 @@ public class AuthenticationAsync extends AsyncTask {
                         String metricData = String.valueOf(kuraPayload.getMetric("data"));
                         if (metricData.isEmpty()) {
                             Log.d("Metrics......1", "" + kuraPayload.metrics());
-                            subResponse = false;
+                            subscriptionResponse = false;
                         } else {
                             Log.d("Metrics......2", "" + kuraPayload.metrics());
-                            subResponse = true;
+                            subscriptionResponse = true;
                         }
                         synchronized (monitor) {
                             monitor.notify();
                             Log.d("Notify1", "After");
                         }
-                        Log.d("Inside onProcess", "" + subResponse);
+                        Log.d("Inside onProcess", "" + subscriptionResponse);
                     } catch (Exception e) {
                         Log.e("Kura MQTT", e.getCause().getMessage());
                     }
@@ -141,9 +145,10 @@ public class AuthenticationAsync extends AsyncTask {
 
         Log.d("EncryptAsyncFactory", "" + EncryptionFactory.getEncryptedString());
 
-//        payload = MQTTFactory.generatePayload(EncryptionFactory.getEncryptedString(), requestId);
+        payload = MQTTFactory.generatePayload(EncryptionFactory.getEncryptedString(), requestId);
 
-        payload = MQTTFactory.generatePayload("21b4e5a152cdd48d3a2be7c364979b7170b54f533305e9068460fd9703a1753c6aca3644fa695411b57e6e7da965259fd3fc5be7309fbb506a80f052f7c0bf63", requestId);
+
+//        payload = MQTTFactory.generatePayload("21b4e5a152cdd48d3a2be7c364979b7170b54f533305e9068460fd9703a1753c6aca3644fa695411b57e6e7da965259fd3fc5be7309fbb506a80f052f7c0bf63", requestId);
 
         if (status)
             MQTTFactory.getClient().publish(MQTTFactory.getTopicToPublish(TopicsConstants.RASPBERRY_AUTH_PUB), payload);
@@ -152,7 +157,7 @@ public class AuthenticationAsync extends AsyncTask {
         synchronized (monitor) {
             try {
                 Log.d("Notify", "Before");
-                monitor.wait();
+                monitor.wait(10000);
                 Log.d("Notify", "After");
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -170,8 +175,9 @@ public class AuthenticationAsync extends AsyncTask {
     }
     @Override
     protected void onPostExecute(Object o) {
-        Log.d("Inside onPost", "" + subResponse);
-        if (subResponse) {
+        Log.d("Inside onPost", "" + subscriptionResponse);
+
+        if (subscriptionResponse) {
             Log.d("Inside onPostWS", WSConstants.ADD_RPI_WS + MQTTFactory.getRaspberryPiById());
             asyncHttpClient = new AsyncHttpClient();
             asyncHttpClient.get(WSConstants.ADD_RPI_WS + MQTTFactory.getRaspberryPiById(), new AsyncHttpResponseHandler() {
@@ -180,7 +186,8 @@ public class AuthenticationAsync extends AsyncTask {
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     Log.d("DEBUG AUTHASYNC", "INSIDE SUCCESS");
                     Log.d("Main Activity", "" + mainActivity);
-                    //payload.addmetric("secure_element",id);
+                    payload.addMetric("secure_element", MQTTFactory.getSecureElementId());
+
                     MQTTFactory.getClient().publish(MQTTFactory.getTopicToPublish(TopicsConstants.SURVEILLANCE), payload);
                     Toast.makeText(ActivityContexts.getMainActivityContext(), "RaspberryPi Validated", Toast.LENGTH_LONG).show();
                     dialogMessage = "RaspberryPi Validated";

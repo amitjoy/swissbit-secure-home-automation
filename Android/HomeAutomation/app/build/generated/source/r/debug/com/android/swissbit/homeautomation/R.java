@@ -1557,7 +1557,6 @@ containing a value of this type.
         public static final int alertTitle=0x7f0c0030;
         public static final int always=0x7f0c0016;
         public static final int beginning=0x7f0c0013;
-        public static final int btnRefresh=0x7f0c0063;
         public static final int buttonPanel=0x7f0c0036;
         public static final int cancel_action=0x7f0c0053;
         public static final int checkbox=0x7f0c0038;
@@ -1583,8 +1582,8 @@ containing a value of this type.
         public static final int ifRoom=0x7f0c0018;
         public static final int image=0x7f0c0028;
         public static final int imgDevice=0x7f0c005f;
-        public static final int imgRaspberry=0x7f0c0064;
-        public static final int imgStatus=0x7f0c0069;
+        public static final int imgRaspberry=0x7f0c0061;
+        public static final int imgStatus=0x7f0c0066;
         public static final int info=0x7f0c005d;
         public static final int line1=0x7f0c0057;
         public static final int line3=0x7f0c005b;
@@ -1595,7 +1594,6 @@ containing a value of this type.
         public static final int media_actions=0x7f0c0055;
         public static final int middle=0x7f0c0015;
         public static final int multiply=0x7f0c001e;
-        public static final int mySwitch=0x7f0c0062;
         public static final int never=0x7f0c0019;
         public static final int none=0x7f0c000e;
         public static final int normal=0x7f0c000a;
@@ -1603,8 +1601,7 @@ containing a value of this type.
         public static final int progress_circular=0x7f0c0005;
         public static final int progress_horizontal=0x7f0c0006;
         public static final int radio=0x7f0c003a;
-        public static final int refreshStatus=0x7f0c0061;
-        public static final int register_server=0x7f0c006a;
+        public static final int register_server=0x7f0c0067;
         public static final int screen=0x7f0c001f;
         public static final int scrollView=0x7f0c0032;
         public static final int search_badge=0x7f0c0044;
@@ -1637,10 +1634,10 @@ containing a value of this type.
         public static final int title=0x7f0c002c;
         public static final int title_template=0x7f0c002f;
         public static final int topPanel=0x7f0c002e;
-        public static final int txtRaspberryDescription=0x7f0c0066;
-        public static final int txtRaspberryId=0x7f0c0067;
-        public static final int txtRaspberryName=0x7f0c0065;
-        public static final int txtRaspberryStatus=0x7f0c0068;
+        public static final int txtRaspberryDescription=0x7f0c0063;
+        public static final int txtRaspberryId=0x7f0c0064;
+        public static final int txtRaspberryName=0x7f0c0062;
+        public static final int txtRaspberryStatus=0x7f0c0065;
         public static final int up=0x7f0c0008;
         public static final int useLogo=0x7f0c0012;
         public static final int withText=0x7f0c001a;

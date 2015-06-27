@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.android.swissbit.homeautomation.R;
 import com.swissbit.homeautomation.asyncTask.DeviceCmdAsync;
-import com.swissbit.homeautomation.asyncTask.DeviceStatusRefreshAsync;
 import com.swissbit.homeautomation.db.DevicesInfoDbAdapter;
 import com.swissbit.homeautomation.model.Device;
 import com.swissbit.homeautomation.utils.DBFactory;
@@ -60,8 +59,8 @@ public class DeviceAdapter extends ArrayAdapter<Device> {
 
         imageDevice = (ImageView) customView.findViewById(R.id.imgDevice);
         socketSwitch = (Switch) customView.findViewById(R.id.socketSwitch);
-        TextView switchStatus = (TextView) customView.findViewById(R.id.refreshStatus);
-        ImageButton btnRefresh = (ImageButton) customView.findViewById(R.id.btnRefresh);
+//        TextView switchStatus = (TextView) customView.findViewById(R.id.refreshStatus);
+//        ImageButton btnRefresh = (ImageButton) customView.findViewById(R.id.btnRefresh);
 
 
 
@@ -82,12 +81,12 @@ public class DeviceAdapter extends ArrayAdapter<Device> {
                 Log.d("Inside listner", "1");
                 if (isChecked) {
                     Log.d("Task Started..", "1");
-                    DeviceCmdAsync deviceCmdAsync = new DeviceCmdAsync("on", device.getId());
+                    DeviceCmdAsync deviceCmdAsync = new DeviceCmdAsync("on", device.getDeviceNodeId(),device.getRaspberryId());
                     deviceCmdAsync.execute();
                     Log.d("Task done..", "1");
                 } else {
                     Log.d("Task Started..", "1");
-                    DeviceCmdAsync deviceCmdAsync = new DeviceCmdAsync("off", device.getId());
+                    DeviceCmdAsync deviceCmdAsync = new DeviceCmdAsync("off", device.getDeviceNodeId(),device.getRaspberryId());
                     deviceCmdAsync.execute();
                     Log.d("Task done..", "1");
                 }
@@ -108,7 +107,7 @@ public class DeviceAdapter extends ArrayAdapter<Device> {
 ////                else
 ////                    socketSwitch.setChecked(false);
 //
-//                imageDevice.setImageResource(R.drawable.socketswitchoff);
+//                imageDevice.setImageResource(R.drawable.socketswitchon);
 //            }
 //        });
 

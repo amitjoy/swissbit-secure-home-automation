@@ -37,7 +37,6 @@ import android.widget.Toast;
 
 import com.google.common.collect.Lists;
 import com.swissbit.homeautomation.asyncTask.AuthenticationAsync;
-import com.swissbit.homeautomation.asyncTask.MqttSubscribeAsync;
 import com.android.swissbit.homeautomation.R;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -65,8 +64,6 @@ public class MainActivity extends ActionBarActivity {
 
     private EditText txtPublish;
 
-    private MqttSubscribeAsync mqttSubscribeAsync;
-
     private ListView listView;
 
     private RaspberryPi raspberryPi;
@@ -78,6 +75,8 @@ public class MainActivity extends ActionBarActivity {
     private List<RaspberryPi> listOfRPi;
 
     private CardAPI secureElementAccess;
+
+    private String secureElementId;
 
     public AuthenticationAsync authenticationAsync;
 
@@ -174,13 +173,13 @@ public class MainActivity extends ActionBarActivity {
         secureElementAccess = new CardAPI(getApplicationContext());
 
         getSecureCode();
-        Log.d("Check", "1");
-
 
         addToListView();
 
-        Log.d("SecureElementId", "ID:" + secureElementAccess.encryptMsgWithID("1234567890123456","amit"));
+        Log.d("1:", "" + secureElementAccess.getMyId());
 
+//        Log.d("SecureElementId", "String:" + secureElementAccess.encryptMsgWithID("12345678901234561234567890123456", "amit"));
+//        Log.d("SecureElementId", "String:" + secureElementAccess.encryptMsgWithID("3308e36884b0ae319ffe90011f925dfe", "amit"));
     }
 
     @Override
@@ -223,15 +222,23 @@ public class MainActivity extends ActionBarActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanResult != null && scanResult.getContents() != null) {
-            String rid = scanResult.getContents();
+            String qrCode = scanResult.getContents();
+            String qrCodeArray[] = qrCode.split("#");
+            secureElementId = qrCodeArray[0];
+            String rid = qrCodeArray[1];
+            Log.d("Rid",rid);
+            Log.d("Sid",secureElementId);
+
             MQTTFactory.setRaspberryId(rid);
+            MQTTFactory.setSecureElementId(secureElementId);
+
             Toast.makeText(getApplicationContext(), rid, Toast.LENGTH_SHORT).show();
 
             Log.d("Secureelement", "" + secureElementAccess.isCardPresent());
 
             if(secureElementAccess.isCardPresent()){
 //                String encryptedString = secureElementAccess.encryptMsg("AB");
-                String encryptedString = secureElementAccess.encryptMsgWithID("1234567890123456",rid);
+                String encryptedString = secureElementAccess.encryptMsgWithID(secureElementId,rid);
                 EncryptionFactory.setEncryptedString(encryptedString);
                 Log.d("Encrypted Data", EncryptionFactory.getEncryptedString());
                 AuthenticationAsync authenticationAsync = new AuthenticationAsync(this, MQTTFactory.getRaspberryPiById());
@@ -246,7 +253,7 @@ public class MainActivity extends ActionBarActivity {
     public void checkRaspberryId(String rid) {
 
         if (DBFactory.checkRaspberryPiInDB(rid, this)) {
-            DBFactory.addRaspberryPi(rid);
+            DBFactory.addRaspberryPi(rid,secureElementId);
             addToListView();
         } else
             Toast.makeText(getApplicationContext(), "Duplicate Server", Toast.LENGTH_LONG).show();
@@ -265,9 +272,14 @@ public class MainActivity extends ActionBarActivity {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(getApplicationContext(), DeviceActivity.class);
+
                     RaspberryPi clickedItem = (RaspberryPi) listView.getItemAtPosition(position);
-                    intent.putExtra("RaspberryId", clickedItem.getId());
+
+                    Intent intent = new Intent(MainActivity.this, DeviceActivity.class);
+                    Bundle extras = new Bundle();
+                    extras.putString("RaspberryId", clickedItem.getId());
+                    extras.putString("SecureElementId", raspberryPi.getSecureElementId());
+                    intent.putExtras(extras);
                     startActivity(intent);
                 }
             });

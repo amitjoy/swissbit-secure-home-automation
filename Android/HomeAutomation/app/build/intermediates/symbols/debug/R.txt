@@ -440,7 +440,6 @@ int id activity_chooser_view_content 0x7f0c0026
 int id alertTitle 0x7f0c0030
 int id always 0x7f0c0016
 int id beginning 0x7f0c0013
-int id btnRefresh 0x7f0c0063
 int id buttonPanel 0x7f0c0036
 int id cancel_action 0x7f0c0053
 int id checkbox 0x7f0c0038
@@ -466,8 +465,8 @@ int id icon 0x7f0c002b
 int id ifRoom 0x7f0c0018
 int id image 0x7f0c0028
 int id imgDevice 0x7f0c005f
-int id imgRaspberry 0x7f0c0064
-int id imgStatus 0x7f0c0069
+int id imgRaspberry 0x7f0c0061
+int id imgStatus 0x7f0c0066
 int id info 0x7f0c005d
 int id line1 0x7f0c0057
 int id line3 0x7f0c005b
@@ -478,7 +477,6 @@ int id list_item 0x7f0c002a
 int id media_actions 0x7f0c0055
 int id middle 0x7f0c0015
 int id multiply 0x7f0c001e
-int id mySwitch 0x7f0c0062
 int id never 0x7f0c0019
 int id none 0x7f0c000e
 int id normal 0x7f0c000a
@@ -486,8 +484,7 @@ int id parentPanel 0x7f0c002d
 int id progress_circular 0x7f0c0005
 int id progress_horizontal 0x7f0c0006
 int id radio 0x7f0c003a
-int id refreshStatus 0x7f0c0061
-int id register_server 0x7f0c006a
+int id register_server 0x7f0c0067
 int id screen 0x7f0c001f
 int id scrollView 0x7f0c0032
 int id search_badge 0x7f0c0044
@@ -520,10 +517,10 @@ int id time 0x7f0c0058
 int id title 0x7f0c002c
 int id title_template 0x7f0c002f
 int id topPanel 0x7f0c002e
-int id txtRaspberryDescription 0x7f0c0066
-int id txtRaspberryId 0x7f0c0067
-int id txtRaspberryName 0x7f0c0065
-int id txtRaspberryStatus 0x7f0c0068
+int id txtRaspberryDescription 0x7f0c0063
+int id txtRaspberryId 0x7f0c0064
+int id txtRaspberryName 0x7f0c0062
+int id txtRaspberryStatus 0x7f0c0065
 int id up 0x7f0c0008
 int id useLogo 0x7f0c0012
 int id withText 0x7f0c001a

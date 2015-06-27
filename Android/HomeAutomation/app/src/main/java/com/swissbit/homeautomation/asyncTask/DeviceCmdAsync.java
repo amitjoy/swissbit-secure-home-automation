@@ -17,13 +17,14 @@ import com.swissbit.homeautomation.utils.TopicsConstants;
 import com.swissbit.mqtt.client.IKuraMQTTClient;
 import com.swissbit.mqtt.client.adapter.MessageListener;
 import com.swissbit.mqtt.client.message.KuraPayload;
+import com.tum.ssdapi.CardAPI;
 
 /**
  * Created by manit on 17/06/15.
  */
 public class DeviceCmdAsync extends AsyncTask {
 
-    boolean subResponse = false;
+    boolean subscriptionResponse = false;
 
     private KuraPayload payload;
 
@@ -33,7 +34,7 @@ public class DeviceCmdAsync extends AsyncTask {
 
     private Object monitor;
 
-    private int nodeId;
+    private int deviceNodeId;
 
     private ImageView imageDevice;
 
@@ -41,10 +42,16 @@ public class DeviceCmdAsync extends AsyncTask {
 
     private ProgressDialog progressDialog;
 
-    public DeviceCmdAsync(String cmd, int nodeId) {
+    private String raspberryId;
+
+    private CardAPI secureElementAccess;
+
+    public DeviceCmdAsync(String cmd, int deviceNodeId, String raspberryId) {
         this.cmd = cmd;
-        this.nodeId = nodeId;
+        this.deviceNodeId = deviceNodeId;
+        this.raspberryId = raspberryId;
         devicesInfoDbAdapter = DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getDeviceActivityContext());
+        secureElementAccess = new CardAPI(ActivityContexts.getMainActivityContext());
     }
 
     @Override
@@ -82,14 +89,14 @@ public class DeviceCmdAsync extends AsyncTask {
 
                         if (status == 200) {
                             Log.d("Response", "success");
-                            subResponse = true;
+                            subscriptionResponse = true;
                             if (cmd.equals("on"))
-                                devicesInfoDbAdapter.updateDeviceStatus("true", nodeId);
+                                devicesInfoDbAdapter.updateDeviceStatus("true", deviceNodeId);
                             else
-                                devicesInfoDbAdapter.updateDeviceStatus("false", nodeId);
+                                devicesInfoDbAdapter.updateDeviceStatus("false", deviceNodeId);
                         } else {
                             Log.d("Response", "Failed");
-                            subResponse = false;
+                            subscriptionResponse = false;
 
                         }
                         synchronized (monitor) {
@@ -97,7 +104,7 @@ public class DeviceCmdAsync extends AsyncTask {
                             Log.d("Notify1", "After");
                         }
 
-                        Log.d("Inside onProcess", "" + subResponse);
+                        Log.d("Inside onProcess", "" + subscriptionResponse);
                     } catch (Exception e) {
                         Log.e("Kura MQTT Exception", e.getCause().getMessage());
                     }
@@ -106,7 +113,10 @@ public class DeviceCmdAsync extends AsyncTask {
             });
 
         payload = MQTTFactory.generatePayload("", requestId);
-        payload.addMetric("nodeId", nodeId);
+
+        String encryptedDeviceNodeId = secureElementAccess.encryptMsgWithID(MQTTFactory.getSecureElementId(),Integer.toString(deviceNodeId));
+//        payload.addMetric("nodeId", deviceNodeId);
+        payload.addMetric("nodeId", encryptedDeviceNodeId);
 
         if (cmd.equals("on")) {
             MQTTFactory.getClient().publish(MQTTFactory.getTopicToPublish(TopicsConstants.SWITCH_ON_PUB), payload);
@@ -119,7 +129,7 @@ public class DeviceCmdAsync extends AsyncTask {
         synchronized (monitor) {
             try {
                 Log.d("Notify", "Before");
-                monitor.wait();
+                monitor.wait(15000);
                 Log.d("Notify", "After");
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -128,24 +138,24 @@ public class DeviceCmdAsync extends AsyncTask {
 
         publishProgress();
 
-        cancel(true);
+
 
         return null;
     }
 
     @Override
     protected void onPostExecute(Object o) {
-        Log.d("Inside onPost", "" + subResponse);
-        if (!subResponse)
+        Log.d("Inside onPost", "" + subscriptionResponse);
+        if (!subscriptionResponse) {
             Toast.makeText(ActivityContexts.getDeviceActivityContext(), "Device Command Failed! Try again", Toast.LENGTH_LONG).show();
+            progressDialog.dismiss();
+        }
+        cancel(true);
     }
 
     @Override
     protected void onCancelled() {
-        Log.d("Inside onCancelled", "" + subResponse);
-        if (!subResponse)
-            Toast.makeText(ActivityContexts.getDeviceActivityContext(), "Device Command Failed! Try again", Toast.LENGTH_LONG).show();
-
+        Log.d("Inside onCancelled", "" + subscriptionResponse);
     }
 
     @Override
@@ -153,12 +163,14 @@ public class DeviceCmdAsync extends AsyncTask {
         Log.d("Onprogess", "reached");
         progressDialog.dismiss();
 
-        View rootView = ((Activity) ActivityContexts.getDeviceActivityContext()).getWindow().getDecorView().findViewById(android.R.id.content);
-        imageDevice = (ImageView) rootView.findViewById(R.id.imgDevice);
-        if (cmd.equals("on")) {
-            imageDevice.setImageResource(R.drawable.socketswitchon);
-        } else {
-            imageDevice.setImageResource(R.drawable.socketswitchoff);
+        if(subscriptionResponse) {
+            View rootView = ((Activity) ActivityContexts.getDeviceActivityContext()).getWindow().getDecorView().findViewById(android.R.id.content);
+            imageDevice = (ImageView) rootView.findViewById(R.id.imgDevice);
+            if (cmd.equals("on")) {
+                imageDevice.setImageResource(R.drawable.socketswitchon);
+            } else {
+                imageDevice.setImageResource(R.drawable.socketswitchoff);
+            }
         }
     }
 }

@@ -20,8 +20,8 @@ public final class DBFactory {
         return devicesInfoDbAdapter;
     }
 
-    public static void addRaspberryPi(String rid){
-        long id = devicesInfoDbAdapter.insertRaspberry(rid, "Raspberry", rid);
+    public static void addRaspberryPi(String rid, String secureElementId){
+        long id = devicesInfoDbAdapter.insertRaspberry(rid, secureElementId, "Raspberry", rid);
         if(id<0){
             Log.d("Insert", "Failed to insert");
         }
