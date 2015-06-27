@@ -12,7 +12,7 @@ public class dummy {
 	private static final String REQUEST_PERM = "$EDC/swissbit/B8:27:EB:BE:3F:BF/SURVEILLANCE-V1/POST/sample";
 	private static final String REQUEST_TOPIC = "$EDC/swissbit/B8:27:EB:BE:3F:BF/AUTH-V1/EXEC/decrypt";
 	private static final String REQUEST_TOPIC1 = "$EDC/swissbit/B8:27:EB:BE:3F:BF/CONF-V1/GET/configurations";
-	private static final String REQUEST_ZWAVE = "$EDC/swissbit/B8:27:EB:BE:3F:BF/DEVICE-V1/EXEC/off";
+	private static final String REQUEST_ZWAVE = "$EDC/swissbit/B8:27:EB:BE:3F:BF/DEVICE-V1/EXEC/on";
 	private static final String REQUEST_ZWAVE_LIST = "$EDC/swissbit/B8:27:EB:BE:3F:BF/DEVICE-V1/GET/list";
 	private static String RESPONSE_PERM = "$EDC/swissbit/AMA/SURVEILLANCE-V1/REPLY/454545454545456";
 	private static String RESPONSE_TOPIC = "$EDC/swissbit/AMA/AUTH-V1/REPLY/454545454545456";

@@ -15,7 +15,7 @@
 	<version>1.0-SNAPSHOT</version>
 	<packaging>bundle</packaging>
 
-	<name>Activity Logs</name>
+	<name>Dependencies Deployment Package</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -25,8 +25,6 @@
 		<dependency>
 			<groupId>org.apache.felix</groupId>
 			<artifactId>org.apache.felix.scr.annotations</artifactId>
-			<version>1.9.6</version>
-			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -39,26 +37,21 @@
 		<dependency>
 			<groupId>org.osgi</groupId>
 			<artifactId>org.osgi.core</artifactId>
-			<version>4.3.0</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.eclipse.kura</groupId>
 			<artifactId>org.eclipse.kura.api</artifactId>
-			<version>1.0.4-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.6.4</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.osgi</groupId>
 			<artifactId>org.osgi.compendium</artifactId>
-			<scope>provided</scope>
-			<version>4.0.0</version>
 		</dependency>
 	</dependencies>
 
@@ -100,7 +93,7 @@
 		</plugins>
 	</build>
 
-	<description>This bundle is used to save and retrieve IoT based activity logs</description>
+	<description>Required Dependencies Deployment Package</description>
 	<organization>
 		<name>Swissbit AG</name>
 		<url>http://www.swissbit.com</url>
