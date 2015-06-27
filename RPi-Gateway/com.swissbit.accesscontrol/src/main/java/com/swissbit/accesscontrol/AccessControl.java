@@ -149,7 +149,7 @@ public class AccessControl extends Cloudlet implements IAccessControl {
 	 */
 	private void doRevokePermision(final File file) throws IOException {
 		// publish permission data to
-		// $EDC/swissbit/RPi-MAC/SURVEILLANCE-V1/permission/revoked
+		// $EDC/swissbit/RPi-MAC/SURVEILLANCE-V1/secureElementId/permission/revoked
 		Files.readLines(file, Charsets.UTF_8).forEach(secureElementId -> {
 			final KuraPayload payload = new KuraPayload();
 			payload.addMetric("secureElementId", secureElementId);
