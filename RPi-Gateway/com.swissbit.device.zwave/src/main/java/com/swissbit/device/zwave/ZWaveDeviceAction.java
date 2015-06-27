@@ -179,15 +179,15 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 				this.m_activityLogService.saveLog("Device status is retrieved");
 				respPayload.addMetric("status", this.getStatus(nodeId));
 			}
-			if ("list".equals(reqTopic.getResources()[0])) {
-				this.m_activityLogService.saveLog("Connected Devices List is retrieved");
-				this.getConnectedDevices().forEach(node -> {
-					int i = 0;
-					respPayload.addMetric("node.id_" + i++, node);
-				});
-			}
-			respPayload.setResponseCode(KuraResponsePayload.RESPONSE_CODE_OK);
 		}
+		if ("list".equals(reqTopic.getResources()[0])) {
+			this.m_activityLogService.saveLog("Connected Devices List is retrieved");
+			this.getConnectedDevices().forEach(node -> {
+				int i = 0;
+				respPayload.addMetric("node.id_" + i++, node);
+			});
+		}
+		respPayload.setResponseCode(KuraResponsePayload.RESPONSE_CODE_OK);
 	}
 
 	/** {@inheritDoc} */
