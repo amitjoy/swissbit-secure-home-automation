@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<project name="build_com.swissbit.dp.commons.dp" default="all" basedir="." >
+<available property="file.exists.../com.swissbit.activity.log/target/com.swissbit.activity.log-1.0-SNAPSHOT.jar" file="../com.swissbit.activity.log/target/com.swissbit.activity.log-1.0-SNAPSHOT.jar"/>
+<target name="check.file.exists ../com.swissbit.activity.log/target/com.swissbit.activity.log-1.0-SNAPSHOT.jar" unless="file.exists.../com.swissbit.activity.log/target/com.swissbit.activity.log-1.0-SNAPSHOT.jar">
+  <fail message="Can not find file ../com.swissbit.activity.log/target/com.swissbit.activity.log-1.0-SNAPSHOT.jar"/>
+</target>
+<available property="file.exists.../com.swissbit.authentication/target/com.swissbit.authentication-1.0-SNAPSHOT.jar" file="../com.swissbit.authentication/target/com.swissbit.authentication-1.0-SNAPSHOT.jar"/>
+<target name="check.file.exists ../com.swissbit.authentication/target/com.swissbit.authentication-1.0-SNAPSHOT.jar" unless="file.exists.../com.swissbit.authentication/target/com.swissbit.authentication-1.0-SNAPSHOT.jar">
+  <fail message="Can not find file ../com.swissbit.authentication/target/com.swissbit.authentication-1.0-SNAPSHOT.jar"/>
+</target>
+<available property="file.exists.../com.swissbit.hsql.conf/target/com.swissbit.hsql.conf-1.0-SNAPSHOT.jar" file="../com.swissbit.hsql.conf/target/com.swissbit.hsql.conf-1.0-SNAPSHOT.jar"/>
+<target name="check.file.exists ../com.swissbit.hsql.conf/target/com.swissbit.hsql.conf-1.0-SNAPSHOT.jar" unless="file.exists.../com.swissbit.hsql.conf/target/com.swissbit.hsql.conf-1.0-SNAPSHOT.jar">
+  <fail message="Can not find file ../com.swissbit.hsql.conf/target/com.swissbit.hsql.conf-1.0-SNAPSHOT.jar"/>
+</target>
+<available property="file.exists.../com.swissbit.assd.comm/target/com.swissbit.assd.comm-1.0-SNAPSHOT.jar" file="../com.swissbit.assd.comm/target/com.swissbit.assd.comm-1.0-SNAPSHOT.jar"/>
+<target name="check.file.exists ../com.swissbit.assd.comm/target/com.swissbit.assd.comm-1.0-SNAPSHOT.jar" unless="file.exists.../com.swissbit.assd.comm/target/com.swissbit.assd.comm-1.0-SNAPSHOT.jar">
+  <fail message="Can not find file ../com.swissbit.assd.comm/target/com.swissbit.assd.comm-1.0-SNAPSHOT.jar"/>
+</target>
+<available property="file.exists.../com.swissbit.mqtt.heartbeat/target/com.swissbit.mqtt.heartbeat-1.0-SNAPSHOT.jar" file="../com.swissbit.mqtt.heartbeat/target/com.swissbit.mqtt.heartbeat-1.0-SNAPSHOT.jar"/>
+<target name="check.file.exists ../com.swissbit.mqtt.heartbeat/target/com.swissbit.mqtt.heartbeat-1.0-SNAPSHOT.jar" unless="file.exists.../com.swissbit.mqtt.heartbeat/target/com.swissbit.mqtt.heartbeat-1.0-SNAPSHOT.jar">
+  <fail message="Can not find file ../com.swissbit.mqtt.heartbeat/target/com.swissbit.mqtt.heartbeat-1.0-SNAPSHOT.jar"/>
+</target>
+<available property="file.exists.../com.swissbit.accesscontrol/target/com.swissbit.accesscontrol-1.0-SNAPSHOT.jar" file="../com.swissbit.accesscontrol/target/com.swissbit.accesscontrol-1.0-SNAPSHOT.jar"/>
+<target name="check.file.exists ../com.swissbit.accesscontrol/target/com.swissbit.accesscontrol-1.0-SNAPSHOT.jar" unless="file.exists.../com.swissbit.accesscontrol/target/com.swissbit.accesscontrol-1.0-SNAPSHOT.jar">
+  <fail message="Can not find file ../com.swissbit.accesscontrol/target/com.swissbit.accesscontrol-1.0-SNAPSHOT.jar"/>
+</target>
+<target name="all">
+  <mkdir dir="/Users/AMIT/swissbit/RPi-Gateway/com.swissbit.dp.commons"/>
+  <antcall target="check.file.exists ../com.swissbit.activity.log/target/com.swissbit.activity.log-1.0-SNAPSHOT.jar"/>
+  <antcall target="check.file.exists ../com.swissbit.authentication/target/com.swissbit.authentication-1.0-SNAPSHOT.jar"/>
+  <antcall target="check.file.exists ../com.swissbit.hsql.conf/target/com.swissbit.hsql.conf-1.0-SNAPSHOT.jar"/>
+  <antcall target="check.file.exists ../com.swissbit.assd.comm/target/com.swissbit.assd.comm-1.0-SNAPSHOT.jar"/>
+  <antcall target="check.file.exists ../com.swissbit.mqtt.heartbeat/target/com.swissbit.mqtt.heartbeat-1.0-SNAPSHOT.jar"/>
+  <antcall target="check.file.exists ../com.swissbit.accesscontrol/target/com.swissbit.accesscontrol-1.0-SNAPSHOT.jar"/>
+  <jar destfile="com.swissbit.dp.commons.dp" manifest="com.swissbit.dp.commons_manifest.mf">
+    <zipfileset file="../com.swissbit.activity.log/target/com.swissbit.activity.log-1.0-SNAPSHOT.jar" fullpath="com.swissbit.activity.log-1.0-SNAPSHOT.jar" />
+    <zipfileset file="../com.swissbit.authentication/target/com.swissbit.authentication-1.0-SNAPSHOT.jar" fullpath="com.swissbit.authentication-1.0-SNAPSHOT.jar" />
+    <zipfileset file="../com.swissbit.hsql.conf/target/com.swissbit.hsql.conf-1.0-SNAPSHOT.jar" fullpath="com.swissbit.hsql.conf-1.0-SNAPSHOT.jar" />
+    <zipfileset file="../com.swissbit.assd.comm/target/com.swissbit.assd.comm-1.0-SNAPSHOT.jar" fullpath="com.swissbit.assd.comm-1.0-SNAPSHOT.jar" />
+    <zipfileset file="../com.swissbit.mqtt.heartbeat/target/com.swissbit.mqtt.heartbeat-1.0-SNAPSHOT.jar" fullpath="com.swissbit.mqtt.heartbeat-1.0-SNAPSHOT.jar" />
+    <zipfileset file="../com.swissbit.accesscontrol/target/com.swissbit.accesscontrol-1.0-SNAPSHOT.jar" fullpath="com.swissbit.accesscontrol-1.0-SNAPSHOT.jar" />
+  </jar>
+</target>
+
+</project>
