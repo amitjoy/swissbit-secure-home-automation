@@ -17,6 +17,7 @@ package com.swissbit.accesscontrol;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.felix.scr.annotations.Activate;
@@ -39,6 +40,7 @@ import com.google.common.base.Charsets;
 import com.google.common.base.Throwables;
 import com.google.common.io.Files;
 import com.swissbit.activity.log.IActivityLogService;
+import com.swissbit.assd.comm.IASSDCommunication;
 
 /**
  * This is used to revoke permissions of clients to access the raspberry pi
@@ -65,6 +67,12 @@ public class AccessControl extends Cloudlet implements IAccessControl {
 	 */
 	@Reference(bind = "bindActivityLogService", unbind = "unbindActivityLogService")
 	private volatile IActivityLogService m_activityLogService;
+
+	/**
+	 * ASSD Communication Service Dependency
+	 */
+	@Reference(bind = "bindASSDCommunicationService", unbind = "unbindASSDCommunicationService")
+	private volatile IASSDCommunication m_assdCommunication;
 
 	/**
 	 * Eclipse Kura Cloud Service Dependency
@@ -108,6 +116,15 @@ public class AccessControl extends Cloudlet implements IAccessControl {
 	}
 
 	/**
+	 * ASSD Communication Service Binding Callback
+	 */
+	public synchronized void bindASSDCommunicationService(final IASSDCommunication iassdCommunication) {
+		if (this.m_assdCommunication == null) {
+			this.m_assdCommunication = iassdCommunication;
+		}
+	}
+
+	/**
 	 * Callback to be used while {@link CloudService} is registering
 	 */
 	public synchronized void bindCloudService(final CloudService cloudService) {
@@ -134,12 +151,26 @@ public class AccessControl extends Cloudlet implements IAccessControl {
 	@Override
 	protected void doPost(final CloudletTopic reqTopic, final KuraRequestPayload reqPayload,
 			final KuraResponsePayload respPayload) throws KuraException {
+
 		final String secureElementId = (String) reqPayload.getMetric("secure_element");
-		this.m_activityLogService.saveLog("Saving New Permissions..");
-		try {
-			Files.append(secureElementId + System.lineSeparator(), new File(ALL_CLIENTS_FILE_LOCATION), Charsets.UTF_8);
-		} catch (final IOException e) {
-			LOGGER.error(Throwables.getStackTraceAsString(e));
+		final String encryptedString = String.valueOf(reqPayload.getMetric("encVal"));
+		final List<String> list = this.m_assdCommunication.decrypt(encryptedString);
+
+		String decryptedString = null;
+
+		if (list != null) {
+			decryptedString = list.get(1);
+		}
+
+		if (decryptedString != null) {
+
+			this.m_activityLogService.saveLog("Saving New Permissions..");
+			try {
+				Files.append(secureElementId + System.lineSeparator(), new File(ALL_CLIENTS_FILE_LOCATION),
+						Charsets.UTF_8);
+			} catch (final IOException e) {
+				LOGGER.error(Throwables.getStackTraceAsString(e));
+			}
 		}
 	}
 
@@ -205,6 +236,15 @@ public class AccessControl extends Cloudlet implements IAccessControl {
 	public synchronized void unbindActivityLogService(final IActivityLogService activityLogService) {
 		if (this.m_activityLogService == activityLogService) {
 			this.m_activityLogService = null;
+		}
+	}
+
+	/**
+	 * ASSD Communication Service Unbinding Callback
+	 */
+	public synchronized void unbindASSDCommunicationService(final IASSDCommunication iassdCommunication) {
+		if (this.m_assdCommunication == iassdCommunication) {
+			this.m_assdCommunication = null;
 		}
 	}
 
