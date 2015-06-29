@@ -13,6 +13,7 @@ import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import com.swissbit.server.ws.error.ResponseError;
 import com.swissbit.server.ws.model.Admin;
 import com.swissbit.server.ws.services.ILoginService;
 
@@ -87,33 +88,39 @@ public class LoginService implements ILoginService {
 	}
 	
 
-	public Admin authenticateUser(String email, String password) {
+	public String authenticateUser(String email, String password) {
 		final QueryBuilder<Admin, String> queryBuilder = this.piDao.queryBuilder();
-		List<Admin> ids = null;
+		List<Admin> emails = null;
 		Admin administrator = null;
+		String administratorFName = null;
 		try {
-			ids = this.piDao.query(queryBuilder.where().eq("email", email).prepare());
-
-			if (ids.size() > 0) {
-				administrator = ids.get(0);
+			emails = this.piDao.query(queryBuilder.where().eq("email", email).prepare());
+			if (emails.size() > 0) {
+				administrator = emails.get(0);
+				administratorFName = administrator.getFName();
+			}
+			
+			else {
+				throw new IllegalArgumentException("Email address not found");
 			}
 		} catch (final SQLException e) {
 			e.printStackTrace();
-			return administrator;
+			return administratorFName;
 		} finally {
 			try {
 				this.connectionSource.close();
 			} catch (final SQLException e) {
 				e.printStackTrace();
-				return administrator;
+				return administratorFName;
 			}
 		}
 		String adminPassword = administrator.getPassword();
-		if (password == adminPassword) {
-			return administrator;
+		if (password.equals(adminPassword)) {
+			return administratorFName;
 		}
 		else {
-			throw new IllegalArgumentException("Username or Password is Incorrect");
+			//return adminPassword;
+			throw new IllegalArgumentException("Password is Incorrect");
 		}
 		
 	}

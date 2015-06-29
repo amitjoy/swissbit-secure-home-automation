@@ -6,5 +6,5 @@ public interface ILoginService extends IAbstractService {
 	
 	public Admin getId(String id);
 	public Admin getUserByEmail(String email);
-	public Admin authenticateUser(String email, String password);
+	public String authenticateUser(String email, String password);
 }
