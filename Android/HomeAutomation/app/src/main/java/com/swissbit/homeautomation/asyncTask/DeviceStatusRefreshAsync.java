@@ -120,8 +120,9 @@ public class DeviceStatusRefreshAsync extends AsyncTask {
 
         payload = MQTTFactory.generatePayload("", requestId);
         String encryptedDeviceNodeId = secureElementAccess.encryptMsgWithID(MQTTFactory.getSecureElementId(),Integer.toString(deviceNodeId));
-        payload.addMetric("nodeId", encryptedDeviceNodeId);
 
+        payload.addMetric("nodeId", deviceNodeId);
+        payload.addMetric("encVal", encryptedDeviceNodeId);
 
         MQTTFactory.getClient().publish(MQTTFactory.getTopicToPublish(TopicsConstants.RETRIEVE_DEVICE_STATUS_PUB), payload);
 
@@ -132,7 +133,7 @@ public class DeviceStatusRefreshAsync extends AsyncTask {
         synchronized (refreshMonitor) {
             try {
                 Log.d("Notify", "Before");
-                refreshMonitor.wait(15000);
+                refreshMonitor.wait(10000);
                 Log.d("Notify", "After");
             } catch (InterruptedException e) {
                 e.printStackTrace();

@@ -115,8 +115,9 @@ public class DeviceCmdAsync extends AsyncTask {
         payload = MQTTFactory.generatePayload("", requestId);
 
         String encryptedDeviceNodeId = secureElementAccess.encryptMsgWithID(MQTTFactory.getSecureElementId(),Integer.toString(deviceNodeId));
-//        payload.addMetric("nodeId", deviceNodeId);
-        payload.addMetric("nodeId", encryptedDeviceNodeId);
+
+        payload.addMetric("nodeId",deviceNodeId);
+        payload.addMetric("encVal", encryptedDeviceNodeId);
 
         if (cmd.equals("on")) {
             MQTTFactory.getClient().publish(MQTTFactory.getTopicToPublish(TopicsConstants.SWITCH_ON_PUB), payload);
@@ -129,7 +130,7 @@ public class DeviceCmdAsync extends AsyncTask {
         synchronized (monitor) {
             try {
                 Log.d("Notify", "Before");
-                monitor.wait(15000);
+                monitor.wait(10000);
                 Log.d("Notify", "After");
             } catch (InterruptedException e) {
                 e.printStackTrace();
