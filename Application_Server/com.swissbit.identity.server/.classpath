@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="lib" path="lib/com.swissbit.mqtt.client-1.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/gson-2.3.1.jar"/>
+	<classpathentry kind="lib" path="lib/guava-18.0.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.35.jar"/>
+	<classpathentry kind="lib" path="lib/ormlite-core-4.48.jar"/>
+	<classpathentry kind="lib" path="lib/ormlite-jdbc-4.48.jar"/>
+	<classpathentry kind="lib" path="lib/protobuf-java-3.0.0-alpha-3.jar"/>
+	<classpathentry kind="lib" path="lib/spark-core-2.2.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api-1.7.12.jar"/>
+	<classpathentry kind="lib" path="lib/mqtt-client-1.10.jar"/>
+	<classpathentry kind="lib" path="lib/hawtdispatch-transport-1.21.jar"/>
+	<classpathentry kind="lib" path="lib/hawtdispatch-1.21.jar"/>
+	<classpathentry kind="lib" path="lib/hawtbuf-1.11.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-server-9.3.0.M2.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-util-9.3.0.M2.jar"/>
+	<classpathentry kind="lib" path="lib/javax.servlet-api-3.1.0.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-http-9.3.0.M2.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-io-9.3.0.M2.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
