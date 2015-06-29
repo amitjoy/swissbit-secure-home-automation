@@ -1,3 +1,4 @@
+//Angular module declaration
 var app = angular.module('identity-server', [
     'ngCookies',
     'ngResource',
@@ -17,6 +18,7 @@ app.config(function ($httpProvider) {
     }
 });
 
+//Directive for password confirmation text field
 app.directive('validPasswordC', function () {
     return {
         require: 'ngModel',
@@ -29,6 +31,7 @@ app.directive('validPasswordC', function () {
     }
 })
 
+// Directive for edit text field
 app.directive('editText', function(){
 	return {
     	restrict: 'E',
@@ -53,6 +56,8 @@ app.directive('editText', function(){
     };
 });
 
+
+// Route declaration
 app.config(function ($routeProvider, $locationProvider) {
     // use the HTML5 History API
     $locationProvider.html5Mode(true);
@@ -139,26 +144,20 @@ app.controller('viewSignUpCtrl', function ($scope, $http, $location, $route) {
 app.controller('viewLogInCtrl', function ($scope, $rootScope, $http, $location, $route) { 
     $scope.existingAdminDefaults = {};
     $scope.validateAdmin = function (existingAdminInfo) {
-	$scope.userNotification = ""
-
-	    $http.get('/loginEmail/'+$scope.existingAdminInfo.email).success(function (data) {
-            $scope.AdminInfo = data;
-			if ($scope.AdminInfo.password == $scope.existingAdminInfo.password) {
-				console.log('Login Successful');
-				$scope.userNotification = "Login Successful"
-				$rootScope.loggedInUser = $scope.AdminInfo.fname;
-				console.log($scope.AdminInfo.fname);
-				console.log($scope.AdminInfo.password);
-				console.log($rootScope.loggedInUser);
-				$location.path('/home');
-			}
-			else {
-				console.log('password Incorrect');
-				 $scope.userNotification = "Password Incorrect"
-			}
-        }).error(function (data, status) {
-			$scope.userNotification = "Email Address not found"
-  			console.log('Error ' + data);
+		$scope.userNotification = ""
+		var data = {
+            email: $scope.existingAdminInfo.email,
+            password: $scope.existingAdminInfo.password,
+    	};
+		$http.post('authenticate', data).success(function (data) {
+			console.log('Login Successful');
+			$scope.userNotification = "Login Successful"
+			$rootScope.loggedInUser = JSON.parse(data);
+			console.log($rootScope.loggedInUser);
+			$location.path('/home');
+		}).error(function (data, status) {
+    		$scope.userNotification = data.message; 
+    		console.log('Error ' + data);
 		})
     }
 
