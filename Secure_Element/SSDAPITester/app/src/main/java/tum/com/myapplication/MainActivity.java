@@ -38,8 +38,11 @@ public class MainActivity extends Activity {
                           EditText plainMsg = (EditText) findViewById(R.id.encryptText);
 
                           EditText resp = (EditText) findViewById(R.id.decryptText);
-                          //resp.setText(apiAccess.encryptMsg(plainMsg.getText().toString()));
-                          resp.setText(apiAccess.encryptMsgWithID("3308e36884b0ae319ffe90011f925dfe", plainMsg.getText().toString()));
+
+                          resp.setText(apiAccess.setDisabled());
+
+                          // resp.setText(apiAccess.encryptMsg(plainMsg.getText().toString()));
+                          //resp.setText(apiAccess.encryptMsgWithID("3308e36884b0ae319ffe90011f925dfe", plainMsg.getText().toString()));
                           //resp.setText(apiAccess.encryptMsgWithID("69e19840f93170156dfe7c24ab1b487d", plainMsg.getText().toString()));
                           //                       resp.setText("e4afc810b240976621573ad811a806a839e6cbaf7cb399c41841c1e751a6ab84a3bc880ba6f69d748a9be57aaf828e2fdb047809c3034a8adddf136ad17c97e3dcdd0279643bdf7ad81a08e4a0d8246c");
                           /*Intent intent = new Intent("tum.com.ssdapi.MAIN_ACTIVITY");
@@ -73,11 +76,12 @@ public class MainActivity extends Activity {
                          EditText encryptMsg = (EditText) findViewById(R.id.decryptText);
 
                          EditText resp = (EditText) findViewById(R.id.decryptText);
-                         String [] responseM = apiAccess.decryptMsgWithID(encryptMsg.getText().toString());
-                         resp.setText(responseM[1]);
-                         Log.d("Response Legth: ", "" + responseM.length);
-                         Log.d("Response 0: ", "" + responseM[0] );
-                         Log.d("Response 1: ", "" + responseM[1] );
+                         //String [] responseM = apiAccess.decryptMsgWithID(encryptMsg.getText().toString());
+                         //resp.setText(responseM[1]);
+                         resp.setText(apiAccess.setEnabled());
+                         //Log.d("Response Legth: ", "" + responseM.length);
+                         //Log.d("Response 0: ", "" + responseM[0] );
+                         //Log.d("Response 1: ", "" + responseM[1] );
 
                          //resp.setText(apiAccess.decryptMsg(encryptMsg.getText().toString()));
                          /*Intent intent = new Intent("tum.com.ssdapi.MAIN_ACTIVITY");
@@ -101,7 +105,7 @@ public class MainActivity extends Activity {
                          @Override
                          public void onClick(View v) {
                              EditText resp = (EditText) findViewById(R.id.myID);
-                             resp.setText(apiAccess.getMyId());
+                             resp.setText(apiAccess.getEnabled());
 
                          /*Intent intent = new Intent("tum.com.ssdapi.MAIN_ACTIVITY");
                          Bundle bundle = new Bundle();
