@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MetaData xmlns="http://www.osgi.org/xmlns/metatype/v1.2.0"
+	localization="en_us">
+	<OCD id="com.swissbit.mqtt.heartbeat" name="Hearbeat"
+		description="Sends the heartbeat events to the data center using the MQTT protocol">
+
+		<Icon
+			resource="http://icons.iconarchive.com/icons/apathae/chakram-2/128/Heart-icon.png"
+			size="32" />
+
+		<AD id="com.swissbit.mqtt.heartbeat.topic" name="com.swissbit.mqtt.heartbeat.topic" type="String"
+			cardinality="0" required="true" default="mqtt/heartbeat"
+			description="Configurable property to set MQTT Hearbeat Topic Namespace" />
+			
+		<AD id="com.swissbit.mqtt.heartbeat.period" name="com.swissbit.mqtt.heartbeat.period"
+			type="Integer" cardinality="0" required="true" default="10"
+			description="Configurable Property specifying the time period of sending each hearbeat" />
+
+	</OCD>
+
+	<Designate pid="com.swissbit.mqtt.heartbeat">
+		<Object ocdref="com.swissbit.mqtt.heartbeat" />
+	</Designate>
+</MetaData>
