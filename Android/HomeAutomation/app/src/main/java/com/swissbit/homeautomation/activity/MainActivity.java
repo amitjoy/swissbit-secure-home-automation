@@ -40,6 +40,7 @@ import com.swissbit.homeautomation.asyncTask.AuthenticationAsync;
 import com.android.swissbit.homeautomation.R;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.swissbit.homeautomation.asyncTask.PermissionRevocationAsync;
 import com.swissbit.homeautomation.db.DevicesInfoDbAdapter;
 import com.swissbit.homeautomation.model.RaspberryPi;
 import com.swissbit.homeautomation.ui.adapter.RPiAdapter;
@@ -80,6 +81,7 @@ public class MainActivity extends ActionBarActivity {
 
     public AuthenticationAsync authenticationAsync;
 
+    private PermissionRevocationAsync permissionRevocationAsync;
 
 
     private AsyncTask rPiHeartBeatAsync = new AsyncTask() {
@@ -172,14 +174,30 @@ public class MainActivity extends ActionBarActivity {
 
         secureElementAccess = new CardAPI(getApplicationContext());
 
+        /*Check for access revocation
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Warning!");
+        alertDialog.setMessage("Your Access has been revoked. Application will no longer function");
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        finish();
+                        System.exit(0);
+                    }
+                });
+        alertDialog.show();
+         */
+
+
+        permissionRevocationAsync = new PermissionRevocationAsync(this);
+
         getSecureCode();
 
         addToListView();
 
         Log.d("1:", "" + secureElementAccess.getMyId());
 
-//        Log.d("SecureElementId", "String:" + secureElementAccess.encryptMsgWithID("12345678901234561234567890123456", "amit"));
-//        Log.d("SecureElementId", "String:" + secureElementAccess.encryptMsgWithID("3308e36884b0ae319ffe90011f925dfe", "amit"));
     }
 
     @Override
@@ -192,7 +210,7 @@ public class MainActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.register_server) {
+        if (id == R.id.register_raspberry) {
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
             alertDialog.setTitle("Caution!");
             alertDialog.setMessage("Please make sure your RaspberryPi was turned on atleast 1 minute ago");
@@ -202,6 +220,27 @@ public class MainActivity extends ActionBarActivity {
                             dialog.dismiss();
                             IntentIntegrator integrator = new IntentIntegrator(MainActivity.this);
                             integrator.initiateScan();
+                        }
+                    });
+            alertDialog.show();
+
+        }
+
+        if (id == R.id.reset_data) {
+            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            alertDialog.setTitle("Caution!");
+            alertDialog.setMessage("Are you sure you want to reset all data?");
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            devicesInfoDbAdapter.resetData();
+                            getSecureCode();
+                        }
+                    });
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
                         }
                     });
             alertDialog.show();
@@ -226,8 +265,8 @@ public class MainActivity extends ActionBarActivity {
             String qrCodeArray[] = qrCode.split("#");
             secureElementId = qrCodeArray[0];
             String rid = qrCodeArray[1];
-            Log.d("Rid",rid);
-            Log.d("Sid",secureElementId);
+            Log.d("Rid", rid);
+            Log.d("Sid", secureElementId);
 
             MQTTFactory.setRaspberryId(rid);
             MQTTFactory.setSecureElementId(secureElementId);
@@ -236,15 +275,14 @@ public class MainActivity extends ActionBarActivity {
 
             Log.d("Secureelement", "" + secureElementAccess.isCardPresent());
 
-            if(secureElementAccess.isCardPresent()){
+            if (secureElementAccess.isCardPresent()) {
 //                String encryptedString = secureElementAccess.encryptMsg("AB");
-                String encryptedString = secureElementAccess.encryptMsgWithID(secureElementId,rid);
+                String encryptedString = secureElementAccess.encryptMsgWithID(secureElementId, rid);
                 EncryptionFactory.setEncryptedString(encryptedString);
                 Log.d("Encrypted Data", EncryptionFactory.getEncryptedString());
                 AuthenticationAsync authenticationAsync = new AuthenticationAsync(this, MQTTFactory.getRaspberryPiById());
                 authenticationAsync.execute();
-            }
-            else{
+            } else {
                 Toast.makeText(getApplicationContext(), "Secure SD card not present", Toast.LENGTH_SHORT).show();
             }
         }
@@ -253,7 +291,7 @@ public class MainActivity extends ActionBarActivity {
     public void checkRaspberryId(String rid) {
 
         if (DBFactory.checkRaspberryPiInDB(rid, this)) {
-            DBFactory.addRaspberryPi(rid,secureElementId);
+            DBFactory.addRaspberryPi(rid, secureElementId);
             addToListView();
         } else
             Toast.makeText(getApplicationContext(), "Duplicate Server", Toast.LENGTH_LONG).show();
@@ -287,6 +325,8 @@ public class MainActivity extends ActionBarActivity {
             rPiHeartBeatAsync.execute();
 
             lwtAsync.execute();
+
+            permissionRevocationAsync.execute();
         }
 
 
