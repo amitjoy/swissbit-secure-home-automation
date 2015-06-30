@@ -80,12 +80,16 @@ app.config(function ($routeProvider, $locationProvider) {
     }).when('/home', {
         templateUrl: 'views/displayUserHome.html',
         controller: 'viewDisplayUserHomeCtrl'
+    }).when('/logOut', {
+        controller: 'viewLogOutCtrl',
+		templateUrl: 'views/logIn.html'
     }).otherwise ( { redirectTo: "/home" });
 	}).
 	run(function($rootScope, $location) {
     	$rootScope.$on( "$routeChangeStart", function(event, next, current) {
-      		if ($rootScope.loggedInUser == null) {
+	  		if ($rootScope.loggedInUser == null) {
         			// no logged user, redirect to /login
+				$rootScope.loggedIn = false;
         		if ( next.templateUrl === "views/logIn.html") {
         		} 
 				else if ( next.templateUrl === "views/signUp.html") {
@@ -144,7 +148,7 @@ app.controller('viewSignUpCtrl', function ($scope, $http, $location, $route) {
 app.controller('viewLogInCtrl', function ($scope, $rootScope, $http, $location, $route) { 
     $scope.existingAdminDefaults = {};
     $scope.validateAdmin = function (existingAdminInfo) {
-		$scope.userNotification = ""
+		$rootScope.userNotification = ""
 		var data = {
             email: $scope.existingAdminInfo.email,
             password: $scope.existingAdminInfo.password,
@@ -154,9 +158,10 @@ app.controller('viewLogInCtrl', function ($scope, $rootScope, $http, $location, 
 			$scope.userNotification = "Login Successful"
 			$rootScope.loggedInUser = JSON.parse(data);
 			console.log($rootScope.loggedInUser);
+			$rootScope.loggedIn = true;
 			$location.path('/home');
 		}).error(function (data, status) {
-    		$scope.userNotification = data.message; 
+    		$rootScope.userNotification = data.message; 
     		console.log('Error ' + data);
 		})
     }
@@ -171,6 +176,17 @@ app.controller('viewLogInCtrl', function ($scope, $rootScope, $http, $location, 
         $scope.existingAdminInfo = angular.copy($scope.existingAdminDefaults);
     }
 });
+
+
+app.controller('viewLogOutCtrl', function ($scope, $rootScope, $location, $route) {
+	$rootScope.loggedInUser = null;
+	$rootScope.loggedIn = false;
+	$location.path("/logIn");
+	$route.reload();
+	$rootScope.userNotification = "You have now been logged Out. Please login again to continue";
+});
+
+
 
 app.controller('viewCustomersCtrl', function ($scope, $http, $location, $route) {
 		$scope.newCustomerForm = false;
