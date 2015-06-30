@@ -36,9 +36,4 @@ public interface IASSDCommunication {
 	 */
 	public String encrypt(String secureElementId, String text);
 
-	/**
-	 * Checks if card is present in the system
-	 */
-	public boolean isCardPresent();
-
 }
