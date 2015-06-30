@@ -55,11 +55,4 @@ public class ASSDCommunication implements IASSDCommunication {
 		return ASSDUtil.encrypt(text, secureElementId);
 	}
 
-	/** {@inheritDoc}} */
-	@Override
-	public boolean isCardPresent() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 }
