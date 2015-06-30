@@ -17,7 +17,7 @@
                 <th>pin</th>
                 <th>UserName</th>
             </tr>
-            <tr ng-repeat="customer in customers" >
+            <tr ng-repeat="customer in customers" ng-click="showCustDetails(customer)" >
                 <td>{{customer.email}}</td>
                 <td>{{customer.id}}</td>
                 <td>{{customer.name}}</td>
