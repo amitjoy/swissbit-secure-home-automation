@@ -7,6 +7,7 @@ import com.swissbit.homeautomation.db.DevicesInfoDbAdapter;
 import com.swissbit.mqtt.client.IKuraMQTTClient;
 import com.swissbit.mqtt.client.KuraMQTTClient;
 import com.swissbit.mqtt.client.message.KuraPayload;
+import com.tum.ssdapi.CardAPI;
 
 import org.fusesource.mqtt.client.Topic;
 
@@ -24,6 +25,8 @@ public final class MQTTFactory {
     private static String secureElementId;
 
     private static IKuraMQTTClient iKuraMQTTClient;
+
+    private static CardAPI secureElementAccess;
 
     public static String getClientId() {
         if (clientId == null)
@@ -58,12 +61,17 @@ public final class MQTTFactory {
     }
 
     public static String getRaspberryPiById() {
-//        return DBFactory.getDevicesInfoDbAdapter(context).getRaspberryId();
         return raspberryId;
     }
 
     public static String getSecureElementId() {
         return secureElementId;
+    }
+
+    public static String getMobileClientSecureElementId(){
+        if(secureElementAccess == null)
+            secureElementAccess = new CardAPI(ActivityContexts.getMainActivityContext());
+        return secureElementAccess.getMyId();
     }
 
     public static void setSecureElementId(String secureElementId) {
@@ -89,6 +97,8 @@ public final class MQTTFactory {
             case TopicsConstants.SWITCH_ON_OFF_LIST_STATUS_SUB:
                 return new String[]{getMQTTTopicPrefix(TopicsConstants.TOPIC_SUBSCRIBE) + TopicsConstants.SWITCH_ON_OFF_LIST_STATUS_SUB + requestId, requestId};
 
+            case TopicsConstants.ACCESS_REVOCATION_SUB:
+                return new String[]{getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + "SURVEILLANCE-V1/" + getMobileClientSecureElementId() + TopicsConstants.ACCESS_REVOCATION_SUB};
         }
 
         return null;
@@ -135,6 +145,8 @@ public final class MQTTFactory {
 
             case TopicsConstants.RETRIEVE_DEVICE_STATUS_PUB:
                 return getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.RETRIEVE_DEVICE_STATUS_PUB;
+
+
         }
 
         return null;

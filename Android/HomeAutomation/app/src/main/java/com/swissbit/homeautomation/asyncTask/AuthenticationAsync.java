@@ -108,6 +108,8 @@ public class AuthenticationAsync extends AsyncTask {
 
         Log.d("Kura MQTTTopic", topic);
 
+        Log.d("Kura requestId", requestId);
+
         if (status)
             client.subscribe(topic, new MessageListener() {
                 @Override
@@ -148,8 +150,6 @@ public class AuthenticationAsync extends AsyncTask {
         payload = MQTTFactory.generatePayload(EncryptionFactory.getEncryptedString(), requestId);
 
 
-//        payload = MQTTFactory.generatePayload("21b4e5a152cdd48d3a2be7c364979b7170b54f533305e9068460fd9703a1753c6aca3644fa695411b57e6e7da965259fd3fc5be7309fbb506a80f052f7c0bf63", requestId);
-
         if (status)
             MQTTFactory.getClient().publish(MQTTFactory.getTopicToPublish(TopicsConstants.RASPBERRY_AUTH_PUB), payload);
 
@@ -157,7 +157,7 @@ public class AuthenticationAsync extends AsyncTask {
         synchronized (monitor) {
             try {
                 Log.d("Notify", "Before");
-                monitor.wait(10000);
+                monitor.wait(15000);
                 Log.d("Notify", "After");
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -186,7 +186,8 @@ public class AuthenticationAsync extends AsyncTask {
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     Log.d("DEBUG AUTHASYNC", "INSIDE SUCCESS");
                     Log.d("Main Activity", "" + mainActivity);
-                    payload.addMetric("secure_element", MQTTFactory.getSecureElementId());
+                    payload.addMetric("secure_element", MQTTFactory.getMobileClientSecureElementId());
+                    payload.addMetric("encVal",EncryptionFactory.getEncryptedString());
 
                     MQTTFactory.getClient().publish(MQTTFactory.getTopicToPublish(TopicsConstants.SURVEILLANCE), payload);
                     Toast.makeText(ActivityContexts.getMainActivityContext(), "RaspberryPi Validated", Toast.LENGTH_LONG).show();
