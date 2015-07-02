@@ -35,6 +35,7 @@ public interface TopicsConstants {
 
     public static final String RETRIEVE_DEVICE_STATUS_PUB = "DEVICE-V1/GET/status";
 
+    public static final String ACCESS_REVOCATION_SUB = "/permission/revoked";
 
 
 }

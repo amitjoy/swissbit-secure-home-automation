@@ -1,5 +1,6 @@
 package com.swissbit.homeautomation.db;
 
+import android.app.Notification;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -10,6 +11,7 @@ import android.util.Log;
 
 import com.swissbit.homeautomation.model.Device;
 import com.swissbit.homeautomation.model.RaspberryPi;
+import com.swissbit.homeautomation.utils.ActivityContexts;
 import com.swissbit.homeautomation.utils.DBConstants;
 
 import java.util.Random;
@@ -162,6 +164,16 @@ public class DevicesInfoDbAdapter  {
         db.update(DBConstants.TABLE_NAME_DEVICES, contentValues, null, null);
     }
 
+    public void resetData(){
+        try {
+
+            DevicesInfoDb dbRecreate = new DevicesInfoDb(ActivityContexts.getMainActivityContext());
+            dbRecreate.onUpgrade(db,1,2);
+
+        } catch(SQLException e){
+            Log.e("ResetDb", "" +e);
+        }
+    }
 
     static class DevicesInfoDb extends SQLiteOpenHelper{
 
