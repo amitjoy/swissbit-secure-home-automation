@@ -184,13 +184,17 @@ public class AccessControl extends Cloudlet implements IAccessControl {
 		Files.readLines(file, Charsets.UTF_8).forEach(secureElementId -> {
 			if (!secureElementId.contains(" ") | !secureElementId.contains("")) {
 				final KuraPayload payload = new KuraPayload();
+
 				payload.addMetric("secureElementId", secureElementId);
+				payload.addMetric("revokedStatus", true);
+
 				try {
 					this.getCloudApplicationClient().controlPublish(secureElementId + "/access/revoked", payload, 2,
-							false, 5);
+							true, 5);
 				} catch (final Exception e) {
 					LOGGER.error(Throwables.getStackTraceAsString(e));
 				}
+
 			}
 		});
 	}
