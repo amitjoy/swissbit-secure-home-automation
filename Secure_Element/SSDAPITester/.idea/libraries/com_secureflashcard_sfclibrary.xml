@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="com.secureflashcard.sfclibrary">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/libs/com.secureflashcard.sfclibrary.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
