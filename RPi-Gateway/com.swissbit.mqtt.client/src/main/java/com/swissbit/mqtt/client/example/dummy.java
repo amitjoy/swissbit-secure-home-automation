@@ -22,6 +22,7 @@ import com.swissbit.mqtt.client.message.KuraPayload;
 
 public class dummy {
 
+	private static String ACCESS_REVOCATION_SUBSCRIPTION = "$EDC/swissbit/B8:27:EB:BE:3F:BF/SURVEILLANCE-V1/1b58095eb4c6b36d794c3ed776ae2378/permission/revoked";
 	private static IKuraMQTTClient client;
 	private static String clientId = "AMA";
 	private static final String REQUEST_PERM = "$EDC/swissbit/B8:27:EB:BE:3F:BF/SURVEILLANCE-V1/POST/sample";
@@ -45,7 +46,7 @@ public class dummy {
 		status = client.connect();
 
 		if (status) {
-			client.subscribe(RESPONSE_ZWAVE_LIST, new MessageListener() {
+			client.subscribe(ACCESS_REVOCATION_SUBSCRIPTION, new MessageListener() {
 
 				@Override
 				public void processMessage(final KuraPayload payload) {
