@@ -19,6 +19,7 @@
 package com.swissbit.homeautomation.activity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -161,6 +162,12 @@ public class MainActivity extends ActionBarActivity {
     };
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -174,27 +181,7 @@ public class MainActivity extends ActionBarActivity {
 
         secureElementAccess = new CardAPI(getApplicationContext());
 
-        /*Check for access revocation
-        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-        alertDialog.setTitle("Warning!");
-        alertDialog.setMessage("Your Access has been revoked. Application will no longer function");
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        finish();
-                        System.exit(0);
-                    }
-                });
-        alertDialog.show();
-         */
-
-
-        permissionRevocationAsync = new PermissionRevocationAsync(this);
-
-        getSecureCode();
-
-        addToListView();
+        checkAccessRevoked();
 
         Log.d("1:", "" + secureElementAccess.getMyId());
 
@@ -234,6 +221,10 @@ public class MainActivity extends ActionBarActivity {
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             devicesInfoDbAdapter.resetData();
+
+                            if(adapter!=null)
+                                adapter.notifyDataSetChanged();
+                            
                             getSecureCode();
                         }
                     });
@@ -276,7 +267,6 @@ public class MainActivity extends ActionBarActivity {
             Log.d("Secureelement", "" + secureElementAccess.isCardPresent());
 
             if (secureElementAccess.isCardPresent()) {
-//                String encryptedString = secureElementAccess.encryptMsg("AB");
                 String encryptedString = secureElementAccess.encryptMsgWithID(secureElementId, rid);
                 EncryptionFactory.setEncryptedString(encryptedString);
                 Log.d("Encrypted Data", EncryptionFactory.getEncryptedString());
@@ -330,6 +320,37 @@ public class MainActivity extends ActionBarActivity {
         }
 
 
+    }
+
+    public void checkAccessRevoked(){
+
+        //Check for access revocation
+        Log.d("SDEnabled",secureElementAccess.getEnabled().toString());
+        if("029000".equals(secureElementAccess.getEnabled().toString())) {
+            Log.d("Inside Alert","Alert");
+            Context context = MainActivity.this;
+            AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+            alertDialog.setTitle("Warning!");
+            alertDialog.setMessage("Your Access has been revoked. Application will no longer function");
+            alertDialog.setCancelable(false);
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            finish();
+                            System.exit(0);
+                        }
+                    });
+            alertDialog.show();
+        }
+        else {
+
+            permissionRevocationAsync = new PermissionRevocationAsync(this);
+
+            getSecureCode();
+
+            addToListView();
+        }
     }
 
 }

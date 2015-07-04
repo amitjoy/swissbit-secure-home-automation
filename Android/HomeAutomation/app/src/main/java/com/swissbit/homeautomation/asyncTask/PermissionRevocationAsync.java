@@ -80,7 +80,11 @@ public class PermissionRevocationAsync extends AsyncTask {
                 public void processMessage(KuraPayload kuraPayload) {
                     if (kuraPayload != null) {
                         Log.d("AccessRevoked", "Revoked");
-//                        publishProgress();
+                        DevicesInfoDbAdapter devicesInfoDbAdapter = DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getCurrentActivityContext());
+                        devicesInfoDbAdapter.resetData();
+
+                        secureElementAccess.setDisabled();
+                        publishProgress();
                     }
                 }
             });
@@ -98,6 +102,7 @@ public class PermissionRevocationAsync extends AsyncTask {
         AlertDialog alertDialog = new AlertDialog.Builder(ActivityContexts.getCurrentActivityContext()).create();
         alertDialog.setTitle("Warning!");
         alertDialog.setMessage("Your Access has been revoked. Application will no longer function");
+        alertDialog.setCancelable(false);
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {

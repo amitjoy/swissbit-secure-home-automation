@@ -9,11 +9,13 @@ import com.swissbit.homeautomation.activity.DeviceActivity;
 import com.swissbit.homeautomation.db.DevicesInfoDbAdapter;
 import com.swissbit.homeautomation.utils.ActivityContexts;
 import com.swissbit.homeautomation.utils.DBFactory;
+import com.swissbit.homeautomation.utils.EncryptionFactory;
 import com.swissbit.homeautomation.utils.MQTTFactory;
 import com.swissbit.homeautomation.utils.TopicsConstants;
 import com.swissbit.mqtt.client.IKuraMQTTClient;
 import com.swissbit.mqtt.client.adapter.MessageListener;
 import com.swissbit.mqtt.client.message.KuraPayload;
+import com.tum.ssdapi.CardAPI;
 
 /**
  * Created by manit on 18/06/15.
@@ -42,10 +44,13 @@ public class RetrieveDeviceListAsync extends AsyncTask {
 
     private ProgressDialog progressDialog;
 
+    private CardAPI secureElementAccess;
+
     @Override
     protected void onPreExecute() {
         progressDialog = ProgressDialog.show(ActivityContexts.getDeviceActivityContext(), "Retrieving Device List",
                 "Please Wait", true);
+        secureElementAccess = new CardAPI(ActivityContexts.getDeviceActivityContext());
     }
 
     @Override
@@ -106,9 +111,11 @@ public class RetrieveDeviceListAsync extends AsyncTask {
 
 
             payload = MQTTFactory.generatePayload("", requestId);
-
+            String encryptedString = secureElementAccess.encryptMsgWithID(MQTTFactory.getSecureElementId(),"Raspberry");
+            payload.addMetric("encVal", encryptedString);
+            Log.d("Encrypted", encryptedString);
             MQTTFactory.getClient().publish(MQTTFactory.getTopicToPublish(TopicsConstants.RETRIEVE_DEVICE_LIST_PUB), payload);
-            Log.d("Topic Published", "Done");
+            Log.d("Topic Published", MQTTFactory.getTopicToPublish(TopicsConstants.RETRIEVE_DEVICE_LIST_PUB));
         }
 
 
