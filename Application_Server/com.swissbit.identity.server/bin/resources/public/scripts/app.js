@@ -1,6 +1,6 @@
 //Angular module declaration
 var app = angular.module('identity-server', [
-    'ngCookies',
+	'ngCookies',
     'ngResource',
     'ngSanitize',
     'ngRoute'
@@ -191,7 +191,7 @@ app.controller('viewLogOutCtrl', function ($scope, $rootScope, $location, $route
 app.controller('viewCustomersCtrl', function ($scope, $http, $location, $route) {
 		$scope.newCustomerForm = false;
 		$scope.newCustomerDefaults = {};
-
+		$scope.isCollapsed = true;
         $http.get('/users').success(function (data) {
         	$scope.customers = data;
         })
