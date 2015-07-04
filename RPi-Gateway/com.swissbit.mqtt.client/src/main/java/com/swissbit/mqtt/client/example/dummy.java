@@ -45,7 +45,7 @@ public class dummy {
 		status = client.connect();
 
 		if (status) {
-			client.subscribe(RESPONSE_ZWAVE, new MessageListener() {
+			client.subscribe(RESPONSE_ZWAVE_LIST, new MessageListener() {
 
 				@Override
 				public void processMessage(final KuraPayload payload) {
@@ -64,13 +64,13 @@ public class dummy {
 		payload.addMetric("requester.client.id", clientId);
 		payload.addMetric("nodeId", "8");
 		payload.addMetric("encVal",
-				"9df38b8729d743d4f8fcfb36f6bb4a5932d87b00e88f964604e86ea7cc599b49986a6d032f4fdb0d2be82d0dd026255ef06d14ac523d393283e1322d396163d91378868dbd45e821fe737f58f90a4a12");
+				"821b5d53fcba7680aecafbfd9a29658923e6d0a27315daa4345ffa865c4fd7a964bfe51a252cd8e891a8503ae09b82836ffb5e15b1e61233b7f3938b5869900a93da74ceb1ba272d26f3cf0f7ba073b1");
 		// payload.setBody("81896ecbb9afb39894c7144b5e962b08f132e9fd228539521aba75d4abbc18fe".getBytes());
 		System.out.println(status);
-		System.out.println(REQUEST_ZWAVE);
+		System.out.println(REQUEST_ZWAVE_LIST);
 
 		if (status) {
-			client.publish(REQUEST_ZWAVE, payload);
+			client.publish(REQUEST_ZWAVE_LIST, payload);
 
 			System.out.println("--------------------------------------------------------------------");
 			System.out.println("Request Published");

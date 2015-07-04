@@ -140,7 +140,9 @@ public final class ZWaveOperator implements ZWaveControllerListener {
 		if (node.getNodeId() == 2) {
 			return;
 		}
+
 		System.out.println("ZWave Device Added:" + node.getNodeId());
+
 		switch (s_argDevCommand) {
 		case "ON":
 			if (node.getNodeId() == s_nodeId) {
@@ -172,6 +174,9 @@ public final class ZWaveOperator implements ZWaveControllerListener {
 				final MeterCommandClass mcc = (MeterCommandClass) node.getCommandClass(MeterCommandClass.ID);
 				System.out.println("Consumption:" + (mcc.getCurrentValue()));
 			}
+			break;
+
+		case "LIST":
 			break;
 
 		default:
