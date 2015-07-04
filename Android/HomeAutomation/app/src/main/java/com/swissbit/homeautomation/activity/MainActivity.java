@@ -181,6 +181,8 @@ public class MainActivity extends ActionBarActivity {
 
         secureElementAccess = new CardAPI(getApplicationContext());
 
+        permissionRevocationAsync = new PermissionRevocationAsync(this);
+
         checkAccessRevoked();
 
         Log.d("1:", "" + secureElementAccess.getMyId());
@@ -216,16 +218,14 @@ public class MainActivity extends ActionBarActivity {
         if (id == R.id.reset_data) {
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
             alertDialog.setTitle("Caution!");
-            alertDialog.setMessage("Are you sure you want to reset all data?");
+            alertDialog.setMessage("Are you sure you want to reset all data? Application will be restarted in this case ");
             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             devicesInfoDbAdapter.resetData();
-
-                            if(adapter!=null)
-                                adapter.notifyDataSetChanged();
-                            
-                            getSecureCode();
+                            dialog.dismiss();
+                            finish();
+                            System.exit(0);
                         }
                     });
             alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel",
@@ -319,7 +319,6 @@ public class MainActivity extends ActionBarActivity {
             permissionRevocationAsync.execute();
         }
 
-
     }
 
     public void checkAccessRevoked(){
@@ -344,8 +343,6 @@ public class MainActivity extends ActionBarActivity {
             alertDialog.show();
         }
         else {
-
-            permissionRevocationAsync = new PermissionRevocationAsync(this);
 
             getSecureCode();
 
