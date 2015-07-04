@@ -1,16 +1,12 @@
 package com.swissbit.homeautomation.asyncTask;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
 
-import com.android.swissbit.homeautomation.R;
 import com.loopj.android.http.AsyncHttpClient;
 import com.swissbit.homeautomation.activity.MainActivity;
 import com.swissbit.homeautomation.db.DevicesInfoDbAdapter;
@@ -79,12 +75,14 @@ public class PermissionRevocationAsync extends AsyncTask {
                 @Override
                 public void processMessage(KuraPayload kuraPayload) {
                     if (kuraPayload != null) {
-                        Log.d("AccessRevoked", "Revoked");
-                        DevicesInfoDbAdapter devicesInfoDbAdapter = DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getCurrentActivityContext());
-                        devicesInfoDbAdapter.resetData();
+                        if(!(boolean) kuraPayload.getMetric("revokedStatus")) {
+                            Log.d("AccessRevoked", "Revoked");
+                            DevicesInfoDbAdapter devicesInfoDbAdapter = DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getCurrentActivityContext());
+                            devicesInfoDbAdapter.resetData();
 
-                        secureElementAccess.setDisabled();
-                        publishProgress();
+                            secureElementAccess.setDisabled();
+                            publishProgress();
+                        }
                     }
                 }
             });
@@ -99,6 +97,8 @@ public class PermissionRevocationAsync extends AsyncTask {
         DevicesInfoDbAdapter db = DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getCurrentActivityContext());
         db.resetData();
 
+        Log.d("AppContext", "App");
+
         AlertDialog alertDialog = new AlertDialog.Builder(ActivityContexts.getCurrentActivityContext()).create();
         alertDialog.setTitle("Warning!");
         alertDialog.setMessage("Your Access has been revoked. Application will no longer function");
@@ -107,13 +107,10 @@ public class PermissionRevocationAsync extends AsyncTask {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        Activity currentActivity=(Activity)ActivityContexts.getCurrentActivityContext();
-                        currentActivity.finish();
                         System.exit(0);
                     }
                 });
         alertDialog.show();
-
 
     }
 }

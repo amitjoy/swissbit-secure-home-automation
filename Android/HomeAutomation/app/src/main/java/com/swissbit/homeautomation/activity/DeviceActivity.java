@@ -75,7 +75,6 @@ public class DeviceActivity extends ActionBarActivity {
             DeviceStatusRefreshAsync deviceStatusRefreshAsync = new DeviceStatusRefreshAsync();
             deviceStatusRefreshAsync.execute();
         }
-//            addToListView();
 
     }
 
@@ -92,7 +91,12 @@ public class DeviceActivity extends ActionBarActivity {
 
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        ActivityContexts.setCurrentActivityContext(ActivityContexts.getMainActivityContext());
+        Log.d("AppContext",""+ActivityContexts.getMainActivityContext());
+    }
 }
 
 
