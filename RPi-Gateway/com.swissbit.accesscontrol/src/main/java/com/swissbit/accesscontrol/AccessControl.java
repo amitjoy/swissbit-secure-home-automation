@@ -180,14 +180,14 @@ public class AccessControl extends Cloudlet implements IAccessControl {
 	 */
 	private void doRevokePermision(final File file) throws IOException {
 		// publish permission data to
-		// $EDC/swissbit/[RPi-MAC]/SURVEILLANCE-V1/[secureElementId]/permission/revoked
+		// $EDC/swissbit/[RPi-MAC]/SURVEILLANCE-V1/[secureElementId]/access/revoked
 		Files.readLines(file, Charsets.UTF_8).forEach(secureElementId -> {
 			if (!secureElementId.contains(" ") | !secureElementId.contains("")) {
 				final KuraPayload payload = new KuraPayload();
 				payload.addMetric("secureElementId", secureElementId);
 				try {
-					this.getCloudApplicationClient().controlPublish(secureElementId + "/permission/revoked", payload, 2,
-							true, 5);
+					this.getCloudApplicationClient().controlPublish(secureElementId + "/access/revoked", payload, 2,
+							false, 5);
 				} catch (final Exception e) {
 					LOGGER.error(Throwables.getStackTraceAsString(e));
 				}
