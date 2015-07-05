@@ -56,7 +56,6 @@ app.directive('editText', function(){
     };
 });
 
-
 // Route declaration
 app.config(function ($routeProvider, $locationProvider) {
     // use the HTML5 History API
@@ -235,7 +234,6 @@ app.controller('viewCustomersCtrl', function ($scope, $http, $location, $route) 
 app.controller('viewRaspPisCtrl', function ($scope, $http, $location, $route) {
         $scope.newRaspPiForm = false;
         $scope.newRaspPiDefaults = {};
-
         $http.get('/pis').success(function (data) {
         	$scope.rpis = data;
         })
@@ -261,7 +259,12 @@ app.controller('viewRaspPisCtrl', function ($scope, $http, $location, $route) {
                 console.log('Error ' + data);
             })
         }
-
+		$scope.viewCodeLog = function(rpiMacAddr) {
+			console.log(rpiMacAddr);
+			$location.url('logs/'+ rpiMacAddr + '/code');
+			
+		}
+	
         $scope.removeForm = function () {
             $scope.newRaspPiInfo = angular.copy($scope.newRaspPiDefaults);
             $scope.newRaspPiForm = false;

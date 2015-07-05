@@ -22,6 +22,7 @@
                 			<th>Name</th>
                 			<th>pin</th>
                 			<th>UserName</th>
+							<th></th>
             			</tr>
             				<tr ng-repeat="customer in customers" >
                 			<td>{{customer.email}}</td>
@@ -29,10 +30,16 @@
                 			<td>{{customer.name}}</td>
                 			<td>{{customer.pin}}</td>
                 			<td>{{customer.username}}</td>
+							<td>
+							    <a class="glyphicon glyphicon-pencil" role="presentation"
+       								ng-click="editCustomer(item)"></a>
+    							<a class="glyphicon glyphicon-remove" role="presentation"
+      								ng-click="removeCustomer(item)"></a>
+							</td>
             			</tr>
         	</table>
 			</br>
-			<button ng-click="addCustomer()">Add new Customer Details</button>
+			<button type="button" ng-click="addCustomer()" class="btn btn-primary">Add new Customer Details</button>
 			</br></br>
 			<div ng-show="newCustomerForm">
 				<form name="newCustomer" role="form" novalidate>
