@@ -9,7 +9,7 @@ import com.android.swissbit.homeautomation.R;
 import com.google.common.collect.Lists;
 import com.swissbit.homeautomation.asyncTask.DeviceStatusRefreshAsync;
 import com.swissbit.homeautomation.asyncTask.RetrieveDeviceListAsync;
-import com.swissbit.homeautomation.db.DevicesInfoDbAdapter;
+import com.swissbit.homeautomation.db.ApplicationDb;
 import com.swissbit.homeautomation.model.Device;
 import com.swissbit.homeautomation.ui.adapter.DeviceAdapter;
 import com.swissbit.homeautomation.utils.ActivityContexts;
@@ -35,11 +35,7 @@ public class DeviceActivity extends ActionBarActivity {
 
     private String raspberryId;
 
-    private String secureElementId;
-
-    private DevicesInfoDbAdapter devicesInfoDbAdapter;
-
-
+    private ApplicationDb applicationDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +44,7 @@ public class DeviceActivity extends ActionBarActivity {
 
         //Save the context of DeviceActivity for later usage in other classes
         ActivityContexts.setDeviceActivityContext(this);
-        devicesInfoDbAdapter = DBFactory.getDevicesInfoDbAdapter(this);
+        applicationDb = DBFactory.getDevicesInfoDbAdapter(this);
 
         deviceListView = (ListView) findViewById(R.id.listDevice);
 
@@ -67,7 +63,7 @@ public class DeviceActivity extends ActionBarActivity {
     }
 
     public void getDeviceList(){
-        if(devicesInfoDbAdapter.getDevice() == null){
+        if(applicationDb.getDevice() == null){
             RetrieveDeviceListAsync retrieveDeviceListAsync = new RetrieveDeviceListAsync(raspberryId);
             retrieveDeviceListAsync.execute();
         }
@@ -81,7 +77,7 @@ public class DeviceActivity extends ActionBarActivity {
 
     public void addToListView() {
         Log.d("Adding List view","Added");
-        device = devicesInfoDbAdapter.getDevice();
+        device = applicationDb.getDevice();
         listOfDevice = Lists.newArrayList(device);
 
         adapter = new DeviceAdapter(getApplicationContext(), listOfDevice);

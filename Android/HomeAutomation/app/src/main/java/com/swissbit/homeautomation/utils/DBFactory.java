@@ -3,7 +3,7 @@ package com.swissbit.homeautomation.utils;
 import android.content.Context;
 import android.util.Log;
 
-import com.swissbit.homeautomation.db.DevicesInfoDbAdapter;
+import com.swissbit.homeautomation.db.ApplicationDb;
 import com.swissbit.homeautomation.model.RaspberryPi;
 
 /**
@@ -11,17 +11,17 @@ import com.swissbit.homeautomation.model.RaspberryPi;
  */
 public final class DBFactory {
 
-    private static DevicesInfoDbAdapter devicesInfoDbAdapter;
+    private static ApplicationDb applicationDb;
 
-    public static DevicesInfoDbAdapter getDevicesInfoDbAdapter(Context context) {
-        if (devicesInfoDbAdapter == null)
-            devicesInfoDbAdapter = new DevicesInfoDbAdapter(context);
+    public static ApplicationDb getDevicesInfoDbAdapter(Context context) {
+        if (applicationDb == null)
+            applicationDb = new ApplicationDb(context);
 
-        return devicesInfoDbAdapter;
+        return applicationDb;
     }
 
     public static void addRaspberryPi(String rid, String secureElementId){
-        long id = devicesInfoDbAdapter.insertRaspberry(rid, secureElementId, "Raspberry", rid);
+        long id = applicationDb.insertRaspberry(rid, secureElementId, "Raspberry", rid);
         if(id<0){
             Log.d("Insert", "Failed to insert");
         }
@@ -36,6 +36,6 @@ public final class DBFactory {
     }
 
     public static RaspberryPi getRaspberry(){
-        return devicesInfoDbAdapter.getRaspberry();
+        return applicationDb.getRaspberry();
     }
 }

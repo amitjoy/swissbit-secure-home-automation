@@ -8,7 +8,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.swissbit.homeautomation.activity.DeviceActivity;
-import com.swissbit.homeautomation.db.DevicesInfoDbAdapter;
+import com.swissbit.homeautomation.db.ApplicationDb;
 import com.swissbit.homeautomation.model.Device;
 import com.swissbit.homeautomation.utils.ActivityContexts;
 import com.swissbit.homeautomation.utils.DBFactory;
@@ -36,7 +36,7 @@ public class DeviceStatusRefreshAsync extends AsyncTask {
 
     private boolean deviceStatus;
 
-    private DevicesInfoDbAdapter devicesInfoDbAdapter;
+    private ApplicationDb applicationDb;
 
     private Switch socketSwitch;
 
@@ -52,8 +52,8 @@ public class DeviceStatusRefreshAsync extends AsyncTask {
     protected void onPreExecute() {
         progressDialog = ProgressDialog.show(ActivityContexts.getDeviceActivityContext(), "Retrieving Device Status",
                 "Please Wait", true);
-        devicesInfoDbAdapter = DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getDeviceActivityContext());
-        device = devicesInfoDbAdapter.getDevice();
+        applicationDb = DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getDeviceActivityContext());
+        device = applicationDb.getDevice();
         deviceNodeId = device.getDeviceNodeId();
         secureElementAccess = new CardAPI(ActivityContexts.getMainActivityContext());
 //        Log.d("SE",MQTTFactory.getSecureElementId());
@@ -87,10 +87,10 @@ public class DeviceStatusRefreshAsync extends AsyncTask {
                         int status = (int) kuraPayload.getMetric("response.code");
                         deviceStatus = (boolean) kuraPayload.getMetric("status");
                         if(deviceStatus == true){
-                            devicesInfoDbAdapter.updateDeviceStatus("true", deviceNodeId);
+                            applicationDb.updateDeviceStatus("true", deviceNodeId);
                         }
                         else{
-                            devicesInfoDbAdapter.updateDeviceStatus("false", deviceNodeId);
+                            applicationDb.updateDeviceStatus("false", deviceNodeId);
                         }
                         publishProgress();
 

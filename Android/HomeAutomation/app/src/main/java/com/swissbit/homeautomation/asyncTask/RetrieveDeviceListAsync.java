@@ -6,10 +6,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.swissbit.homeautomation.activity.DeviceActivity;
-import com.swissbit.homeautomation.db.DevicesInfoDbAdapter;
+import com.swissbit.homeautomation.db.ApplicationDb;
 import com.swissbit.homeautomation.utils.ActivityContexts;
 import com.swissbit.homeautomation.utils.DBFactory;
-import com.swissbit.homeautomation.utils.EncryptionFactory;
 import com.swissbit.homeautomation.utils.MQTTFactory;
 import com.swissbit.homeautomation.utils.TopicsConstants;
 import com.swissbit.mqtt.client.IKuraMQTTClient;
@@ -36,7 +35,7 @@ public class RetrieveDeviceListAsync extends AsyncTask {
 
     private int deviceNodeId;
 
-    private DevicesInfoDbAdapter devicesInfoDbAdapter;
+    private ApplicationDb applicationDb;
 
     private String raspberryId;
 
@@ -56,7 +55,7 @@ public class RetrieveDeviceListAsync extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] params) {
         final IKuraMQTTClient client = MQTTFactory.getClient();
-        devicesInfoDbAdapter = DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getDeviceActivityContext());
+        applicationDb = DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getDeviceActivityContext());
         boolean status = false;
 
         monitor = new Object();
@@ -83,10 +82,10 @@ public class RetrieveDeviceListAsync extends AsyncTask {
                             Log.d("Response", "success");
                             deviceNodeId = Integer.valueOf((String) kuraPayload.getMetric("node.id_0"));
                             Log.d("HaspMap", "" + deviceNodeId);
-                            Log.d("Device", "" + devicesInfoDbAdapter.checkDeviceById(deviceNodeId));
-                            if (!devicesInfoDbAdapter.checkDeviceById(deviceNodeId)) {
+                            Log.d("Device", "" + applicationDb.checkDeviceById(deviceNodeId));
+                            if (!applicationDb.checkDeviceById(deviceNodeId)) {
                                 Log.d("Device", "Inserted");
-                                devicesInfoDbAdapter.insertDevice(deviceNodeId, raspberryId, null, null, "false");
+                                applicationDb.insertDevice(deviceNodeId, raspberryId, null, null, "false");
                                 Log.d("Device", "Inserted");
                             }
                             publishProgress();

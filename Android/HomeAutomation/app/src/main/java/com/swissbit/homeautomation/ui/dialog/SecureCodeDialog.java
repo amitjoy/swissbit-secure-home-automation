@@ -5,7 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Log;
 import android.widget.EditText;
-import com.swissbit.homeautomation.db.DevicesInfoDbAdapter;
+
+import com.swissbit.homeautomation.db.ApplicationDb;
 import com.swissbit.homeautomation.utils.DBFactory;
 import com.swissbit.homeautomation.ws.VerifySecretCode;
 
@@ -17,13 +18,13 @@ public class SecureCodeDialog {
     private AlertDialog.Builder dialogBuilder;
     private Context mainContext;
     private VerifySecretCode verifySecretCode;
-    private DevicesInfoDbAdapter devicesInfoDbAdapter;
+    private ApplicationDb applicationDb;
     private String secretCode;
 
 
     public void getSecureCode(Context context){
         this.mainContext = context;
-        devicesInfoDbAdapter = DBFactory.getDevicesInfoDbAdapter(context);
+        applicationDb = DBFactory.getDevicesInfoDbAdapter(context);
 
         dialogBuilder = new AlertDialog.Builder(context);
         final EditText txtCode = new EditText(context);
@@ -37,7 +38,7 @@ public class SecureCodeDialog {
             public void onClick(DialogInterface dialog, int which) {
                 secretCode = txtCode.getText().toString().trim();
                 Log.d("After Dialog", "Trim"+secretCode);
-                verifySecretCode = new VerifySecretCode(mainContext, devicesInfoDbAdapter, secretCode);
+                verifySecretCode = new VerifySecretCode(mainContext, applicationDb, secretCode);
                 verifySecretCode.executeCredentialWS();
                 Log.d("After Set","ExecWS");
 

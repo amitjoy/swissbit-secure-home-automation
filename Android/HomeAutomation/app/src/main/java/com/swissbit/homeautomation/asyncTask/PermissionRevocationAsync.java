@@ -9,7 +9,7 @@ import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.swissbit.homeautomation.activity.MainActivity;
-import com.swissbit.homeautomation.db.DevicesInfoDbAdapter;
+import com.swissbit.homeautomation.db.ApplicationDb;
 import com.swissbit.homeautomation.utils.ActivityContexts;
 import com.swissbit.homeautomation.utils.DBFactory;
 import com.swissbit.homeautomation.utils.EncryptionFactory;
@@ -77,8 +77,8 @@ public class PermissionRevocationAsync extends AsyncTask {
                     if (kuraPayload != null) {
                         if(!(boolean) kuraPayload.getMetric("revokedStatus")) {
                             Log.d("AccessRevoked", "Revoked");
-                            DevicesInfoDbAdapter devicesInfoDbAdapter = DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getCurrentActivityContext());
-                            devicesInfoDbAdapter.resetData();
+                            ApplicationDb applicationDb = DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getCurrentActivityContext());
+                            applicationDb.resetData();
 
                             secureElementAccess.setDisabled();
                             publishProgress();
@@ -94,7 +94,7 @@ public class PermissionRevocationAsync extends AsyncTask {
     @Override
     public void onProgressUpdate(Object[] values) {
 
-        DevicesInfoDbAdapter db = DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getCurrentActivityContext());
+        ApplicationDb db = DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getCurrentActivityContext());
         db.resetData();
 
         Log.d("AppContext", "App");

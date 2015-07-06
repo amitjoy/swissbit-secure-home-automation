@@ -7,14 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
-import android.widget.TextView;
 
 import com.android.swissbit.homeautomation.R;
 import com.swissbit.homeautomation.asyncTask.DeviceCmdAsync;
-import com.swissbit.homeautomation.db.DevicesInfoDbAdapter;
+import com.swissbit.homeautomation.db.ApplicationDb;
 import com.swissbit.homeautomation.model.Device;
 import com.swissbit.homeautomation.utils.DBFactory;
 import com.swissbit.homeautomation.utils.MQTTFactory;
@@ -40,7 +38,7 @@ public class DeviceAdapter extends ArrayAdapter<Device> {
 
     private ImageView imageDevice;
 
-    private DevicesInfoDbAdapter devicesInfoDbAdapter;
+    private ApplicationDb applicationDb;
 
     public DeviceAdapter(Context context, List<Device> deviceInfo) {
         super(context, R.layout.row_device_details, deviceInfo);
@@ -48,7 +46,7 @@ public class DeviceAdapter extends ArrayAdapter<Device> {
         device = deviceInfo.get(0);
         payload = new KuraPayload();
         client = MQTTFactory.getClient();
-        devicesInfoDbAdapter = DBFactory.getDevicesInfoDbAdapter(getContext());
+        applicationDb = DBFactory.getDevicesInfoDbAdapter(getContext());
     }
 
     @Override
@@ -93,23 +91,6 @@ public class DeviceAdapter extends ArrayAdapter<Device> {
 
             }
         });
-
-//        btnRefresh.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                Log.d("socketswitch1", "" + socketSwitch);
-////                DeviceStatusRefreshAsync deviceStatusRefreshAsync = new DeviceStatusRefreshAsync(8, socketSwitch,imageDevice);
-////                deviceStatusRefreshAsync.execute();
-//
-////                if ("true".equals(devicesInfoDbAdapter.getDevice().getStatus()))
-////                    socketSwitch.setChecked(false);
-////                else
-////                    socketSwitch.setChecked(false);
-//
-//                imageDevice.setImageResource(R.drawable.socketswitchon);
-//            }
-//        });
 
         return customView;
     }

@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.swissbit.homeautomation.R;
-import com.swissbit.homeautomation.db.DevicesInfoDbAdapter;
+import com.swissbit.homeautomation.db.ApplicationDb;
 import com.swissbit.homeautomation.utils.ActivityContexts;
 import com.swissbit.homeautomation.utils.DBFactory;
 import com.swissbit.homeautomation.utils.MQTTFactory;
@@ -38,7 +38,7 @@ public class DeviceCmdAsync extends AsyncTask {
 
     private ImageView imageDevice;
 
-    private DevicesInfoDbAdapter devicesInfoDbAdapter;
+    private ApplicationDb applicationDb;
 
     private ProgressDialog progressDialog;
 
@@ -50,7 +50,7 @@ public class DeviceCmdAsync extends AsyncTask {
         this.cmd = cmd;
         this.deviceNodeId = deviceNodeId;
         this.raspberryId = raspberryId;
-        devicesInfoDbAdapter = DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getDeviceActivityContext());
+        applicationDb = DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getDeviceActivityContext());
         secureElementAccess = new CardAPI(ActivityContexts.getMainActivityContext());
     }
 
@@ -91,9 +91,9 @@ public class DeviceCmdAsync extends AsyncTask {
                             Log.d("Response", "success");
                             subscriptionResponse = true;
                             if (cmd.equals("on"))
-                                devicesInfoDbAdapter.updateDeviceStatus("true", deviceNodeId);
+                                applicationDb.updateDeviceStatus("true", deviceNodeId);
                             else
-                                devicesInfoDbAdapter.updateDeviceStatus("false", deviceNodeId);
+                                applicationDb.updateDeviceStatus("false", deviceNodeId);
                         } else {
                             Log.d("Response", "Failed");
                             subscriptionResponse = false;

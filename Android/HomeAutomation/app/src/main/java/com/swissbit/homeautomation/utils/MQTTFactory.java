@@ -1,15 +1,11 @@
 package com.swissbit.homeautomation.utils;
 
-import android.content.Context;
 import android.util.Log;
 
-import com.swissbit.homeautomation.db.DevicesInfoDbAdapter;
 import com.swissbit.mqtt.client.IKuraMQTTClient;
 import com.swissbit.mqtt.client.KuraMQTTClient;
 import com.swissbit.mqtt.client.message.KuraPayload;
 import com.tum.ssdapi.CardAPI;
-
-import org.fusesource.mqtt.client.Topic;
 
 import java.util.Random;
 

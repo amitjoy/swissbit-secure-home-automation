@@ -6,7 +6,7 @@ import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.swissbit.homeautomation.db.DevicesInfoDbAdapter;
+import com.swissbit.homeautomation.db.ApplicationDb;
 import com.swissbit.homeautomation.ui.dialog.SecureCodeDialog;
 import com.swissbit.homeautomation.utils.MQTTFactory;
 import com.swissbit.homeautomation.utils.WSConstants;
@@ -30,13 +30,13 @@ public class VerifySecretCode {
     private Context mainContext;
     private IKuraMQTTClient client = null;
 
-    public VerifySecretCode(Context context,DevicesInfoDbAdapter devicesInfoDbAdapter, String secretCode) {
-        this.devicesInfoDbAdapter = devicesInfoDbAdapter;
+    public VerifySecretCode(Context context,ApplicationDb applicationDb, String secretCode) {
+        this.applicationDb = applicationDb;
         this.secretCode = secretCode;
         this.mainContext = context;
     }
 
-    private DevicesInfoDbAdapter devicesInfoDbAdapter;
+    private ApplicationDb applicationDb;
 
     public void executeCredentialWS() {
         if(secretCode.length() == 0){
@@ -53,7 +53,7 @@ public class VerifySecretCode {
                     Log.d("WSCred", username);
                     Log.d("WSCred", password);
                     if (username != null && password != null)
-                        devicesInfoDbAdapter.setCredentials(secretCode, username, password);
+                        applicationDb.setCredentials(secretCode, username, password);
                     client = MQTTFactory.getClient();
                     boolean status = client.connect();
                     Log.d("After Dialog", "" + status);
@@ -73,7 +73,7 @@ public class VerifySecretCode {
                     username = usernameTmp.getString("username");
                     password = passwordTmp.getString("password");
                     if (username != null && password != null)
-                        devicesInfoDbAdapter.setCredentials(secretCode, username, password);
+                        applicationDb.setCredentials(secretCode, username, password);
                     Log.d("WSCred", username);
                     Log.d("WSCred", password);
                     client = MQTTFactory.getClient();

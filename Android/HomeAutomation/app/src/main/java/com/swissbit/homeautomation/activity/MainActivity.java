@@ -22,7 +22,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -30,9 +29,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -41,8 +37,10 @@ import com.swissbit.homeautomation.asyncTask.AuthenticationAsync;
 import com.android.swissbit.homeautomation.R;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.swissbit.homeautomation.asyncTask.HeartBeatAsync;
+import com.swissbit.homeautomation.asyncTask.LWTAsync;
 import com.swissbit.homeautomation.asyncTask.PermissionRevocationAsync;
-import com.swissbit.homeautomation.db.DevicesInfoDbAdapter;
+import com.swissbit.homeautomation.db.ApplicationDb;
 import com.swissbit.homeautomation.model.RaspberryPi;
 import com.swissbit.homeautomation.ui.adapter.RPiAdapter;
 import com.swissbit.homeautomation.utils.ActivityContexts;
@@ -50,27 +48,17 @@ import com.swissbit.homeautomation.utils.DBFactory;
 import com.swissbit.homeautomation.utils.EncryptionFactory;
 import com.swissbit.homeautomation.utils.MQTTFactory;
 import com.swissbit.homeautomation.ui.dialog.SecureCodeDialog;
-import com.swissbit.homeautomation.utils.TopicsConstants;
-import com.swissbit.mqtt.client.IKuraMQTTClient;
-import com.swissbit.mqtt.client.adapter.MessageListener;
-import com.swissbit.mqtt.client.message.KuraPayload;
 import com.tum.ssdapi.CardAPI;
 
 import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
 
-    private Button btnSecureCode;
-
-    private Button btnPublish;
-
-    private EditText txtPublish;
-
     private ListView listView;
 
     private RaspberryPi raspberryPi;
 
-    private DevicesInfoDbAdapter devicesInfoDbAdapter;
+    private ApplicationDb applicationDb;
 
     private RPiAdapter adapter;
 
@@ -80,86 +68,11 @@ public class MainActivity extends ActionBarActivity {
 
     private String secureElementId;
 
-    public AuthenticationAsync authenticationAsync;
-
     private PermissionRevocationAsync permissionRevocationAsync;
 
+    private HeartBeatAsync heartBeatAsync;
 
-    private AsyncTask rPiHeartBeatAsync = new AsyncTask() {
-
-        @Override
-        protected Object doInBackground(Object[] params) {
-            boolean status = false;
-            IKuraMQTTClient client = MQTTFactory.getClient();
-            Log.d("Kura MQTT Client ", "" + client);
-
-            if (!client.isConnected()) {
-                status = client.connect();
-            } else
-                Log.d("Kura MQTT Connected HB", Boolean.toString(client.isConnected()));
-
-            status = client.isConnected();
-
-            Log.d("Kura MQTT Connect HB", Boolean.toString(status));
-            if (status) {
-                Log.d("HEARTBEATTOPIC", MQTTFactory.getTopicToSubscribe(TopicsConstants.HEARTBEAT)[0]);
-                client.subscribe(MQTTFactory.getTopicToSubscribe(TopicsConstants.HEARTBEAT)[0], new MessageListener() {
-                    @Override
-                    public void processMessage(KuraPayload kuraPayload) {
-                        if (kuraPayload != null) {
-                            Log.d("Kura HeartBeat", "Raspberry Alive...");
-                            publishProgress();
-                        }
-                    }
-                });
-            }
-            return null;
-        }
-
-        @Override
-        public void onProgressUpdate(Object[] values) {
-            final ImageView imageView = (ImageView) findViewById(R.id.imgStatus);
-            imageView.setImageResource(R.drawable.btnon);
-        }
-    };
-
-
-    private AsyncTask lwtAsync = new AsyncTask() {
-        @Override
-        protected Object doInBackground(Object[] params) {
-            IKuraMQTTClient client = MQTTFactory.getClient();
-            boolean status = false;
-
-            if (!client.isConnected())
-                status = client.connect();
-
-            status = client.isConnected();
-
-            Log.d("Kura MQTT Connect LWT", Boolean.toString(status));
-
-            if (status) {
-                Log.d("LWTTOPIC", MQTTFactory.getTopicToSubscribe(TopicsConstants.LWT)[0]);
-                client.subscribe(MQTTFactory.getTopicToSubscribe(TopicsConstants.LWT)[0], new MessageListener() {
-                    @Override
-                    public void processMessage(KuraPayload kuraPayload) {
-                        if (kuraPayload != null) {
-                            Log.d("Kura HeartBeat", "Raspberry Dead...");
-                            publishProgress();
-                        }
-                    }
-                });
-            }
-            return null;
-
-        }
-
-        @Override
-        public void onProgressUpdate(Object[] values) {
-            Toast.makeText(getApplicationContext(), "Server Connection Lost", Toast.LENGTH_LONG).show();
-            final ImageView imageView = (ImageView) findViewById(R.id.imgStatus);
-            imageView.setImageResource(R.drawable.btnoff);
-        }
-    };
+    private LWTAsync lwtAsync;
 
     @Override
     protected void onStart() {
@@ -175,13 +88,17 @@ public class MainActivity extends ActionBarActivity {
         //Save the context of MainActivity for later usage in other classes
         ActivityContexts.setMainActivityContext(this);
 
-        devicesInfoDbAdapter = DBFactory.getDevicesInfoDbAdapter(this);
+        applicationDb = DBFactory.getDevicesInfoDbAdapter(this);
         listView = (ListView) findViewById(R.id.listRaspberryPi);
         listView.setEmptyView(findViewById(R.id.empty_list_item));
 
         secureElementAccess = new CardAPI(getApplicationContext());
 
         permissionRevocationAsync = new PermissionRevocationAsync(this);
+
+        heartBeatAsync = new HeartBeatAsync();
+
+        lwtAsync = new LWTAsync();
 
         checkAccessRevoked();
 
@@ -222,7 +139,7 @@ public class MainActivity extends ActionBarActivity {
             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            devicesInfoDbAdapter.resetData();
+                            applicationDb.resetData();
                             dialog.dismiss();
                             finish();
                             System.exit(0);
@@ -242,7 +159,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void getSecureCode() {
-        if (devicesInfoDbAdapter.checkSecretCodeDialogShow() == 0) {
+        if (applicationDb.checkSecretCodeDialogShow() == 0) {
             SecureCodeDialog secureCodeDialog = new SecureCodeDialog();
             secureCodeDialog.getSecureCode(this);
         }
@@ -312,7 +229,7 @@ public class MainActivity extends ActionBarActivity {
                 }
             });
 
-            rPiHeartBeatAsync.execute();
+            heartBeatAsync.execute();
 
             lwtAsync.execute();
 
@@ -323,7 +240,6 @@ public class MainActivity extends ActionBarActivity {
 
     public void checkAccessRevoked(){
 
-        //Check for access revocation
         Log.d("SDEnabled",secureElementAccess.getEnabled().toString());
         if("029000".equals(secureElementAccess.getEnabled().toString())) {
             Log.d("Inside Alert","Alert");
