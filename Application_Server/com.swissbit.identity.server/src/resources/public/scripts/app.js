@@ -81,8 +81,9 @@ app.config(function ($routeProvider, $locationProvider) {
         controller: 'viewDisplayUserHomeCtrl'
     }).when('/logOut', {
         controller: 'viewLogOutCtrl',
-		templateUrl: 'views/logIn.html'
-    }).otherwise ( { redirectTo: "/home" });
+		templateUrl: 'views/logIn.html'});
+//    }).otherwise ( { redirectTo: "/home" });
+		
 	}).
 	run(function($rootScope, $location) {
     	$rootScope.$on( "$routeChangeStart", function(event, next, current) {
@@ -259,11 +260,56 @@ app.controller('viewRaspPisCtrl', function ($scope, $http, $location, $route) {
                 console.log('Error ' + data);
             })
         }
-		$scope.viewCodeLog = function(rpiMacAddr) {
-			console.log(rpiMacAddr);
-			$location.url('logs/'+ rpiMacAddr + '/code');
-			
+		$scope.viewCodeLog = function(rpimacaddr) {
+			$http.get('/logs/' + rpimacaddr + '/code').success(function (data) {
+				var blob = new Blob([data], { type:"text/html;charset=utf-8;" });
+				var downloadLink = angular.element('<a></a>');
+				downloadLink.attr('href',window.URL.createObjectURL(blob));
+				downloadLink.attr('download', 'raspberrypi_code.log');
+				downloadLink[0].click();
+	
+			})
 		}
+
+        $scope.viewAppLog = function(rpimacaddr) {
+            $http.get('/logs/' + rpimacaddr + '/app').success(function (data) {
+                console.log(data);
+                var blob = new Blob([data], { type:"text/html;charset=utf-8;" });
+                var downloadLink = angular.element('<a></a>');
+                downloadLink.attr('href',window.URL.createObjectURL(blob));
+                downloadLink.attr('download', 'raspberrypi_app.xml');
+                downloadLink[0].click();
+
+            })
+        }
+
+
+
+//		$scope.viewCodeLog = function(rpimacaddr) {
+//			$scope.codelog = '';
+//			$scope.log_link = '';
+//			console.log($scope.log_link);
+//			console.log($scope.codelog);
+//			$scope.log_link = '/logs/' + rpimacaddr + '/code';
+//			$scope.codelog = angular.copy($scope.data);
+//			console.log($scope.log_link);
+//			console.log($scope.codelog);
+//
+//			var blob = new Blob([$scope.codelog], { type:"text/html;charset=utf-8;" });
+//			var downloadLink = angular.element('<a></a>');
+//            downloadLink.attr('href',window.URL.createObjectURL(blob));
+//            downloadLink.attr('download', 'raspberrypi.log');
+//			downloadLink[0].click();
+//		};
+
+
+
+		//$scope.viewCodeLog = function(rpiMacAddr) {
+		//	console.log(rpiMacAddr);
+		//	$location.url('/viewCustomers')
+		//	$location.url('/logs/'+ rpiMacAddr + '/code');
+		//	
+		//}
 	
         $scope.removeForm = function () {
             $scope.newRaspPiInfo = angular.copy($scope.newRaspPiDefaults);
