@@ -1,0 +1,2 @@
+serviceClass: org.eclipse.kura.web.shared.service.GwtPermissionsService
+path: 725B2FCA0343C306A378EFD7BD45E8D1.gwt.rpc

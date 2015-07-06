@@ -1,0 +1,20 @@
+USAGE::::::::::::::::::::::::
+
+
+To Publish to a topic:
+
+java -jar com.swissbit.mqtt.client-1.0-SNAPSHOT-jar-with-dependencies.jar PUB <<TOPIC_NAMESPACE>> <<REQUEST_ID>>
+
+Example:
+
+java -jar com.swissbit.mqtt.client-1.0-SNAPSHOT-jar-with-dependencies.jar PUB $EDC/swissbit/B8:27:EB:BE:3F:BF/CONF-V1/GET/configurations 1234567
+
+
+
+To Subscribe to a topic:
+
+java -jar com.swissbit.mqtt.client-1.0-SNAPSHOT-jar-with-dependencies.jar SUB <<TOPIC_NAMESPACE>>
+
+Example:
+
+java -jar com.swissbit.mqtt.client-1.0-SNAPSHOT-jar-with-dependencies.jar SUB $EDC/swissbit/PUB_CLIENT/CONF-V1/REPLY/1234567
