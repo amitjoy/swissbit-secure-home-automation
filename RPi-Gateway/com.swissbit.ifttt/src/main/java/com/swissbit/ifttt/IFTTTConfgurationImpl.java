@@ -20,10 +20,8 @@ import java.util.Map;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Deactivate;
-import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
 import org.eclipse.kura.configuration.ConfigurableComponent;
-import org.eclipse.kura.system.SystemService;
 import org.osgi.service.component.ComponentContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +33,7 @@ import org.slf4j.LoggerFactory;
  *
  */
 @Component(immediate = true, name = "com.swissbit.ifttt")
-@Service(value = { IFTTTConfgurationImpl.class })
+@Service(value = { IFTTTConfiguration.class })
 public class IFTTTConfgurationImpl implements ConfigurableComponent, IFTTTConfiguration {
 
 	/**
@@ -64,25 +62,38 @@ public class IFTTTConfgurationImpl implements ConfigurableComponent, IFTTTConfig
 	private static final String SMTP_PORT = "smtp.port";
 
 	/**
-	 * Configurable property specifying the SSL Onconenct Property
-	 */
-	private static final String SMTP_SSL_ONCONNECT = "smtp.ssl.onconnect";
-
-	/**
 	 * Configurable Property to set SMTP Server Username
 	 */
 	private static final String SMTP_USERNAME = "smtp.username";
 
+	/**
+	 * Placeholder for hashtags
+	 */
+	private String m_hashTags;
 	/**
 	 * Map to store list of configurations
 	 */
 	private Map<String, Object> m_properties;
 
 	/**
-	 * Eclipse Kura System Service Dependency
+	 * Placeholder for SMTP Host Address
 	 */
-	@Reference(bind = "bindSystemService", unbind = "unbindSystemService")
-	private volatile SystemService m_systemService;
+	private String m_smtpHost;
+
+	/**
+	 * Placeholder for SMTP Password
+	 */
+	private String m_smtpPassword;
+
+	/**
+	 * Placeholder for SMTP Port
+	 */
+	private int m_smtpPort;
+
+	/**
+	 * Placeholder for SMTP Username
+	 */
+	private String m_smtpUsername;
 
 	/* Constructor */
 	public IFTTTConfgurationImpl() {
@@ -97,19 +108,10 @@ public class IFTTTConfgurationImpl implements ConfigurableComponent, IFTTTConfig
 		LOGGER.info("Activating IFTTT Component...");
 
 		this.m_properties = properties;
-		this.setConfiguration();
+		this.extractConfiguration();
 
 		LOGGER.info("Activating IFTTT Component... Done.");
 
-	}
-
-	/**
-	 * Callback to be used while {@link SystemService} is registering
-	 */
-	public synchronized void bindSystemService(final SystemService systemService) {
-		if (this.m_systemService == null) {
-			this.m_systemService = systemService;
-		}
 	}
 
 	/**
@@ -122,37 +124,22 @@ public class IFTTTConfgurationImpl implements ConfigurableComponent, IFTTTConfig
 		LOGGER.debug("Deactivating IFTTT Component... Done.");
 	}
 
+	/**
+	 * Used to extract configuration for populating placeholders with respective
+	 * values
+	 */
+	private void extractConfiguration() {
+		this.m_hashTags = (String) this.m_properties.get(IFTTT_EMAIL_HASHTAGS);
+		this.m_smtpUsername = (String) this.m_properties.get(SMTP_USERNAME);
+		this.m_smtpPassword = (String) this.m_properties.get(SMTP_PASSWORD);
+		this.m_smtpPort = (Integer) this.m_properties.get(SMTP_PORT);
+		this.m_smtpHost = (String) this.m_properties.get(SMTP_HOST);
+	}
+
 	/** {@inheritDoc} */
 	@Override
 	public boolean sendEmail(final String subject) {
-		// TODO Auto-generated method stub
 		return false;
-	}
-
-	/**
-	 * Sets or updates the configuration parameters in {@link SystemService}
-	 */
-	private void setConfiguration() {
-		this.m_systemService.getProperties().put(IFTTT_EMAIL_HASHTAGS, this.m_properties.get(IFTTT_EMAIL_HASHTAGS));
-
-		this.m_systemService.getProperties().put(SMTP_HOST, this.m_properties.get(SMTP_HOST));
-
-		this.m_systemService.getProperties().put(SMTP_PORT, this.m_properties.get(SMTP_PORT));
-
-		this.m_systemService.getProperties().put(SMTP_USERNAME, this.m_properties.get(SMTP_USERNAME));
-
-		this.m_systemService.getProperties().put(SMTP_PASSWORD, this.m_properties.get(SMTP_PASSWORD));
-
-		this.m_systemService.getProperties().put(SMTP_SSL_ONCONNECT, this.m_properties.get(SMTP_SSL_ONCONNECT));
-	}
-
-	/**
-	 * Callback to be used while {@link SystemService} is deregistering
-	 */
-	public synchronized void unbindSystemService(final SystemService systemService) {
-		if (this.m_systemService == systemService) {
-			this.m_systemService = null;
-		}
 	}
 
 	/**
@@ -162,7 +149,7 @@ public class IFTTTConfgurationImpl implements ConfigurableComponent, IFTTTConfig
 		LOGGER.info("Updated IFTTT Component...");
 
 		this.m_properties = properties;
-		this.setConfiguration();
+		this.extractConfiguration();
 		properties.keySet().forEach(s -> LOGGER.info("Update - " + s + ": " + properties.get(s)));
 
 		LOGGER.info("Updated IFTTT Component... Done.");

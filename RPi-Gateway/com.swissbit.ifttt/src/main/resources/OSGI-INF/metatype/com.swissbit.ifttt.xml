@@ -44,13 +44,6 @@
 			type="String" cardinality="0" required="true" default="password"
 			description="Configurable Property to set SMTP Server Password" />
 
-		<AD id="smtp.ssl.onconnect" name="smtp.ssl.onconnect"
-			type="Boolean" cardinality="0" required="true" default="true"
-			description="Configurable property specifying the SSL Onconenct Property">
-			<Option label="True" value="true" />
-			<Option label="False" value="false" />
-		</AD>
-
 	</OCD>
 
 	<Designate pid="com.swissbit.ifttt">
