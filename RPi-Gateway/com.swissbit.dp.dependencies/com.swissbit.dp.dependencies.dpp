@@ -1,5 +1,5 @@
 #Deployment Plugin Project File
-#Sat Jun 13 02:32:37 CEST 2015
+#Sat Jul 11 01:08:24 CEST 2015
 build.ant.name=<.>/com.swissbit.dp.dependencies_build.xml
 build.dp.file=<.>/com.swissbit.dp.dependencies.dp
 build.location=
@@ -17,7 +17,14 @@ bundles.1.missing=false
 bundles.1.name=commons-collections-3.2.1.jar
 bundles.1.symbolic_name=org.apache.commons.collections
 bundles.1.version=3.2.1
-bundles.count=2
+bundles.2.bundle_path=<.>/lib/commons-email-1.4.jar
+bundles.2.customizer=false
+bundles.2.headers.count=0
+bundles.2.missing=false
+bundles.2.name=commons-email-1.4.jar
+bundles.2.symbolic_name=org.apache.commons.email
+bundles.2.version=1.4.0
+bundles.count=3
 certificates.count=0
 general.signbundles=true
 headers.contact.address=admin@amitinside.com

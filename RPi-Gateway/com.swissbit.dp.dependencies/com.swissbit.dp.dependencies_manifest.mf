@@ -12,3 +12,7 @@ Bundle-Version: 18.0.0
 Name: commons-collections-3.2.1.jar
 Bundle-SymbolicName: org.apache.commons.collections
 Bundle-Version: 3.2.1
+
+Name: commons-email-1.4.jar
+Bundle-SymbolicName: org.apache.commons.email
+Bundle-Version: 1.4.0
