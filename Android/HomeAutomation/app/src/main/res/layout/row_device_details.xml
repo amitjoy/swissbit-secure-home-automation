@@ -14,9 +14,9 @@
         android:layout_alignParentTop="true"
         android:layout_marginRight="20dp"
         android:contentDescription="TODO"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginBottom="25dp"/>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -35,7 +35,9 @@
             android:layout_marginTop="30dp"
             android:layout_marginLeft="20dp"
             android:text="Switch"
-            android:textSize="30sp"/>
+            android:textSize="20sp"/>
+        <!--android:track="@drawable/blank"-->
+        <!--android:switchMinWidth="75dp"-->
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"

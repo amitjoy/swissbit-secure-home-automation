@@ -24,20 +24,6 @@
         android:layout_marginLeft="10dp"
         android:descendantFocusability="blocksDescendants">
 
-        <TextView
-            android:id="@+id/txtRaspberryName"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/txtRaspberryDescription"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignWithParentIfMissing="true"
-            android:layout_toRightOf="@id/icon"
-            android:editable="true"
-            android:gravity="center_vertical"
-            android:textSize="20sp"
-            android:textColor="@color/white"/>
-
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

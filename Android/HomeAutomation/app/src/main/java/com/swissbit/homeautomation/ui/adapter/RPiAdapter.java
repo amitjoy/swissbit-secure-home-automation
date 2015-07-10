@@ -33,7 +33,7 @@ public class RPiAdapter extends ArrayAdapter<RaspberryPi> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-        customView = layoutInflater.inflate(R.layout.row_raspberry_details, parent, false);
+        customView = layoutInflater.inflate(R.layout.row_raspberry_details_full, parent, false);
         viewGroup = parent;
 
 //        TextView raspberryName = (TextView) customView.findViewById(R.id.txtRaspberryName);
