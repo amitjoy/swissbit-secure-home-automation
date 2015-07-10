@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright 2015 Amit Kumar Mondal <admin@amitinside.com>
+   
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+   
+        http://www.apache.org/licenses/LICENSE-2.0
+   
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ -->
+
+<MetaData xmlns="http://www.osgi.org/xmlns/metatype/v1.2.0"
+	localization="en_us">
+	<OCD id="com.swissbit.ifttt" name="IFTTT"
+		description="This is used to configure IFTTT Automation Channel">
+
+		<Icon
+			resource="https://lh3.ggpht.com/GtoP5kH7CpLFfWur0bfofk3f4avKrRee06sNivcDB0FGXEQgJ4aqxRr7clShCGYKFCI=w300"
+			size="32" />
+
+		<AD id="ifttt.email.hashtags" name="ifttt.email.hashtags" type="String"
+			cardinality="0" required="true" default="#sample1 #sample2 #sample3"
+			description="Configurable property to set different email IFTTT hashtags" />
+
+		<AD id="smtp.host" name="smtp.host"
+			type="String" cardinality="0" required="true" default="smtp.googlemail.com"
+			description="Configurable Property to set SMTP Server Address" />
+
+		<AD id="smtp.port" name="smtp.port"
+			type="Integer" cardinality="0" required="false" default="465"
+			description="Configurable Property to set SMTP Server Port" />
+
+		<AD id="smtp.username" name="smtp.username"
+			type="String" cardinality="0" required="true" default="username"
+			description="Configurable Property to set SMTP Server Username" />
+
+		<AD id="smtp.password" name="smtp.password"
+			type="String" cardinality="0" required="true" default="password"
+			description="Configurable Property to set SMTP Server Password" />
+
+		<AD id="smtp.ssl.onconnect" name="smtp.ssl.onconnect"
+			type="Boolean" cardinality="0" required="true" default="true"
+			description="Configurable property specifying the SSL Onconenct Property">
+			<Option label="True" value="true" />
+			<Option label="False" value="false" />
+		</AD>
+
+	</OCD>
+
+	<Designate pid="com.swissbit.ifttt">
+		<Object ocdref="com.swissbit.ifttt" />
+	</Designate>
+</MetaData>

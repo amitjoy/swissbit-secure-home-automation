@@ -39,49 +39,39 @@ import org.slf4j.LoggerFactory;
 public class IFTTTConfgurationImpl implements ConfigurableComponent, IFTTTConfiguration {
 
 	/**
-	 * Configurable Property to set caching of rows
+	 * Configurable property to set different email IFTTT hashtags
 	 */
-	private static final String DB_CACHE_ROWS = "db.service.hsqldb.cache_rows";
-
-	/**
-	 * Configurable Property to set defragmentation limit
-	 */
-	private static final String DB_DEFRAG_LIMIT = "db.service.hsqldb.defrag_limit";
-
-	/**
-	 * Configurable Property to set lob file scaling size
-	 */
-	private static final String DB_LOB_FILE_SCALE = "db.service.hsqldb.lob_file_scale";
-
-	/**
-	 * Configurable Property to set log data
-	 */
-	private static final String DB_LOG_DATA = "db.service.hsqldb.log_data";
-
-	/**
-	 * Configurable Property to set log size
-	 */
-	private static final String DB_LOG_SIZE = "db.service.hsqldb.log_size";
-
-	/**
-	 * Configurable Property to set NIO data file
-	 */
-	private static final String DB_NIO_DATA_FILE = "db.service.hsqldb.nio_data_file";
-
-	/**
-	 * Configurable Property to set HyperSQL Connection URL
-	 */
-	private static final String DB_SERVICE_URL = "db.service.hsqldb.url";
-
-	/**
-	 * Configurable Property to set write delay in milliseconds
-	 */
-	private static final String DB_WRITE_DELAY = "db.service.hsqldb.write_delay_millis";
+	private static final String IFTTT_EMAIL_HASHTAGS = "ifttt.email.hashtags";
 
 	/**
 	 * Logger
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(IFTTTConfgurationImpl.class);
+
+	/**
+	 * Configurable Property to set SMTP Server Address
+	 */
+	private static final String SMTP_HOST = "smtp.host";
+
+	/**
+	 * Configurable Property to set SMTP Server Password
+	 */
+	private static final String SMTP_PASSWORD = "smtp.password";
+
+	/**
+	 * Configurable Property to set SMTP Server Port
+	 */
+	private static final String SMTP_PORT = "smtp.port";
+
+	/**
+	 * Configurable property specifying the SSL Onconenct Property
+	 */
+	private static final String SMTP_SSL_ONCONNECT = "smtp.ssl.onconnect";
+
+	/**
+	 * Configurable Property to set SMTP Server Username
+	 */
+	private static final String SMTP_USERNAME = "smtp.username";
 
 	/**
 	 * Map to store list of configurations
@@ -104,12 +94,12 @@ public class IFTTTConfgurationImpl implements ConfigurableComponent, IFTTTConfig
 	@Activate
 	protected synchronized void activate(final ComponentContext componentContext,
 			final Map<String, Object> properties) {
-		LOGGER.info("Activating HyperSQL Configuration Component...");
+		LOGGER.info("Activating IFTTT Component...");
 
 		this.m_properties = properties;
 		this.setConfiguration();
 
-		LOGGER.info("Activating HyperSQL Configuration Component... Done.");
+		LOGGER.info("Activating IFTTT Component... Done.");
 
 	}
 
@@ -127,11 +117,13 @@ public class IFTTTConfgurationImpl implements ConfigurableComponent, IFTTTConfig
 	 */
 	@Deactivate
 	protected void deactivate(final ComponentContext context) {
-		LOGGER.debug("Deactivating HyperSQL Configuration Component...");
+		LOGGER.debug("Deactivating IFTTT Component...");
 
-		LOGGER.debug("Deactivating HyperSQL Configuration Component... Done.");
+		LOGGER.debug("Deactivating IFTTT Component... Done.");
 	}
 
+	/** {@inheritDoc} */
+	@Override
 	public boolean sendEmail(final String subject) {
 		// TODO Auto-generated method stub
 		return false;
@@ -141,21 +133,17 @@ public class IFTTTConfgurationImpl implements ConfigurableComponent, IFTTTConfig
 	 * Sets or updates the configuration parameters in {@link SystemService}
 	 */
 	private void setConfiguration() {
-		this.m_systemService.getProperties().put(DB_SERVICE_URL, this.m_properties.get(DB_SERVICE_URL));
+		this.m_systemService.getProperties().put(IFTTT_EMAIL_HASHTAGS, this.m_properties.get(IFTTT_EMAIL_HASHTAGS));
 
-		this.m_systemService.getProperties().put(DB_CACHE_ROWS, this.m_properties.get(DB_CACHE_ROWS));
+		this.m_systemService.getProperties().put(SMTP_HOST, this.m_properties.get(SMTP_HOST));
 
-		this.m_systemService.getProperties().put(DB_DEFRAG_LIMIT, this.m_properties.get(DB_DEFRAG_LIMIT));
+		this.m_systemService.getProperties().put(SMTP_PORT, this.m_properties.get(SMTP_PORT));
 
-		this.m_systemService.getProperties().put(DB_LOB_FILE_SCALE, this.m_properties.get(DB_LOB_FILE_SCALE));
+		this.m_systemService.getProperties().put(SMTP_USERNAME, this.m_properties.get(SMTP_USERNAME));
 
-		this.m_systemService.getProperties().put(DB_LOG_DATA, this.m_properties.get(DB_LOG_DATA));
+		this.m_systemService.getProperties().put(SMTP_PASSWORD, this.m_properties.get(SMTP_PASSWORD));
 
-		this.m_systemService.getProperties().put(DB_LOG_SIZE, this.m_properties.get(DB_LOG_SIZE));
-
-		this.m_systemService.getProperties().put(DB_NIO_DATA_FILE, this.m_properties.get(DB_NIO_DATA_FILE));
-
-		this.m_systemService.getProperties().put(DB_WRITE_DELAY, this.m_properties.get(DB_WRITE_DELAY));
+		this.m_systemService.getProperties().put(SMTP_SSL_ONCONNECT, this.m_properties.get(SMTP_SSL_ONCONNECT));
 	}
 
 	/**
@@ -171,13 +159,13 @@ public class IFTTTConfgurationImpl implements ConfigurableComponent, IFTTTConfig
 	 * Used to be called when configurations will get updated
 	 */
 	public void updated(final Map<String, Object> properties) {
-		LOGGER.info("Updated HyperSQL Configuration Component...");
+		LOGGER.info("Updated IFTTT Component...");
 
 		this.m_properties = properties;
 		this.setConfiguration();
 		properties.keySet().forEach(s -> LOGGER.info("Update - " + s + ": " + properties.get(s)));
 
-		LOGGER.info("Updated HyperSQL Configuration Component... Done.");
+		LOGGER.info("Updated IFTTT Component... Done.");
 	}
 
 }
