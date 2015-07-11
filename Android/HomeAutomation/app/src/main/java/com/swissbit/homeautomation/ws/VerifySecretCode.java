@@ -17,7 +17,9 @@
  */
 package com.swissbit.homeautomation.ws;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -107,6 +109,7 @@ public class VerifySecretCode {
                     client = MQTTFactory.getClient();
                     boolean status = client.connect();
                     Log.d("After Dialog", "" + status);
+                    showValidatedDialog();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -130,6 +133,7 @@ public class VerifySecretCode {
                     client = MQTTFactory.getClient();
                     boolean status = client.connect();
                     Log.d("After Dialog", "" + status);
+                    showValidatedDialog();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -159,5 +163,21 @@ public class VerifySecretCode {
                 }
             }
         });
+    }
+
+    /**
+     * Show the dialog when secret code is validated
+     */
+    public void showValidatedDialog(){
+        AlertDialog alertDialog = new AlertDialog.Builder(mainContext).create();
+        alertDialog.setTitle("Information");
+        alertDialog.setMessage("Secure Code Validated");
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
     }
 }
