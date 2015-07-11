@@ -1,7 +1,5 @@
 package com.swissbit.server.ws.controller;
 
-import static com.swissbit.server.ws.util.LogUtil.generateXML;
-import static com.swissbit.server.ws.util.LogUtil.parseLogs;
 import static spark.Spark.get;
 
 import com.swissbit.server.ws.services.IAbstractService;
@@ -24,7 +22,7 @@ public class LogController extends AbstractController {
 				return logs[1];
 			}
 			if ("app".equals(type)) {
-				return generateXML(parseLogs(logs[0]).getLogs());
+				return logs[0];
 			}
 			return null;
 		});
