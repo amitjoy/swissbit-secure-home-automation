@@ -39,9 +39,10 @@
                 android:layout_alignParentRight="true"
                 android:layout_toRightOf="@id/icon"
                 android:editable="true"
-                android:text="RaspberryId:"
+                android:text="RPi ID: "
                 android:inputType="textNoSuggestions"
-                android:textSize="20sp"
+                android:textSize="25sp"
+                android:paddingLeft="25dp"
                 android:textColor="@color/white"/>
 
             <TextView
@@ -53,7 +54,7 @@
                 android:layout_toRightOf="@id/icon"
                 android:editable="true"
                 android:inputType="textNoSuggestions"
-                android:textSize="20sp"
+                android:textSize="25sp"
                 android:textColor="@color/white"/>
         </LinearLayout>
 
@@ -72,14 +73,15 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_toRightOf="@id/icon"
-                android:text="Status:"
-                android:textSize="20sp"
+                android:text="Status  "
+                android:textSize="25sp"
+                android:paddingLeft="25dp"
                 android:textColor="@color/white"/>
 
             <ImageView
                 android:id="@+id/imgStatus"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_toRightOf="@id/txtRaspberryId"
                 android:layout_marginTop="9dp"
                 android:layout_marginRight="25dp"

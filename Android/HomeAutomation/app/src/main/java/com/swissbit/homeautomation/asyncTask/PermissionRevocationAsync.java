@@ -105,8 +105,8 @@ public class PermissionRevocationAsync extends AsyncTask {
     @Override
     public void onProgressUpdate(Object[] values) {
 
-        ApplicationDb db = DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getCurrentActivityContext());
-        db.resetData();
+//        ApplicationDb db = DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getCurrentActivityContext());
+//        db.resetData();
 
         AlertDialog alertDialog = new AlertDialog.Builder(ActivityContexts.getCurrentActivityContext()).create();
         alertDialog.setTitle("Warning!");
