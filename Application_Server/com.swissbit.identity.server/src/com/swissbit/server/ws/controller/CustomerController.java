@@ -6,10 +6,11 @@ import static spark.Spark.after;
 import static spark.Spark.exception;
 import static spark.Spark.get;
 import static spark.Spark.post;
-import static spark.Spark.put;
+import static spark.Spark.delete;
 
 import com.swissbit.server.ws.error.ResponseError;
 import com.swissbit.server.ws.model.Customer;
+import com.swissbit.server.ws.model.RaspberryPi;
 import com.swissbit.server.ws.services.IAbstractService;
 import com.swissbit.server.ws.services.ICustomerService;
 
@@ -25,6 +26,7 @@ public class CustomerController extends AbstractController {
 
 		// Used to check whether the QR Code is owned by genuine user (mainly
 		// used by Mobile Client)
+		
 		get("/user/:id", (req, res) -> {
 			final String id = req.params(":id");
 			final Customer user = customerService.getUser(id);
@@ -40,11 +42,22 @@ public class CustomerController extends AbstractController {
 				req.queryParams("username"), req.queryParams("password"), req.queryParams("pin")), json());
 
 		// Used to update user details (used at the front-End UI)
-		put("/user/:id",
+		post("/user/:id",
 				(req, res) -> customerService.updateUser(req.params(":id"), req.queryParams("name"),
 						req.queryParams("email"), req.queryParams("username"), req.queryParams("password"),
 						req.queryParams("pin")),
 				json());
+		
+		delete("/deluser/:id", (req, res) -> {
+			final String id = req.params(":id");
+			final Customer user = customerService.deleteUser(id);
+			if (user != null) {
+				return user;
+			}
+			res.status(400);
+			return new ResponseError("No Customer with id '%s' found", id);
+		} , json());
+	
 
 		after((req, res) -> {
 			res.type("application/json");

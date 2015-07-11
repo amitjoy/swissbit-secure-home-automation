@@ -9,10 +9,10 @@
 
 <div class="row col-md-4 col-md-offset-4 create">
 </div>
-<div class="row col-md-9 col-md-offset-1" >
+<div class="row col-md-10 col-md-offset-1" >
     <div class="panel panel-primary margin">
     	<div class="panel-heading" >
-            <strong>Customer Details </strong>
+            <strong>Raspberry Pi Details </strong>
         </div>
         <div class="panel-body">
 	        <table class="table table-striped table-hover">
@@ -26,6 +26,7 @@
 					<th>Code Logs</th>
 					<th>App Logs</th>
 					<th></th>
+ 					<th></th>
             	</tr>
             	<tr ng-repeat="rpi in rpis" >
                 	<td>{{rpi.customer}}</td>
@@ -40,13 +41,76 @@
             			class="btn btn-success btn-sm">Download</button></td>
 					<td>
     					<a class="glyphicon glyphicon-pencil" role="presentation"
-      						ng-click="editRPi(item)"></a>
+      						ng-click="editRaspPi(rpi)"></a>
+					</td>
+					<td>
     					<a class="glyphicon glyphicon-remove" role="presentation"
-       						ng-click="removeRPi(item)"></a>
+       						ng-click="removeRaspPi(rpi)"></a>
 					</td>
             	</tr>
-        	</table>
-
+			</table>
+					<div ng-show="updateRaspPiForm" class="panel panel-primary margin">
+						<div class="panel-heading">
+							<strong> Update Raspberry Pi Details for ID {{currentRaspPiDefaults.id}} </strong> 
+						</div> 			
+						<div class="panel-body">
+							<div class="col-md-6">
+								<form name="updateRaspPiFormData" role="form" novalidate>
+                    				<div class="container text-center">
+                        				<br/>
+                        				<div class="row">
+                            				<div class="form-group">
+                                				<div class="col-lg-4 col-md-offset-2">
+                                   		 			<input type="email" name="customer" class="form-control" id="customer" ng-model="updateRaspPiInfo.customer" required>
+                                				</div>
+                            				</div>
+                        				</div>
+                        				<br/>
+                        				<div class="row">
+                            				<div class="form-group">
+                                				<div class="col-lg-4 col-md-offset-2">
+                                   					<input type="text" class="form-control" id="id" ng-model="updateRaspPiInfo.id" readonly>
+                                				</div>
+                            				</div>
+                        				</div>
+                        				<br/>
+                        				<div class="row">
+                            				<div class="form-group">
+                               					<div class="col-lg-4 col-md-offset-2">
+                                   	 			<input type="text" class="form-control" id="macaddr" ng-model="updateRaspPiInfo.macaddr" required>
+                                				</div>
+                            				</div>
+                        				</div>
+                        				<br/>
+                        				<div class="row">
+                            				<div class="form-group">
+                               		 			<div class="col-lg-4 col-md-offset-2">
+                               		     			<input type="text" class="form-control" id="name" ng-model="updateRaspPiInfo.name" required>
+                                				</div>
+                            				</div>
+                        				</div>
+                        				<br/>
+			                        	<div class="row">
+            			             	    <div class="form-group">
+                        			  	        <div class="col-lg-4 col-md-offset-2">
+                                   					<input type="text" class="form-control" id="pin" ng-model="updateRaspPiInfo.pin" required>
+                                				</div>
+                            				</div>
+                        				</div>
+                        				<br/>
+                        				<div class="row">
+                            				<div class="form-group">
+                                				<div class="col-lg-4 col-md-offset-2">
+                                   		 			<input type="submit" class="btn btn-info btn-block" value="Submit" ng-click="updateRaspPi(updateRaspPiInfo)">
+                                   	 				<input type="submit" class="btn btn-info btn-block" value="Cancel" ng-click="removeForm()">
+                                				</div>
+                            				</div>
+                        				</div>
+                    				</div>
+                				</form>
+							</div>
+						</div>
+					</div>
 			</br>
 			<button type="button" ng-click="addRaspPi()" class="btn btn-primary">Add new Raspberry Details</button>
 			</br></br>
@@ -100,7 +164,7 @@
 						<div class="row">
             				<div class="form-group">
                 				<div class="col-lg-4 col-md-offset-2">
-                    				<input type="submit" class="btn btn-info btn-block" value="Submit" ng-click="updateRaspPi(newRaspPiInfo)">
+                    				<input type="submit" class="btn btn-info btn-block" value="Submit" ng-click="addnewRaspPi(newRaspPiInfo)">
 		    						<input type="submit" class="btn btn-info btn-block" value="Cancel" ng-click="removeForm()">
 									<input type="submit" class="btn btn-info btn-block" value="Reset" ng-click="resetForm()"> 
                 				</div>
