@@ -31,6 +31,6 @@ public interface IFTTTConfiguration {
 	/**
 	 * Used to send a dummy email with the subject specified
 	 */
-	public boolean sendEmail();
+	public void trigger();
 
 }

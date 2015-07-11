@@ -173,13 +173,13 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 			if ("on".equals(reqTopic.getResources()[0])) {
 				this.m_activityLogService.saveLog("Device is turned on");
 				this.switchOn(nodeId);
-				this.m_iftttService.sendEmail();
+				this.m_iftttService.trigger();
 			}
 
 			if ("off".equals(reqTopic.getResources()[0])) {
 				this.m_activityLogService.saveLog("Device is turned off");
 				this.switchOff(nodeId);
-				this.m_iftttService.sendEmail();
+				this.m_iftttService.trigger();
 			}
 			respPayload.setResponseCode(KuraResponsePayload.RESPONSE_CODE_OK);
 		}

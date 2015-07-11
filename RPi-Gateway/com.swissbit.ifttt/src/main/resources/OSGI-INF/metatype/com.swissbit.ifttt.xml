@@ -18,7 +18,7 @@
 <MetaData xmlns="http://www.osgi.org/xmlns/metatype/v1.2.0"
 	localization="en_us">
 	<OCD id="com.swissbit.ifttt" name="IFTTT"
-		description="This is used to configure IFTTT Automation Channel for IFTTT Tagged Email Trigger">
+		description="This is used to configure IFTTT Automation Channel for IFTTT Tagged Email Trigger. Please make sure you have already setup the triggers in IFTTT before you start using this module.">
 
 		<Icon
 			resource="http://icons.iconarchive.com/icons/blackvariant/shadow135-system/128/Dashboard-icon.png"
@@ -26,10 +26,10 @@
 
 		<AD id="ifttt.email.hashtags" name="ifttt.email.hashtags" type="String"
 			cardinality="0" required="true" default="#sample1 #sample2 #sample3"
-			description="Configurable property to set different email IFTTT hashtags" />
+			description="Configurable property to set different email IFTTT hashtags (Separated by Gaps)" />
 
 		<AD id="smtp.host" name="smtp.host"
-			type="String" cardinality="0" required="true" default="smtp.googlemail.com"
+			type="String" cardinality="0" required="true" default="smtp.gmail.com"
 			description="Configurable Property to set SMTP Server Address" />
 
 		<AD id="smtp.port" name="smtp.port"
