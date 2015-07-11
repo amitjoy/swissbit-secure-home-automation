@@ -1,0 +1,12 @@
+<div ng-show="!editing">
+    {{value}} <span class="glyphicon glyphicon-pencil" ng-click="toggleEdit()"></span>
+</div>
+<div ng-show="editing">
+    <input type="text" ng-model="value" />
+    <button ng-click="toggleEdit(true)">
+        <span class="glyphicon glyphicon-floppy-disk"></span> Save
+    </button>
+    <button ng-click="toggleEdit(false)">
+        <span class="glyphicon glyphicon-remove"></span> Cancel
+    </button>
+</div>

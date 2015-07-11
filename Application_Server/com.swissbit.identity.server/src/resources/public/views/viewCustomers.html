@@ -1,0 +1,170 @@
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+
+<div class="row col-md-4 col-md-offset-4">
+</div>
+<div class="row col-md-10 col-md-offset-1" >
+    <div class="panel panel-primary margin">
+    	<div class="panel-heading" >
+            <strong>Customer Details </strong>
+        </div>
+        <div class="panel-body">
+            <table class="table table-striped table-hover"> 
+            			<tr>
+                			<th>Email</th>
+                			<th>ID</th>
+                			<th>Name</th>
+                			<th>pin</th>
+                			<th>UserName</th>
+							<th></th>
+							<th></th>
+            			</tr>
+            				<tr ng-repeat="customer in customers" >
+                			<td>{{customer.email}}</td>
+                			<td>{{customer.id}}</td>
+                			<td>{{customer.name}}</td>
+                			<td>{{customer.pin}}</td>
+                			<td>{{customer.username}}</td>
+							<td>
+							    <a class="glyphicon glyphicon-pencil" role="presentation"
+       								ng-click="editCustomer(customer)"></a>
+							</td>
+							<td>
+    							<a class="glyphicon glyphicon-remove" role="presentation"
+      								ng-click="removeCustomer(customer)"></a>
+							</td>
+            			</tr>
+        	</table>
+					<div ng-show="updateCustomerForm" class="panel panel-primary margin">
+						<div class="panel-heading">
+							<strong> Update Customer Details for ID {{currentCustomerDefaults.id}} </strong> 
+						</div> 			
+						<div class="panel-body">
+							<div class="col-md-6">
+								<form name="updateCustomerFormData" role="form" novalidate>
+                    				<div class="container text-center">
+                        				<br/>
+                        				<div class="row">
+                            				<div class="form-group">
+                                				<div class="col-lg-4 col-md-offset-2">
+                                   		 			<input type="email" name="email" class="form-control" id="email" ng-model="updateCustomerInfo.email" required>
+                                				</div>
+                            				</div>
+                        				</div>
+                        				<br/>
+                        				<div class="row">
+                            				<div class="form-group">
+                                				<div class="col-lg-4 col-md-offset-2">
+                                   					<input type="text" class="form-control" id="id" ng-model="updateCustomerInfo.id" readonly>
+                                				</div>
+                            				</div>
+                        				</div>
+                        				<br/>
+                        				<div class="row">
+                            				<div class="form-group">
+                               					<div class="col-lg-4 col-md-offset-2">
+                                   	 			<input type="text" class="form-control" id="name" ng-model="updateCustomerInfo.name" required>
+                                				</div>
+                            				</div>
+                        				</div>
+                        				<br/>
+                        				<div class="row">
+                            				<div class="form-group">
+                               		 			<div class="col-lg-4 col-md-offset-2">
+                               		     			<input type="text" class="form-control" id="pin" ng-model="updateCustomerInfo.pin" required>
+                                				</div>
+                            				</div>
+                        				</div>
+                        				<br/>
+			                        	<div class="row">
+            			             	    <div class="form-group">
+                        			  	        <div class="col-lg-4 col-md-offset-2">
+                                   					<input type="text" class="form-control" id="username" ng-model="updateCustomerInfo.username" required>
+                                				</div>
+                            				</div>
+                        				</div>
+                        				<br/>
+                        				<div class="row">
+                            				<div class="form-group">
+                                				<div class="col-lg-4 col-md-offset-2">
+                                   		 			<input type="submit" class="btn btn-info btn-block" value="Submit" ng-click="updateCustomer(updateCustomerInfo)">
+                                   	 				<input type="submit" class="btn btn-info btn-block" value="Cancel" ng-click="removeForm()">
+                                				</div>
+                            				</div>
+                        				</div>
+                    				</div>
+                				</form>
+							</div>
+						</div>
+					</div>
+			</br>
+			<button type="button" ng-click="addCustomer()" class="btn btn-primary">Add new Customer Details</button>
+			</br></br>
+			<div ng-show="newCustomerForm">
+				<form name="newCustomer" role="form" novalidate>
+					<div class="container">
+    					<div class="row">
+        					<div class="col-lg-4 col-md-offset-2"><h4>Add new Customer Details </h4> </div>
+    					</div>
+    					<br/>
+        				<div class="row">
+            				<div class="form-group">
+                				<div class="col-lg-4 col-md-offset-2">
+                    				<input type="email" name="email" class="form-control" id="email"  placeholder="Customer Email" ng-model="newCustomerInfo.email" required>
+                				</div>
+            				</div>
+        				</div>
+        				<br/>
+        				<div class="row">
+    						<div class="form-group">
+        						<div class="col-lg-4 col-md-offset-2">
+            						<input type="text" class="form-control" id="name" placeholder="Name" ng-model="newCustomerInfo.name" required>
+        						</div>
+    	    				</div>
+						</div>
+						<br/>
+						<div class="row">
+            				<div class="form-group">
+                				<div class="col-lg-4 col-md-offset-2">
+                   		 			<input type="password" class="form-control" id="password" placeholder="Password" ng-model="newCustomerInfo.password" required>
+                				</div>
+            				</div>
+        				</div>
+        				<br/>
+						<div class="row">
+        					<div class="form-group">
+           		     			<div class="col-lg-4 col-md-offset-2">
+           		             		<input type="text" class="form-control" id="pin" placeholder="pin" ng-model="newCustomerInfo.pin" required>
+               					</div>  
+            				</div>
+        				</div>
+						<br/>
+						<div class="row">
+        					<div class="form-group">
+               		 			<div class="col-lg-4 col-md-offset-2">
+               	   		      		<input type="text" class="form-control" id="username" placeholder="username" ng-model="newCustomerInfo.username" required>
+                				</div>  
+             				</div>
+        				</div>
+        				<br/>
+						<div class="row">
+            				<div class="form-group">
+               		 			<div class="col-lg-4 col-md-offset-2">
+                   		 			<input type="submit" class="btn btn-info btn-block" value="Submit" ng-click="addnewCustomer(newCustomerInfo)">
+		    						<input type="submit" class="btn btn-info btn-block" value="Cancel" ng-click="removeForm()">
+									<input type="submit" class="btn btn-info btn-block" value="Reset" ng-click="resetForm()"> 
+                				</div>
+            				</div>
+        				</div>
+					</div>
+ 				</form>
+			</div>
+		</div>
+	</div>
+</div>
