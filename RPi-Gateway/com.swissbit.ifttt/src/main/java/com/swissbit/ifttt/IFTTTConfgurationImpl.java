@@ -15,8 +15,13 @@
  *******************************************************************************/
 package com.swissbit.ifttt;
 
+import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.mail.DefaultAuthenticator;
+import org.apache.commons.mail.Email;
+import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.SimpleEmail;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Deactivate;
@@ -25,6 +30,11 @@ import org.eclipse.kura.configuration.ConfigurableComponent;
 import org.osgi.service.component.ComponentContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Splitter;
+import com.google.common.base.Throwables;
+import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
 
 /**
  * This is used to configure HypeSQL Connection
@@ -136,9 +146,44 @@ public class IFTTTConfgurationImpl implements ConfigurableComponent, IFTTTConfig
 		this.m_smtpHost = (String) this.m_properties.get(SMTP_HOST);
 	}
 
+	/**
+	 * Used to retrieve set of hashtags
+	 */
+	private List<String> retrieveHashtags(final String hashTags) {
+		final List<String> tags = Lists.newArrayList();
+		final String TAG_SPLITTER = " ";
+		Iterators.addAll(tags, Splitter.on(TAG_SPLITTER).split(hashTags).iterator());
+		return tags;
+	}
+
 	/** {@inheritDoc} */
 	@Override
 	public boolean sendEmail(final String subject) {
+		final Email email = new SimpleEmail();
+		email.setHostName(this.m_smtpHost);
+		email.setSmtpPort(this.m_smtpPort);
+		email.setAuthenticator(new DefaultAuthenticator(this.m_smtpUsername, this.m_smtpPassword));
+		email.setSSL(true);
+
+		final List<String> tags = this.retrieveHashtags(this.m_hashTags);
+
+		if (tags.size() == 0) {
+			return false;
+		}
+
+		if (tags.size() > 0) {
+			for (final String tag : tags) {
+				try {
+					email.setFrom(this.m_smtpUsername);
+					email.setSubject(tag);
+					email.setMsg("This is a test mail ... :-)");
+					email.send();
+				} catch (final EmailException e) {
+					LOGGER.error(Throwables.getStackTraceAsString(e));
+				}
+			}
+		}
+
 		return false;
 	}
 

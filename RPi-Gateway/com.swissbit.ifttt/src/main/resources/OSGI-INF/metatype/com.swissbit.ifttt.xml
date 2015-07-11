@@ -18,10 +18,10 @@
 <MetaData xmlns="http://www.osgi.org/xmlns/metatype/v1.2.0"
 	localization="en_us">
 	<OCD id="com.swissbit.ifttt" name="IFTTT"
-		description="This is used to configure IFTTT Automation Channel">
+		description="This is used to configure IFTTT Automation Channel for IFTTT Tagged Email Trigger">
 
 		<Icon
-			resource="https://lh3.ggpht.com/GtoP5kH7CpLFfWur0bfofk3f4avKrRee06sNivcDB0FGXEQgJ4aqxRr7clShCGYKFCI=w300"
+			resource="http://icons.iconarchive.com/icons/blackvariant/shadow135-system/128/Dashboard-icon.png"
 			size="32" />
 
 		<AD id="ifttt.email.hashtags" name="ifttt.email.hashtags" type="String"
@@ -33,7 +33,7 @@
 			description="Configurable Property to set SMTP Server Address" />
 
 		<AD id="smtp.port" name="smtp.port"
-			type="Integer" cardinality="0" required="false" default="465"
+			type="Integer" cardinality="0" required="true" default="465"
 			description="Configurable Property to set SMTP Server Port" />
 
 		<AD id="smtp.username" name="smtp.username"

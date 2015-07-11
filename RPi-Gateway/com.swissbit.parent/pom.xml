@@ -210,6 +210,7 @@
 		<module>../com.swissbit.assd.comm</module>
 		<module>../com.swissbit.rxtx-osgi</module>
 		<module>../com.swissbit.accesscontrol</module>
+		<module>../com.swissbit.ifttt</module>
 		<module>../com.swissbit.dp.parent</module>
 	</modules>
 	

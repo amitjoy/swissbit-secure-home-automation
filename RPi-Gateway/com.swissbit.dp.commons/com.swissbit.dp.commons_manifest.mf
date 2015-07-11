@@ -28,3 +28,7 @@ Bundle-Version: 1.0.0.SNAPSHOT
 Name: com.swissbit.accesscontrol-1.0-SNAPSHOT.jar
 Bundle-SymbolicName: com.swissbit.accesscontrol
 Bundle-Version: 1.0.0.SNAPSHOT
+
+Name: com.swissbit.ifttt-1.0-SNAPSHOT.jar
+Bundle-SymbolicName: com.swissbit.ifttt
+Bundle-Version: 1.0.0.SNAPSHOT
