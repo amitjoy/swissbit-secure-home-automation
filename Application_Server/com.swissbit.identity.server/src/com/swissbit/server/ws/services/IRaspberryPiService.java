@@ -13,6 +13,8 @@ public interface IRaspberryPiService extends IAbstractService {
 	public RaspberryPi getRaspberryPi(String field, String value);
 
 	public RaspberryPi updateRaspberryPi(String id, String name, String pin);
+	
+	public RaspberryPi deleteRaspberryPi(String id);
 
 	public boolean validateRaspberryPi(String macAddr);
 
