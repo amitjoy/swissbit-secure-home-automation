@@ -1,3 +1,20 @@
+/**
+ * ****************************************************************************
+ * Copyright (C) 2015 - Manit Kumar <vikky_manit@yahoo.co.in>
+ * <p/>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * *****************************************************************************
+ */
 package com.swissbit.homeautomation.asyncTask;
 
 import android.app.ProgressDialog;
@@ -20,34 +37,53 @@ import com.swissbit.mqtt.client.message.KuraPayload;
 import com.tum.ssdapi.CardAPI;
 
 /**
- * Created by manit on 21/06/15.
+ * This AsyncTask handles the Status refresh of RaspberryPi.
  */
 public class DeviceStatusRefreshAsync extends AsyncTask {
 
-    boolean subscriptionResponse = false;
+    /**
+     * Subscription response
+     */
+    boolean subscriptionResponse;
 
-    private KuraPayload payload;
-
-    private String requestId;
-
+    /**
+     * A monitor object for thread synchronisation
+     */
     private Object refreshMonitor;
 
+    /**
+     * Node id of the device.
+     */
     private int deviceNodeId;
 
+    /**
+     * Status of the device.
+     */
     private boolean deviceStatus;
 
+    /**
+     * The database object of the application
+     */
     private ApplicationDb applicationDb;
 
-    private Switch socketSwitch;
-
-    private ImageView imageDevice;
-
+    /**
+     * Progress Dialog object to display progress
+     */
     private ProgressDialog progressDialog;
 
+    /**
+     * The device object
+     */
     private Device device;
 
+    /**
+     * The secure element ID of the SD card
+     */
     private CardAPI secureElementAccess;
 
+    /**
+     * Start the progress dialog
+     */
     @Override
     protected void onPreExecute() {
         progressDialog = ProgressDialog.show(ActivityContexts.getDeviceActivityContext(), "Retrieving Device Status",
@@ -56,9 +92,12 @@ public class DeviceStatusRefreshAsync extends AsyncTask {
         device = applicationDb.getDevice();
         deviceNodeId = device.getDeviceNodeId();
         secureElementAccess = new CardAPI(ActivityContexts.getMainActivityContext());
-//        Log.d("SE",MQTTFactory.getSecureElementId());
+        subscriptionResponse = false;
     }
 
+    /**
+     * Handles the subscription and publish event for device status refresh
+     */
     @Override
     protected Object doInBackground(Object[] params) {
 
@@ -75,10 +114,11 @@ public class DeviceStatusRefreshAsync extends AsyncTask {
         refreshMonitor = new Object();
 
         String[] topicData = MQTTFactory.getTopicToSubscribe(TopicsConstants.SWITCH_ON_OFF_LIST_STATUS_SUB);
-        requestId = topicData[1];
+        String requestId = topicData[1];
         Log.d("RequestID", requestId);
         topic = topicData[0];
 
+        //Subscribe to the topic. After publish, the response will be handles here.
         if (status)
             client.subscribe(topic, new MessageListener() {
                 @Override
@@ -86,16 +126,14 @@ public class DeviceStatusRefreshAsync extends AsyncTask {
                     try {
                         int status = (int) kuraPayload.getMetric("response.code");
                         deviceStatus = (boolean) kuraPayload.getMetric("status");
-                        if(deviceStatus == true){
+                        if (deviceStatus == true) {
                             applicationDb.updateDeviceStatus("true", deviceNodeId);
-                        }
-                        else{
+                        } else {
                             applicationDb.updateDeviceStatus("false", deviceNodeId);
                         }
                         publishProgress();
 
-                        Log.d("DeviceStatus", ""+deviceStatus);
-                        Log.d("Metrics", ""+kuraPayload.metrics());
+                        Log.d("Metrics", "" + kuraPayload.metrics());
 
                         if (status == 200) {
                             Log.d("Response", "success");
@@ -106,7 +144,7 @@ public class DeviceStatusRefreshAsync extends AsyncTask {
                         }
                         synchronized (refreshMonitor) {
                             refreshMonitor.notify();
-                            Log.d("Notify1", "After");
+                            Log.d("Notify", "After");
                         }
                         Log.d("Inside onProcess", "" + subscriptionResponse);
                     } catch (Exception e) {
@@ -116,24 +154,25 @@ public class DeviceStatusRefreshAsync extends AsyncTask {
                 }
             });
 
-        Log.d("secureId",MQTTFactory.getSecureElementId());
+        //Generate the payload
+        KuraPayload payload = MQTTFactory.generatePayload("", requestId);
 
-        payload = MQTTFactory.generatePayload("", requestId);
-        String encryptedDeviceNodeId = secureElementAccess.encryptMsgWithID(MQTTFactory.getSecureElementId(),Integer.toString(deviceNodeId));
+        //Encrypt the node id of the device
+        String encryptedDeviceNodeId = secureElementAccess.encryptMsgWithID(MQTTFactory.getSecureElementId(), Integer.toString(deviceNodeId));
 
         payload.addMetric("nodeId", deviceNodeId);
         payload.addMetric("encVal", encryptedDeviceNodeId);
 
+        //Publish
         MQTTFactory.getClient().publish(MQTTFactory.getTopicToPublish(TopicsConstants.RETRIEVE_DEVICE_STATUS_PUB), payload);
 
+        Log.d("statustopic", MQTTFactory.getTopicToPublish(TopicsConstants.RETRIEVE_DEVICE_STATUS_PUB));
 
-        Log.d("NodeId", "" + deviceNodeId);
-        Log.d("statustopic",MQTTFactory.getTopicToPublish(TopicsConstants.RETRIEVE_DEVICE_STATUS_PUB));
-
+        //Wait for sometime for the response
         synchronized (refreshMonitor) {
             try {
                 Log.d("Notify", "Before");
-                refreshMonitor.wait(10000);
+                refreshMonitor.wait(15000);
                 Log.d("Notify", "After");
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -143,15 +182,17 @@ public class DeviceStatusRefreshAsync extends AsyncTask {
         return null;
     }
 
+    /**
+     * Check if the response has been received. If not, display failure message.
+     */
     @Override
     protected void onPostExecute(Object o) {
-//        if(subscriptionResponse) {
-            DeviceActivity deviceActivity = (DeviceActivity) ActivityContexts.getDeviceActivityContext();
-            deviceActivity.addToListView();
-//        }
+
+        DeviceActivity deviceActivity = (DeviceActivity) ActivityContexts.getDeviceActivityContext();
+        deviceActivity.addToListView();
 
         Log.d("Inside onPost", "" + subscriptionResponse);
-        if (!subscriptionResponse){
+        if (!subscriptionResponse) {
             progressDialog.dismiss();
             Toast.makeText(ActivityContexts.getMainActivityContext(), "Device Command Failed! Try again", Toast.LENGTH_LONG).show();
         }
@@ -164,10 +205,12 @@ public class DeviceStatusRefreshAsync extends AsyncTask {
 
     }
 
+    /**
+     *Dismiss the progress bar
+     */
     @Override
     public void onProgressUpdate(Object[] values) {
         progressDialog.dismiss();
         Log.d("Onprogess", "reached");
-
     }
 }

@@ -1,3 +1,20 @@
+/**
+ * ****************************************************************************
+ * Copyright (C) 2015 - Manit Kumar <vikky_manit@yahoo.co.in>
+ * <p/>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * *****************************************************************************
+ */
 package com.swissbit.homeautomation.asyncTask;
 
 import android.app.AlertDialog;
@@ -7,7 +24,6 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
-
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.swissbit.homeautomation.activity.MainActivity;
@@ -24,45 +40,65 @@ import com.tum.ssdapi.CardAPI;
 import org.apache.http.Header;
 
 /**
- * Created by manit on 11/06/15.
+ * This AsyncTask handles the authentication of RaspberryPi.
  */
 public class AuthenticationAsync extends AsyncTask {
 
-
+    /**
+     *MainActivity context object
+     */
     private MainActivity mainActivity;
 
+    /**
+     *RaspberryPi Id
+     */
     private String rid;
 
-    private EncryptionFactory encryptionFactory;
+    /**
+     *Subscription response
+     */
+    boolean subscriptionResponse;
 
-    boolean subscriptionResponse = false;
-
-    private AsyncHttpClient asyncHttpClient;
-
-    private AlertDialog alertDialog;
-
+    /**
+     *payload for the publish
+     */
     private KuraPayload payload;
 
+    /**
+     *Dialog message object
+     */
     private String dialogMessage;
 
+    /**
+     *MainActivity context object
+     */
     private Context mainActivityContext;
 
+    /**
+     *A monitor object for thread synchronisation
+     */
     private Object monitor;
 
+    /**
+     *Progress Dialog object to display progress
+     */
     private ProgressDialog progressDialog;
 
-    private CardAPI secureElementAccess;
-
+    /**
+     *Constructor
+     */
     public AuthenticationAsync(Context context, final String rid) {
         this.mainActivity = (MainActivity)context;
         this.mainActivityContext = context;
         this.rid = rid;
-        encryptionFactory = new EncryptionFactory();
-        secureElementAccess = new CardAPI(ActivityContexts.getMainActivityContext());
+        subscriptionResponse = false;
     }
 
+    /**
+     *Show the dialog message after the RaspberryPi authentication
+     */
     public void showDialog(){
-        alertDialog = new AlertDialog.Builder(mainActivityContext).create();
+        AlertDialog alertDialog = new AlertDialog.Builder(mainActivityContext).create();
         alertDialog.setTitle("Information");
         alertDialog.setMessage(dialogMessage);
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
@@ -83,10 +119,16 @@ public class AuthenticationAsync extends AsyncTask {
                 "Please Wait", true);
     }
 
+    /**
+     *Handles the subscription and publish event for RaspberryPi Authentication
+     */
     @Override
     protected Object doInBackground(Object[] params) {
+
         IKuraMQTTClient client = MQTTFactory.getClient();
         boolean status = false;
+        String requestId = null;
+        String topic = null;
 
         monitor = new Object();
 
@@ -95,21 +137,14 @@ public class AuthenticationAsync extends AsyncTask {
 
         status = client.isConnected();
 
-        String requestId = null;
-        String topic = null;
-
         String[] topicData = MQTTFactory.getTopicToSubscribe(TopicsConstants.RASPBERRY_AUTH_SUB);
         requestId = topicData[1];
         topic = topicData[0];
 
-        Log.d("Kura MQTT2", Boolean.toString(status));
-
-        encryptionFactory = new EncryptionFactory();
-
         Log.d("Kura MQTTTopic", topic);
-
         Log.d("Kura requestId", requestId);
 
+        //Subscribe to the topic. After publish, the response will be handles here.
         if (status)
             client.subscribe(topic, new MessageListener() {
                 @Override
@@ -118,15 +153,15 @@ public class AuthenticationAsync extends AsyncTask {
 
                         String metricData = String.valueOf(kuraPayload.getMetric("data"));
                         if (metricData.isEmpty()) {
-                            Log.d("Metrics......1", "" + kuraPayload.metrics());
+                            Log.d("Metrics", "" + kuraPayload.metrics());
                             subscriptionResponse = false;
                         } else {
-                            Log.d("Metrics......2", "" + kuraPayload.metrics());
+                            Log.d("Metrics", "" + kuraPayload.metrics());
                             subscriptionResponse = true;
                         }
                         synchronized (monitor) {
                             monitor.notify();
-                            Log.d("Notify1", "After");
+                            Log.d("Notify", "After");
                         }
                         Log.d("Inside onProcess", "" + subscriptionResponse);
                     } catch (Exception e) {
@@ -140,25 +175,20 @@ public class AuthenticationAsync extends AsyncTask {
         if (!status)
             MQTTFactory.getClient().connect();
 
-
-        Log.d("EncryptAsyncFactory", "" + MQTTFactory.getClient());
-
-        Log.d("EncryptAsyncFactory", "" + MQTTFactory.getTopicToPublish(TopicsConstants.RASPBERRY_AUTH_PUB));
-
+        Log.d("AuthTopic", "" + MQTTFactory.getTopicToPublish(TopicsConstants.RASPBERRY_AUTH_PUB));
         Log.d("EncryptAsyncFactory", "" + EncryptionFactory.getEncryptedString());
 
+        //Generate the payload
         payload = MQTTFactory.generatePayload(EncryptionFactory.getEncryptedString(), requestId);
 
-
+        //Publish
         if (status)
             MQTTFactory.getClient().publish(MQTTFactory.getTopicToPublish(TopicsConstants.RASPBERRY_AUTH_PUB), payload);
 
-
+        //Wait for sometime for the response
         synchronized (monitor) {
             try {
-                Log.d("Notify", "Before");
                 monitor.wait(15000);
-                Log.d("Notify", "After");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -171,21 +201,26 @@ public class AuthenticationAsync extends AsyncTask {
     @Override
     protected void onCancelled() {
         Log.d("Async", "cancelled");
-
     }
+
+    /**
+     *Checks if the response has been received after publishing.
+     * If yes, then makes a call to the webservice to update that the RaspberryPi had been added.
+     * This is for swissbit admin to know that the RaspberryPi is activated and added.
+     */
     @Override
     protected void onPostExecute(Object o) {
         Log.d("Inside onPost", "" + subscriptionResponse);
 
         if (subscriptionResponse) {
             Log.d("Inside onPostWS", WSConstants.ADD_RPI_WS + MQTTFactory.getRaspberryPiById());
-            asyncHttpClient = new AsyncHttpClient();
+            AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
             asyncHttpClient.get(WSConstants.ADD_RPI_WS + MQTTFactory.getRaspberryPiById(), new AsyncHttpResponseHandler() {
 
+                //On successful authentication of RaspberryPi
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     Log.d("DEBUG AUTHASYNC", "INSIDE SUCCESS");
-                    Log.d("Main Activity", "" + mainActivity);
                     payload.addMetric("secure_element", MQTTFactory.getMobileClientSecureElementId());
                     payload.addMetric("encVal",EncryptionFactory.getEncryptedString());
 
@@ -195,17 +230,18 @@ public class AuthenticationAsync extends AsyncTask {
                     showDialog();
                 }
 
+                //On unsuccessful authentication of RaspberryPi
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                     Log.d("DEBUG AUTHASYNC", "INSIDE FAILURE");
-                    Toast.makeText(ActivityContexts.getMainActivityContext(), "RaspberryPi Registration Unsuccessful. Please try Again1", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ActivityContexts.getMainActivityContext(), "RaspberryPi Registration Unsuccessful. Please try Again", Toast.LENGTH_LONG).show();
                     dialogMessage = "RaspberryPi Registration Unsuccessful. Please try Again";
                     showDialog();
                 }
             });
 
         } else {
-            Toast.makeText(ActivityContexts.getMainActivityContext(), "RaspberryPi Registration Unsuccessful. Please try Again3", Toast.LENGTH_LONG).show();
+            Toast.makeText(ActivityContexts.getMainActivityContext(), "RaspberryPi Registration Unsuccessful. Please try Again", Toast.LENGTH_LONG).show();
             dialogMessage = "RaspberryPi Registration Unsuccessful. Please try Again";
             showDialog();
         }

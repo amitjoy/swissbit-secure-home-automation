@@ -1,3 +1,20 @@
+/**
+ * ****************************************************************************
+ * Copyright (C) 2015 - Manit Kumar <vikky_manit@yahoo.co.in>
+ * <p/>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * *****************************************************************************
+ */
 package com.swissbit.homeautomation.ui.adapter;
 
 import android.content.Context;
@@ -14,16 +31,24 @@ import com.swissbit.homeautomation.model.RaspberryPi;
 import java.util.List;
 
 /**
- * Created by manit on 05/06/15.
+ * Custom Adapter to display RaspberryPi in the list view
  */
+
 public class RPiAdapter extends ArrayAdapter<RaspberryPi> {
 
+    /**
+     * Info of list of RaspberryPi
+     */
     private List<RaspberryPi> raspberryInfo;
-    private RaspberryPi raspberryPi;
-    private View customView;
-    private ImageView imageStatus;
-    private ViewGroup viewGroup;
 
+    /**
+     * RaspberryPi object
+     */
+    private RaspberryPi raspberryPi;
+
+    /**
+     * Constructor
+     */
     public RPiAdapter(Context context, List<RaspberryPi> raspberryInfo) {
         super(context, R.layout.row_raspberry_details, raspberryInfo);
         this.raspberryInfo = raspberryInfo;
@@ -33,19 +58,20 @@ public class RPiAdapter extends ArrayAdapter<RaspberryPi> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-        customView = layoutInflater.inflate(R.layout.row_raspberry_details_full, parent, false);
-        viewGroup = parent;
+        View customView = layoutInflater.inflate(R.layout.row_raspberry_details_full, parent, false);
+        ViewGroup viewGroup = parent;
 
 //        TextView raspberryName = (TextView) customView.findViewById(R.id.txtRaspberryName);
         TextView raspberryDescription = (TextView) customView.findViewById(R.id.txtRaspberryDescription);
         TextView raspberryId = (TextView) customView.findViewById(R.id.txtRaspberryId);
         TextView raspberryStatus = (TextView) customView.findViewById(R.id.txtRaspberryStatus);
         ImageView imageRaspberry = (ImageView) customView.findViewById(R.id.imgRaspberry);
-        imageStatus = (ImageView) customView.findViewById(R.id.imgStatus);
+        ImageView imageStatus = (ImageView) customView.findViewById(R.id.imgStatus);
 
 //        raspberryName.setText(raspberryPi.getName());
         raspberryId.setText(raspberryPi.getId());
 
+        //Initial status of the RaspberryPi
         if (raspberryPi.getStatus())
             imageStatus.setImageResource(R.drawable.btnon);
         else

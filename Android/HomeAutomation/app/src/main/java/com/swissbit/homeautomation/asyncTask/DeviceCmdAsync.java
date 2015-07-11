@@ -1,3 +1,20 @@
+/**
+ * ****************************************************************************
+ * Copyright (C) 2015 - Manit Kumar <vikky_manit@yahoo.co.in>
+ * <p/>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * *****************************************************************************
+ */
 package com.swissbit.homeautomation.asyncTask;
 
 import android.app.Activity;
@@ -20,46 +37,68 @@ import com.swissbit.mqtt.client.message.KuraPayload;
 import com.tum.ssdapi.CardAPI;
 
 /**
- * Created by manit on 17/06/15.
+ * Handles device's on/off commands
  */
 public class DeviceCmdAsync extends AsyncTask {
 
-    boolean subscriptionResponse = false;
+    /**
+     *Subscription response
+     */
+    boolean subscriptionResponse;
 
-    private KuraPayload payload;
-
+    /**
+     *Command. Either on or off.
+     */
     private String cmd;
 
-    private String requestId;
-
+    /**
+     *A monitor object for thread synchronisation
+     */
     private Object monitor;
 
+    /**
+     *Node id of the device.
+     */
     private int deviceNodeId;
 
-    private ImageView imageDevice;
-
+    /**
+     * The database object of the application
+     */
     private ApplicationDb applicationDb;
 
+    /**
+     *Progress Dialog object to display progress
+     */
     private ProgressDialog progressDialog;
 
-    private String raspberryId;
-
+    /**
+     * The object to access the secure element for the SD card
+     */
     private CardAPI secureElementAccess;
 
+    /**
+     *Constructor
+     */
     public DeviceCmdAsync(String cmd, int deviceNodeId, String raspberryId) {
         this.cmd = cmd;
         this.deviceNodeId = deviceNodeId;
-        this.raspberryId = raspberryId;
         applicationDb = DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getDeviceActivityContext());
         secureElementAccess = new CardAPI(ActivityContexts.getMainActivityContext());
+        subscriptionResponse = false;
     }
 
+    /**
+     *Start the progress Dialog
+     */
     @Override
     protected void onPreExecute() {
         progressDialog = ProgressDialog.show(ActivityContexts.getDeviceActivityContext(), "Executing Command",
           "Please Wait", true);
     }
 
+    /**
+     *Handles the subscription and publish event for device command
+     */
     @Override
     protected Object doInBackground(Object[] params) {
 
@@ -76,10 +115,11 @@ public class DeviceCmdAsync extends AsyncTask {
         monitor = new Object();
 
         String[] topicData = MQTTFactory.getTopicToSubscribe(TopicsConstants.SWITCH_ON_OFF_LIST_STATUS_SUB);
-        requestId = topicData[1];
+        String requestId = topicData[1];
         Log.d("RequestID", requestId);
         topic = topicData[0];
 
+        //Subscribe to the topic. After publish, the response will be handles here.
         if (status)
             client.subscribe(topic, new MessageListener() {
                 @Override
@@ -101,7 +141,7 @@ public class DeviceCmdAsync extends AsyncTask {
                         }
                         synchronized (monitor) {
                             monitor.notify();
-                            Log.d("Notify1", "After");
+                            Log.d("Notify", "After");
                         }
 
                         Log.d("Inside onProcess", "" + subscriptionResponse);
@@ -112,13 +152,16 @@ public class DeviceCmdAsync extends AsyncTask {
                 }
             });
 
-        payload = MQTTFactory.generatePayload("", requestId);
+        //Generate the payload
+        KuraPayload payload = MQTTFactory.generatePayload("", requestId);
 
+        //Encrypt the node id of the device
         String encryptedDeviceNodeId = secureElementAccess.encryptMsgWithID(MQTTFactory.getSecureElementId(),Integer.toString(deviceNodeId));
 
         payload.addMetric("nodeId",deviceNodeId);
         payload.addMetric("encVal", encryptedDeviceNodeId);
 
+        //Publish based on/off command
         if (cmd.equals("on")) {
             MQTTFactory.getClient().publish(MQTTFactory.getTopicToPublish(TopicsConstants.SWITCH_ON_PUB), payload);
             Log.d("Switch", "onpresses" + MQTTFactory.getTopicToPublish(TopicsConstants.SWITCH_ON_PUB));
@@ -127,10 +170,11 @@ public class DeviceCmdAsync extends AsyncTask {
             Log.d("Switch", "offpresses");
         }
 
+        //Wait for sometime for the response
         synchronized (monitor) {
             try {
                 Log.d("Notify", "Before");
-                monitor.wait(10000);
+                monitor.wait(15000);
                 Log.d("Notify", "After");
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -139,11 +183,12 @@ public class DeviceCmdAsync extends AsyncTask {
 
         publishProgress();
 
-
-
         return null;
     }
 
+    /**
+     *Check if the response has been received. If not, display failure message.
+     */
     @Override
     protected void onPostExecute(Object o) {
         Log.d("Inside onPost", "" + subscriptionResponse);
@@ -159,14 +204,17 @@ public class DeviceCmdAsync extends AsyncTask {
         Log.d("Inside onCancelled", "" + subscriptionResponse);
     }
 
+    /**
+     *Change the image of the device based on the successful execution of on/off command.
+     */
     @Override
     public void onProgressUpdate(Object[] values) {
-        Log.d("Onprogess", "reached");
+
         progressDialog.dismiss();
 
         if(subscriptionResponse) {
             View rootView = ((Activity) ActivityContexts.getDeviceActivityContext()).getWindow().getDecorView().findViewById(android.R.id.content);
-            imageDevice = (ImageView) rootView.findViewById(R.id.imgDevice);
+            ImageView imageDevice = (ImageView) rootView.findViewById(R.id.imgDevice);
             if (cmd.equals("on")) {
                 imageDevice.setImageResource(R.drawable.socketswitchon);
             } else {
