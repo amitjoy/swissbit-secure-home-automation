@@ -1,3 +1,7 @@
+body {
+    overflow: hidden;
+}
+
 .slider {
     width: 800px;
     height: 400px;
@@ -24,31 +28,31 @@
     height: 71px;
     outline: none;
     cursor: pointer;
-    background: url(../assets/img/blank.gif) no-repeat;
+    background: url(../images/img/blank.gif) no-repeat;
 }
 
 .arrow.prev {
     opacity: 0.2;
     left: 20px;
-    background-image: url(../assets/img/paddle_prev_999.png);
+    background-image: url(../images/img/paddle_prev_999.png);
     transition: 0.2s linear all;
 }
 
 .arrow.next {
     opacity: 0.2;
     right: 20px;
-    background-image: url(../assets/img/paddle_next_999.png);
+    background-image: url(../images/img/paddle_next_999.png);
     transition: 0.2s linear all;
 }
 
 .arrow.prev:hover {
     opacity: 1;
-    background-image: url(../assets/img/paddle_prev_fff.png);
+    background-image: url(../images/img/paddle_prev_fff.png);
 }
 
 .arrow.next:hover {
     opacity: 1;
-    background-image: url(../assets/img/paddle_next_fff.png);
+    background-image: url(../images/img/paddle_next_fff.png);
 }
 
 

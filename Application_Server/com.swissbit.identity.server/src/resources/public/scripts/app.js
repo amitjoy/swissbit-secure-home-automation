@@ -95,6 +95,8 @@ app.config(function ($routeProvider, $locationProvider) {
         		} 
 				else if ( next.templateUrl === "views/signUp.html") {
 				}
+				else if ( next.templateUrl === "views/displayUserHome.html") {
+				}
 				else {
           			$location.path("/logIn");
        			}
@@ -421,7 +423,7 @@ app.controller('viewRaspPisCtrl', function ($scope, $http, $location, $route) {
                 var blob = new Blob([data], { type:"text/html;charset=utf-8;" });
                 var downloadLink = angular.element('<a></a>');
                 downloadLink.attr('href',window.URL.createObjectURL(blob));
-                downloadLink.attr('download', 'raspberrypi_app.xml');
+                downloadLink.attr('download', 'raspberrypi_app.log');
                 downloadLink[0].click();
 
             })
