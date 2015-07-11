@@ -1,3 +1,20 @@
+/**
+ * ****************************************************************************
+ * Copyright (C) 2015 - Manit Kumar <vikky_manit@yahoo.co.in>
+ * <p/>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * *****************************************************************************
+ */
 package com.swissbit.homeautomation.asyncTask;
 
 import android.app.ProgressDialog;
@@ -17,34 +34,56 @@ import com.swissbit.mqtt.client.message.KuraPayload;
 import com.tum.ssdapi.CardAPI;
 
 /**
- * Created by manit on 18/06/15.
+ * This AsyncTask handles the retrieval of list of devices of a RaspberryPi.
  */
 public class RetrieveDeviceListAsync extends AsyncTask {
 
-    public RetrieveDeviceListAsync(String raspberryId) {
-        this.raspberryId = raspberryId;
-    }
+    /**
+     * Subscription response
+     */
+    boolean subscriptionResponse;
 
-    boolean subscriptionResponse = false;
-
-    private KuraPayload payload;
-
-    private String cmd;
-
-    private String requestId;
-
+    /**
+     * Node id of the device.
+     */
     private int deviceNodeId;
 
+    /**
+     * The database object of the application
+     */
     private ApplicationDb applicationDb;
 
+    /**
+     * The id of RaspberryPi
+     */
     private String raspberryId;
 
+    /**
+     * A monitor object for thread synchronisation
+     */
     private Object monitor;
 
+    /**
+     * Progress Dialog object to display progress
+     */
     private ProgressDialog progressDialog;
 
+    /**
+     * The secure element ID of the SD card
+     */
     private CardAPI secureElementAccess;
 
+    /**
+     * Constructor
+     */
+    public RetrieveDeviceListAsync(String raspberryId) {
+        this.raspberryId = raspberryId;
+        subscriptionResponse = false;
+    }
+
+    /**
+     * Start the progress dialog
+     */
     @Override
     protected void onPreExecute() {
         progressDialog = ProgressDialog.show(ActivityContexts.getDeviceActivityContext(), "Retrieving Device List",
@@ -52,6 +91,9 @@ public class RetrieveDeviceListAsync extends AsyncTask {
         secureElementAccess = new CardAPI(ActivityContexts.getDeviceActivityContext());
     }
 
+    /**
+     * Handles the subscription and publish event for device list retrieval
+     */
     @Override
     protected Object doInBackground(Object[] params) {
         final IKuraMQTTClient client = MQTTFactory.getClient();
@@ -66,16 +108,17 @@ public class RetrieveDeviceListAsync extends AsyncTask {
         status = client.isConnected();
 
         String[] topicData = MQTTFactory.getTopicToSubscribe(TopicsConstants.SWITCH_ON_OFF_LIST_STATUS_SUB);
-        requestId = topicData[1];
+        String requestId = topicData[1];
         Log.d("RequestID", requestId);
         final String topic = topicData[0];
-        if (status) {
 
+        //Subscribe to the topic. After publish, the response will be handles here.
+        if (status) {
             client.subscribe(topic, new MessageListener() {
                 @Override
                 public void processMessage(KuraPayload kuraPayload) {
                     try {
-                        Log.d("Inside", "subscribe");
+
                         int status = (int) kuraPayload.getMetric("response.code");
 
                         if (status == 200) {
@@ -84,15 +127,15 @@ public class RetrieveDeviceListAsync extends AsyncTask {
                             Log.d("HaspMap", "" + deviceNodeId);
                             Log.d("Device", "" + applicationDb.checkDeviceById(deviceNodeId));
                             if (!applicationDb.checkDeviceById(deviceNodeId)) {
-                                Log.d("Device", "Inserted");
                                 applicationDb.insertDevice(deviceNodeId, raspberryId, null, null, "false");
                                 Log.d("Device", "Inserted");
                             }
                             publishProgress();
-                            Log.d("Notify1", "Before");
+
+                            Log.d("Notify", "Before");
                             synchronized (monitor) {
                                 monitor.notify();
-                                Log.d("Notify1", "After");
+                                Log.d("Notify", "After");
                             }
                             subscriptionResponse = true;
 
@@ -108,16 +151,19 @@ public class RetrieveDeviceListAsync extends AsyncTask {
                 }
             });
 
+            //Generate the payload
+            KuraPayload payload = MQTTFactory.generatePayload("", requestId);
 
-            payload = MQTTFactory.generatePayload("", requestId);
+            //Encrypt any string. Here its "Raspberry".
             String encryptedString = secureElementAccess.encryptMsgWithID(MQTTFactory.getSecureElementId(),"Raspberry");
             payload.addMetric("encVal", encryptedString);
-            Log.d("Encrypted", encryptedString);
+
+            //Publish
             MQTTFactory.getClient().publish(MQTTFactory.getTopicToPublish(TopicsConstants.RETRIEVE_DEVICE_LIST_PUB), payload);
             Log.d("Topic Published", MQTTFactory.getTopicToPublish(TopicsConstants.RETRIEVE_DEVICE_LIST_PUB));
         }
 
-
+        //Wait for sometime for the response
         synchronized (monitor) {
             try {
                 Log.d("Notify", "Before");
@@ -130,6 +176,9 @@ public class RetrieveDeviceListAsync extends AsyncTask {
         return null;
     }
 
+    /**
+     * Check if the response has been received. If not, display failure message.
+     */
     @Override
     protected void onPostExecute(Object o) {
         if(subscriptionResponse) {
@@ -149,6 +198,9 @@ public class RetrieveDeviceListAsync extends AsyncTask {
         Log.d("Inside onCancelled", "" + subscriptionResponse);
     }
 
+    /**
+     *Dismiss the progress bar
+     */
     @Override
     public void onProgressUpdate(Object[] values) {
         progressDialog.dismiss();

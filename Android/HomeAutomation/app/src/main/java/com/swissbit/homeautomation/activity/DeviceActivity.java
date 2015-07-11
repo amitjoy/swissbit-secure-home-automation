@@ -1,10 +1,26 @@
+/**
+ * ****************************************************************************
+ * Copyright (C) 2015 - Manit Kumar <vikky_manit@yahoo.co.in>
+ * <p/>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * *****************************************************************************
+ */
 package com.swissbit.homeautomation.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.widget.ListView;
-
 import com.android.swissbit.homeautomation.R;
 import com.google.common.collect.Lists;
 import com.swissbit.homeautomation.asyncTask.DeviceStatusRefreshAsync;
@@ -19,24 +35,29 @@ import com.swissbit.homeautomation.utils.MQTTFactory;
 import java.util.List;
 
 /**
- * Created by manit on 16/06/15.
+ * This activity handles all the functionality related to the devices.
  */
 public class DeviceActivity extends ActionBarActivity {
 
+    /**
+     *List view for the devices
+     */
     private ListView deviceListView;
 
-    private DeviceAdapter adapter;
-
-    private List<Device> listOfDevice;
-
-    private Device device;
-
-    private Bundle extras;
-
+    /**
+     * RaspberryPi Id
+     */
     private String raspberryId;
 
+    /**
+     * The database object of the application
+     */
     private ApplicationDb applicationDb;
 
+    /**
+     * OnCreate method of the activity.
+     * Gets the RaspberryPi id from MainActivity and makes a call to retrieve the devices attached to it.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,20 +69,23 @@ public class DeviceActivity extends ActionBarActivity {
 
         deviceListView = (ListView) findViewById(R.id.listDevice);
 
+        Bundle extras;
         extras = getIntent().getExtras();
-        Log.d("Device Activity",""+ extras);
         raspberryId = extras.getString("RaspberryId");
 
         MQTTFactory.setSecureElementId(extras.getString("SecureElementId"));
 
-        Log.d("Device Activity", raspberryId);
-        Log.d("Device Activity", ""+extras.getString("SecureElementId"));
-
+        //To get the list of devices attached to the RaspberryPi
         getDeviceList();
 
 
     }
 
+    /**
+     * To get the list of devices attached to the RaspberryPi.
+     * The device list retrieval happens only once.
+     * If the list is already retrieved, then the status of device is retrieved.
+     */
     public void getDeviceList(){
         if(applicationDb.getDevice() == null){
             RetrieveDeviceListAsync retrieveDeviceListAsync = new RetrieveDeviceListAsync(raspberryId);
@@ -74,9 +98,15 @@ public class DeviceActivity extends ActionBarActivity {
 
     }
 
-
+    /**
+     * Display the device in the list view
+     */
     public void addToListView() {
-        Log.d("Adding List view","Added");
+
+        DeviceAdapter adapter;
+        Device device;
+        List<Device> listOfDevice;
+
         device = applicationDb.getDevice();
         listOfDevice = Lists.newArrayList(device);
 
@@ -87,11 +117,13 @@ public class DeviceActivity extends ActionBarActivity {
 
     }
 
+    /**
+     * Handling back button press in the device activity
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         ActivityContexts.setCurrentActivityContext(ActivityContexts.getMainActivityContext());
-        Log.d("AppContext",""+ActivityContexts.getMainActivityContext());
     }
 }
 
