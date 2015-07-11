@@ -32,7 +32,7 @@
 		<osgi-core.version>5.0.0</osgi-core.version>
 		<osgi.version>4.3.1</osgi.version>
 		<slf4j.version>1.6.4</slf4j.version>
-		<kura.version>1.0.4-SNAPSHOT</kura.version>
+		<kura.version>1.0.5-SNAPSHOT</kura.version>
 		<guava.version>18.0</guava.version>
 		<rxtx.version>2.1.7</rxtx.version>
 		<wzwave.version>0.0.3</wzwave.version>

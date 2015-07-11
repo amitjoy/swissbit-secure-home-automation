@@ -24,7 +24,7 @@ public final class Snippets {
 
 	private static String ACCESS_REVOCATION_SUBSCRIPTION = "$EDC/swissbit/B8:27:EB:BE:3F:BF/SURVEILLANCE-V1/1b58095eb4c6b36d794c3ed776ae2378/access/revoked";
 	private static IKuraMQTTClient client;
-	private static String clientId = "AMIT";
+	private static String clientId = "AMITA";
 	private static final String REQUEST_PERM = "$EDC/swissbit/B8:27:EB:BE:3F:BF/SURVEILLANCE-V1/POST/sample";
 	private static final String REQUEST_REVOKE = "$EDC/swissbit/B8:27:EB:BE:3F:BF/SURVEILLANCE-V1/1b58095eb4c6b36d794c3ed776ae2378/access/revoked";
 	private static final String REQUEST_TOPIC = "$EDC/swissbit/B8:27:EB:BE:3F:BF/AUTH-V1/EXEC/decrypt";
@@ -32,17 +32,17 @@ public final class Snippets {
 	private static final String REQUEST_ZWAVE = "$EDC/swissbit/B8:27:EB:BE:3F:BF/DEVICE-V1/EXEC/off";
 	private static final String REQUEST_ZWAVE_LIST = "$EDC/swissbit/B8:27:EB:BE:3F:BF/DEVICE-V1/GET/list";
 	private static final String REQUEST_ZWAVE_STATUS = "$EDC/swissbit/B8:27:EB:BE:3F:BF/DEVICE-V1/GET/status";
-	private static String RESPONSE_PERM = "$EDC/swissbit/AMIT/SURVEILLANCE-V1/REPLY/454545454545456";
-	private static String RESPONSE_TOPIC = "$EDC/swissbit/AMIT/AUTH-V1/REPLY/454545454545456";
-	private static String RESPONSE_TOPIC1 = "$EDC/swissbit/AMIT/CONF-V1/REPLY/422141241212";
-	private static String RESPONSE_ZWAVE = "$EDC/swissbit/AMIT/DEVICE-V1/REPLY/454545454545456";
-	private static String RESPONSE_ZWAVE_LIST = "$EDC/swissbit/AMIT/DEVICE-V1/REPLY/454545454545456";
+	private static String RESPONSE_PERM = "$EDC/swissbit/AMITA/SURVEILLANCE-V1/REPLY/454545454545456";
+	private static String RESPONSE_TOPIC = "$EDC/swissbit/AMITA/AUTH-V1/REPLY/454545454545456";
+	private static String RESPONSE_TOPIC1 = "$EDC/swissbit/AMITA/CONF-V1/REPLY/422141241212";
+	private static String RESPONSE_ZWAVE = "$EDC/swissbit/AMITA/DEVICE-V1/REPLY/454545454545456";
+	private static String RESPONSE_ZWAVE_LIST = "$EDC/swissbit/AMITA/DEVICE-V1/REPLY/454545454545456";
 	private static boolean status;
 
 	public static void main(final String... args) {
 		// Create the connection object
-		client = new KuraMQTTClient.Builder().setHost("m20.cloudmqtt.com").setPort("13273").setClientId(clientId)
-				.setUsername("user@email.com").setPassword("tEev-Aiv-H").build();
+		client = new KuraMQTTClient.Builder().setHost("m11.cloudmqtt.com").setPort("14384").setUsername("wvnlscci")
+				.setPassword("JDndgf1WMS4n").setClientId(clientId).build();
 
 		// Connect to the Message Broker
 		status = client.connect();
