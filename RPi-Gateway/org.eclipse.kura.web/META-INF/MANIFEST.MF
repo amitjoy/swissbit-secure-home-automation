@@ -38,7 +38,7 @@ Import-Package:
  com.google.gwt.user.rebind.rpc,
  com.google.gwt.user.server.rpc,
  com.google.gwt.user.server.rpc.impl,
- com.swissbit.accesscontrol,
+ com.swissbit.accesscontrol;resolution:=optional,
  javax.crypto,
  javax.crypto.spec,
  javax.security.auth,
