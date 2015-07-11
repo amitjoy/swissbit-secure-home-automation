@@ -36,6 +36,11 @@ import com.tum.ssdapi.CardAPI;
 
 import org.apache.http.Header;
 
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * This AsyncTask handles the authentication of RaspberryPi.
  */
@@ -72,9 +77,14 @@ public class AuthenticationAsync extends AsyncTask {
     private Context mainActivityContext;
 
     /**
-     *A monitor object for thread synchronisation
+     * A lock object for thread synchronisation
      */
-    private Object monitor;
+    private Lock lock;
+
+    /**
+     * A condition object used by locks for thread synchronisation
+     */
+    private Condition condition;
 
     /**
      *Progress Dialog object to display progress
@@ -89,6 +99,8 @@ public class AuthenticationAsync extends AsyncTask {
         this.mainActivityContext = context;
         this.rid = rid;
         subscriptionResponse = false;
+        lock = new ReentrantLock();
+        condition = lock.newCondition();
     }
 
     /**
@@ -127,8 +139,6 @@ public class AuthenticationAsync extends AsyncTask {
         String requestId = null;
         String topic = null;
 
-        monitor = new Object();
-
         if (!client.isConnected())
             status = client.connect();
 
@@ -156,9 +166,15 @@ public class AuthenticationAsync extends AsyncTask {
                             Log.d("Metrics", "" + kuraPayload.metrics());
                             subscriptionResponse = true;
                         }
-                        synchronized (monitor) {
-                            monitor.notify();
-                            Log.d("Notify", "After");
+
+                        if (lock.tryLock()) {
+                            try {
+                                Log.d("Notify", "After");
+                                condition.signal();
+                            }
+                            finally {
+                                lock.unlock();
+                            }
                         }
                         Log.d("Inside onProcess", "" + subscriptionResponse);
                     } catch (Exception e) {
@@ -183,11 +199,15 @@ public class AuthenticationAsync extends AsyncTask {
             MQTTFactory.getClient().publish(MQTTFactory.getTopicToPublish(TopicsConstants.RASPBERRY_AUTH_PUB), payload);
 
         //Wait for sometime for the response
-        synchronized (monitor) {
+        if (lock.tryLock()) {
             try {
-                monitor.wait(20000);
+                Log.d("Notify", "Before");
+                condition.await(20, TimeUnit.SECONDS);
+                Log.d("Notify", "After");
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            } finally {
+                lock.unlock();
             }
         }
 

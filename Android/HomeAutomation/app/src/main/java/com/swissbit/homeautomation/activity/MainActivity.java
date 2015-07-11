@@ -44,6 +44,7 @@ import com.swissbit.homeautomation.utils.DBFactory;
 import com.swissbit.homeautomation.utils.EncryptionFactory;
 import com.swissbit.homeautomation.utils.MQTTFactory;
 import com.swissbit.homeautomation.ui.dialog.SecureCodeDialog;
+import com.swissbit.mqtt.client.IKuraMQTTClient;
 import com.tum.ssdapi.CardAPI;
 import java.util.List;
 

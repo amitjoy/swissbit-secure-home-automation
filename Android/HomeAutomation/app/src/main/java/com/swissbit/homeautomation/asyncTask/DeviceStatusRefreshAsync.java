@@ -33,6 +33,11 @@ import com.swissbit.mqtt.client.adapter.MessageListener;
 import com.swissbit.mqtt.client.message.KuraPayload;
 import com.tum.ssdapi.CardAPI;
 
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * This AsyncTask handles the Status refresh of RaspberryPi.
  */
@@ -42,11 +47,6 @@ public class DeviceStatusRefreshAsync extends AsyncTask {
      * Subscription response
      */
     boolean subscriptionResponse;
-
-    /**
-     * A monitor object for thread synchronisation
-     */
-    private Object refreshMonitor;
 
     /**
      * Node id of the device.
@@ -74,6 +74,16 @@ public class DeviceStatusRefreshAsync extends AsyncTask {
     private Device device;
 
     /**
+     * A lock object for thread synchronisation
+     */
+    private Lock lock;
+
+    /**
+     * A condition object used by locks for thread synchronisation
+     */
+    private Condition condition;
+
+    /**
      * The secure element ID of the SD card
      */
     private CardAPI secureElementAccess;
@@ -90,6 +100,8 @@ public class DeviceStatusRefreshAsync extends AsyncTask {
         deviceNodeId = device.getDeviceNodeId();
         secureElementAccess = new CardAPI(ActivityContexts.getMainActivityContext());
         subscriptionResponse = false;
+        lock = new ReentrantLock();
+        condition = lock.newCondition();
     }
 
     /**
@@ -107,8 +119,6 @@ public class DeviceStatusRefreshAsync extends AsyncTask {
         status = client.isConnected();
 
         String topic = null;
-
-        refreshMonitor = new Object();
 
         String[] topicData = MQTTFactory.getTopicToSubscribe(TopicsConstants.SWITCH_ON_OFF_LIST_STATUS_SUB);
         String requestId = topicData[1];
@@ -139,10 +149,17 @@ public class DeviceStatusRefreshAsync extends AsyncTask {
                             Log.d("Response", "Failed");
                             subscriptionResponse = false;
                         }
-                        synchronized (refreshMonitor) {
-                            refreshMonitor.notify();
-                            Log.d("Notify", "After");
+
+                        if (lock.tryLock()) {
+                            try {
+                                Log.d("Notify", "After");
+                                condition.signal();
+                            }
+                            finally {
+                                lock.unlock();
+                            }
                         }
+
                         Log.d("Inside onProcess", "" + subscriptionResponse);
                     } catch (Exception e) {
                         Log.e("Kura MQTT Exception", e.getCause().getMessage());
@@ -166,13 +183,15 @@ public class DeviceStatusRefreshAsync extends AsyncTask {
         Log.d("statustopic", MQTTFactory.getTopicToPublish(TopicsConstants.RETRIEVE_DEVICE_STATUS_PUB));
 
         //Wait for sometime for the response
-        synchronized (refreshMonitor) {
+        if (lock.tryLock()) {
             try {
                 Log.d("Notify", "Before");
-                refreshMonitor.wait(20000);
+                condition.await(20, TimeUnit.SECONDS);
                 Log.d("Notify", "After");
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            } finally {
+                lock.unlock();
             }
         }
 
