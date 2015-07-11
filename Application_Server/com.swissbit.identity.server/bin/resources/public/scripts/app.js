@@ -420,10 +420,10 @@ app.controller('viewRaspPisCtrl', function ($scope, $http, $location, $route) {
         $scope.viewAppLog = function(rpimacaddr) {
             $http.get('/logs/' + rpimacaddr + '/app').success(function (data) {
                 console.log(data);
-                var blob = new Blob([data], { type:"application/xml;charset=utf-8;" });
+                var blob = new Blob([data], { type:"text/html;charset=utf-8;" });
                 var downloadLink = angular.element('<a></a>');
                 downloadLink.attr('href',window.URL.createObjectURL(blob));
-                downloadLink.attr('download', 'raspberrypi_app.xml');
+                downloadLink.attr('download', 'raspberrypi_app.log');
                 downloadLink[0].click();
 
             })
