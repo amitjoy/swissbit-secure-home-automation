@@ -16,6 +16,7 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.swissbit.server.ws.model.Customer;
+import com.swissbit.server.ws.model.RaspberryPi;
 import com.swissbit.server.ws.services.ICustomerService;
 
 public class CustomerService implements ICustomerService {
@@ -118,7 +119,7 @@ public class CustomerService implements ICustomerService {
 			return pi;
 		} finally {
 			try {
-				this.connectionSource.close();
+			this.connectionSource.close();
 			} catch (final SQLException e) {
 				e.printStackTrace();
 				return pi;
@@ -126,11 +127,29 @@ public class CustomerService implements ICustomerService {
 		}
 		return pi;
 	}
+	
+	@Override
+	public Customer getCustomer(final String field, final String value) {
+		final QueryBuilder<Customer, String> queryBuilder = this.piDao.queryBuilder();
+		List<Customer> custList = null;
+		Customer cust = null;
+		try {
+			custList = this.piDao.query(queryBuilder.where().eq(field, value).prepare());
 
+			if (custList.size() > 0) {
+				cust = custList.get(0);
+			}
+		} catch (final SQLException e) {
+			e.printStackTrace();
+			return cust;
+		}
+		return cust;
+	}
+	
 	@Override
 	public Customer updateUser(final String id, final String name, final String email, final String username,
 			final String password, final String pin) {
-		final Customer user = this.getUser(id);
+		final Customer user = this.getCustomer("id", id);
 		if (user == null) {
 			throw new IllegalArgumentException("No user with id '" + id + "' found");
 		}
@@ -149,4 +168,21 @@ public class CustomerService implements ICustomerService {
 		}
 		return user;
 	}
+	
+	@Override
+	public Customer deleteUser(final String id) {
+		final Customer user = this.getCustomer("id", id);
+		if (user == null) {
+			throw new IllegalArgumentException("No user with id '" + id + "' found");
+		}
+
+		try {
+			this.piDao.delete(user);
+		} catch (final SQLException e) {
+			e.printStackTrace();
+			return user;
+		}
+		return user;
+	}
+	
 }
