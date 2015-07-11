@@ -56,11 +56,6 @@ public final class ASSDUtil {
 	private static final String CMD_PYTHON = "python";
 
 	/**
-	 * The Home Location of the current user
-	 */
-	private static final String HOME_LOCATION = "/home/pi/";
-
-	/**
 	 * The location of the python programs
 	 */
 	private static final String LOCATION = "/home/pi/assd/";
@@ -175,7 +170,7 @@ public final class ASSDUtil {
 		SafeProcess process = null;
 		BufferedReader br = null;
 		StringBuilder sb = null;
-		final String commandParam = HOME_LOCATION + "assd.ko";
+		final String commandParam = LOCATION + "assd.ko";
 		final String[] command = { CMD_INSMOD, commandParam };
 
 		try {
