@@ -1,13 +1,10 @@
 /**
  * ****************************************************************************
  * Copyright (C) 2015 - Manit Kumar <vikky_manit@yahoo.co.in>
- * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -143,20 +140,33 @@ public class MainActivity extends ActionBarActivity {
 
         //To add a RaspberryPi
         if (id == R.id.register_raspberry) {
-            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-            alertDialog.setTitle("Caution!");
-            alertDialog.setMessage("Please make sure your RaspberryPi was turned on atleast 1 minute ago");
-            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            //Calling the QR scanner app via intent
-                            IntentIntegrator integrator = new IntentIntegrator(MainActivity.this);
-                            integrator.initiateScan();
-                        }
-                    });
-            alertDialog.show();
-
+            if(DBFactory.getRaspberry() != null){
+                AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                alertDialog.setTitle("Information");
+                alertDialog.setMessage("RaspberryPi already added");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
+            }
+            else {
+                AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                alertDialog.setTitle("Caution!");
+                alertDialog.setMessage("Please make sure your RaspberryPi was turned on atleast 1 minute ago");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                //Calling the QR scanner app via intent
+                                IntentIntegrator integrator = new IntentIntegrator(MainActivity.this);
+                                integrator.initiateScan();
+                            }
+                        });
+                alertDialog.show();
+            }
         }
 
         //To reset application data
