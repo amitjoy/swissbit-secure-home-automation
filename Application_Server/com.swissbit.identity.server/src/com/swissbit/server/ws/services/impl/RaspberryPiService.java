@@ -15,6 +15,7 @@ import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import com.swissbit.server.ws.model.Customer;
 import com.swissbit.server.ws.model.RaspberryPi;
 import com.swissbit.server.ws.services.IRaspberryPiService;;
 
@@ -120,6 +121,22 @@ public class RaspberryPiService implements IRaspberryPiService {
 
 		try {
 			this.piDao.update(rasp);
+		} catch (final SQLException e) {
+			e.printStackTrace();
+			return rasp;
+		}
+		return rasp;
+	}
+	
+	@Override
+	public RaspberryPi deleteRaspberryPi(final String id) {
+		final RaspberryPi rasp = this.getRaspberryPi("id", id);
+		if (rasp == null) {
+			throw new IllegalArgumentException("No Raspberry Pi  with id '" + id + "' found");
+		}
+
+		try {
+			this.piDao.delete(rasp);
 		} catch (final SQLException e) {
 			e.printStackTrace();
 			return rasp;

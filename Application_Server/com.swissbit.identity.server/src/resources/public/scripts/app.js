@@ -1,5 +1,6 @@
 //Angular module declaration
 var app = angular.module('identity-server', [
+	'ngAnimate',
 	'ngCookies',
     'ngResource',
     'ngSanitize',
@@ -109,8 +110,71 @@ app.controller('defaultCtrl', function ($scope) {
 
 app.controller('viewDisplayUserHomeCtrl', function ($scope) {
     $scope.welcome = "Welcome to your home page"
+       	$scope.slides = [
+            {image: 'images/cust1.png', description: 'Image 00'},
+            {image: 'images/cust2.png', description: 'Image 01'},
+            {image: 'images/rpi1.png', description: 'Image 02'},
+            {image: 'images/rpi2.png', description: 'Image 03'},
+            {image: 'images/rpi3.png', description: 'Image 04'}
+        ];
+
+		$scope.direction = 'left';
+        $scope.currentIndex = 0;
+
+        $scope.setCurrentSlideIndex = function (index) {
+			$scope.direction = (index > $scope.currentIndex) ? 'left' : 'right';
+            $scope.currentIndex = index;
+        };
+
+        $scope.isCurrentSlideIndex = function (index) {
+            return $scope.currentIndex === index;
+        };
+		$scope.prevSlide = function () {
+			 $scope.direction = 'left';
+            $scope.currentIndex = ($scope.currentIndex < $scope.slides.length - 1) ? ++$scope.currentIndex : 0;
+        };
+
+        $scope.nextSlide = function () {
+			 $scope.direction = 'right';
+            $scope.currentIndex = ($scope.currentIndex > 0) ? --$scope.currentIndex : $scope.slides.length - 1;
+        };
 });
 
+app.animation('.slide-animation', function () {
+	return {
+            beforeAddClass: function (element, className, done) {
+                var scope = element.scope();
+
+                if (className == 'ng-hide') {
+                    var finishPoint = element.parent().width();
+                    if(scope.direction !== 'right') {
+                        finishPoint = -finishPoint;
+                    }
+                    TweenMax.to(element, 0.5, {left: finishPoint, onComplete: done });
+                }
+                else {
+                    done();
+                }
+            },
+            removeClass: function (element, className, done) {
+                var scope = element.scope();
+
+                if (className == 'ng-hide') {
+                    element.removeClass('ng-hide');
+
+                    var startPoint = element.parent().width();
+                    if(scope.direction === 'right') {
+                        startPoint = -startPoint;
+                    }
+
+                    TweenMax.fromTo(element, 0.5, { left: startPoint }, {left: 0, onComplete: done });
+                }
+                else {
+                    done();
+                }
+            }
+        };
+    });
 
 app.controller('viewSignUpCtrl', function ($scope, $http, $location, $route) {
 
@@ -190,8 +254,10 @@ app.controller('viewLogOutCtrl', function ($scope, $rootScope, $location, $route
 
 app.controller('viewCustomersCtrl', function ($scope, $http, $location, $route) {
 		$scope.newCustomerForm = false;
+		$scope.updateCustomerForm = false;
 		$scope.newCustomerDefaults = {};
-		$scope.isCollapsed = true;
+		$scope.currentCustomerDefaults = {};
+		$scope.updateCustomerInfo = {};
         $http.get('/users').success(function (data) {
         	$scope.customers = data;
         })
@@ -200,7 +266,7 @@ app.controller('viewCustomersCtrl', function ($scope, $http, $location, $route) 
 			$scope.newCustomerForm = true;
         }
 
-        $scope.updateCustomer = function (newCustomerInfo) {
+        $scope.addnewCustomer = function (newCustomerInfo) {
 			var data = {
 			    email: $scope.newCustomerInfo.email,
 				name: $scope.newCustomerInfo.name,
@@ -212,29 +278,67 @@ app.controller('viewCustomersCtrl', function ($scope, $http, $location, $route) 
 			    console.log('status changed');
 				$scope.newCustomerInfo = angular.copy($scope.newCustomerDefaults);
 				$scope.newCustomerForm = false;
-				$location.path('/home');
+				$location.path('/viewCustomers');
 				$route.reload();
 			}).error(function (data, status) {
     			console.log('Error ' + data);
 			})
         }
 
-        $scope.updateField = function () {
+        $scope.editCustomer = function (customer) {
+            $scope.updateCustomerForm = true;
+            $scope.currentCustomerDefaults = angular.copy(customer);
+            $scope.updateCustomerInfo = angular.copy(customer);
+        }
+
+        $scope.updateCustomer = function (updateCustomerInfo) {
+            var data = {
+                email: $scope.updateCustomerInfo.email,
+                id: $scope.updateCustomerInfo.id,
+                name: $scope.updateCustomerInfo.name,
+                pin: $scope.updateCustomerInfo.pin,
+                username: $scope.updateCustomerInfo.username
+            };
+            $http.post('/user/' + $scope.updateCustomerInfo.id, data).success(function (data) {
+                console.log('status changed');
+                $scope.updateCustomerForm = false;
+                $location.path('/viewCustomers');
+                $route.reload();
+            }).error(function (data, status) {
+                console.log('Error ' + data);
+            })
+        }
+
+		$scope.removeCustomer = function (customer) {
+			$http.delete('/deluser/' + customer.id).success(function (data) {
+				console.log('User has been removed');
+				$location.path('/viewCustomers');
+				$route.reload();
+            }).error(function (data, status) {
+                console.log('Error ' + data);
+            })
         }
 
         $scope.removeForm = function () {
 			$scope.newCustomerInfo = angular.copy($scope.newCustomerDefaults);
+            $scope.updateCustomerInfo = angular.copy($scope.currentCustomerDefaults);
             $scope.newCustomerForm = false;
+            $scope.updateCustomerForm = false;
         }
 
         $scope.resetForm = function () {
 			$scope.newCustomerInfo = angular.copy($scope.newCustomerDefaults);
+			$scope.updateCustomerInfo = angular.copy($scope.currentCustomerDefaults);
         }
 }); 
 
 app.controller('viewRaspPisCtrl', function ($scope, $http, $location, $route) {
         $scope.newRaspPiForm = false;
+		$scope.updateRaspPiForm = false;
+		console.log($scope.updateRaspPiForm);
         $scope.newRaspPiDefaults = {};
+		$scope.currentRaspPiDefaults = {};
+		$scope.updateRaspPiInfo = {};
         $http.get('/pis').success(function (data) {
         	$scope.rpis = data;
         })
@@ -242,7 +346,7 @@ app.controller('viewRaspPisCtrl', function ($scope, $http, $location, $route) {
         	$scope.newRaspPiForm = true;
 		}
 
-        $scope.updateRaspPi = function (newRaspPiInfo) {
+        $scope.addnewRaspPi = function (newRaspPiInfo) {
             var data = {
                 customer: $scope.newRaspPiInfo.customer,
                 id: $scope.newRaspPiInfo.id,
@@ -260,6 +364,46 @@ app.controller('viewRaspPisCtrl', function ($scope, $http, $location, $route) {
                 console.log('Error ' + data);
             })
         }
+
+        $scope.editRaspPi = function (rpi) {
+			console.log(rpi);
+			console.log($scope.updateRaspPiForm);
+            $scope.updateRaspPiForm = true;
+			console.log($scope.updateRaspPiForm);
+			$scope.currentRaspPiDefaults = angular.copy(rpi);
+			$scope.updateRaspPiInfo = angular.copy(rpi);
+			console.log($scope.currentRaspPiDefaults);
+        }
+		
+		$scope.updateRaspPi = function (updateRaspPiInfo) {
+            var data = {
+            	customer: $scope.updateRaspPiInfo.customer,
+                id: $scope.updateRaspPiInfo.id,
+                macaddr: $scope.updateRaspPiInfo.macaddr,
+                name: $scope.updateRaspPiInfo.name,
+                pin: $scope.updateRaspPiInfo.pin
+           	};
+			console.log(data);
+			$http.post('/pi/' + $scope.updateRaspPiInfo.id, data).success(function (data) {
+                console.log('status changed');
+                $scope.updateRaspPiForm = false;
+                $location.path('/viewRaspPis');
+                $route.reload();
+            }).error(function (data, status) {
+                console.log('Error ' + data);
+            })	
+		}
+		
+        $scope.removeRaspPi = function (rpi) {
+            $http.delete('/delpi/' + rpi.id).success(function (data) {
+                console.log('Raspberry Pi has been removed');
+                $location.path('/viewRaspPis');
+                $route.reload();
+            }).error(function (data, status) {
+                console.log('Error ' + data);
+            })
+        }
+	
 		$scope.viewCodeLog = function(rpimacaddr) {
 			$http.get('/logs/' + rpimacaddr + '/code').success(function (data) {
 				var blob = new Blob([data], { type:"text/html;charset=utf-8;" });
@@ -283,40 +427,15 @@ app.controller('viewRaspPisCtrl', function ($scope, $http, $location, $route) {
             })
         }
 
-
-
-//		$scope.viewCodeLog = function(rpimacaddr) {
-//			$scope.codelog = '';
-//			$scope.log_link = '';
-//			console.log($scope.log_link);
-//			console.log($scope.codelog);
-//			$scope.log_link = '/logs/' + rpimacaddr + '/code';
-//			$scope.codelog = angular.copy($scope.data);
-//			console.log($scope.log_link);
-//			console.log($scope.codelog);
-//
-//			var blob = new Blob([$scope.codelog], { type:"text/html;charset=utf-8;" });
-//			var downloadLink = angular.element('<a></a>');
-//            downloadLink.attr('href',window.URL.createObjectURL(blob));
-//            downloadLink.attr('download', 'raspberrypi.log');
-//			downloadLink[0].click();
-//		};
-
-
-
-		//$scope.viewCodeLog = function(rpiMacAddr) {
-		//	console.log(rpiMacAddr);
-		//	$location.url('/viewCustomers')
-		//	$location.url('/logs/'+ rpiMacAddr + '/code');
-		//	
-		//}
-	
         $scope.removeForm = function () {
             $scope.newRaspPiInfo = angular.copy($scope.newRaspPiDefaults);
+			$scope.updateRaspPiInfo = angular.copy($scope.currentRaspPiDefaults);
             $scope.newRaspPiForm = false;
+			$scope.updateRaspPiForm = false;
         }
 
         $scope.resetForm = function () {
-            $scope.newRaspPiInfo = angular.copy($scope.newRaspPiDefaults);
+            $scope.RaspPiInfo = angular.copy($scope.newRaspPiDefaults);
+			$scope.updateRaspPiInfo = angular.copy($scope.currentRaspPiDefaults);
         }
 }); 
