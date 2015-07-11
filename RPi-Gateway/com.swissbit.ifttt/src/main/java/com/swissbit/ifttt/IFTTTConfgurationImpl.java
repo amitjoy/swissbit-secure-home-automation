@@ -158,7 +158,8 @@ public class IFTTTConfgurationImpl implements ConfigurableComponent, IFTTTConfig
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean sendEmail(final String subject) {
+	public boolean sendEmail() {
+		LOGGER.debug("IFTTT Email is getting sent...");
 		final Email email = new SimpleEmail();
 		email.setHostName(this.m_smtpHost);
 		email.setSmtpPort(this.m_smtpPort);
@@ -177,13 +178,16 @@ public class IFTTTConfgurationImpl implements ConfigurableComponent, IFTTTConfig
 					email.setFrom(this.m_smtpUsername);
 					email.setSubject(tag);
 					email.setMsg("This is a test mail ... :-)");
+					email.addTo(TRIGGER_EMAIL);
 					email.send();
+					return true;
 				} catch (final EmailException e) {
 					LOGGER.error(Throwables.getStackTraceAsString(e));
+					return false;
 				}
 			}
 		}
-
+		LOGGER.debug("IFTTT Email is getting sent...Done");
 		return false;
 	}
 

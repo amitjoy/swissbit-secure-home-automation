@@ -30,11 +30,7 @@ public interface IFTTTConfiguration {
 
 	/**
 	 * Used to send a dummy email with the subject specified
-	 * 
-	 * @param subject
-	 *            the hastag as subject
-	 * @return
 	 */
-	public boolean sendEmail(String subject);
+	public boolean sendEmail();
 
 }
