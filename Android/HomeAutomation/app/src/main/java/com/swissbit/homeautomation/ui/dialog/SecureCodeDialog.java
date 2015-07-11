@@ -63,7 +63,7 @@ public class SecureCodeDialog {
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
         final EditText txtCode = new EditText(context);
-        
+        txtCode.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
         dialogBuilder.setTitle("Enter the Secure Code");
         dialogBuilder.setMessage("Enter the Secure Code");
