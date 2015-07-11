@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">SwissbitHomeAutomation</string>
+    <string name="action_settings">Settings</string>
+    <string name="register_raspberry">Register Server</string>
+    <string name="reset_data">Reset Data</string>
+    <string name="empty_list">You do not have any Raspberry Pi registered. Please register a Raspberry Pi by clicking on the "+" button in the menu bar</string>
+</resources>
