@@ -158,38 +158,34 @@ public class IFTTTConfgurationImpl implements ConfigurableComponent, IFTTTConfig
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean sendEmail() {
+	public void trigger() {
 		LOGGER.debug("IFTTT Email is getting sent...");
-		final Email email = new SimpleEmail();
-		email.setHostName(this.m_smtpHost);
-		email.setSmtpPort(this.m_smtpPort);
-		email.setAuthenticator(new DefaultAuthenticator(this.m_smtpUsername, this.m_smtpPassword));
-		email.setSSL(true);
 
 		final List<String> tags = this.retrieveHashtags(this.m_hashTags);
 
 		if (tags.size() == 0) {
-			return false;
+			return;
 		}
 
 		if (tags.size() > 0) {
 			for (final String tag : tags) {
-				System.out.println("TAG:::" + tag);
 				try {
+					final Email email = new SimpleEmail();
+					email.setHostName(this.m_smtpHost);
+					email.setSmtpPort(this.m_smtpPort);
+					email.setAuthenticator(new DefaultAuthenticator(this.m_smtpUsername, this.m_smtpPassword));
+					email.setSSL(true);
 					email.setFrom(this.m_smtpUsername);
 					email.setSubject(tag);
 					email.setMsg("This is a test mail ... :-)");
 					email.addTo(TRIGGER_EMAIL);
 					email.send();
-					return true;
 				} catch (final EmailException e) {
 					LOGGER.error(Throwables.getStackTraceAsString(e));
-					return false;
 				}
 			}
 		}
-		LOGGER.debug("IFTTT Email is getting sent...Done");
-		return false;
+		LOGGER.debug("IFTTT Email is sent...Done");
 	}
 
 	/**
