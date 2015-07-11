@@ -31,7 +31,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.google.common.collect.Lists;
 import com.swissbit.homeautomation.asyncTask.AuthenticationAsync;
 import com.android.swissbit.homeautomation.R;
@@ -49,39 +48,61 @@ import com.swissbit.homeautomation.utils.EncryptionFactory;
 import com.swissbit.homeautomation.utils.MQTTFactory;
 import com.swissbit.homeautomation.ui.dialog.SecureCodeDialog;
 import com.tum.ssdapi.CardAPI;
-
 import java.util.List;
 
+/**
+ * The Main activity of the application.
+ * This activity is responsible for authenticating and addition of RaspberryPi
+ */
 public class MainActivity extends ActionBarActivity {
 
+    /**
+     * The list view for the RaspberryPi
+     */
     private ListView listView;
 
+    /**
+     * The model object of RaspberryPi
+     */
     private RaspberryPi raspberryPi;
 
+    /**
+     * The database object of the application
+     */
     private ApplicationDb applicationDb;
 
-    private RPiAdapter adapter;
-
-    private List<RaspberryPi> listOfRPi;
-
+    /**
+     * The object to access the secure element for the SD card
+     */
     private CardAPI secureElementAccess;
 
+    /**
+     * The secure element ID of the SD card
+     */
     private String secureElementId;
 
+    /**
+     * The AsyncTask responsible for handling permission revocation
+     */
     private PermissionRevocationAsync permissionRevocationAsync;
 
+    /**
+     * The AsyncTask responsible for handling heartbeat
+     */
     private HeartBeatAsync heartBeatAsync;
 
+    /**
+     * The AsyncTask responsible for reporting when the RaspberryPi incurs sudden crash
+     */
     private LWTAsync lwtAsync;
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-    }
-
+    /**
+     * OnCreate method of the activity.
+     * Checks if the action has been previously revoked.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -102,7 +123,7 @@ public class MainActivity extends ActionBarActivity {
 
         checkAccessRevoked();
 
-        Log.d("1:", "" + secureElementAccess.getMyId());
+        Log.d("SecureId", "" + secureElementAccess.getMyId());
 
     }
 
@@ -112,10 +133,15 @@ public class MainActivity extends ActionBarActivity {
         return true;
     }
 
+    /**
+     * Menu Items for RaspberryPi addition and reset of application data
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         int id = item.getItemId();
 
+        //To add a RaspberryPi
         if (id == R.id.register_raspberry) {
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
             alertDialog.setTitle("Caution!");
@@ -124,6 +150,7 @@ public class MainActivity extends ActionBarActivity {
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
+                            //Calling the QR scanner app via intent
                             IntentIntegrator integrator = new IntentIntegrator(MainActivity.this);
                             integrator.initiateScan();
                         }
@@ -132,6 +159,7 @@ public class MainActivity extends ActionBarActivity {
 
         }
 
+        //To reset application data
         if (id == R.id.reset_data) {
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
             alertDialog.setTitle("Caution!");
@@ -158,15 +186,23 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Used to get the secure code from the user
+     */
     public void getSecureCode() {
+
         if (applicationDb.checkSecretCodeDialogShow() == 0) {
             SecureCodeDialog secureCodeDialog = new SecureCodeDialog();
             secureCodeDialog.getSecureCode(this);
         }
     }
 
-
+    /**
+     * Gets the QR code from the QR scanner.
+     * Checks and authenticates the QR code (Secure element Id)
+     */
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanResult != null && scanResult.getContents() != null) {
             String qrCode = scanResult.getContents();
@@ -195,6 +231,9 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    /**
+     *Check for duplicate RaspberryPi
+     */
     public void checkRaspberryId(String rid) {
 
         if (DBFactory.checkRaspberryPiInDB(rid, this)) {
@@ -204,7 +243,16 @@ public class MainActivity extends ActionBarActivity {
             Toast.makeText(getApplicationContext(), "Duplicate Server", Toast.LENGTH_LONG).show();
     }
 
+    /**
+     * Display the RaspberryPi in the list view
+     */
     public void addToListView() {
+
+        //The list of RaspberryPi's
+        List<RaspberryPi> listOfRPi;
+
+        //The custom adapter for RaspberryPi list view
+        RPiAdapter adapter;
 
         raspberryPi = DBFactory.getRaspberry();
 
@@ -219,7 +267,7 @@ public class MainActivity extends ActionBarActivity {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                     RaspberryPi clickedItem = (RaspberryPi) listView.getItemAtPosition(position);
-
+                    //Start the device activity
                     Intent intent = new Intent(MainActivity.this, DeviceActivity.class);
                     Bundle extras = new Bundle();
                     extras.putString("RaspberryId", clickedItem.getId());
@@ -228,6 +276,8 @@ public class MainActivity extends ActionBarActivity {
                     startActivity(intent);
                 }
             });
+
+            //Start all the async taks
 
             heartBeatAsync.execute();
 
@@ -238,6 +288,11 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
+    /**
+     * Used to check if the access has been previously revoked when the application starts.
+     * Post this check ask for the secure code only for the first time.
+     * Then, adds the RaspberryPi to the listview
+     */
     public void checkAccessRevoked(){
 
         Log.d("SDEnabled",secureElementAccess.getEnabled().toString());
@@ -259,9 +314,10 @@ public class MainActivity extends ActionBarActivity {
             alertDialog.show();
         }
         else {
-
+            //Get the secure Code
             getSecureCode();
 
+            //Display RaspberryPi in the list view
             addToListView();
         }
     }

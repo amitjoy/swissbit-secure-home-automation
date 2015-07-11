@@ -1,3 +1,20 @@
+/**
+ * ****************************************************************************
+ * Copyright (C) 2015 - Manit Kumar <vikky_manit@yahoo.co.in>
+ * <p/>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * *****************************************************************************
+ */
 package com.swissbit.homeautomation.ws;
 
 import android.content.Context;
@@ -18,33 +35,66 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by manit on 09/06/15.
+ *WebService to verify the secret code and upon successful verification get the username and password of
+ * the broker. Future communication takes place with the broker.
  */
 public class VerifySecretCode {
 
-    private AsyncHttpClient asyncHttpClient;
-    private SecureCodeDialog secureCodeDialog;
+    /**
+     * Username to connect to the broker
+     */
     private String username;
-    private String password;
-    private String secretCode;
-    private Context mainContext;
-    private IKuraMQTTClient client = null;
 
+    /**
+     * Password to connect to the broker
+     */
+    private String password;
+
+    /**
+     * The secret code
+     */
+    private String secretCode;
+
+    /**
+     *Main Activity context
+     */
+    private Context mainContext;
+
+    /**
+     * Mqtt client
+     */
+    private IKuraMQTTClient client;
+
+    /**
+     * The database object of the application
+     */
+    private ApplicationDb applicationDb;
+
+    /**
+     * Constructor
+     */
     public VerifySecretCode(Context context,ApplicationDb applicationDb, String secretCode) {
         this.applicationDb = applicationDb;
         this.secretCode = secretCode;
         this.mainContext = context;
+        client = null;
     }
 
-    private ApplicationDb applicationDb;
-
+    /**
+     * Execute the webservice
+     */
     public void executeCredentialWS() {
+
         if(secretCode.length() == 0){
             SecureCodeDialog secureCodeDialog = new SecureCodeDialog();
             secureCodeDialog.getSecureCode(mainContext);
         }
-        asyncHttpClient = new AsyncHttpClient();
+
+        //Call the webservice
+        AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
         asyncHttpClient.get(WSConstants.CREDENTIAL_WS + secretCode, new JsonHttpResponseHandler() {
+
+            //If the response is a JSON object. Retrieve the username and password to connect to broker.
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
                     Log.d("DEBUG SWISS", "JSONObject");
@@ -62,6 +112,7 @@ public class VerifySecretCode {
                 }
             }
 
+            //If the response is a JSON Array. Retrieve the username and password to connect to broker.
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 Log.d("DEBUG SWISS", "JSONArray");
@@ -84,9 +135,9 @@ public class VerifySecretCode {
                 }
             }
 
+            //If the webservice returns failure message
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 Log.d("DEBUG SWISS", "INSIDE 4" + throwable.getCause());
-
                 try {
                     Toast.makeText(mainContext, "Invalid Code", Toast.LENGTH_LONG).show();
                     SecureCodeDialog secureCodeDialog = new SecureCodeDialog();
@@ -96,6 +147,7 @@ public class VerifySecretCode {
                 }
             }
 
+            //If the webservice returns failure message
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                 Log.d("DEBUG SWISS", "INSIDE 5");
                 try {

@@ -1,3 +1,20 @@
+/**
+ * ****************************************************************************
+ * Copyright (C) 2015 - Manit Kumar <vikky_manit@yahoo.co.in>
+ * <p/>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * *****************************************************************************
+ */
 package com.swissbit.homeautomation.asyncTask;
 
 import android.app.Activity;
@@ -16,12 +33,13 @@ import com.swissbit.mqtt.client.adapter.MessageListener;
 import com.swissbit.mqtt.client.message.KuraPayload;
 
 /**
- * Created by manit on 05/07/15.
+ * This AsyncTask handles the failure of RaspberryPi.
  */
 public class LWTAsync extends AsyncTask {
 
-    private ImageView imgStatus;
-
+    /**
+     *Handles the subscription event for failure event of the RaspberryPi
+     */
     @Override
     protected Object doInBackground(Object[] params) {
         IKuraMQTTClient client = MQTTFactory.getClient();
@@ -32,8 +50,9 @@ public class LWTAsync extends AsyncTask {
 
         status = client.isConnected();
 
-        Log.d("Kura MQTT Connect LWT", Boolean.toString(status));
+        Log.d("Kura MQTT LWT", Boolean.toString(status));
 
+        //Subscribe to the topic.
         if (status) {
             Log.d("LWTTOPIC", MQTTFactory.getTopicToSubscribe(TopicsConstants.LWT)[0]);
             client.subscribe(MQTTFactory.getTopicToSubscribe(TopicsConstants.LWT)[0], new MessageListener() {
@@ -50,11 +69,14 @@ public class LWTAsync extends AsyncTask {
 
     }
 
+    /**
+     *Change the image of the Raspberry Status based when heart beat failure is received
+     */
     @Override
     public void onProgressUpdate(Object[] values) {
         Toast.makeText(ActivityContexts.getCurrentActivityContext(), "Server Connection Lost", Toast.LENGTH_LONG).show();
         View rootView = ((Activity) ActivityContexts.getMainActivityContext()).getWindow().getDecorView().findViewById(android.R.id.content);
-        imgStatus = (ImageView) rootView.findViewById(R.id.imgStatus);
+        ImageView imgStatus = (ImageView) rootView.findViewById(R.id.imgStatus);
         imgStatus.setImageResource(R.drawable.btnoff);
     }
 }
