@@ -28,6 +28,7 @@ import com.swissbit.homeautomation.ui.adapter.DeviceAdapter;
 import com.swissbit.homeautomation.utils.ActivityContexts;
 import com.swissbit.homeautomation.utils.DBFactory;
 import com.swissbit.homeautomation.utils.MQTTFactory;
+import com.swissbit.mqtt.client.IKuraMQTTClient;
 
 import java.util.List;
 
@@ -122,6 +123,7 @@ public class DeviceActivity extends ActionBarActivity {
         super.onBackPressed();
         ActivityContexts.setCurrentActivityContext(ActivityContexts.getMainActivityContext());
     }
+
 }
 
 
