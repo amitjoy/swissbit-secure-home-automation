@@ -1,3 +1,20 @@
+/**
+ * ****************************************************************************
+ * Copyright (C) 2015 - Manit Kumar <vikky_manit@yahoo.co.in>
+ * <p/>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * *****************************************************************************
+ */
 package com.swissbit.homeautomation.utils;
 
 import android.util.Log;
@@ -10,20 +27,38 @@ import com.tum.ssdapi.CardAPI;
 import java.util.Random;
 
 /**
- * Created by manit on 04/06/15.
+ * Factory class for Mqtt connections, topic builder for all subscription and publishing
  */
 public final class MQTTFactory {
 
+    /**
+     * ClientId of the mobile device
+     */
     private static String clientId;
 
+    /**
+     * Id of the Raspberry
+     */
     private static String raspberryId;
 
+    /**
+     * Id of the Secure element (SD card)
+     */
     private static String secureElementId;
 
+    /**
+     * Mqtt connection interface
+     */
     private static IKuraMQTTClient iKuraMQTTClient;
 
+    /**
+     * The object to access the secure element for the SD card
+     */
     private static CardAPI secureElementAccess;
 
+    /**
+     * Get the client Id of the mobile device
+     */
     public static String getClientId() {
         if (clientId == null)
             clientId = DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getMainActivityContext()).getCredentials()[2];
@@ -31,6 +66,9 @@ public final class MQTTFactory {
         return clientId;
     }
 
+    /**
+     * Get the Mqtt client to connect to the broker
+     */
     public static synchronized IKuraMQTTClient getClient() {
 
         if (iKuraMQTTClient == null){
@@ -42,38 +80,63 @@ public final class MQTTFactory {
         return iKuraMQTTClient;
     }
 
+    /**
+     * Get the username to connect to the broker from database
+     */
     public static String getUsername() {
 
         return DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getMainActivityContext()).getCredentials()[0];
     }
 
+    /**
+     * Get the password to connect to the broker from database
+     */
     public static String getPassword() {
 
         return DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getMainActivityContext()).getCredentials()[1];
     }
 
+    /**
+     * Set the RaspberryPi Id
+     */
     public static void setRaspberryId(String raspberryId) {
         MQTTFactory.raspberryId = raspberryId;
     }
 
+    /**
+     * Get the RaspberryPi Id
+     */
     public static String getRaspberryPiById() {
         return raspberryId;
     }
 
+    /**
+     * Get the Id of the secure element (SD card)
+     */
     public static String getSecureElementId() {
         return secureElementId;
     }
 
+    /**
+     * Get the Id of the secure element (SD card)
+     */
     public static String getMobileClientSecureElementId(){
         if(secureElementAccess == null)
             secureElementAccess = new CardAPI(ActivityContexts.getMainActivityContext());
         return secureElementAccess.getMyId();
     }
 
+    /**
+     * Set the Id of the secure element.
+     * Just for use in the application and Not the actual ID in the SD card.
+     */
     public static void setSecureElementId(String secureElementId) {
         MQTTFactory.secureElementId = secureElementId;
     }
 
+    /**
+     * Gets the various topics to subscribe
+     */
     public static String[] getTopicToSubscribe(String id) {
 
         final String requestId = Integer.toString(new Random().nextInt(Integer.MAX_VALUE));
@@ -84,9 +147,6 @@ public final class MQTTFactory {
             case TopicsConstants.HEARTBEAT:
                 return new String[]{getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.HEARTBEAT + "mqtt/heartbeat"};
 
-            case TopicsConstants.ZWAVE_STATUS:
-                return new String[]{getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.ZWAVE_STATUS, requestId};
-
             case TopicsConstants.RASPBERRY_AUTH_SUB:
                 return new String[]{getMQTTTopicPrefix(TopicsConstants.TOPIC_SUBSCRIBE) + TopicsConstants.RASPBERRY_AUTH_SUB + requestId, requestId};
 
@@ -95,11 +155,17 @@ public final class MQTTFactory {
 
             case TopicsConstants.ACCESS_REVOCATION_SUB:
                 return new String[]{getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + "SURVEILLANCE-V1/" + getMobileClientSecureElementId() + TopicsConstants.ACCESS_REVOCATION_SUB};
+
+//            case TopicsConstants.ZWAVE_STATUS:
+//                return new String[]{getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.ZWAVE_STATUS, requestId};
         }
 
         return null;
     }
 
+    /**
+     * Gets the prefix(subscribe/publish) of various topics
+     */
     public static String getMQTTTopicPrefix(String type) {
 
         switch (type) {
@@ -114,15 +180,12 @@ public final class MQTTFactory {
 
     }
 
+    /**
+     * Gets the various topics to publish
+     */
     public static String getTopicToPublish(String id) {
 
         switch (id) {
-
-            case TopicsConstants.ZWAVE_GET:
-                return getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.ZWAVE_GET;
-
-            case TopicsConstants.ZWAVE_POST:
-                return getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.ZWAVE_POST;
 
             case TopicsConstants.RASPBERRY_AUTH_PUB:
                 return getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.RASPBERRY_AUTH_PUB;
@@ -142,12 +205,20 @@ public final class MQTTFactory {
             case TopicsConstants.RETRIEVE_DEVICE_STATUS_PUB:
                 return getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.RETRIEVE_DEVICE_STATUS_PUB;
 
-
+//            case TopicsConstants.ZWAVE_GET:
+//                return getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.ZWAVE_GET;
+//
+//            case TopicsConstants.ZWAVE_POST:
+//                return getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.ZWAVE_POST;
         }
 
         return null;
     }
 
+    /**
+     * Generates the Kura payload
+     * Adds requestId and ClientId for every payload
+     */
     public static KuraPayload generatePayload (String extraBody, String requestId) {
         final KuraPayload payload = new KuraPayload();
 

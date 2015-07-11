@@ -1,3 +1,20 @@
+/**
+ * ****************************************************************************
+ * Copyright (C) 2015 - Manit Kumar <vikky_manit@yahoo.co.in>
+ * <p/>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * *****************************************************************************
+ */
 package com.swissbit.homeautomation.db;
 
 import android.app.Notification;
@@ -17,18 +34,31 @@ import com.swissbit.homeautomation.utils.DBConstants;
 import java.util.Random;
 
 /**
- * Created by manit on 02/06/15.
+ * Database class of the application
  */
 public class ApplicationDb {
 
+    /**
+     * Helper class object
+     */
     DevicesInfoDbInner helper;
+
+    /**
+     * SQLite object
+     */
     SQLiteDatabase db;
 
+    /**
+     * Constructor
+     */
     public ApplicationDb(Context context){
         helper = new DevicesInfoDbInner(context);
         db = helper.getWritableDatabase();
     }
 
+    /**
+     * Insert a RaspberryPi
+     */
     public long insertRaspberry(String rid, String secureElementId, String name, String desc){
         ContentValues contentValues = new ContentValues();
         contentValues.put(DBConstants.RASPBERRYID, rid);
@@ -39,6 +69,9 @@ public class ApplicationDb {
         return id;
     }
 
+    /**
+     * Get a Raspberry by its ID
+     */
     public String getRaspberryId(){
         String[] columns= {DBConstants.RASPBERRYID};
         Cursor cursor = db.query(DBConstants.TABLE_NAME_RASPBERRYINFO, columns, null,
@@ -52,6 +85,9 @@ public class ApplicationDb {
         return null;
     }
 
+    /**
+     * Get for a duplicate Raspberry by its ID
+     */
     public boolean checkRaspberryId(String id){
         String[] columns= {DBConstants.RASPBERRYID};
         Cursor cursor = db.query(DBConstants.TABLE_NAME_RASPBERRYINFO, columns, DBConstants.RASPBERRYID + " = '" + id + "'",
@@ -63,6 +99,9 @@ public class ApplicationDb {
             return true;
     }
 
+    /**
+     * Get a Raspberry details
+     */
     public RaspberryPi getRaspberry(){
         String[] columns= {DBConstants.RASPBERRYID,DBConstants.SECURE_ELEMENT_ID,DBConstants.RASPBERRYNAME,DBConstants.RASPBERRYDESC};
         Cursor cursor = db.query(DBConstants.TABLE_NAME_RASPBERRYINFO, columns, null,
@@ -80,6 +119,9 @@ public class ApplicationDb {
             return null;
     }
 
+    /**
+     * Check if the secret code has been asked
+     */
     public int checkSecretCodeDialogShow(){
         String[] columns = {DBConstants.DIALOGSHOW};
         Cursor cursor = db.query(DBConstants.TABLE_NAME_CREDENTIALS,columns,null,null,null,null,null);
@@ -92,6 +134,9 @@ public class ApplicationDb {
         return 0;
     }
 
+    /**
+     * Set credentials to connect to the broker
+     */
     public void setCredentials(String code, String username, String password){
         ContentValues contentValues = new ContentValues();
         contentValues.put(DBConstants.CODE,code);
@@ -104,6 +149,9 @@ public class ApplicationDb {
         Log.d("After Set", "SetCred");
     }
 
+    /**
+     * Get the credentials to connect the broker
+     */
     public String[] getCredentials() {
         String[] columns = {DBConstants.USERNAME, DBConstants.PASSWORD, DBConstants.CLIENTID};
         String[] credentials = new String[3];
@@ -118,7 +166,9 @@ public class ApplicationDb {
         return credentials;
     }
 
-
+    /**
+     * Insert a device
+     */
     public long insertDevice(int deviceId,String raspberryId,String raspberryName, String raspberryDesc, String deviceStatus){
         ContentValues contentValues = new ContentValues();
         contentValues.put(DBConstants.DEVICE_NODE_ID, deviceId);
@@ -130,6 +180,9 @@ public class ApplicationDb {
         return id;
     }
 
+    /**
+     * Check a device by its ID
+     */
     public boolean checkDeviceById(int id){
         String[] columns = {DBConstants.DEVICE_NODE_ID};
         Cursor cursor = db.query(DBConstants.TABLE_NAME_DEVICES, columns, DBConstants.DEVICE_NODE_ID + " = '" + id + "'",
@@ -139,6 +192,9 @@ public class ApplicationDb {
         return false;
     }
 
+    /**
+     * Get a Device by its ID
+     */
     public Device getDevice(){
         String[] columns= {DBConstants.DEVICE_NODE_ID,DBConstants.RASPBERRYID,DBConstants.DEVICE_NAME,DBConstants.DEVICE_DESCRIPTION,
                             DBConstants.DEVICE_STATUS};
@@ -158,15 +214,20 @@ public class ApplicationDb {
         return null;
     }
 
+    /**
+     * Update the status of the device
+     */
     public void updateDeviceStatus(String status,int nodeId){
         ContentValues contentValues = new ContentValues();
         contentValues.put(DBConstants.DEVICE_STATUS,status);
         db.update(DBConstants.TABLE_NAME_DEVICES, contentValues, null, null);
     }
 
+    /**
+     * Reset the application data
+     */
     public void resetData(){
         try {
-
             DevicesInfoDbInner dbRecreate = new DevicesInfoDbInner(ActivityContexts.getMainActivityContext());
             dbRecreate.onUpgrade(db,1,2);
 
@@ -175,6 +236,9 @@ public class ApplicationDb {
         }
     }
 
+    /**
+     * Inner helper class
+     */
     static class DevicesInfoDbInner extends SQLiteOpenHelper{
 
         private Context context;
@@ -183,6 +247,9 @@ public class ApplicationDb {
             Log.d("1","Constructor Called");
         }
 
+        /**
+         * Creation of the database
+         */
         @Override
         public void onCreate(SQLiteDatabase db) {
             try {
@@ -198,6 +265,9 @@ public class ApplicationDb {
             }
         }
 
+        /**
+         * Update of the database
+         */
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             try {
