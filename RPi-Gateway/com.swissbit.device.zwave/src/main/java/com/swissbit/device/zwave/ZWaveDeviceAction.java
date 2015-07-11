@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import com.swissbit.activity.log.IActivityLogService;
 import com.swissbit.assd.comm.IASSDCommunication;
 import com.swissbit.device.zwave.util.CommandUtil;
+import com.swissbit.ifttt.IFTTTConfiguration;
 
 /**
  * The implementation of {@link IZwaveDeviceAction}
@@ -73,6 +74,12 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	 */
 	@Reference(bind = "bindCloudService", unbind = "unbindCloudService")
 	private volatile CloudService m_cloudService;
+
+	/**
+	 * IFTTT Service Dependency
+	 */
+	@Reference(bind = "bindIFTTTService", unbind = "unbindIFTTTService")
+	private volatile IFTTTConfiguration m_iftttService;
 
 	/**
 	 * Constructor
@@ -123,6 +130,15 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	}
 
 	/**
+	 * IFTTT Service Binding Callback
+	 */
+	public synchronized void bindIFTTTService(final IFTTTConfiguration ifttService) {
+		if (this.m_iftttService == null) {
+			this.m_iftttService = ifttService;
+		}
+	}
+
+	/**
 	 * Callback while this component is getting deregistered
 	 *
 	 * @param properties
@@ -157,11 +173,13 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 			if ("on".equals(reqTopic.getResources()[0])) {
 				this.m_activityLogService.saveLog("Device is turned on");
 				this.switchOn(nodeId);
+				this.m_iftttService.sendEmail();
 			}
 
 			if ("off".equals(reqTopic.getResources()[0])) {
 				this.m_activityLogService.saveLog("Device is turned off");
 				this.switchOff(nodeId);
+				this.m_iftttService.sendEmail();
 			}
 			respPayload.setResponseCode(KuraResponsePayload.RESPONSE_CODE_OK);
 		}
@@ -250,6 +268,15 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	public synchronized void unbindCloudService(final CloudService cloudService) {
 		if (this.m_cloudService == cloudService) {
 			super.setCloudService(this.m_cloudService = null);
+		}
+	}
+
+	/**
+	 * IFTTT Service Unbinding Callback
+	 */
+	public synchronized void unbindIFTTTService(final IFTTTConfiguration ifttService) {
+		if (this.m_iftttService == ifttService) {
+			this.m_iftttService = null;
 		}
 	}
 
