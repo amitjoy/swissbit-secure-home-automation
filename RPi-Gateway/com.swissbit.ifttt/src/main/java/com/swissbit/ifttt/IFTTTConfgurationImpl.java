@@ -174,6 +174,7 @@ public class IFTTTConfgurationImpl implements ConfigurableComponent, IFTTTConfig
 
 		if (tags.size() > 0) {
 			for (final String tag : tags) {
+				System.out.println("TAG:::" + tag);
 				try {
 					email.setFrom(this.m_smtpUsername);
 					email.setSubject(tag);
