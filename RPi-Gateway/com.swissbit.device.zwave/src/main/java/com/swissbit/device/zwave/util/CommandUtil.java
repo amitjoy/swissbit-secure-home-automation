@@ -83,6 +83,8 @@ public final class CommandUtil {
 	 * Resets the Serial Port responsible for ZWave PC Controller (Aeon Z-Stick)
 	 */
 	public static void resetSerialPort(final String moduleName) {
+		LOGGER.info("Resetting of Serial Port USB Started...");
+
 		SafeProcess process = null;
 		BufferedReader br = null;
 		StringBuilder sb = null;
@@ -96,10 +98,13 @@ public final class CommandUtil {
 
 			while ((line = br.readLine()) != null) {
 				if (line.contains("command not found")) {
+					LOGGER.error("Resetting Command Not Found");
 					throw new KuraException(KuraErrorCode.OPERATION_NOT_SUPPORTED);
 				}
 				sb.append(line);
 			}
+
+			LOGGER.info("Resetting of Serial Port USB Started...Done");
 		} catch (final Exception e) {
 			LOGGER.error(Throwables.getStackTraceAsString(e));
 		} finally {
