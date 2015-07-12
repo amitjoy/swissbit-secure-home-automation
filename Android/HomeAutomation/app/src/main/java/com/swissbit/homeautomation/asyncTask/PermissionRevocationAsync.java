@@ -1,13 +1,10 @@
 /**
  * ****************************************************************************
  * Copyright (C) 2015 - Manit Kumar <vikky_manit@yahoo.co.in>
- * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -83,7 +80,7 @@ public class PermissionRevocationAsync extends AsyncTask {
                 @Override
                 public void processMessage(KuraPayload kuraPayload) {
                     if (kuraPayload != null) {
-                        if(!(boolean) kuraPayload.getMetric("revokedStatus")) {
+                        if((boolean) kuraPayload.getMetric("revokedStatus")) {
                             Log.d("AccessRevoked", "Revoked");
                             ApplicationDb applicationDb = DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getCurrentActivityContext());
                             applicationDb.resetData();
@@ -91,6 +88,7 @@ public class PermissionRevocationAsync extends AsyncTask {
                             secureElementAccess.setDisabled();
                             publishProgress();
                         }
+
                     }
                 }
             });
@@ -105,8 +103,8 @@ public class PermissionRevocationAsync extends AsyncTask {
     @Override
     public void onProgressUpdate(Object[] values) {
 
-        ApplicationDb db = DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getCurrentActivityContext());
-        db.resetData();
+//        ApplicationDb db = DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getCurrentActivityContext());
+//        db.resetData();
 
         AlertDialog alertDialog = new AlertDialog.Builder(ActivityContexts.getCurrentActivityContext()).create();
         alertDialog.setTitle("Warning!");

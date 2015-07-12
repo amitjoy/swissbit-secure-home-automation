@@ -15,7 +15,11 @@
  *******************************************************************************/
 package com.swissbit.device.zwave;
 
+import static com.swissbit.device.zwave.util.CommandUtil.switchOp;
+
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
@@ -34,17 +38,17 @@ import org.slf4j.LoggerFactory;
 
 import com.swissbit.activity.log.IActivityLogService;
 import com.swissbit.assd.comm.IASSDCommunication;
-import com.swissbit.device.zwave.util.CommandUtil;
 import com.swissbit.ifttt.IFTTTConfiguration;
 
 /**
- * The implementation of {@link IZwaveDeviceAction}
+ * The implementation of {@link IZwaveDeviceAction} for All ZWave Related
+ * Communication initiated by the User
  *
  * @see IZwaveDeviceAction
  * @author AMIT KUMAR MONDAL
  */
 @Component(name = "com.swissbit.device.zwave")
-@Service(value = { IZwaveDeviceAction.class, ZWaveDeviceAction.class })
+@Service(value = { IZwaveDeviceAction.class })
 public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 
 	/**
@@ -82,10 +86,16 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	private volatile IFTTTConfiguration m_iftttService;
 
 	/**
+	 * Thread Pool Executor Service
+	 */
+	private final ExecutorService m_worker;
+
+	/**
 	 * Constructor
 	 */
 	public ZWaveDeviceAction() {
 		super(APP_ID);
+		this.m_worker = Executors.newSingleThreadExecutor();
 	}
 
 	/**
@@ -99,6 +109,7 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	protected synchronized void activate(final ComponentContext context) {
 		LOGGER.info("Activating ZWave Component....");
 		super.activate(context);
+		super.setCloudService(this.m_cloudService);
 		LOGGER.info("Activating ZWave Component... Done.");
 	}
 
@@ -149,6 +160,8 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	protected synchronized void deactivate(final ComponentContext context) {
 		LOGGER.info("Deactivating ZWave Component....");
 		super.deactivate(context);
+		// shutting down the worker and cleaning up the properties
+		this.m_worker.shutdown();
 		LOGGER.info("Deactivating ZWave Component... Done.");
 	}
 
@@ -162,6 +175,8 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 		final String encryptedString = String.valueOf(reqPayload.getMetric("encVal"));
 		final List<String> list = this.m_assdCommunication.decrypt(encryptedString);
 
+		LOGGER.debug("Decrypted Data for validating Request " + list);
+
 		String decryptedString = null;
 
 		if (list != null) {
@@ -173,14 +188,14 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 			if ("on".equals(reqTopic.getResources()[0])) {
 				this.m_activityLogService.saveLog("Device is turned on");
 				this.switchOn(nodeId);
-				this.m_iftttService.trigger();
 			}
 
 			if ("off".equals(reqTopic.getResources()[0])) {
 				this.m_activityLogService.saveLog("Device is turned off");
 				this.switchOff(nodeId);
-				this.m_iftttService.trigger();
 			}
+
+			this.m_worker.submit(() -> this.m_iftttService.trigger());
 			respPayload.setResponseCode(KuraResponsePayload.RESPONSE_CODE_OK);
 		}
 
@@ -195,6 +210,8 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 		final String nodeId = String.valueOf(reqPayload.getMetric("nodeId"));
 		final String encryptedString = String.valueOf(reqPayload.getMetric("encVal"));
 		final List<String> list = this.m_assdCommunication.decrypt(encryptedString);
+
+		LOGGER.debug("Decrypted Data for validating Request " + list);
 
 		String decryptedString = null;
 
@@ -223,25 +240,25 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> getConnectedDevices() {
-		return (List<String>) CommandUtil.switchOp("10", "LIST");
+		return (List<String>) switchOp("10", "LIST");
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public Boolean getStatus(final String nodeId) {
-		return Boolean.valueOf((String) CommandUtil.switchOp(nodeId, "STATUS"));
+		return Boolean.valueOf((String) switchOp(nodeId, "STATUS"));
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public Boolean switchOff(final String nodeId) {
-		return (Boolean) CommandUtil.switchOp(nodeId, "OFF");
+		return (Boolean) switchOp(nodeId, "OFF");
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public Boolean switchOn(final String nodeId) {
-		return (Boolean) CommandUtil.switchOp(nodeId, "ON");
+		return (Boolean) switchOp(nodeId, "ON");
 	}
 
 	/**

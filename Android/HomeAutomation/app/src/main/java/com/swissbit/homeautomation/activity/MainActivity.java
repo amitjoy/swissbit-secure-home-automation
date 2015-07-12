@@ -1,13 +1,10 @@
 /**
  * ****************************************************************************
  * Copyright (C) 2015 - Manit Kumar <vikky_manit@yahoo.co.in>
- * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,6 +15,7 @@
 
 package com.swissbit.homeautomation.activity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -29,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.google.common.collect.Lists;
@@ -47,6 +46,7 @@ import com.swissbit.homeautomation.utils.DBFactory;
 import com.swissbit.homeautomation.utils.EncryptionFactory;
 import com.swissbit.homeautomation.utils.MQTTFactory;
 import com.swissbit.homeautomation.ui.dialog.SecureCodeDialog;
+import com.swissbit.mqtt.client.IKuraMQTTClient;
 import com.tum.ssdapi.CardAPI;
 import java.util.List;
 
@@ -121,9 +121,11 @@ public class MainActivity extends ActionBarActivity {
 
         lwtAsync = new LWTAsync();
 
-        checkAccessRevoked();
+        //To check for network availability
+        checkNetworkAvailability();
 
-        Log.d("SecureId", "" + secureElementAccess.getMyId());
+        //To check if access has been revoked
+        checkAccessRevoked();
 
     }
 
@@ -143,20 +145,33 @@ public class MainActivity extends ActionBarActivity {
 
         //To add a RaspberryPi
         if (id == R.id.register_raspberry) {
-            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-            alertDialog.setTitle("Caution!");
-            alertDialog.setMessage("Please make sure your RaspberryPi was turned on atleast 1 minute ago");
-            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            //Calling the QR scanner app via intent
-                            IntentIntegrator integrator = new IntentIntegrator(MainActivity.this);
-                            integrator.initiateScan();
-                        }
-                    });
-            alertDialog.show();
-
+            if(DBFactory.getRaspberry() != null){
+                AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                alertDialog.setTitle("Information");
+                alertDialog.setMessage("RaspberryPi already added");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
+            }
+            else {
+                AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                alertDialog.setTitle("Caution!");
+                alertDialog.setMessage("Please make sure your RaspberryPi was turned on atleast 1 minute ago");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                //Calling the QR scanner app via intent
+                                IntentIntegrator integrator = new IntentIntegrator(MainActivity.this);
+                                integrator.initiateScan();
+                            }
+                        });
+                alertDialog.show();
+            }
         }
 
         //To reset application data
@@ -266,14 +281,23 @@ public class MainActivity extends ActionBarActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                    RaspberryPi clickedItem = (RaspberryPi) listView.getItemAtPosition(position);
-                    //Start the device activity
-                    Intent intent = new Intent(MainActivity.this, DeviceActivity.class);
-                    Bundle extras = new Bundle();
-                    extras.putString("RaspberryId", clickedItem.getId());
-                    extras.putString("SecureElementId", raspberryPi.getSecureElementId());
-                    intent.putExtras(extras);
-                    startActivity(intent);
+                    //Check if the RaspberryPi has received heartbeats. If not, do not allow to launch device activity
+                    View rootView = ((Activity) ActivityContexts.getMainActivityContext()).getWindow().getDecorView().findViewById(android.R.id.content);
+                    ImageView imgStatus = (ImageView) rootView.findViewById(R.id.imgStatus);
+                    if((int)imgStatus.getTag() == R.drawable.btnon){
+                        RaspberryPi clickedItem = (RaspberryPi) listView.getItemAtPosition(position);
+
+                        //Start the device activity
+                        Intent intent = new Intent(MainActivity.this, DeviceActivity.class);
+                        Bundle extras = new Bundle();
+                        extras.putString("RaspberryId", clickedItem.getId());
+                        extras.putString("SecureElementId", raspberryPi.getSecureElementId());
+                        intent.putExtras(extras);
+                        startActivity(intent);
+                    }
+                    else {
+                        Toast.makeText(getApplicationContext(), "RaspberryPi currently offline. Wait till connectivity is established", Toast.LENGTH_LONG).show();
+                    }
                 }
             });
 
@@ -295,7 +319,7 @@ public class MainActivity extends ActionBarActivity {
      */
     public void checkAccessRevoked(){
 
-        Log.d("SDEnabled",secureElementAccess.getEnabled().toString());
+        Log.d("SDEnabled", secureElementAccess.getEnabled().toString());
         if("029000".equals(secureElementAccess.getEnabled().toString())) {
             Log.d("Inside Alert","Alert");
             Context context = MainActivity.this;
@@ -322,4 +346,24 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    /**
+     * Check if the device is connected to any network.
+     * If not, display a dialog message
+     */
+    public void checkNetworkAvailability(){
+        if(!MQTTFactory.isNetworkAvailable(MainActivity.this)){
+            AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+            alertDialog.setTitle("Warning!");
+            alertDialog.setMessage("Please make sure your device has internet connectivity");
+            alertDialog.setCancelable(false);
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            checkNetworkAvailability();
+                        }
+                    });
+            alertDialog.show();
+        }
+    }
 }

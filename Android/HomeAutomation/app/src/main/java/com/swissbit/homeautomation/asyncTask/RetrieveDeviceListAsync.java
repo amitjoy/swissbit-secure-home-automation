@@ -1,13 +1,10 @@
 /**
  * ****************************************************************************
  * Copyright (C) 2015 - Manit Kumar <vikky_manit@yahoo.co.in>
- * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,6 +29,11 @@ import com.swissbit.mqtt.client.IKuraMQTTClient;
 import com.swissbit.mqtt.client.adapter.MessageListener;
 import com.swissbit.mqtt.client.message.KuraPayload;
 import com.tum.ssdapi.CardAPI;
+
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * This AsyncTask handles the retrieval of list of devices of a RaspberryPi.
@@ -59,9 +61,14 @@ public class RetrieveDeviceListAsync extends AsyncTask {
     private String raspberryId;
 
     /**
-     * A monitor object for thread synchronisation
+     * A lock object for thread synchronisation
      */
-    private Object monitor;
+    private Lock lock;
+
+    /**
+     * A condition object used by locks for thread synchronisation
+     */
+    private Condition condition;
 
     /**
      * Progress Dialog object to display progress
@@ -79,6 +86,8 @@ public class RetrieveDeviceListAsync extends AsyncTask {
     public RetrieveDeviceListAsync(String raspberryId) {
         this.raspberryId = raspberryId;
         subscriptionResponse = false;
+        lock = new ReentrantLock();
+        condition = lock.newCondition();
     }
 
     /**
@@ -100,7 +109,6 @@ public class RetrieveDeviceListAsync extends AsyncTask {
         applicationDb = DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getDeviceActivityContext());
         boolean status = false;
 
-        monitor = new Object();
 
         if (!client.isConnected())
             status = client.connect();
@@ -133,9 +141,15 @@ public class RetrieveDeviceListAsync extends AsyncTask {
                             publishProgress();
 
                             Log.d("Notify", "Before");
-                            synchronized (monitor) {
-                                monitor.notify();
-                                Log.d("Notify", "After");
+
+                            if (lock.tryLock()) {
+                                try {
+                                    Log.d("Notify", "After");
+                                    condition.signal();
+                                }
+                                finally {
+                                    lock.unlock();
+                                }
                             }
                             subscriptionResponse = true;
 
@@ -164,13 +178,15 @@ public class RetrieveDeviceListAsync extends AsyncTask {
         }
 
         //Wait for sometime for the response
-        synchronized (monitor) {
+        if (lock.tryLock()) {
             try {
                 Log.d("Notify", "Before");
-                monitor.wait(20000);
+                condition.await(20, TimeUnit.SECONDS);
                 Log.d("Notify", "After");
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            } finally {
+                lock.unlock();
             }
         }
         return null;
