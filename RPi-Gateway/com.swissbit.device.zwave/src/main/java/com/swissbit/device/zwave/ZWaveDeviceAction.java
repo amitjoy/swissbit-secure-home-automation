@@ -172,6 +172,8 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 		final String encryptedString = String.valueOf(reqPayload.getMetric("encVal"));
 		final List<String> list = this.m_assdCommunication.decrypt(encryptedString);
 
+		LOGGER.debug("Encrypted Data for validating Request " + list);
+
 		String decryptedString = null;
 
 		if (list != null) {
@@ -205,6 +207,8 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 		final String nodeId = String.valueOf(reqPayload.getMetric("nodeId"));
 		final String encryptedString = String.valueOf(reqPayload.getMetric("encVal"));
 		final List<String> list = this.m_assdCommunication.decrypt(encryptedString);
+
+		LOGGER.debug("Encrypted Data for validating Request " + list);
 
 		String decryptedString = null;
 
