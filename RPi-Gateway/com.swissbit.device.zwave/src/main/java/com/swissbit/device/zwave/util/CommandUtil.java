@@ -19,6 +19,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.eclipse.kura.KuraErrorCode;
 import org.eclipse.kura.KuraException;
@@ -137,7 +138,7 @@ public final class CommandUtil {
 
 			while ((line = br.readLine()) != null) {
 				if (line.contains("Something bad happened")) {
-					LOGGER.error("Something bad happened with Serial Communicaation");
+					LOGGER.error("Something bad happened with Serial Communication");
 					throw new KuraException(KuraErrorCode.OPERATION_NOT_SUPPORTED);
 				}
 
@@ -173,6 +174,11 @@ public final class CommandUtil {
 					}
 				}
 			}
+
+			final boolean flag = process.waitFor(15, TimeUnit.SECONDS);
+			resetSerialPort(SERIAL_PORT_DRIVER);
+			return flag;
+
 		} catch (final Exception e) {
 			LOGGER.error(Throwables.getStackTraceAsString(e));
 			return false;
@@ -185,7 +191,6 @@ public final class CommandUtil {
 				LOGGER.error("Error closing read buffer", Throwables.getStackTraceAsString(e));
 			}
 		}
-		return true;
 	}
 
 }

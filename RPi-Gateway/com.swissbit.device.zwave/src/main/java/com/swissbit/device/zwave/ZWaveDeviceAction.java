@@ -206,6 +206,7 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	protected void doGet(final CloudletTopic reqTopic, final KuraRequestPayload reqPayload,
 			final KuraResponsePayload respPayload) throws KuraException {
 
+		LOGGER.info("Operation requested.....");
 		// Parse the nodeId
 		final String nodeId = String.valueOf(reqPayload.getMetric("nodeId"));
 		final String encryptedString = String.valueOf(reqPayload.getMetric("encVal"));
