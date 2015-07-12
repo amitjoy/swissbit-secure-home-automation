@@ -17,6 +17,9 @@
  */
 package com.swissbit.homeautomation.utils;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.swissbit.mqtt.client.IKuraMQTTClient;
@@ -222,4 +225,29 @@ public final class MQTTFactory {
         return payload;
     }
 
+    /**
+     * Checks if the mobile is connected to any network for communication
+     */
+    public static boolean isNetworkAvailable(Context context)
+    {
+        ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (connectivity != null)
+        {
+            NetworkInfo[] info = connectivity.getAllNetworkInfo();
+
+            if (info != null)
+            {
+                for (int i = 0; i < info.length; i++)
+                {
+                    Log.i("Class", info[i].getState().toString());
+                    if (info[i].getState() == NetworkInfo.State.CONNECTED)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }

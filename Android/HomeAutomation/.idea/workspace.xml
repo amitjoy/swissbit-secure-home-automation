@@ -101,25 +101,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/swissbit/homeautomation/activity/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="285" column="25" selection-start-line="285" selection-start-column="25" selection-end-line="285" selection-end-column="25" />
+            <state vertical-scroll-proportion="0.7715736">
+              <caret line="297" column="17" selection-start-line="297" selection-start-column="17" selection-end-line="297" selection-end-column="17" />
               <folding>
-                <element signature="e#10319#11545#0" expanded="true" />
-                <element signature="e#11544#11545#0" expanded="true" />
+                <element signature="n#!!doc" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#10380#11818#0" expanded="true" />
+                <element signature="e#11817#11818#0" expanded="true" />
+                <element signature="e#13978#14248#0" expanded="true" />
+                <element signature="e#14247#14248#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RPiAdapter.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/swissbit/homeautomation/ui/adapter/RPiAdapter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="78" column="9" selection-start-line="78" selection-start-column="9" selection-end-line="78" selection-end-column="9" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -140,6 +134,28 @@
             <state vertical-scroll-proportion="0.0">
               <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MQTTFactory.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/swissbit/homeautomation/utils/MQTTFactory.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="236" column="0" selection-start-line="236" selection-start-column="0" selection-end-line="236" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+              <folding>
+                <element signature="e#39#668#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -167,21 +183,24 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="LWTAsync.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/swissbit/homeautomation/asyncTask/LWTAsync.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="54" column="86" selection-start-line="54" selection-start-column="86" selection-end-line="54" selection-end-column="86" />
+              <folding>
+                <element signature="e#2132#2465#0" expanded="true" />
+                <element signature="e#2464#2465#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="TopicsConstants.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/swissbit/homeautomation/utils/TopicsConstants.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="85" column="0" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MQTTFactory.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/swissbit/homeautomation/utils/MQTTFactory.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7614213">
-              <caret line="43" column="7" selection-start-line="43" selection-start-column="7" selection-end-line="43" selection-end-column="7" />
               <folding />
             </state>
           </provider>
@@ -1539,7 +1558,6 @@
         <option value="$PROJECT_DIR$/app/src/main/res/values-w820dp/dimens.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/swissbit/homeautomation/asyncTask/PermissionRevocationAsync.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/swissbit/homeautomation/utils/DBConstants.java" />
-        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/row_raspberry_details_full.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout-sw600dp/row_raspberry_details_full.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/row_device_details.xml" />
@@ -1551,9 +1569,10 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/swissbit/homeautomation/asyncTask/HeartBeatAsync.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/swissbit/homeautomation/ui/adapter/RPiAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout-sw600dp/row_device_details.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/swissbit/homeautomation/activity/MainActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/swissbit/homeautomation/utils/MQTTFactory.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/swissbit/homeautomation/utils/TopicsConstants.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/swissbit/homeautomation/utils/MQTTFactory.java" />
+        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/swissbit/homeautomation/activity/MainActivity.java" />
       </list>
     </option>
   </component>
@@ -2331,7 +2350,7 @@
     <property name="SHOW_ALL_PROCESSES" value="true" />
     <property name="android.project.structure.last.selected" value="SDK Location" />
     <property name="android.project.structure.proportion" value="0.15" />
-    <property name="SearchEverywhereHistoryKey" value="row_raspberry&#9;PSI&#9;JAVA://com.android.swissbit.homeautomation.R.layout#row_raspberry_details&#10;row_device&#9;FILE&#9;file:///Users/manit/Documents/Manit/Masters in Informatics/Android Praktikum/Project/Android/HomeAutomation/app/src/main/res/layout/row_device_details.xml&#10;setSecureElementId&#9;PSI&#9;JAVA://com.swissbit.homeautomation.model.RaspberryPi#setSecureElementId&#10;nodeId&#9;PSI&#9;JAVA://com.swissbit.homeautomation.asyncTask.RetrieveDeviceListAsync#nodeId" />
+    <property name="SearchEverywhereHistoryKey" value="server&#9;PSI&#9;JAVA://org.apache.harmony.tests.java.nio.channels.UnixSelectorTest.Server&#10;row_raspberry&#9;PSI&#9;JAVA://com.android.swissbit.homeautomation.R.layout#row_raspberry_details&#10;row_device&#9;FILE&#9;file:///Users/manit/Documents/Manit/Masters in Informatics/Android Praktikum/Project/Android/HomeAutomation/app/src/main/res/layout/row_device_details.xml&#10;setSecureElementId&#9;PSI&#9;JAVA://com.swissbit.homeautomation.model.RaspberryPi#setSecureElementId&#10;nodeId&#9;PSI&#9;JAVA://com.swissbit.homeautomation.asyncTask.RetrieveDeviceListAsync#nodeId" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -2657,13 +2676,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-22/android/os/AsyncTask.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33248731">
-          <caret line="298" column="0" selection-start-line="298" selection-start-column="0" selection-end-line="298" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/socketswitchon.png">
       <provider selected="true" editor-type-id="images">
         <state />
@@ -2806,19 +2818,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="42" column="43" selection-start-line="42" selection-start-column="43" selection-end-line="42" selection-end-column="43" />
-          <folding>
-            <element signature="e#39#668#0" expanded="false" />
-            <element signature="e#1206#1224#0" expanded="true" />
-            <element signature="e#1388#1406#0" expanded="true" />
-            <element signature="e#1806#1824#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/swissbit/homeautomation/ws/VerifySecretCode.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-4.253807">
@@ -2899,14 +2898,6 @@
           <folding>
             <element signature="docComment;class#DeviceActivity#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/swissbit/homeautomation/asyncTask/LWTAsync.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="34" column="13" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3038,25 +3029,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/swissbit/homeautomation/activity/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="285" column="25" selection-start-line="285" selection-start-column="25" selection-end-line="285" selection-end-column="25" />
-          <folding>
-            <element signature="e#10319#11545#0" expanded="true" />
-            <element signature="e#11544#11545#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/swissbit/homeautomation/utils/TopicsConstants.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="85" column="0" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/swissbit/homeautomation/utils/EncryptionFactory.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -3092,6 +3064,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/swissbit/homeautomation/utils/TopicsConstants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="85" column="0" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-22/org/apache/harmony/tests/java/nio/channels/UnixSelectorTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.26649746">
+          <caret line="29" column="17" selection-start-line="29" selection-start-column="17" selection-end-line="29" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/swissbit/homeautomation/asyncTask/HeartBeatAsync.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -3100,11 +3088,47 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/swissbit/homeautomation/asyncTask/LWTAsync.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="54" column="86" selection-start-line="54" selection-start-column="86" selection-end-line="54" selection-end-column="86" />
+          <folding>
+            <element signature="e#2132#2465#0" expanded="true" />
+            <element signature="e#2464#2465#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/swissbit/homeautomation/utils/MQTTFactory.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7614213">
-          <caret line="43" column="7" selection-start-line="43" selection-start-column="7" selection-end-line="43" selection-end-column="7" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="236" column="0" selection-start-line="236" selection-start-column="0" selection-end-line="236" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding>
+            <element signature="e#39#668#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/swissbit/homeautomation/activity/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7715736">
+          <caret line="297" column="17" selection-start-line="297" selection-start-column="17" selection-end-line="297" selection-end-column="17" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#10380#11818#0" expanded="true" />
+            <element signature="e#11817#11818#0" expanded="true" />
+            <element signature="e#13978#14248#0" expanded="true" />
+            <element signature="e#14247#14248#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

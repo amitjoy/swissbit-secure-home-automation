@@ -121,9 +121,11 @@ public class MainActivity extends ActionBarActivity {
 
         lwtAsync = new LWTAsync();
 
-        checkAccessRevoked();
+        //To check for network availability
+        checkNetworkAvailability();
 
-//        Log.d("SecureId", "" + secureElementAccess.getMyId());
+        //To check if access has been revoked
+        checkAccessRevoked();
 
     }
 
@@ -293,6 +295,9 @@ public class MainActivity extends ActionBarActivity {
                         intent.putExtras(extras);
                         startActivity(intent);
                     }
+                    else {
+                        Toast.makeText(getApplicationContext(), "RaspberryPi currently offline. Wait till connectivity is established", Toast.LENGTH_LONG).show();
+                    }
                 }
             });
 
@@ -341,4 +346,24 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    /**
+     * Check if the device is connected to any network.
+     * If not, display a dialog message
+     */
+    public void checkNetworkAvailability(){
+        if(!MQTTFactory.isNetworkAvailable(MainActivity.this)){
+            AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+            alertDialog.setTitle("Warning!");
+            alertDialog.setMessage("Please make sure your device has internet connectivity");
+            alertDialog.setCancelable(false);
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            checkNetworkAvailability();
+                        }
+                    });
+            alertDialog.show();
+        }
+    }
 }
