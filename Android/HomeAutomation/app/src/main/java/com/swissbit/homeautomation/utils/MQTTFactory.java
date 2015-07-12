@@ -156,9 +156,7 @@ public final class MQTTFactory {
             case TopicsConstants.ACCESS_REVOCATION_SUB:
                 return new String[]{getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + "SURVEILLANCE-V1/" + getMobileClientSecureElementId() + TopicsConstants.ACCESS_REVOCATION_SUB};
 
-//            case TopicsConstants.ZWAVE_STATUS:
-//                return new String[]{getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.ZWAVE_STATUS, requestId};
-        }
+    }
 
         return null;
     }
@@ -205,11 +203,7 @@ public final class MQTTFactory {
             case TopicsConstants.RETRIEVE_DEVICE_STATUS_PUB:
                 return getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.RETRIEVE_DEVICE_STATUS_PUB;
 
-//            case TopicsConstants.ZWAVE_GET:
-//                return getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.ZWAVE_GET;
-//
-//            case TopicsConstants.ZWAVE_POST:
-//                return getMQTTTopicPrefix(TopicsConstants.TOPIC_PUBLISH) + TopicsConstants.ZWAVE_POST;
+
         }
 
         return null;

@@ -84,10 +84,5 @@ public interface TopicsConstants {
      */
     public static final String ACCESS_REVOCATION_SUB = "/access/revoked";
 
-//    public static final String ZWAVE_GET = "ZWAVE-V1/GET/";
-//
-//    public static final String ZWAVE_STATUS = "ZWAVE-V1/REPLY/";
-//
-//    public static final String ZWAVE_POST = "ZWAVE-V1/POST/";
 
 }
