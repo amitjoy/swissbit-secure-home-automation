@@ -15,6 +15,8 @@
  *******************************************************************************/
 package com.swissbit.device.zwave;
 
+import static com.swissbit.device.zwave.util.CommandUtil.switchOp;
+
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -36,17 +38,17 @@ import org.slf4j.LoggerFactory;
 
 import com.swissbit.activity.log.IActivityLogService;
 import com.swissbit.assd.comm.IASSDCommunication;
-import com.swissbit.device.zwave.util.CommandUtil;
 import com.swissbit.ifttt.IFTTTConfiguration;
 
 /**
- * The implementation of {@link IZwaveDeviceAction}
+ * The implementation of {@link IZwaveDeviceAction} for All ZWave Related
+ * Communication initiated by the User
  *
  * @see IZwaveDeviceAction
  * @author AMIT KUMAR MONDAL
  */
 @Component(name = "com.swissbit.device.zwave")
-@Service(value = { IZwaveDeviceAction.class, ZWaveDeviceAction.class })
+@Service(value = { IZwaveDeviceAction.class })
 public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 
 	/**
@@ -172,7 +174,7 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 		final String encryptedString = String.valueOf(reqPayload.getMetric("encVal"));
 		final List<String> list = this.m_assdCommunication.decrypt(encryptedString);
 
-		LOGGER.debug("Encrypted Data for validating Request " + list);
+		LOGGER.debug("Decrypted Data for validating Request " + list);
 
 		String decryptedString = null;
 
@@ -208,7 +210,7 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 		final String encryptedString = String.valueOf(reqPayload.getMetric("encVal"));
 		final List<String> list = this.m_assdCommunication.decrypt(encryptedString);
 
-		LOGGER.debug("Encrypted Data for validating Request " + list);
+		LOGGER.debug("Decrypted Data for validating Request " + list);
 
 		String decryptedString = null;
 
@@ -237,25 +239,25 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> getConnectedDevices() {
-		return (List<String>) CommandUtil.switchOp("10", "LIST");
+		return (List<String>) switchOp("10", "LIST");
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public Boolean getStatus(final String nodeId) {
-		return Boolean.valueOf((String) CommandUtil.switchOp(nodeId, "STATUS"));
+		return Boolean.valueOf((String) switchOp(nodeId, "STATUS"));
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public Boolean switchOff(final String nodeId) {
-		return (Boolean) CommandUtil.switchOp(nodeId, "OFF");
+		return (Boolean) switchOp(nodeId, "OFF");
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public Boolean switchOn(final String nodeId) {
-		return (Boolean) CommandUtil.switchOp(nodeId, "ON");
+		return (Boolean) switchOp(nodeId, "ON");
 	}
 
 	/**
