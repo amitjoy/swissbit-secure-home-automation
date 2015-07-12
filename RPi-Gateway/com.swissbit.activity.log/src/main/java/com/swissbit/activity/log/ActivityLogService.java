@@ -106,7 +106,6 @@ public class ActivityLogService extends Cloudlet implements IActivityLogService 
 	protected synchronized void deactivate(final ComponentContext context) {
 		LOGGER.info("Deactivating Activity Log Service....");
 		super.deactivate(context);
-
 		LOGGER.info("Deactivating Activity Log Service... Done.");
 	}
 

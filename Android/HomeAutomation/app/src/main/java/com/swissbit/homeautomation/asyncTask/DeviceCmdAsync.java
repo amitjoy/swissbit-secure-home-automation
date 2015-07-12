@@ -1,13 +1,10 @@
 /**
  * ****************************************************************************
  * Copyright (C) 2015 - Manit Kumar <vikky_manit@yahoo.co.in>
- * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,6 +33,11 @@ import com.swissbit.mqtt.client.adapter.MessageListener;
 import com.swissbit.mqtt.client.message.KuraPayload;
 import com.tum.ssdapi.CardAPI;
 
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * Handles device's on/off commands
  */
@@ -52,9 +54,14 @@ public class DeviceCmdAsync extends AsyncTask {
     private String cmd;
 
     /**
-     *A monitor object for thread synchronisation
+     * A lock object for thread synchronisation
      */
-    private Object monitor;
+    private Lock lock;
+
+    /**
+     * A condition object used by locks for thread synchronisation
+     */
+    private Condition condition;
 
     /**
      *Node id of the device.
@@ -85,6 +92,8 @@ public class DeviceCmdAsync extends AsyncTask {
         applicationDb = DBFactory.getDevicesInfoDbAdapter(ActivityContexts.getDeviceActivityContext());
         secureElementAccess = new CardAPI(ActivityContexts.getMainActivityContext());
         subscriptionResponse = false;
+        lock = new ReentrantLock();
+        condition = lock.newCondition();
     }
 
     /**
@@ -112,8 +121,6 @@ public class DeviceCmdAsync extends AsyncTask {
 
         String topic = null;
 
-        monitor = new Object();
-
         String[] topicData = MQTTFactory.getTopicToSubscribe(TopicsConstants.SWITCH_ON_OFF_LIST_STATUS_SUB);
         String requestId = topicData[1];
         Log.d("RequestID", requestId);
@@ -139,9 +146,15 @@ public class DeviceCmdAsync extends AsyncTask {
                             subscriptionResponse = false;
 
                         }
-                        synchronized (monitor) {
-                            monitor.notify();
-                            Log.d("Notify", "After");
+
+                        if (lock.tryLock()) {
+                            try {
+                                Log.d("Notify", "After");
+                                condition.signal();
+                            }
+                            finally {
+                                lock.unlock();
+                            }
                         }
 
                         Log.d("Inside onProcess", "" + subscriptionResponse);
@@ -171,13 +184,15 @@ public class DeviceCmdAsync extends AsyncTask {
         }
 
         //Wait for sometime for the response
-        synchronized (monitor) {
+        if (lock.tryLock()) {
             try {
                 Log.d("Notify", "Before");
-                monitor.wait(15000);
+                condition.await(20, TimeUnit.SECONDS);
                 Log.d("Notify", "After");
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            } finally {
+                lock.unlock();
             }
         }
 
