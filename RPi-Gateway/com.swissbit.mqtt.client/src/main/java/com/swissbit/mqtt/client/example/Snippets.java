@@ -72,7 +72,7 @@ public final class Snippets {
 		System.out.println(REQUEST_ZWAVE);
 
 		if (status) {
-			client.publish(REQUEST_ZWAVE, payload);
+			client.publish(REQUEST_ZWAVE_STATUS, payload);
 
 			System.out.println("--------------------------------------------------------------------");
 			System.out.println("Request Published");
