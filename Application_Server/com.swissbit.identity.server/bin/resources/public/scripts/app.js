@@ -1,6 +1,6 @@
 //Angular module declaration
 var app = angular.module('identity-server', [
-	'ngAnimate',
+	'ngProgress',
 	'ngCookies',
     'ngResource',
     'ngSanitize',
@@ -31,31 +31,6 @@ app.directive('validPasswordC', function () {
         }
     }
 })
-
-// Directive for edit text field
-app.directive('editText', function(){
-	return {
-    	restrict: 'E',
-        scope: {
-            value : '='
-        },
-        require: 'value',
-        controller: ['$scope', function($scope){
-            $scope.editing = false;
-            $scope.toggleEdit = function(save) {
-                if (!$scope.editing) {
-                    $scope.editing = true;
-                } else {
-                    if (save) {
-                        $scope.$parent.updateField();
-                    }
-                    $scope.editing = false;
-                }
-            }
-        }],
-        templateUrl: 'views/edit_text.html'
-    };
-});
 
 // Route declaration
 app.config(function ($routeProvider, $locationProvider) {
@@ -95,8 +70,6 @@ app.config(function ($routeProvider, $locationProvider) {
         		} 
 				else if ( next.templateUrl === "views/signUp.html") {
 				}
-				else if ( next.templateUrl === "views/displayUserHome.html") {
-				}
 				else {
           			$location.path("/logIn");
        			}
@@ -112,71 +85,7 @@ app.controller('defaultCtrl', function ($scope) {
 
 app.controller('viewDisplayUserHomeCtrl', function ($scope) {
     $scope.welcome = "Welcome to your home page"
-       	$scope.slides = [
-            {image: 'images/cust1.png', description: 'Image 00'},
-            {image: 'images/cust2.png', description: 'Image 01'},
-            {image: 'images/rpi1.png', description: 'Image 02'},
-            {image: 'images/rpi2.png', description: 'Image 03'},
-            {image: 'images/rpi3.png', description: 'Image 04'}
-        ];
-
-		$scope.direction = 'left';
-        $scope.currentIndex = 0;
-
-        $scope.setCurrentSlideIndex = function (index) {
-			$scope.direction = (index > $scope.currentIndex) ? 'left' : 'right';
-            $scope.currentIndex = index;
-        };
-
-        $scope.isCurrentSlideIndex = function (index) {
-            return $scope.currentIndex === index;
-        };
-		$scope.prevSlide = function () {
-			 $scope.direction = 'left';
-            $scope.currentIndex = ($scope.currentIndex < $scope.slides.length - 1) ? ++$scope.currentIndex : 0;
-        };
-
-        $scope.nextSlide = function () {
-			 $scope.direction = 'right';
-            $scope.currentIndex = ($scope.currentIndex > 0) ? --$scope.currentIndex : $scope.slides.length - 1;
-        };
 });
-
-app.animation('.slide-animation', function () {
-	return {
-            beforeAddClass: function (element, className, done) {
-                var scope = element.scope();
-
-                if (className == 'ng-hide') {
-                    var finishPoint = element.parent().width();
-                    if(scope.direction !== 'right') {
-                        finishPoint = -finishPoint;
-                    }
-                    TweenMax.to(element, 0.5, {left: finishPoint, onComplete: done });
-                }
-                else {
-                    done();
-                }
-            },
-            removeClass: function (element, className, done) {
-                var scope = element.scope();
-
-                if (className == 'ng-hide') {
-                    element.removeClass('ng-hide');
-
-                    var startPoint = element.parent().width();
-                    if(scope.direction === 'right') {
-                        startPoint = -startPoint;
-                    }
-
-                    TweenMax.fromTo(element, 0.5, { left: startPoint }, {left: 0, onComplete: done });
-                }
-                else {
-                    done();
-                }
-            }
-        };
-    });
 
 app.controller('viewSignUpCtrl', function ($scope, $http, $location, $route) {
 
@@ -334,7 +243,7 @@ app.controller('viewCustomersCtrl', function ($scope, $http, $location, $route) 
         }
 }); 
 
-app.controller('viewRaspPisCtrl', function ($scope, $http, $location, $route) {
+app.controller('viewRaspPisCtrl', function ($scope, ngProgress, $http, $location, $route) {
         $scope.newRaspPiForm = false;
 		$scope.updateRaspPiForm = false;
 		console.log($scope.updateRaspPiForm);
@@ -407,17 +316,20 @@ app.controller('viewRaspPisCtrl', function ($scope, $http, $location, $route) {
         }
 	
 		$scope.viewCodeLog = function(rpimacaddr) {
+			ngProgress.start();
 			$http.get('/logs/' + rpimacaddr + '/code').success(function (data) {
 				var blob = new Blob([data], { type:"text/html;charset=utf-8;" });
 				var downloadLink = angular.element('<a></a>');
 				downloadLink.attr('href',window.URL.createObjectURL(blob));
 				downloadLink.attr('download', 'raspberrypi_code.log');
 				downloadLink[0].click();
+				ngProgress.complete();
 	
 			})
 		}
 
         $scope.viewAppLog = function(rpimacaddr) {
+			ngProgress.start();
             $http.get('/logs/' + rpimacaddr + '/app').success(function (data) {
                 console.log(data);
                 var blob = new Blob([data], { type:"text/html;charset=utf-8;" });
@@ -425,7 +337,7 @@ app.controller('viewRaspPisCtrl', function ($scope, $http, $location, $route) {
                 downloadLink.attr('href',window.URL.createObjectURL(blob));
                 downloadLink.attr('download', 'raspberrypi_app.log');
                 downloadLink[0].click();
-
+				ngProgress.complete();
             })
         }
 
