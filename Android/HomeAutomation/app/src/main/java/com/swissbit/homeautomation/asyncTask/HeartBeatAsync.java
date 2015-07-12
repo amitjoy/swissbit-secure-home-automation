@@ -74,5 +74,6 @@ public class HeartBeatAsync extends AsyncTask {
         View rootView = ((Activity) ActivityContexts.getMainActivityContext()).getWindow().getDecorView().findViewById(android.R.id.content);
         ImageView imgStatus = (ImageView) rootView.findViewById(R.id.imgStatus);
         imgStatus.setImageResource(R.drawable.btnon);
+        imgStatus.setTag(R.drawable.btnon);
     }
 }
