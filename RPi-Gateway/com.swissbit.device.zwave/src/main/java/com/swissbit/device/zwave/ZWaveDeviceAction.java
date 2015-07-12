@@ -16,6 +16,8 @@
 package com.swissbit.device.zwave;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
@@ -82,10 +84,16 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	private volatile IFTTTConfiguration m_iftttService;
 
 	/**
+	 * Thread Pool Executor Service
+	 */
+	private final ExecutorService m_worker;
+
+	/**
 	 * Constructor
 	 */
 	public ZWaveDeviceAction() {
 		super(APP_ID);
+		this.m_worker = Executors.newSingleThreadExecutor();
 	}
 
 	/**
@@ -149,6 +157,8 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	protected synchronized void deactivate(final ComponentContext context) {
 		LOGGER.info("Deactivating ZWave Component....");
 		super.deactivate(context);
+		// shutting down the worker and cleaning up the properties
+		this.m_worker.shutdown();
 		LOGGER.info("Deactivating ZWave Component... Done.");
 	}
 
@@ -173,14 +183,14 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 			if ("on".equals(reqTopic.getResources()[0])) {
 				this.m_activityLogService.saveLog("Device is turned on");
 				this.switchOn(nodeId);
-				this.m_iftttService.trigger();
 			}
 
 			if ("off".equals(reqTopic.getResources()[0])) {
 				this.m_activityLogService.saveLog("Device is turned off");
 				this.switchOff(nodeId);
-				this.m_iftttService.trigger();
 			}
+
+			this.m_worker.submit(() -> this.m_iftttService.trigger());
 			respPayload.setResponseCode(KuraResponsePayload.RESPONSE_CODE_OK);
 		}
 
