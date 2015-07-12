@@ -87,13 +87,11 @@ public final class CommandUtil {
 
 		SafeProcess process = null;
 		BufferedReader br = null;
-		StringBuilder sb = null;
 		final String[] command = { CMD_PYTHON, RESET_SERIAL, moduleName };
 
 		try {
 			process = ProcessUtil.exec(command);
 			br = new BufferedReader(new InputStreamReader(process.getInputStream()));
-			sb = new StringBuilder();
 			String line = null;
 
 			while ((line = br.readLine()) != null) {
@@ -101,7 +99,6 @@ public final class CommandUtil {
 					LOGGER.error("Resetting Command Not Found");
 					throw new KuraException(KuraErrorCode.OPERATION_NOT_SUPPORTED);
 				}
-				sb.append(line);
 			}
 
 			LOGGER.info("Resetting of Serial Port USB Started...Done");
@@ -122,9 +119,10 @@ public final class CommandUtil {
 	 * Used to be called to turn off the specified device
 	 */
 	public static Object switchOp(final String nodeId, final String operationName) {
+		LOGGER.info("Executing Z-Wave Device Operation..." + operationName + " on Z-Wave Device #" + nodeId);
+
 		Process process = null;
 		BufferedReader br = null;
-		StringBuilder sb = null;
 		final List<String> listOfDevices = Lists.newArrayList();
 
 		try {
@@ -135,39 +133,45 @@ public final class CommandUtil {
 			process = Runtime.getRuntime().exec("java -Djava.library.path=" + RXTX_LIBRARY_PATH + " -cp "
 					+ RXTX_LOCATION + " -jar " + JAR_LOCATION + " " + nodeId + " " + operationName);
 			br = new BufferedReader(new InputStreamReader(process.getInputStream()));
-			sb = new StringBuilder();
 			String line = null;
 
 			while ((line = br.readLine()) != null) {
 				if (line.contains("Something bad happened")) {
+					LOGGER.error("Something bad happened with Serial Communicaation");
 					throw new KuraException(KuraErrorCode.OPERATION_NOT_SUPPORTED);
 				}
 
 				if ("ON".equals(operationName)) {
 					if (line.contains("ZWave Node is switched on")) {
+						LOGGER.info("Executing Z-Wave Device Switch ON Operation on Z-Wave Device #" + nodeId
+								+ "....... Done");
 						return true;
 					}
 				}
 
 				if ("OFF".equals(operationName)) {
 					if (line.contains("ZWave Node is switched off")) {
+						LOGGER.info("Executing Z-Wave Device Switch OFF Operation on Z-Wave Device #" + nodeId
+								+ "....... Done");
 						return true;
 					}
 				}
 
 				if ("STATUS".equals(operationName)) {
 					if (line.contains("Status")) {
+						LOGGER.info("Executing Z-Wave Device Switch Status Operation on Z-Wave Device #" + nodeId
+								+ "....... Done");
 						return line.split(":")[1];
 					}
 				}
 
 				if ("LIST".equals(operationName)) {
 					if (line.contains("ZWave Device Added")) {
+						LOGGER.info("Executing Z-Wave Devices List Operation....... Done");
 						listOfDevices.add(line.split(":")[1]);
 						return listOfDevices;
 					}
 				}
-				sb.append(line);
 			}
 		} catch (final Exception e) {
 			LOGGER.error(Throwables.getStackTraceAsString(e));
