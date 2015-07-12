@@ -15,6 +15,7 @@
 
 package com.swissbit.homeautomation.activity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -26,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.google.common.collect.Lists;
@@ -121,7 +123,7 @@ public class MainActivity extends ActionBarActivity {
 
         checkAccessRevoked();
 
-        Log.d("SecureId", "" + secureElementAccess.getMyId());
+//        Log.d("SecureId", "" + secureElementAccess.getMyId());
 
     }
 
@@ -277,14 +279,19 @@ public class MainActivity extends ActionBarActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                    RaspberryPi clickedItem = (RaspberryPi) listView.getItemAtPosition(position);
-                    //Start the device activity
-                    Intent intent = new Intent(MainActivity.this, DeviceActivity.class);
-                    Bundle extras = new Bundle();
-                    extras.putString("RaspberryId", clickedItem.getId());
-                    extras.putString("SecureElementId", raspberryPi.getSecureElementId());
-                    intent.putExtras(extras);
-                    startActivity(intent);
+                    View rootView = ((Activity) ActivityContexts.getMainActivityContext()).getWindow().getDecorView().findViewById(android.R.id.content);
+                    ImageView imgStatus = (ImageView) rootView.findViewById(R.id.imgStatus);
+                    if((int)imgStatus.getTag() == R.drawable.btnon){
+                        RaspberryPi clickedItem = (RaspberryPi) listView.getItemAtPosition(position);
+
+                        //Start the device activity
+                        Intent intent = new Intent(MainActivity.this, DeviceActivity.class);
+                        Bundle extras = new Bundle();
+                        extras.putString("RaspberryId", clickedItem.getId());
+                        extras.putString("SecureElementId", raspberryPi.getSecureElementId());
+                        intent.putExtras(extras);
+                        startActivity(intent);
+                    }
                 }
             });
 
@@ -306,7 +313,7 @@ public class MainActivity extends ActionBarActivity {
      */
     public void checkAccessRevoked(){
 
-        Log.d("SDEnabled",secureElementAccess.getEnabled().toString());
+        Log.d("SDEnabled", secureElementAccess.getEnabled().toString());
         if("029000".equals(secureElementAccess.getEnabled().toString())) {
             Log.d("Inside Alert","Alert");
             Context context = MainActivity.this;

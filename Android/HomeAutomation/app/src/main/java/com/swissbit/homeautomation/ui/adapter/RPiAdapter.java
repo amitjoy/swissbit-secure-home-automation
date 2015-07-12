@@ -69,11 +69,14 @@ public class RPiAdapter extends ArrayAdapter<RaspberryPi> {
         raspberryId.setText(raspberryPi.getId());
 
         //Initial status of the RaspberryPi
-        if (raspberryPi.getStatus())
+        if (raspberryPi.getStatus()) {
             imageStatus.setImageResource(R.drawable.btnon);
-        else
+            imageStatus.setTag(R.drawable.btnon);
+        }
+        else {
             imageStatus.setImageResource(R.drawable.btnoff);
-
+            imageStatus.setTag(R.drawable.btnoff);
+        }
         return customView;
     }
 
