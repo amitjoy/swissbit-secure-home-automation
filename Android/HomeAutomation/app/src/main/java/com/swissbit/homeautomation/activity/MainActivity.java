@@ -279,6 +279,7 @@ public class MainActivity extends ActionBarActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                    //Check if the RaspberryPi has received heartbeats. If not, do not allow to launch device activity
                     View rootView = ((Activity) ActivityContexts.getMainActivityContext()).getWindow().getDecorView().findViewById(android.R.id.content);
                     ImageView imgStatus = (ImageView) rootView.findViewById(R.id.imgStatus);
                     if((int)imgStatus.getTag() == R.drawable.btnon){
