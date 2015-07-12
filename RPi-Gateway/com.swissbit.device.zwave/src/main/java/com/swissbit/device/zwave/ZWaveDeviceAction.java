@@ -109,6 +109,7 @@ public class ZWaveDeviceAction extends Cloudlet implements IZwaveDeviceAction {
 	protected synchronized void activate(final ComponentContext context) {
 		LOGGER.info("Activating ZWave Component....");
 		super.activate(context);
+		super.setCloudService(this.m_cloudService);
 		LOGGER.info("Activating ZWave Component... Done.");
 	}
 
