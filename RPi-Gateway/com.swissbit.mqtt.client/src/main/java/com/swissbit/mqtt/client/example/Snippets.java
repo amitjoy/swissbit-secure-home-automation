@@ -42,7 +42,7 @@ public final class Snippets {
 	public static void main(final String... args) {
 		// Create the connection object
 		client = new KuraMQTTClient.Builder().setHost("m20.cloudmqtt.com").setPort("13273")
-				.setUsername("user@email.com").setPassword("tEev-Aiv-H").setClientId(clientId).build();
+				.setUsername("lord-voldemort-IoT").setPassword("teYct6ev0It6bu").setClientId(clientId).build();
 
 		// Connect to the Message Broker
 		status = client.connect();
