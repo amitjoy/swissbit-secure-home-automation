@@ -9,7 +9,7 @@ This is the repository for the development of a complete end-to-end secure home 
 
 ### How do I get set up for RPi-Gateway? ###
 
-* Check the respective for detailed guidelines
+* Check the respective section for detailed guidelines
 
 ### How do I get set up for Android? ###
 
