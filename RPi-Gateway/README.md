@@ -35,18 +35,21 @@ This is the repository for the development of a complete end-to-end secure home 
 ## How do I get my Raspberry Pi set up for RPi-Gateway Development? ##
 
 * Install Raspbian OS to your SD Card depending on the the architecture of your Raspberry Pi (ARMv6 or ARMv7)
-* Install Eclipse Kura (No Net with Web UI) depending on the the architecture of your Raspberry Pi (ARMv6 or ARMv7)
+* Install **Eclipse Kura (No Net with Web UI)** depending on the the architecture of your **Raspberry Pi (ARMv6 or ARMv7)**
 * You can access Eclipse Kura's Web UI from the Web Broswer
-* You have to use kura as username and admins as password to access the Web UI
-* Now go to Packages section and install the files which have been generated after you built the Swissbit Sources (the .dp files)
-* Install the dependencies package first and then commons package and lastly the zwave package
-* Copy the org.eclipse.kura.web-1.0.4-SNAPSHOT.jar to Raspberry Pi
-* Rename it to org.eclipse.kura.web_1.0.4.jar
-* And copy this file to /opt/eclipse/kura/kura/plugins
+* You have to use **kura** as username and **admin** as password to access the Web UI
+* Now go to Packages section and install the files which have been generated after you built the Swissbit Sources (the **.dp** files)
+* Install the ****dependencies** package first and then **commons**** package and lastly the **zwave** package
+* Copy the **org.eclipse.kura.web-1.0.4-SNAPSHOT.jar** to Raspberry Pi
+* Rename it to **org.eclipse.kura.web_1.0.4.jar**
+* And copy this file to **/opt/eclipse/kura/kura/plugins**
 * _ Now Restart the Raspberry Pi
 * After the restart, you have to configure the Swissbit Configurations according to your need
-* First of all, you have to specifiy the MQTT Configuration Parameters from the MQTTDataTransport
-* 
+* First of all, you have to specifiy the **MQTT Configuration Parameters** from the **MQTTDataTransport**
+* Make Sure you need to change only the **broker.url, account.name, username, password, keep-alive and timeout parameters**.
+* For convenience, make sure to set **Kepp-Alive** and **timeout** to **10** and **account.name** to **swissbit**.
+* Now go to **DataService** configuration section, and make sure to set **auto.starup** to **true** and **interval** to **10**
+
 
 
 ### Contribution guidelines ###
