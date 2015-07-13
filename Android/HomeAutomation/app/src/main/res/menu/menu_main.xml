@@ -25,5 +25,9 @@
         android:icon="@drawable/register"
         app:showAsAction="always"/>
 
+    <item android:id="@+id/secure_chat"
+        android:title="@string/secure_chat"
+        android:icon="@drawable/secure_chat"
+        app:showAsAction="always"/>
 
 </menu>

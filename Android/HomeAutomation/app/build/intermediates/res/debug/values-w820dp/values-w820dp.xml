@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/Users/manit/Documents/Manit/Masters%20in%20Informatics/Android%20Praktikum/Project/Android/HomeAutomation/app/src/main/res/values-w820dp/dimens.xml -->
+    <!-- From: file:/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/src/main/res/values-w820dp/dimens.xml -->
     <eat-comment/>
     <dimen name="activity_horizontal_margin">64dp</dimen>
 </resources>

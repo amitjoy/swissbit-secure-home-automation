@@ -31,6 +31,20 @@ public class ActivityContexts {
      */
     private static Context deviceActivityContext;
 
+    public static Context getChatActivityContext() {
+        return chatActivityContext;
+    }
+
+    public static void setChatActivityContext(Context chatActivityContext) {
+        ActivityContexts.chatActivityContext = chatActivityContext;
+    }
+
+    /**
+     * ChatActivity context
+     */
+    private static Context chatActivityContext;
+
+
     /**
      * Current Activity context
      */
