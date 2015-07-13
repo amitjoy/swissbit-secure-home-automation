@@ -18,6 +18,23 @@
     android:layout_gravity="center"
     android:orientation="vertical" >
 
+    <RadioGroup
+        android:id="@+id/secure_ids"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <RadioButton android:id="@+id/radio_id1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/id1"
+            android:onClick="onRadioButtonClicked" />
+        <RadioButton android:id="@+id/radio_id2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/id2"
+            android:onClick="onRadioButtonClicked" />
+    </RadioGroup>
+
     <LinearLayout
         android:id="@+id/llMsgCompose"
         android:layout_width="fill_parent"

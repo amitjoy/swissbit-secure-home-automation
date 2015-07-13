@@ -22,12 +22,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
+import android.widget.Toast;
+import android.widget.RadioButton;
 
 import com.android.swissbit.homeautomation.R;
 import com.swissbit.homeautomation.utils.ActivityContexts;
+import com.swissbit.homeautomation.utils.WSConstants;
 
 public class ChatInitiateActivity extends ActionBarActivity {
 
+    private String recId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,11 +48,22 @@ public class ChatInitiateActivity extends ActionBarActivity {
                 (new View.OnClickListener() {
                      @Override
                      public void onClick(View v) {
-                         // Redirect to chat activity on success.
-                         Intent intent = new Intent(ChatInitiateActivity.this, SecureChat.class);
-                         EditText name = (EditText) findViewById(R.id.name);
-                         intent.putExtra("name", name.getText().toString());
-                         startActivity(intent);
+                         //If no Radio Button Selected Reject going ahead
+
+                         RadioGroup g = (RadioGroup) findViewById(R.id.secure_ids);
+                         int idSelected =  g.getCheckedRadioButtonId();
+                         if(idSelected == -1){
+                             Toast errorMsg = Toast.makeText(ChatInitiateActivity.this, "Please select one of Ids", Toast.LENGTH_LONG);
+                             errorMsg.show();
+                         }
+                         else {
+                             // Redirect to chat activity on success.
+                             Intent intent = new Intent(ChatInitiateActivity.this, SecureChat.class);
+                             EditText name = (EditText) findViewById(R.id.name);
+                             intent.putExtra("name", name.getText().toString());
+                             intent.putExtra("recId", recId);
+                             startActivity(intent);
+                         }
                      }
                  }
 
@@ -80,4 +96,20 @@ public class ChatInitiateActivity extends ActionBarActivity {
         ActivityContexts.setCurrentActivityContext(ActivityContexts.getMainActivityContext());
     }
 
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.radio_id1:
+                if (checked)
+                    recId = WSConstants.secureIds[0];
+                    break;
+            case R.id.radio_id2:
+                if (checked)
+                    recId = WSConstants.secureIds[1];
+                    break;
+        }
+    }
 }

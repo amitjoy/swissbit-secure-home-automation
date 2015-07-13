@@ -30,5 +30,5 @@ public interface WSConstants {
      */
     public static final String ADD_RPI_WS = "http://andropraktikumtum-agms.rhcloud.com/addPi/";
 
-
+    String[] secureIds = {"1b58095eb4c6b36d794c3ed776ae2378","23c468ce274a35380fb758b406421d16"};
 }
