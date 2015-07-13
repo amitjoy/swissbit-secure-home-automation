@@ -189,14 +189,19 @@ public class SecureChatAsync extends AsyncTask {
 
             secureElementAccess = new CardAPI(ActivityContexts.getChatActivityContext());
             String decMsg[] = secureElementAccess.decryptMsgWithID(incomingMsg);
-            String senderName = decMsg[1].split(";;")[0];
-            String message = decMsg[1].split(";;")[1];
+            Log.d("Decrypted Message", "" + decMsg[1].getBytes());
+            if(!decMsg[1].contains("Error:")) {
 
-            Message m = new Message(senderName, message, false);
+                String senderName = decMsg[1].split(";;")[0];
+                String message = decMsg[1].split(";;")[1];
 
-            listMessages.add(m);
-            adapter.notifyDataSetChanged();
-            playBeep();
+                Message m = new Message(senderName, message, false);
+
+                listMessages.add(m);
+                adapter.notifyDataSetChanged();
+                playBeep();
+
+            }
 
         }
     }

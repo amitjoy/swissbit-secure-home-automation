@@ -40,7 +40,7 @@ public class MainActivity extends Activity {
                           EditText resp = (EditText) findViewById(R.id.decryptText);
 
                           resp.setText(apiAccess.setDisabled());
-
+                                                 Log.d("MyId:", apiAccess.getMyId());
                           // resp.setText(apiAccess.encryptMsg(plainMsg.getText().toString()));
                           //resp.setText(apiAccess.encryptMsgWithID("3308e36884b0ae319ffe90011f925dfe", plainMsg.getText().toString()));
                           //resp.setText(apiAccess.encryptMsgWithID("69e19840f93170156dfe7c24ab1b487d", plainMsg.getText().toString()));

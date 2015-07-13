@@ -2,88 +2,11 @@
 <items version="2" >
 
     <item
-        jar="/Users/gary/.m2/repository/com/swissbit/com.swissbit.mqtt.client/1.0-SNAPSHOT/com.swissbit.mqtt.client-1.0-SNAPSHOT.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="99eac1056d6536e894e7d320f6f964529dc2d27a">
-        <dex dex="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/com.swissbit.mqtt.client-1.0-SNAPSHOT-294f245a2a22121d474c94236e2ecd5327abf552.jar" />
-    </item>
-    <item
-        jar="/Users/gary/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.6.4/2396d74b12b905f780ed7966738bb78438e8371a/slf4j-api-1.6.4.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="2396d74b12b905f780ed7966738bb78438e8371a">
-        <dex dex="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/slf4j-api-1.6.4-5e8b4f4d0d1a3d2d3aa08af0ffae47a300dbef26.jar" />
-    </item>
-    <item
-        jar="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="1ee588ff2c4daf7b97c1cbf922a6c7f027285c2f">
-        <dex dex="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/classes-a6c1335aee074e4fba3b0f06535e8bb61fe2cc8d.jar" />
-    </item>
-    <item
-        jar="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/jars/classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="73753982da6bde518f3a4c6b372749981d14d1a0">
-        <dex dex="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/classes-4f1a833dcdd55ac03a42193bef27bc2ff436a4ba.jar" />
-    </item>
-    <item
         jar="/Users/gary/.gradle/caches/modules-2/files-2.1/com.google.protobuf/protobuf-java/3.0.0-alpha-2/5bbf5638696e0d959b16278353560b2300024403/protobuf-java-3.0.0-alpha-2.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="5bbf5638696e0d959b16278353560b2300024403">
         <dex dex="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/protobuf-java-3.0.0-alpha-2-6f1a2e409aa4548d13dbd400e3513b938e9733c9.jar" />
-    </item>
-    <item
-        jar="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/libs/internal_impl-22.2.0.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
-        <dex dex="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-12158cb8b9a9c2b1b3f101e4588bbeeca068054c.jar" />
-    </item>
-    <item
-        jar="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/libs/com.tum.ssdapi.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="4ff4e2016845c6a028a4be575029f85f69a97eba">
-        <dex dex="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/com.tum.ssdapi-d34a58578cf4c1a3e96d01646e22f952e55a94cd.jar" />
-    </item>
-    <item
-        jar="/Users/gary/.gradle/caches/modules-2/files-2.1/org.fusesource.hawtbuf/hawtbuf/1.10/a20907168eb4f05c8f777e1671d8070cd06715e4/hawtbuf-1.10.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="a20907168eb4f05c8f777e1671d8070cd06715e4">
-        <dex dex="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/hawtbuf-1.10-28bd27de8e09f01f647c8e8d1aa5c3a2b217a396.jar" />
-    </item>
-    <item
-        jar="/Users/gary/.gradle/caches/modules-2/files-2.1/org.fusesource.hawtdispatch/hawtdispatch-transport/1.20/b4f58ecdc9fa770b86f1caf88da7ed71eaa511f2/hawtdispatch-transport-1.20.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="b4f58ecdc9fa770b86f1caf88da7ed71eaa511f2">
-        <dex dex="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/hawtdispatch-transport-1.20-0b1ed21f80be0cb025d2eb16acfd0fce450ec091.jar" />
-    </item>
-    <item
-        jar="/Users/gary/.gradle/caches/modules-2/files-2.1/com.loopj.android/android-async-http/1.4.5/77bf7cacf9cefe19dc105e5425d2eb1bb5285881/android-async-http-1.4.5.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="77bf7cacf9cefe19dc105e5425d2eb1bb5285881">
-        <dex dex="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/android-async-http-1.4.5-f29e538e3252679e47dc3c98b36be5bc702113d7.jar" />
-    </item>
-    <item
-        jar="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/libs/com.secureflashcard.sfclibrary.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="2b33ab5c7f64e40f7b1625ed1a092aa1a2e0569d">
-        <dex dex="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/com.secureflashcard.sfclibrary-04bfc94517928ff5e87018f01c5bb9097218cbf1.jar" />
-    </item>
-    <item
-        jar="/Users/gary/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/22.2.0/support-annotations-22.2.0.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="66b42a1f3eb7676070b7ef7f14b603483aecbee1">
-        <dex dex="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/support-annotations-22.2.0-43bb4b076774d38097484dad34bc45474f3f8ca9.jar" />
     </item>
     <item
         jar="/Users/gary/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/18.0/cce0823396aa693798f8882e64213b1772032b09/guava-18.0.jar"
@@ -93,6 +16,13 @@
         <dex dex="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/guava-18.0-13f61c5402ef144385a32bfb0c76bf88faa70dcf.jar" />
     </item>
     <item
+        jar="/Users/gary/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/22.2.0/support-annotations-22.2.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="66b42a1f3eb7676070b7ef7f14b603483aecbee1">
+        <dex dex="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/support-annotations-22.2.0-43bb4b076774d38097484dad34bc45474f3f8ca9.jar" />
+    </item>
+    <item
         jar="/Users/gary/.gradle/caches/modules-2/files-2.1/org.fusesource.hawtdispatch/hawtdispatch/1.20/390fa83e97939c333ae1f82738ff5210294f720c/hawtdispatch-1.20.jar"
         jumboMode="false"
         revision="22.0.1"
@@ -100,11 +30,81 @@
         <dex dex="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/hawtdispatch-1.20-bf6cb477a4adc92a80265488a9ff171aa1d51a5a.jar" />
     </item>
     <item
+        jar="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="73753982da6bde518f3a4c6b372749981d14d1a0">
+        <dex dex="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/classes-4f1a833dcdd55ac03a42193bef27bc2ff436a4ba.jar" />
+    </item>
+    <item
+        jar="/Users/gary/.m2/repository/com/swissbit/com.swissbit.mqtt.client/1.0-SNAPSHOT/com.swissbit.mqtt.client-1.0-SNAPSHOT.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="99eac1056d6536e894e7d320f6f964529dc2d27a">
+        <dex dex="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/com.swissbit.mqtt.client-1.0-SNAPSHOT-294f245a2a22121d474c94236e2ecd5327abf552.jar" />
+    </item>
+    <item
+        jar="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="1ee588ff2c4daf7b97c1cbf922a6c7f027285c2f">
+        <dex dex="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/classes-a6c1335aee074e4fba3b0f06535e8bb61fe2cc8d.jar" />
+    </item>
+    <item
+        jar="/Users/gary/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.6.4/2396d74b12b905f780ed7966738bb78438e8371a/slf4j-api-1.6.4.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="2396d74b12b905f780ed7966738bb78438e8371a">
+        <dex dex="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/slf4j-api-1.6.4-5e8b4f4d0d1a3d2d3aa08af0ffae47a300dbef26.jar" />
+    </item>
+    <item
         jar="/Users/gary/.gradle/caches/modules-2/files-2.1/org.fusesource.mqtt-client/mqtt-client/1.10/b7fd7e41d2f5a9d4391d6830dc1bb69627845268/mqtt-client-1.10.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="b7fd7e41d2f5a9d4391d6830dc1bb69627845268">
         <dex dex="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/mqtt-client-1.10-ee932874035fdf4b9d8acd6b29e6ff20c2d93604.jar" />
+    </item>
+    <item
+        jar="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/libs/com.tum.ssdapi.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="4ff4e2016845c6a028a4be575029f85f69a97eba">
+        <dex dex="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/com.tum.ssdapi-d34a58578cf4c1a3e96d01646e22f952e55a94cd.jar" />
+    </item>
+    <item
+        jar="/Users/gary/.gradle/caches/modules-2/files-2.1/com.loopj.android/android-async-http/1.4.5/77bf7cacf9cefe19dc105e5425d2eb1bb5285881/android-async-http-1.4.5.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="77bf7cacf9cefe19dc105e5425d2eb1bb5285881">
+        <dex dex="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/android-async-http-1.4.5-f29e538e3252679e47dc3c98b36be5bc702113d7.jar" />
+    </item>
+    <item
+        jar="/Users/gary/.gradle/caches/modules-2/files-2.1/org.fusesource.hawtdispatch/hawtdispatch-transport/1.20/b4f58ecdc9fa770b86f1caf88da7ed71eaa511f2/hawtdispatch-transport-1.20.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="b4f58ecdc9fa770b86f1caf88da7ed71eaa511f2">
+        <dex dex="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/hawtdispatch-transport-1.20-0b1ed21f80be0cb025d2eb16acfd0fce450ec091.jar" />
+    </item>
+    <item
+        jar="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/libs/internal_impl-22.2.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
+        <dex dex="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-12158cb8b9a9c2b1b3f101e4588bbeeca068054c.jar" />
+    </item>
+    <item
+        jar="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/libs/com.secureflashcard.sfclibrary.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="2b33ab5c7f64e40f7b1625ed1a092aa1a2e0569d">
+        <dex dex="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/com.secureflashcard.sfclibrary-04bfc94517928ff5e87018f01c5bb9097218cbf1.jar" />
+    </item>
+    <item
+        jar="/Users/gary/.gradle/caches/modules-2/files-2.1/org.fusesource.hawtbuf/hawtbuf/1.10/a20907168eb4f05c8f777e1671d8070cd06715e4/hawtbuf-1.10.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="a20907168eb4f05c8f777e1671d8070cd06715e4">
+        <dex dex="/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/build/intermediates/pre-dexed/debug/hawtbuf-1.10-28bd27de8e09f01f647c8e8d1aa5c3a2b217a396.jar" />
     </item>
 
 </items>

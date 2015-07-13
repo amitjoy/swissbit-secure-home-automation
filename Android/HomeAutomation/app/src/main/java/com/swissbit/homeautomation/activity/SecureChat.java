@@ -65,6 +65,8 @@ public class SecureChat extends ActionBarActivity {
     String topic = TopicsConstants.SECURE_CHAT;
 
     private String myName;
+    private String recId;
+
     private Button btnSend;
     private EditText inputMsg;
 
@@ -83,11 +85,16 @@ public class SecureChat extends ActionBarActivity {
 
         Intent intent =  getIntent();
         myName = intent.getStringExtra("name");
+        recId  = intent.getStringExtra("recId");
         Toast my = Toast.makeText(this, myName, Toast.LENGTH_SHORT);
         my.show();
 
         secureElementAccess = new CardAPI(getApplicationContext());
         secureElementId = secureElementAccess.getMyId();
+        Log.d("SecureIDB: ", secureElementId);
+        //Based on Radio Button Selected
+        secureElementId = recId;
+        Log.d("SecureIDA: ", secureElementId);
 
         //To check for network availability
         checkNetworkAvailability();
