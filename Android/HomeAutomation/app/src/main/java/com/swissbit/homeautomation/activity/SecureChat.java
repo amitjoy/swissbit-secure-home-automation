@@ -86,8 +86,6 @@ public class SecureChat extends ActionBarActivity {
         Intent intent =  getIntent();
         myName = intent.getStringExtra("name");
         recId  = intent.getStringExtra("recId");
-        Toast my = Toast.makeText(this, myName, Toast.LENGTH_SHORT);
-        my.show();
 
         secureElementAccess = new CardAPI(getApplicationContext());
         secureElementId = secureElementAccess.getMyId();
