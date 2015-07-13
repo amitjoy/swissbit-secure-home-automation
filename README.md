@@ -9,24 +9,21 @@ This is the repository for the development of a complete end-to-end secure home 
 
 ### How do I get set up for RPi-Gateway? ###
 
-* Install Maven 3 in your local machine
-* Checkout the complete source
-* Change the location in all the Deployment Package Definitions manually
-* Change the location in Shell Script to get the final deployment
-* Build the parent POM
-* Deploy the Deployment Packages to your **Eclipse Kura** Installation
+* Check the respective for detailed guidelines
 
 ### How do I get set up for Android? ###
 
-* Will be updated soon
+* Export the sources and import using Android Studio
 
-### How do I get set up for Application Server? ###
+### How do I get set up for Identity Server? ###
 
-* Will be updated soon
+* Export the identity server sources
+* Import using Eclipse IDE as Eclipse Project
+* Run the SwissbitServicesStarter
 
 ### How do I get set up for Secure Element? ###
 
-* The secure element related sources are already inside the Android and RPi-Gateway
+* The secure element related sources are already inside the Android and RPi-Gateway. It is not open source.
 
 ### Contribution guidelines ###
 
