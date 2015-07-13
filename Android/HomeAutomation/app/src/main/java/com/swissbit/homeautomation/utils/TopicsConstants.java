@@ -84,5 +84,9 @@ public interface TopicsConstants {
      */
     public static final String ACCESS_REVOCATION_SUB = "/access/revoked";
 
+    /**
+     * Part of subscribe topic for access revocation
+     */
+    public static final String SECURE_CHAT = "$EDC/secure/chat";
 
 }

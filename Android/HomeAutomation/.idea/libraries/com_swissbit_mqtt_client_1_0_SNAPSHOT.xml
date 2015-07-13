@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="com.swissbit.mqtt.client-1.0-SNAPSHOT">
-    <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/com/swissbit/com.swissbit.mqtt.client/1.0-SNAPSHOT/com.swissbit.mqtt.client-1.0-SNAPSHOT.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

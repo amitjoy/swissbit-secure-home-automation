@@ -25,6 +25,10 @@
         android:icon="@drawable/register"
         app:showAsAction="always"/>
 
+    <item android:id="@+id/secure_chat"
+        android:title="@string/secure_chat"
+        android:icon="@drawable/secure_chat"
+        app:showAsAction="always"/>
 
 </menu>
-<!-- From: file:/Users/manit/Documents/Manit/Masters%20in%20Informatics/Android%20Praktikum/Project/Android/HomeAutomation/app/src/main/res/menu/menu_main.xml -->
+<!-- From: file:/Users/gary/Documents/BitBucket/swissbit-secure-home-automation/Android/HomeAutomation/app/src/main/res/menu/menu_main.xml -->
