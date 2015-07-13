@@ -35,6 +35,7 @@ This is the repository for the development of a complete end-to-end secure home 
 ## How do I get my Raspberry Pi set up for RPi-Gateway Development? ##
 
 * Install Raspbian OS to your SD Card depending on the the architecture of your Raspberry Pi (ARMv6 or ARMv7)
+* Replace OpenJDK with Oracle Java 8 Hotspot JDK
 * Install **Eclipse Kura (No Net with Web UI)** depending on the the architecture of your **Raspberry Pi (ARMv6 or ARMv7)**
 * You can access Eclipse Kura's Web UI from the Web Broswer
 * You have to use **kura** as username and **admin** as password to access the Web UI
@@ -49,8 +50,24 @@ This is the repository for the development of a complete end-to-end secure home 
 * Make Sure you need to change only the **broker.url, account.name, username, password, keep-alive and timeout parameters**.
 * For convenience, make sure to set **Kepp-Alive** and **timeout** to **10** and **account.name** to **swissbit**.
 * Now go to **DataService** configuration section, and make sure to set **auto.starup** to **true** and **interval** to **10**
+* You need to create a folder named **swissbit** under **/home/pi**
+* Create a file named **clients-revoked.perm** in Swissbit folder
+* Another file named **all-clients-connected.perm** in Swissbit folder
+* Copy the **resetTTYUSB.py** from Swissbit Source (found under **SerialPortUtil**) to Swissbit folder
+* Create a folder named **logs** under Swissbit folder
+* Create a file named **swisbsit.log** under logs folder
+* Make sure to change the newly created and copies files and folders permissions to 777
 
+## How do I get my Z-Wave Device set up? ##
 
+* You have to use **AeonLabs Z-Stick Series 2 PC Controller** to use Z-Wave Device Management
+* You can buy any Z-Wave Device that can communicate with **AeonLabs PC Controller** (I have used **AeonLabs Smart Energy Switch**)
+* Make sure to use Z-Wave Devices that are made for Europe
+* First pair the device with PC Controller and then connect the PC Controller to Raspberry Pi
+* The PC Controller communicates with the Raspberry Pi using Serial Port **/dev/TTYUSB0**
+* Make sure it's same or else you have to change it in **com.swissbit.device.zwave.operation**
+* You have to export **com.swissbit.device.zwave.operation** as a Runnable Jar and copy the runnable jar to Swissbit folder in Raspberry Pi
+* Change the permission of the runnable jar to 777
 
 ### Contribution guidelines ###
 
