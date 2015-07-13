@@ -69,6 +69,14 @@ This is the repository for the development of a complete end-to-end secure home 
 * You have to export **com.swissbit.device.zwave.operation** as a Runnable Jar and copy the runnable jar to Swissbit folder in Raspberry Pi
 * Change the permission of the runnable jar to 777
 
+## How do I get my IFTTT set up? ##
+
+* You can sign up in IFTTT using your email address
+* You can setup your own recipe here
+* The primary constraint for Swissbit IFTTT Module is that you have to use Tagged Email trigger
+* Once you set up your own recipe, you can go to IFTTT section in the raspberry Pi Web UI to configure your email address smtp confguration
+* Make sure that you use the correct hashtags for your recipes
+
 ### Contribution guidelines ###
 
 * Before you commit your code to this project, please talk to the repo owner first
