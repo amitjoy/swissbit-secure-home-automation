@@ -62,7 +62,7 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/swissbit/homeautomation/asyncTask/SecureChatAsync.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.6030246">
-              <caret line="191" column="44" selection-start-line="191" selection-start-column="44" selection-end-line="191" selection-end-column="44" />
+              <caret line="191" column="66" selection-start-line="191" selection-start-column="66" selection-end-line="191" selection-end-column="66" />
               <folding>
                 <element signature="e#5243#5244#0" expanded="true" />
                 <element signature="e#5313#5314#0" expanded="true" />
@@ -1879,7 +1879,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="169" y="23" width="1172" height="947" extended-state="0" />
+    <frame x="169" y="23" width="1172" height="947" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -2182,7 +2182,7 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/swissbit/homeautomation/asyncTask/SecureChatAsync.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.6030246">
-          <caret line="191" column="44" selection-start-line="191" selection-start-column="44" selection-end-line="191" selection-end-column="44" />
+          <caret line="191" column="66" selection-start-line="191" selection-start-column="66" selection-end-line="191" selection-end-column="66" />
           <folding>
             <element signature="e#5243#5244#0" expanded="true" />
             <element signature="e#5313#5314#0" expanded="true" />
