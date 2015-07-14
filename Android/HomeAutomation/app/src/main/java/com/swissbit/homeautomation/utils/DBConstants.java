@@ -27,7 +27,7 @@ public interface DBConstants {
     /**
      * Database Version
      */
-    public static final int DATABASE_VERSION = 32;
+    public static final int DATABASE_VERSION = 36;
 
     /**
      * Column Names for the table RaspberryInfo
