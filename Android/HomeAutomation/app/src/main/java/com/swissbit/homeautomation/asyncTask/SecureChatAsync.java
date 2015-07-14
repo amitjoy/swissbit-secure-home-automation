@@ -128,6 +128,7 @@ public class SecureChatAsync extends AsyncTask {
         boolean status = false;
 
         while(true) {
+
             if (!client.isConnected())
                 status = client.connect();
 
@@ -136,6 +137,7 @@ public class SecureChatAsync extends AsyncTask {
         String topic = TopicsConstants.SECURE_CHAT;
 
             //Subscribe to the topic. After publish, the response will be handles here.
+
             if (status)
                 client.subscribe(topic, new MessageListener() {
                     @Override

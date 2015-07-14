@@ -17,6 +17,7 @@ package com.swissbit.homeautomation.activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,10 +30,16 @@ import android.widget.RadioButton;
 import com.android.swissbit.homeautomation.R;
 import com.swissbit.homeautomation.utils.ActivityContexts;
 import com.swissbit.homeautomation.utils.WSConstants;
+import com.tum.ssdapi.CardAPI;
 
 public class ChatInitiateActivity extends ActionBarActivity {
 
     private String recId;
+    /**
+     * The object to access the secure element for the SD card
+     */
+    private CardAPI secureElementAccess;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,19 +49,25 @@ public class ChatInitiateActivity extends ActionBarActivity {
         ActivityContexts.setChatActivityContext(this);
 
         Button initiate = (Button) findViewById(R.id.btnJoin);
-
+        secureElementAccess = new CardAPI(getApplicationContext());
 
         initiate.setOnClickListener
                 (new View.OnClickListener() {
                      @Override
                      public void onClick(View v) {
                          //If no Radio Button Selected Reject going ahead
+                         EditText displayName = (EditText) findViewById(R.id.name);
 
                          RadioGroup g = (RadioGroup) findViewById(R.id.secure_ids);
                          int idSelected =  g.getCheckedRadioButtonId();
                          if(idSelected == -1){
-                             Toast errorMsg = Toast.makeText(ChatInitiateActivity.this, "Please select one of Ids", Toast.LENGTH_LONG);
-                             errorMsg.show();
+                            Toast.makeText(ChatInitiateActivity.this, "Please select one of Ids.", Toast.LENGTH_SHORT).show();
+                         }
+                         else if(displayName.getText().toString().equals("")){
+                             Toast.makeText(ChatInitiateActivity.this, "Display Name cannot be blank.", Toast.LENGTH_SHORT).show();
+                         }
+                         else if(!secureElementAccess.isCardPresent()){
+                             Toast.makeText(getApplicationContext(), "Secure SD card not present", Toast.LENGTH_SHORT).show();
                          }
                          else {
                              // Redirect to chat activity on success.
