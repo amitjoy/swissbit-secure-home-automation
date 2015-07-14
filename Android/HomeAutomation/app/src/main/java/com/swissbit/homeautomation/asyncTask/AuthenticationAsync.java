@@ -113,10 +113,10 @@ public class AuthenticationAsync extends AsyncTask {
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        cancel(true);
                         if(subscriptionResponse)
                             mainActivity.checkRaspberryId(rid);
                         dialog.dismiss();
+                        cancel(true);
                     }
                 });
         alertDialog.show();
@@ -258,6 +258,7 @@ public class AuthenticationAsync extends AsyncTask {
             });
 
         } else {
+            Log.d("Auth Debug", "Failure");
             Toast.makeText(ActivityContexts.getMainActivityContext(), "RaspberryPi Registration Unsuccessful. Please try Again", Toast.LENGTH_LONG).show();
             dialogMessage = "RaspberryPi Registration Unsuccessful. Please try Again";
             showDialog();

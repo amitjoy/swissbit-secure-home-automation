@@ -300,7 +300,7 @@ public class MainActivity extends ActionBarActivity {
                         startActivity(intent);
                     }
                     else {
-                        Toast.makeText(getApplicationContext(), "RaspberryPi currently offline. Wait till connectivity is established", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "RaspberryPi currently offline. Wait till connectivity is established", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
