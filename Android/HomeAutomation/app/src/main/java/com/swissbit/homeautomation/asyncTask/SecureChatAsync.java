@@ -189,8 +189,10 @@ public class SecureChatAsync extends AsyncTask {
 
             secureElementAccess = new CardAPI(ActivityContexts.getChatActivityContext());
             String decMsg[] = secureElementAccess.decryptMsgWithID(incomingMsg);
-            Log.d("Decrypted Message", "" + decMsg[1].getBytes());
+            Log.d("Decrypted Message", decMsg[1]);
+
             if(!decMsg[1].contains("Error:")) {
+                decMsg[1] = decMsg[1].substring(0, decMsg[1].length() - 1);
 
                 String senderName = decMsg[1].split(";;")[0];
                 String message = decMsg[1].split(";;")[1];
