@@ -9,7 +9,10 @@ This is the repository for the development of a complete end-to-end secure home 
 
 ### How do I get set up for Android? ###
 
-* Will be updated soon
+* Import the project in Android Studio
+* Place the "com.swissbit.mqtt.client-1.0-SNAPSHOT-jar-with-dependencies.jar" in your local maven repository.
+* When the entire project is checked out, the jar is present under the path "Swissbit Secure Home Automation / MQTT_Console_Client /".
+* Build and Run the android project.
 
 ### Contribution guidelines ###
 
