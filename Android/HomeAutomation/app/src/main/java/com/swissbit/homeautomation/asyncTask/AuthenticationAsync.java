@@ -253,6 +253,7 @@ public class AuthenticationAsync extends AsyncTask {
                     Log.d("DEBUG AUTHASYNC", "INSIDE FAILURE");
                     Toast.makeText(ActivityContexts.getMainActivityContext(), "RaspberryPi Registration Unsuccessful. Please try Again", Toast.LENGTH_LONG).show();
                     dialogMessage = "RaspberryPi Registration Unsuccessful. Please try Again";
+                    subscriptionResponse = false;
                     showDialog();
                 }
             });
@@ -261,6 +262,7 @@ public class AuthenticationAsync extends AsyncTask {
             Log.d("Auth Debug", "Failure");
             Toast.makeText(ActivityContexts.getMainActivityContext(), "RaspberryPi Registration Unsuccessful. Please try Again", Toast.LENGTH_LONG).show();
             dialogMessage = "RaspberryPi Registration Unsuccessful. Please try Again";
+            subscriptionResponse = false;
             showDialog();
         }
         progressDialog.dismiss();
