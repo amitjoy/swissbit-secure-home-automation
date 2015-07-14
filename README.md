@@ -35,6 +35,6 @@ This is the repository for the development of a complete end-to-end secure home 
 
 * Amit Kumar Mondal (admin@amitinside.com) for RPi-Gateway
 * Manit Kumar (vikky_manit@yahoo.co.in) for Android Application
-* Gaurav Srivastava (ga79daw@mytum.de) for Secure Element
+* Gaurav Srivastava (ga79daw@mytum.de) for Secure Element, Secure Chat
 * Subburam (ga59ciq@mytum.de) for Application Server
 * Swissbit AG
