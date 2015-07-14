@@ -34,7 +34,8 @@ This is the repository for the development of a complete end-to-end secure home 
 
 ## How do I get my Raspberry Pi set up for RPi-Gateway Development? ##
 
-* Install Raspbian OS to your SD Card depending on the the architecture of your Raspberry Pi (ARMv6 or ARMv7)
+* You need Swissbit Secure Element SD Card
+* Install Raspbian OS to the Swissbit's Secure SD Card depending on the the architecture of your Raspberry Pi (ARMv6 or ARMv7)
 * Replace OpenJDK with **Oracle Java 8 Hotspot JDK**
 * Install **Eclipse Kura (No Net with Web UI)** depending on the the architecture of your **Raspberry Pi (ARMv6 or ARMv7)**
 * You can access Eclipse Kura's Web UI from the Web Broswer
@@ -56,6 +57,10 @@ This is the repository for the development of a complete end-to-end secure home 
 * Copy the **resetTTYUSB.py** from Swissbit Source (found under **SerialPortUtil**) to Swissbit folder
 * Create a folder named **logs** under Swissbit folder
 * Create a file named **swisbsit.log** under logs folder
+* You have to create another folder named **assd**
+* This folder comprises the python scripts to encrypt and decrypt messages using Swissbit Secure Element
+* You will find these python scripts under **Secure_Element** folder in **default branch**
+* You need the proper **assd.ko** module that matches your Raspbian architecture (ARMv6 or ARMv7)
 * Make sure to change the newly created and copies files and folders permissions to 777
 
 ## How do I get my Z-Wave Device set up? ##
