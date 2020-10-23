@@ -1,4 +1,4 @@
-# README #
+# Swissbit Secure Home Automation #
 
 This is the repository for the development of a complete end-to-end secure home automation solution by Swissbit AG, Germany Munich. 
 
